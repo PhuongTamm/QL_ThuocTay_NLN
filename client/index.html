@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Hệ thống Quản lý Nhà thuốc Tây</title>
+    <style>
+        /* CSS mô phỏng giao diện màu xanh từ báo cáo [cite: 823] */
+        body { font-family: Arial, sans-serif; display: flex; margin: 0; background-color: #f4f4f4; }
+        .sidebar { width: 250px; background-color: #008080; color: white; height: 100vh; padding: 20px; }
+        .sidebar h2 { text-align: center; }
+        .menu-item { padding: 10px; cursor: pointer; border-bottom: 1px solid #006666; }
+        .menu-item:hover { background-color: #006666; }
+        
+        .content { flex: 1; padding: 20px; }
+        .pos-container { display: flex; gap: 20px; }
+        .product-list, .invoice-details { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .product-list { flex: 2; }
+        .invoice-details { flex: 1; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #008080; color: white; }
+        
+        .btn { background-color: #008080; color: white; border: none; padding: 10px 20px; cursor: pointer; margin-top: 10px; width: 100%; }
+        .btn:hover { background-color: #006666; }
+        
+        .input-group { margin-bottom: 10px; }
+        .input-group label { display: block; margin-bottom: 5px; }
+        .input-group input { width: 95%; padding: 8px; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>MEDICINE</h2>
+        <div class="menu-item">Hóa Đơn</div>
+        <div class="menu-item">Thuốc</div>
+        <div class="menu-item">Nhập Thuốc</div>
+        <div class="menu-item">Báo Cáo</div>
+    </div>
+
+    <div class="content">
+        <h1>Lập Hóa Đơn</h1>
+        <div class="pos-container">
+            <div class="product-list">
+                <h3>Danh sách thuốc</h3>
+                <div class="input-group">
+                    <input type="text" id="searchBox" placeholder="Tìm thuốc...">
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tên thuốc</th>
+                            <th>ĐVT</th>
+                            <th>Giá bán</th>
+                            <th>Tồn kho</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="medicineTableBody">
+                        </tbody>
+                </table>
+            </div>
+
+            <div class="invoice-details">
+                <h3>Thông tin hóa đơn</h3>
+                <div class="input-group">
+                    <label>SĐT Khách hàng:</label>
+                    <input type="text" id="custPhone" placeholder="Nhập SĐT">
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tên</th>
+                            <th>SL</th>
+                            <th>Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody id="invoiceTableBody">
+                        </tbody>
+                </table>
+                
+                <h3>Tổng tiền: <span id="totalAmount">0</span> VNĐ</h3>
+                <button class="btn" onclick="processPayment()">Thanh Toán</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+        let medicines = [];
+
+        // 1. Load danh sách thuốc từ API
+        async function loadMedicines() {
+            const res = await fetch('http://localhost:3000/api/medicines');
+            medicines = await res.json();
+            renderTable(medicines);
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('medicineTableBody');
+            tbody.innerHTML = '';
+            data.forEach(med => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${med.name}</td>
+                    <td>${med.unit}</td>
+                    <td>${med.price.toLocaleString()}</td>
+                    <td>${med.totalStock}</td>
+                    <td><button onclick="addToCart('${med._id}')">Thêm</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // 2. Thêm vào giỏ hàng (Hóa đơn tạm)
+        function addToCart(medId) {
+            const med = medicines.find(m => m._id === medId);
+            if(med.totalStock <= 0) {
+                alert("Sản phẩm này đã hết hàng!"); // [cite: 850]
+                return;
+            }
+
+            const existingItem = cart.find(i => i.medicineId === medId);
+            if (existingItem) {
+                if(existingItem.quantity < med.totalStock) {
+                    existingItem.quantity++;
+                } else {
+                    alert("Số lượng tồn không đủ!"); // [cite: 850]
+                }
+            } else {
+                cart.push({ medicineId: med._id, medicineName: med.name, price: med.price, quantity: 1 });
+            }
+            renderCart();
+        }
+
+        function renderCart() {
+            const tbody = document.getElementById('invoiceTableBody');
+            tbody.innerHTML = '';
+            let total = 0;
+            cart.forEach(item => {
+                const rowTotal = item.quantity * item.price;
+                total += rowTotal;
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${item.medicineName}</td>
+                        <td>${item.quantity}</td>
+                        <td>${rowTotal.toLocaleString()}</td>
+                    </tr>
+                `;
+            });
+            document.getElementById('totalAmount').innerText = total.toLocaleString();
+        }
+
+        // 3. Thanh toán (Gọi API Sale)
+        async function processPayment() {
+            if (cart.length === 0) return alert("Hóa đơn trống!");
+            
+            const custPhone = document.getElementById('custPhone').value;
+            // Validate phone [cite: 855]
+            if(custPhone && custPhone.length !== 10) {
+                return alert("Số điện thoại phải gồm đúng 10 chữ số!");
+            }
+
+            const payload = {
+                items: cart,
+                customerPhone: custPhone,
+                branchId: "CN01"
+            };
+
+            try {
+                const res = await fetch('http://localhost:3000/api/sale', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const data = await res.json();
+                if (res.ok) {
+                    alert("Thanh toán thành công! Mã HD: " + data.invoice.invoiceCode); // [cite: 840]
+                    cart = [];
+                    renderCart();
+                    loadMedicines(); // Reload lại kho
+                } else {
+                    alert("Lỗi: " + data.error);
+                }
+            } catch (err) {
+                alert("Lỗi kết nối server");
+            }
+        }
+
+        loadMedicines();
+    </script>
+</body>
+</html>
