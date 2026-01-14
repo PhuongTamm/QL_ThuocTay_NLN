@@ -20,6 +20,7 @@ const inventorySchema = new mongoose.Schema(
         batchCode: { type: String, required: true }, // Mã lô
         expiryDate: { type: Date, required: true }, // Hạn sử dụng (quan trọng cho FEFO)
         manufacturingDate: { type: Date, required: true }, // ngay san xuat
+        initialQuantity: { type: Number, required: true }, // Số lượng gốc lúc nhập vào kho này
         quantity: { type: Number, required: true }, // Số lượng còn lại của lô này
         importPrice: { type: Number }, // Giá nhập của lô này
         quality: {

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý Chi nhánh</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>🏥 <span id="branchNameTitle">Chi Nhánh</span></h2>
+            <div>
+                <span class="me-3">Xin chào, <b id="currentUserName">User</b></span>
+                <button class="btn btn-outline-danger btn-sm" onclick="logout()">Đăng xuất</button>
+            </div>
+        </div>
+
+        <ul class="nav nav-tabs mb-3" id="myTab">
+            <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#inventoryTab">📦 Tồn kho</a></li>
+            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#importTab">🚚 Đơn hàng chờ nhập</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="inventoryTab">
+                <table class="table table-striped">
+                    <thead><tr><th>Thuốc</th><th>Tổng tồn</th><th>Chi tiết Lô (HSD)</th></tr></thead>
+                    <tbody id="inventoryBody"></tbody>
+                </table>
+            </div>
+
+            <div class="tab-pane fade" id="importTab">
+                <div id="pendingTransList">Loading...</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/common.js"></script>
+    <script>
+        // client/js/branch.js inline logic
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth(['branch_manager']);
+            loadInventory();
+            loadPendingTransactions();
+        });
+
+        function logout() { localStorage.clear(); window.location.href = 'index.html'; }
+
+        // 1. Tải tồn kho
+        async function loadInventory() {
+            // API này cần viết ở Backend: router.get('/inventory/my-branch', ...)
+            const user = JSON.parse(localStorage.getItem('user'));
+            document.getElementById('branchNameTitle').textContent = "Chi nhánh của bạn";
+
+            const res = await fetchAPI(`/inventory?branchId=${user.branchId}`); 
+            // Giả sử API trả về list Inventory
+            if(res && res.success) {
+                const tbody = document.getElementById('inventoryBody');
+                tbody.innerHTML = res.data.map(inv => `
+                    <tr>
+                        <td>${inv.medicineId.name}</td>
+                        <td class="fw-bold text-primary">${inv.totalQuantity}</td>
+                        <td>
+                            <ul class="small mb-0 ps-3">
+                                ${inv.batches.map(b => `
+                                    <li>Lô ${b.batchCode} - HSD: ${new Date(b.expiryDate).toLocaleDateString()} (${b.quantity})</li>
+                                `).join('')}
+                            </ul>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        // 2. Tải phiếu chờ nhập (Pending)
+        async function loadPendingTransactions() {
+            // API cần viết: GET /transactions/pending-import
+            const res = await fetchAPI('/transactions/pending-import'); 
+            const div = document.getElementById('pendingTransList');
+            
+            if(res && res.success && res.data.length > 0) {
+                div.innerHTML = res.data.map(trans => `
+                    <div class="card mb-3 border-warning">
+                        <div class="card-body">
+                            <h5 class="card-title">Phiếu xuất: ${trans.code}</h5>
+                            <p>Từ: Kho Tổng - Ngày: ${new Date(trans.date).toLocaleDateString()}</p>
+                            <ul>
+                                ${trans.details.map(d => `<li>${d.medicineId.name} - SL: ${d.quantity}</li>`).join('')}
+                            </ul>
+                            <button class="btn btn-success" onclick="confirmImport('${trans._id}')">Xác nhận Nhập kho</button>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                div.innerHTML = '<p class="text-muted">Không có phiếu xuất nào đang chờ.</p>';
+            }
+        }
+
+        async function confirmImport(transId) {
+            if(!confirm('Bạn chắc chắn đã nhận đủ hàng và muốn nhập kho?')) return;
+            
+            const res = await fetchAPI(`/transactions/${transId}/confirm-import`, 'PUT');
+            if(res && res.success) {
+                alert('Nhập kho thành công!');
+                loadPendingTransactions();
+                loadInventory();
+            } else {
+                alert('Lỗi: ' + res.message);
+            }
+        }
+    </script>
+</body>
+</html>

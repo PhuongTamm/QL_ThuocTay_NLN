@@ -1,0 +1,312 @@
+{
+	"info": {
+		"_postman_id": "pharmacy-system-id",
+		"name": "Hệ thống Quản lý Nhà thuốc (Pharmacy System)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Auth (Xác thực)",
+			"item": [
+				{
+					"name": "Login (Admin)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.success) {",
+									"    pm.environment.set(\"admin_token\", jsonData.accessToken);",
+									"    console.log(\"Admin Token set\");",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Login (Warehouse Manager)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.success) {",
+									"    pm.environment.set(\"warehouse_token\", jsonData.accessToken);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"kho_tong\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Login (Branch Manager)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.success) {",
+									"    pm.environment.set(\"branch_token\", jsonData.accessToken);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"quanly_cn1\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "login"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "2. Data Master (Dữ liệu nền)",
+			"item": [
+				{
+					"name": "Get All Branches",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/branches",
+							"host": ["{{baseUrl}}"],
+							"path": ["branches"]
+						}
+					}
+				},
+				{
+					"name": "Create Medicine",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"PANADOL01\",\n    \"name\": \"Panadol Extra\",\n    \"unit\": \"Hộp\",\n    \"price\": 150000,\n    \"ingredients\": \"Paracetamol 500mg\",\n    \"manufacturer\": \"GSK\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/medicines",
+							"host": ["{{baseUrl}}"],
+							"path": ["medicines"]
+						}
+					}
+				},
+				{
+					"name": "Get Medicines",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/medicines",
+							"host": ["{{baseUrl}}"],
+							"path": ["medicines"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "3. Warehouse (Kho tổng)",
+			"item": [
+				{
+					"name": "Import From Supplier (Nhập kho)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{warehouse_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"supplierName\": \"Công ty Dược Hậu Giang\",\n    \"items\": [\n        {\n            \"medicineId\": \"REPLACE_WITH_MEDICINE_ID\",\n            \"batchCode\": \"L001\",\n            \"quantity\": 500,\n            \"price\": 120000,\n            \"manufacturingDate\": \"2024-01-01\",\n            \"expiryDate\": \"2026-01-01\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/transactions/import-supplier",
+							"host": ["{{baseUrl}}"],
+							"path": ["transactions", "import-supplier"]
+						}
+					}
+				},
+				{
+					"name": "Distribute to Branch (Xuất kho)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{warehouse_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"toBranchId\": \"REPLACE_WITH_BRANCH_ID\",\n    \"items\": [\n        {\n            \"medicineId\": \"REPLACE_WITH_MEDICINE_ID\",\n            \"quantity\": 50\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/transactions/distribute",
+							"host": ["{{baseUrl}}"],
+							"path": ["transactions", "distribute"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "4. Branch (Chi nhánh)",
+			"item": [
+				{
+					"name": "Get Pending Imports",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{branch_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/transactions/pending-import",
+							"host": ["{{baseUrl}}"],
+							"path": ["transactions", "pending-import"]
+						}
+					}
+				},
+				{
+					"name": "Confirm Import (Nhập hàng)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{branch_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/transactions/REPLACE_WITH_TRANSACTION_ID/confirm-import",
+							"host": ["{{baseUrl}}"],
+							"path": ["transactions", "REPLACE_WITH_TRANSACTION_ID", "confirm-import"]
+						}
+					}
+				},
+				{
+					"name": "Get Inventory",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{branch_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/inventory?branchId=REPLACE_WITH_BRANCH_ID",
+							"host": ["{{baseUrl}}"],
+							"path": ["inventory"],
+							"query": [
+								{
+									"key": "branchId",
+									"value": "REPLACE_WITH_BRANCH_ID"
+								}
+							]
+						}
+					}
+				}
+			]
+		}
+	]
+}

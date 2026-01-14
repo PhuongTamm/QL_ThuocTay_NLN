@@ -1,0 +1,37 @@
+const express = require("express");
+const router = express.Router();
+const { verifyToken, checkRole } = require("../middleware/authMiddleware");
+const transactionController = require("../controllers/transaction.controller");
+
+// 1. Nhập hàng từ NCC
+router.post(
+  "/import-supplier",
+  verifyToken,
+  checkRole(["warehouse_manager", "admin"]),
+  transactionController.importFromSupplier
+);
+
+// 2. Phân phối hàng (Kho -> Chi nhánh)
+router.post(
+  "/distribute",
+  verifyToken,
+  checkRole(["warehouse_manager", "admin"]),
+  transactionController.createDistributionRequest
+);
+
+// Lấy danh sách chờ nhập (Cho Chi nhánh)
+router.get(
+  "/pending-import",
+  verifyToken,
+  checkRole(["branch_manager", "admin"]),
+  transactionController.getPendingImports
+);
+
+// Xác nhận nhập kho (Cho Chi nhánh)
+router.put(
+  "/:id/confirm-import",
+  verifyToken,
+  checkRole(["branch_manager", "admin"]),
+  transactionController.confirmImport
+);
+module.exports = router;

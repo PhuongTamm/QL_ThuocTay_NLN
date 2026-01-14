@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Kho Tổng</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</head>
+<body>
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner-border text-primary" role="status"></div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 sidebar p-3 d-flex flex-column">
+                <h4 class="text-white text-center mb-4"><i class="bi bi-hospital"></i> KHO TỔNG</h4>
+                <nav class="nav flex-column flex-grow-1">
+                    <a class="nav-link active" href="#" onclick="switchTab('medicines')"><i class="bi bi-capsule"></i> Danh mục thuốc</a>
+                    <a class="nav-link" href="#" onclick="switchTab('import')"><i class="bi bi-box-seam"></i> Nhập kho (NCC)</a>
+                    <a class="nav-link" href="#" onclick="switchTab('distribute')"><i class="bi bi-truck"></i> Phân phối Chi nhánh</a>
+                </nav>
+                <div class="mt-auto">
+                    <small class="text-light">Xin chào, <span id="currentUserName">User</span></small>
+                    <button class="btn btn-outline-light w-100 mt-2 btn-sm" onclick="logout()">Đăng xuất</button>
+                </div>
+            </div>
+
+            <div class="col-md-10 p-4 bg-light" style="height: 100vh; overflow-y: auto;">
+                
+                <div id="tab-medicines" class="content-tab">
+                    <div class="d-flex justify-content-between mb-3">
+                        <h3>💊 Danh mục thuốc</h3>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMedicineModal">
+                            <i class="bi bi-plus-lg"></i> Thêm thuốc mới
+                        </button>
+                    </div>
+                    <div class="card p-3">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr><th>Mã</th><th>Tên thuốc</th><th>Đơn vị</th><th>Giá niêm yết</th><th>NSX</th></tr>
+                            </thead>
+                            <tbody id="medicineTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="tab-import" class="content-tab d-none">
+                    <h3>📥 Nhập kho từ Nhà Cung Cấp</h3>
+                    <div class="card p-4 mb-3">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label>Chọn thuốc</label>
+                                <select id="inpImportMed" class="form-select"></select>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Số lô (Batch)</label>
+                                <input type="text" id="inpImportBatch" class="form-control" placeholder="L001">
+                            </div>
+                            <div class="col-md-2">
+                                <label>Số lượng</label>
+                                <input type="number" id="inpImportQty" class="form-control" value="100">
+                            </div>
+                            <div class="col-md-3">
+                                <label>Giá nhập</label>
+                                <input type="number" id="inpImportPrice" class="form-control">
+                            </div>
+                            <div class="col-md-3">
+                                <label>Ngày Sản Xuất</label>
+                                <input type="date" id="inpImportMfg" class="form-control">
+                            </div>
+                            <div class="col-md-3">
+                                <label>Hạn Sử Dụng</label>
+                                <input type="date" id="inpImportExp" class="form-control">
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button onclick="addToImportList()" class="btn btn-success w-100">Thêm dòng</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h5>Danh sách chờ nhập:</h5>
+                    <table class="table table-bordered bg-white">
+                        <thead><tr><th>Thuốc</th><th>Lô</th><th>NSX - HSD</th><th>SL</th><th>Giá</th><th>Xóa</th></tr></thead>
+                        <tbody id="importListBody"></tbody>
+                    </table>
+                    <button onclick="submitImportFromSupplier()" class="btn btn-primary btn-lg float-end">Hoàn tất Nhập kho</button>
+                </div>
+
+                <div id="tab-distribute" class="content-tab d-none">
+                    <h3>🚚 Phân phối tới Chi nhánh</h3>
+                    <div class="alert alert-info">Hệ thống sẽ tự động chọn lô hết hạn trước (FEFO) để xuất.</div>
+                    
+                    <div class="card p-4 mb-3">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label>Chọn Chi nhánh nhận</label>
+                                <select id="inpDistBranch" class="form-select"></select>
+                            </div>
+                            <div class="col-md-4">
+                                <label>Chọn thuốc</label>
+                                <select id="inpDistMed" class="form-select"></select>
+                            </div>
+                            <div class="col-md-2">
+                                <label>Số lượng</label>
+                                <input type="number" id="inpDistQty" class="form-control" value="10">
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button onclick="addToDistList()" class="btn btn-warning w-100 text-white">Thêm</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table class="table table-bordered bg-white">
+                        <thead><tr><th>Chi nhánh nhận</th><th>Thuốc</th><th>Số lượng yêu cầu</th><th>Xóa</th></tr></thead>
+                        <tbody id="distListBody"></tbody>
+                    </table>
+                    <button onclick="submitDistribution()" class="btn btn-primary btn-lg float-end">Tạo Phiếu Xuất</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addMedicineModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title">Thêm thuốc mới</h5></div>
+                <div class="modal-body">
+                    <input type="text" id="newMedCode" class="form-control mb-2" placeholder="Mã thuốc (V001)">
+                    <input type="text" id="newMedName" class="form-control mb-2" placeholder="Tên thuốc">
+                    <input type="text" id="newMedUnit" class="form-control mb-2" placeholder="Đơn vị (Hộp/Vỉ)">
+                    <input type="number" id="newMedPrice" class="form-control mb-2" placeholder="Giá bán niêm yết">
+                    <input type="text" id="newMedManuf" class="form-control mb-2" placeholder="Nhà sản xuất">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="createNewMedicine()">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/warehouse.js"></script>
+</body>
+</html>

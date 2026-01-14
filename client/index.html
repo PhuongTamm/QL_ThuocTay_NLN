@@ -1,196 +1,85 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Hệ thống Quản lý Nhà thuốc Tây</title>
-    <style>
-        /* CSS mô phỏng giao diện màu xanh từ báo cáo [cite: 823] */
-        body { font-family: Arial, sans-serif; display: flex; margin: 0; background-color: #f4f4f4; }
-        .sidebar { width: 250px; background-color: #008080; color: white; height: 100vh; padding: 20px; }
-        .sidebar h2 { text-align: center; }
-        .menu-item { padding: 10px; cursor: pointer; border-bottom: 1px solid #006666; }
-        .menu-item:hover { background-color: #006666; }
-        
-        .content { flex: 1; padding: 20px; }
-        .pos-container { display: flex; gap: 20px; }
-        .product-list, .invoice-details { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        .product-list { flex: 2; }
-        .invoice-details { flex: 1; }
-        
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #008080; color: white; }
-        
-        .btn { background-color: #008080; color: white; border: none; padding: 10px 20px; cursor: pointer; margin-top: 10px; width: 100%; }
-        .btn:hover { background-color: #006666; }
-        
-        .input-group { margin-bottom: 10px; }
-        .input-group label { display: block; margin-bottom: 5px; }
-        .input-group input { width: 95%; padding: 8px; }
-    </style>
-</head>
-<body>
-
-    <div class="sidebar">
-        <h2>MEDICINE</h2>
-        <div class="menu-item">Hóa Đơn</div>
-        <div class="menu-item">Thuốc</div>
-        <div class="menu-item">Nhập Thuốc</div>
-        <div class="menu-item">Báo Cáo</div>
-    </div>
-
-    <div class="content">
-        <h1>Lập Hóa Đơn</h1>
-        <div class="pos-container">
-            <div class="product-list">
-                <h3>Danh sách thuốc</h3>
-                <div class="input-group">
-                    <input type="text" id="searchBox" placeholder="Tìm thuốc...">
-                </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Tên thuốc</th>
-                            <th>ĐVT</th>
-                            <th>Giá bán</th>
-                            <th>Tồn kho</th>
-                            <th>Hành động</th>
-                        </tr>
-                    </thead>
-                    <tbody id="medicineTableBody">
-                        </tbody>
-                </table>
-            </div>
-
-            <div class="invoice-details">
-                <h3>Thông tin hóa đơn</h3>
-                <div class="input-group">
-                    <label>SĐT Khách hàng:</label>
-                    <input type="text" id="custPhone" placeholder="Nhập SĐT">
-                </div>
-                
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Tên</th>
-                            <th>SL</th>
-                            <th>Thành tiền</th>
-                        </tr>
-                    </thead>
-                    <tbody id="invoiceTableBody">
-                        </tbody>
-                </table>
-                
-                <h3>Tổng tiền: <span id="totalAmount">0</span> VNĐ</h3>
-                <button class="btn" onclick="processPayment()">Thanh Toán</button>
-            </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng nhập - Hệ thống Nhà thuốc</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body
+    class="d-flex align-items-center justify-content-center"
+    style="height: 100vh; background: #e9ecef">
+    <div class="card p-4" style="width: 400px">
+      <div class="text-center mb-4">
+        <h3 class="text-primary fw-bold">PHARMACY SYSTEM</h3>
+        <p class="text-muted">Đăng nhập hệ thống</p>
+      </div>
+      <form id="loginForm">
+        <div class="mb-3">
+          <label class="form-label">Tên đăng nhập</label>
+          <input
+            type="text"
+            id="username"
+            class="form-control"
+            placeholder="admin"
+            required />
         </div>
+        <div class="mb-3">
+          <label class="form-label">Mật khẩu</label>
+          <input
+            type="password"
+            id="password"
+            class="form-control"
+            placeholder="******"
+            required />
+        </div>
+        <button type="submit" class="btn btn-primary w-100 py-2">
+          Đăng Nhập
+        </button>
+      </form>
+
+      <div id="errorMsg" class="alert alert-danger mt-3 d-none"></div>
     </div>
-
+    <script src="js/common.js"></script>
     <script>
-        let cart = [];
-        let medicines = [];
+      // client/js/login.js inline
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const username = document.getElementById("username").value;
+          const password = document.getElementById("password").value;
+          const errorMsg = document.getElementById("errorMsg");
 
-        // 1. Load danh sách thuốc từ API
-        async function loadMedicines() {
-            const res = await fetch('http://localhost:3000/api/medicines');
-            medicines = await res.json();
-            renderTable(medicines);
-        }
-
-        function renderTable(data) {
-            const tbody = document.getElementById('medicineTableBody');
-            tbody.innerHTML = '';
-            data.forEach(med => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${med.name}</td>
-                    <td>${med.unit}</td>
-                    <td>${med.price.toLocaleString()}</td>
-                    <td>${med.totalStock}</td>
-                    <td><button onclick="addToCart('${med._id}')">Thêm</button></td>
-                `;
-                tbody.appendChild(tr);
+          // Gọi API Login (Không dùng fetchAPI chung vì login ko cần token)
+          try {
+            const response = await fetch(`${API_BASE_URL}/auth/login`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ username, password }),
             });
-        }
+            const data = await response.json();
 
-        // 2. Thêm vào giỏ hàng (Hóa đơn tạm)
-        function addToCart(medId) {
-            const med = medicines.find(m => m._id === medId);
-            if(med.totalStock <= 0) {
-                alert("Sản phẩm này đã hết hàng!"); // [cite: 850]
-                return;
-            }
+            if (data.success) {
+              // Lưu Token và User Info
+              localStorage.setItem("token", data.accessToken);
+              localStorage.setItem("user", JSON.stringify(data.user));
 
-            const existingItem = cart.find(i => i.medicineId === medId);
-            if (existingItem) {
-                if(existingItem.quantity < med.totalStock) {
-                    existingItem.quantity++;
-                } else {
-                    alert("Số lượng tồn không đủ!"); // [cite: 850]
-                }
+              // Chuyển hướng
+              redirectUser(data.user.role);
             } else {
-                cart.push({ medicineId: med._id, medicineName: med.name, price: med.price, quantity: 1 });
+              errorMsg.textContent = data.message;
+              errorMsg.classList.remove("d-none");
             }
-            renderCart();
-        }
-
-        function renderCart() {
-            const tbody = document.getElementById('invoiceTableBody');
-            tbody.innerHTML = '';
-            let total = 0;
-            cart.forEach(item => {
-                const rowTotal = item.quantity * item.price;
-                total += rowTotal;
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${item.medicineName}</td>
-                        <td>${item.quantity}</td>
-                        <td>${rowTotal.toLocaleString()}</td>
-                    </tr>
-                `;
-            });
-            document.getElementById('totalAmount').innerText = total.toLocaleString();
-        }
-
-        // 3. Thanh toán (Gọi API Sale)
-        async function processPayment() {
-            if (cart.length === 0) return alert("Hóa đơn trống!");
-            
-            const custPhone = document.getElementById('custPhone').value;
-            // Validate phone [cite: 855]
-            if(custPhone && custPhone.length !== 10) {
-                return alert("Số điện thoại phải gồm đúng 10 chữ số!");
-            }
-
-            const payload = {
-                items: cart,
-                customerPhone: custPhone,
-                branchId: "CN01"
-            };
-
-            try {
-                const res = await fetch('http://localhost:3000/api/sale', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                
-                const data = await res.json();
-                if (res.ok) {
-                    alert("Thanh toán thành công! Mã HD: " + data.invoice.invoiceCode); // [cite: 840]
-                    cart = [];
-                    renderCart();
-                    loadMedicines(); // Reload lại kho
-                } else {
-                    alert("Lỗi: " + data.error);
-                }
-            } catch (err) {
-                alert("Lỗi kết nối server");
-            }
-        }
-
-        loadMedicines();
+          } catch (err) {
+            console.error(err);
+            errorMsg.textContent = "Lỗi kết nối Server";
+            errorMsg.classList.remove("d-none");
+          }
+        });
     </script>
-</body>
+  </body>
 </html>
