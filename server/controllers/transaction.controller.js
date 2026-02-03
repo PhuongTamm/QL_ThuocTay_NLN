@@ -165,6 +165,7 @@ exports.createDistributionRequest = async (req, res) => {
             medicineId: item.medicineId,
             batchCode: batch.batchCode,
             expiryDate: batch.expiryDate,
+            manufacturingDate: batch.manufacturingDate,
             quantity: take,
             quality: "Good",
           });
@@ -237,26 +238,36 @@ exports.getPendingImports = async (req, res) => {
 // 4. Xác nhận nhập kho (Confirm Import)
 // PUT /api/transactions/:id/confirm-import
 exports.confirmImport = async (req, res) => {
-  const session = await mongoose.startSession();
-  session.startTransaction(); // Dùng Transaction DB để đảm bảo an toàn dữ liệu
-
   try {
     const { id } = req.params;
     const currentBranchId = req.user.branchId;
-
+    
     // 1. Tìm phiếu xuất
-    const trans = await Transaction.findById(id).session(session);
-
+    const trans = await Transaction.findById(id); // Bỏ .session(session)
+    
     if (!trans) {
-      throw new Error("Không tìm thấy phiếu giao dịch");
+      return res
+      .status(404)
+      .json({ success: false, message: "Không tìm thấy phiếu giao dịch" });
     }
-
+    
     // 2. Validate
     if (trans.status !== "PENDING") {
-      throw new Error("Phiếu này đã được xử lý hoặc đã hủy");
+      return res
+      .status(400)
+      .json({
+        success: false,
+        message: "Phiếu này đã được xử lý hoặc đã hủy",
+      });
     }
+
     if (trans.toBranch.toString() !== currentBranchId.toString()) {
-      throw new Error("Bạn không có quyền nhập phiếu của chi nhánh khác");
+      return res
+        .status(403)
+        .json({
+          success: false,
+          message: "Bạn không có quyền nhập phiếu của chi nhánh khác",
+        });
     }
 
     // 3. Cập nhật kho (Cộng hàng vào chi nhánh)
@@ -265,7 +276,7 @@ exports.confirmImport = async (req, res) => {
       let inventory = await Inventory.findOne({
         branchId: currentBranchId,
         medicineId: item.medicineId,
-      }).session(session);
+      }); // Bỏ .session(session)
 
       // Nếu chưa có thuốc này trong kho -> Tạo mới document
       if (!inventory) {
@@ -284,28 +295,27 @@ exports.confirmImport = async (req, res) => {
         manufacturingDate: item.manufacturingDate,
         initialQuantity: item.quantity,
         quantity: item.quantity,
-        importPrice: item.price, // Giá vốn từ kho tổng chuyển sang
+        importPrice: item.price,
         quality: item.quality || "Good",
       });
 
       // Cộng tổng tồn
       inventory.totalQuantity += item.quantity;
 
-      await inventory.save({ session });
+      await inventory.save(); // Bỏ { session }
     }
 
     // 4. Cập nhật trạng thái Transaction
     trans.status = "COMPLETED";
-    await trans.save({ session });
+    await trans.save(); // Bỏ { session }
 
-    await session.commitTransaction();
-    res
+    // KHÔNG CẦN commitTransaction
+    return res
       .status(200)
       .json({ success: true, message: "Xác nhận nhập kho thành công" });
   } catch (error) {
-    await session.abortTransaction();
-    res.status(500).json({ success: false, message: error.message });
-  } finally {
-    session.endSession();
+    // KHÔNG CẦN abortTransaction
+    console.error(error);
+    return res.status(500).json({ success: false, message: error.message });
   }
 };

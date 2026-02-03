@@ -27,9 +27,9 @@ const transactionSchema = new mongoose.Schema({
   details: [
     {
       medicineId: { type: mongoose.Schema.Types.ObjectId, ref: "Medicine" },
-      batchCode: { type: String },
-      expiryDate: { type: Date },
-      manufacturingDate: { type: Date },
+      batchCode: { type: String, require: true },
+      expiryDate: { type: Date, require: true },
+      manufacturingDate: { type: Date, require: true },
       quantity: { type: Number, required: true },
       price: { type: Number },
       quality: {
