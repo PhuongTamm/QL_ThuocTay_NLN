@@ -2,14 +2,23 @@ const mongoose = require("mongoose");
 
 const medicineSchema = new mongoose.Schema(
   {
-    code: { type: String, required: true, unique: true }, // VD: V001
-    name: { type: String, required: true },
-    unit: { type: String }, // Đơn vị tính: Viên, Hộp, Vỉ
-    price: { type: Number, required: true }, // Giá bán niêm yết
-    ingredients: { type: String }, // Thành phần
-    manufacturer: { type: String }, // VD: "Dược Hậu Giang", "Sanofi"
-    image: { type: String }, // URL ảnh
+    name: { type: String, required: true }, // VD: Paracetamol
+
+    categoryId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+      required: true, // Bắt buộc phải chọn nhóm khi tạo thuốc
+    },
+
+    // Bổ sung thêm cờ để phân loại thuốc kê đơn (Quan trọng trong y tế)
+    isPrescription: { type: Boolean, default: false },
+
+    manufacturer: { type: String }, // VD: Dược Hậu Giang
+    ingredients: { type: String }, // Hoạt chất
+    description: { type: String },
+    // Một thuốc có thể có nhiều biến thể (Liên kết 1-N ảo để populate)
   },
-  { timestamps: true }
+  { timestamps: true },
 );
+
 module.exports = mongoose.model("Medicine", medicineSchema);

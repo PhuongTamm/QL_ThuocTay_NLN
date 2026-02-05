@@ -6,23 +6,29 @@ const inventorySchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Branch",
       required: true,
-    },
-    medicineId: {
+    }, // Nếu null hoặc định nghĩa ID riêng thì là Kho tổng
+    variantId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Medicine",
+      ref: "MedicineVariant",
       required: true,
     },
-    // Tổng số lượng tồn của thuốc này tại chi nhánh (để query nhanh)
-    totalQuantity: { type: Number, default: 0 },
-    // Chi tiết từng lô đang có tại chi nhánh này
+
+    totalQuantity: { type: Number, default: 0 }, // Tổng tất cả các lô
+
     batches: [
       {
-        batchCode: { type: String, required: true }, // Mã lô
-        expiryDate: { type: Date, required: true }, // Hạn sử dụng (quan trọng cho FEFO)
-        manufacturingDate: { type: Date, required: true }, // ngay san xuat
-        initialQuantity: { type: Number, required: true }, // Số lượng gốc lúc nhập vào kho này
-        quantity: { type: Number, required: true }, // Số lượng còn lại của lô này
-        importPrice: { type: Number }, // Giá nhập của lô này
+        batchCode: { type: String, required: true }, // A123
+        expiryDate: { type: Date, required: true },
+        manufacturingDate: { type: Date },
+
+        // Số lượng hiện tại còn trong kho (Realtime stock)
+        quantity: { type: Number, default: 0 },
+
+        initialQuantity: { type: Number, default: 0 }, // Số lượng ban đầu khi nhập lô (dùng để tính toán hiệu suất)
+
+        // Giá nhập (có thể dùng giá bình quân gia quyền hoặc giá nhập lần cuối tùy nghiệp vụ)
+        importPrice: { type: Number },
+
         quality: {
           type: String,
           enum: ["Good", "Damaged", "Expired"],
@@ -33,6 +39,8 @@ const inventorySchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-// Index để tìm nhanh thuốc tại 1 chi nhánh
-inventorySchema.index({ branchId: 1, medicineId: 1 }, { unique: true });
+
+// Tìm nhanh biến thể thuốc tại 1 kho
+inventorySchema.index({ branchId: 1, variantId: 1 }, { unique: true });
+
 module.exports = mongoose.model("Inventory", inventorySchema);

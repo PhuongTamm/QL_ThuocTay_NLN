@@ -8,7 +8,7 @@ router.post(
   "/import-supplier",
   verifyToken,
   checkRole(["warehouse_manager", "admin"]),
-  transactionController.importFromSupplier
+  transactionController.importFromSupplier,
 );
 
 // 2. Phân phối hàng (Kho -> Chi nhánh)
@@ -16,7 +16,7 @@ router.post(
   "/distribute",
   verifyToken,
   checkRole(["warehouse_manager", "admin"]),
-  transactionController.createDistributionRequest
+  transactionController.createDistributionRequest,
 );
 
 // Lấy danh sách chờ nhập (Cho Chi nhánh)
@@ -24,7 +24,7 @@ router.get(
   "/pending-import",
   verifyToken,
   checkRole(["branch_manager", "admin"]),
-  transactionController.getPendingImports
+  transactionController.getPendingImports,
 );
 
 // Xác nhận nhập kho (Cho Chi nhánh)
@@ -32,6 +32,23 @@ router.put(
   "/:id/confirm-import",
   verifyToken,
   checkRole(["branch_manager", "admin"]),
-  transactionController.confirmImport
+  transactionController.confirmImport,
+);
+
+// 5. Bán lẻ tại chi nhánh (Dành cho Dược sĩ / Quản lý chi nhánh)
+router.post(
+  "/sell",
+  verifyToken,
+  // Cho phép cả Admin, Quản lý chi nhánh, và Dược sĩ bán hàng
+  checkRole(["branch_manager", "pharmacist", "admin"]),
+  transactionController.sellAtBranch,
+);
+
+// 6. Xem báo cáo doanh thu (Chỉ Quản lý chi nhánh xem được của mình)
+router.get(
+  "/revenue",
+  verifyToken,
+  checkRole(["branch_manager", "admin"]),
+  transactionController.getRevenueReport,
 );
 module.exports = router;
