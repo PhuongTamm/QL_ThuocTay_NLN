@@ -27,6 +27,12 @@ router.get(
   transactionController.getPendingImports,
 );
 
+router.get(
+  "/batch-history",
+  verifyToken,
+  transactionController.getBatchImportHistory,
+);
+
 // Xác nhận nhập kho (Cho Chi nhánh)
 router.put(
   "/:id/confirm-import",
@@ -44,11 +50,10 @@ router.post(
   transactionController.sellAtBranch,
 );
 
-// 6. Xem báo cáo doanh thu (Chỉ Quản lý chi nhánh xem được của mình)
 router.get(
-  "/revenue",
+  "/history",
   verifyToken,
-  checkRole(["branch_manager", "admin"]),
-  transactionController.getRevenueReport,
+  transactionController.getTransactionHistory,
 );
+
 module.exports = router;

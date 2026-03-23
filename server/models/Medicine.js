@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const medicineSchema = new mongoose.Schema(
   {
+    code: { type: String, required: true, unique: true },
     name: { type: String, required: true }, // VD: Paracetamol
 
     categoryId: {
@@ -16,7 +17,9 @@ const medicineSchema = new mongoose.Schema(
     manufacturer: { type: String }, // VD: Dược Hậu Giang
     ingredients: { type: String }, // Hoạt chất
     description: { type: String },
-    // Một thuốc có thể có nhiều biến thể (Liên kết 1-N ảo để populate)
+
+    images: [{ type: String }],
+    baseUnit: { type: String, required: true, default: "Viên" },
   },
   { timestamps: true },
 );

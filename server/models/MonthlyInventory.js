@@ -9,9 +9,14 @@ const monthlyInventorySchema = new mongoose.Schema(
       ref: "Branch",
       required: true,
     }, // ID của kho tổng
-    variantId: {
+    // variantId: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "MedicineVariant",
+    //   required: true,
+    // },
+    medicineId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "MedicineVariant",
+      ref: "Medicine",
       required: true,
     },
 
@@ -21,13 +26,13 @@ const monthlyInventorySchema = new mongoose.Schema(
     exportQuantity: { type: Number, default: 0 }, // Xuất trong kỳ
     endQuantity: { type: Number, default: 0 }, // Tồn cuối kỳ
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 // Đảm bảo mỗi thuốc chỉ có 1 dòng báo cáo trong 1 tháng tại kho
 monthlyInventorySchema.index(
-  { month: 1, year: 1, warehouseId: 1, variantId: 1 },
-  { unique: true }
+  { month: 1, year: 1, warehouseId: 1, medicineId: 1 },
+  { unique: true },
 );
 
 module.exports = mongoose.model("MonthlyInventory", monthlyInventorySchema);

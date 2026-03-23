@@ -22,7 +22,8 @@ const medicineVariantSchema = new mongoose.Schema(
         updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
       },
     ],
-    images: [{ type: String }],
+
+    conversionRate: { type: Number, required: true, default: 1 }, // Tỷ lệ quy đổi về đơn vị gốc (VD: 1 Hộp = 20 Vỉ x 10 Viên = 200 Viên => conversionRate = 200)
   },
   { timestamps: true },
 );

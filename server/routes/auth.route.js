@@ -16,6 +16,14 @@ router.post(
   authController.register
 );
 
+router.get(
+  "/users",
+  verifyToken,
+  checkRole(["admin"]),
+  authController.getAllUsers,
+);
+
+
 // Route lấy thông tin cá nhân (Yêu cầu phải đăng nhập)
 router.get("/me", verifyToken, authController.getMe);
 

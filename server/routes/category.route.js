@@ -13,5 +13,7 @@ router.post(
 
 // Lấy danh sách danh mục (Ai cũng xem được)
 router.get("/", verifyToken, categoryController.getAllCategories);
+router.put('/:id', verifyToken, checkRole(["admin"]), categoryController.updateCategory);    
+router.delete('/:id', verifyToken, checkRole(["admin"]), categoryController.deleteCategory); 
 
 module.exports = router;

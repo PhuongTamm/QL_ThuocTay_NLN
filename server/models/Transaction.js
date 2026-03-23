@@ -31,7 +31,11 @@ const transactionSchema = new mongoose.Schema(
     toBranch: { type: mongoose.Schema.Types.ObjectId, ref: "Branch" }, // Nơi nhập (Chi nhánh B)
 
     supplierName: { type: String }, // Chỉ dùng cho IMPORT_SUPPLIER
-    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     date: { type: Date, default: Date.now },
 
     details: [
@@ -58,6 +62,20 @@ const transactionSchema = new mongoose.Schema(
     ],
 
     totalValue: { type: Number },
+
+    customerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Customer",
+      default: null,
+    },
+    customerName: { type: String, default: "" },
+    customerPhone: { type: String, default: "" },
+    paymentMethod: {
+      type: String,
+      enum: ["CASH", "TRANSFER", "QR"],
+      default: "CASH",
+    },
+    totalAmount: { type: Number, default: 0 },
   },
   { timestamps: true },
 ); // Tự động thêm createdAt, updatedAt

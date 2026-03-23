@@ -27,3 +27,42 @@ exports.getAllCategories = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+exports.updateCategory = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, description } = req.body;
+
+    const updatedCategory = await Category.findByIdAndUpdate(
+      id,
+      { name, description },
+      { new: true }, // Trả về document sau khi cập nhật
+    );
+
+    if (!updatedCategory)
+      return res.status(404).json({ message: "Không tìm thấy danh mục" });
+    res.status(200).json(updatedCategory);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Lỗi khi cập nhật danh mục", error: error.message });
+  }
+};
+
+// Xóa danh mục
+exports.deleteCategory = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Lưu ý: Trong thực tế, bạn nên kiểm tra xem có Thuốc nào đang dùng danh mục này không trước khi xóa
+    const deletedCategory = await Category.findByIdAndDelete(id);
+    if (!deletedCategory)
+      return res.status(404).json({ message: "Không tìm thấy danh mục" });
+
+    res.status(200).json({ message: "Xóa danh mục thành công" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Lỗi khi xóa danh mục", error: error.message });
+  }
+};

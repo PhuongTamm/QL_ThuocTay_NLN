@@ -57,14 +57,14 @@ const authController = {
   // 2. Đăng nhập
   login: async (req, res) => {
     try {
-      const { username, password } = req.body;
+      const { email, password } = req.body;
 
       // Tìm user
-      const user = await User.findOne({ username });
+      const user = await User.findOne({ email });
       if (!user) {
         return res.status(404).json({
           success: false,
-          message: "Sai tên đăng nhập hoặc mật khẩu.",
+          message: "Sai email hoặc mật khẩu.",
         });
       }
 
@@ -73,7 +73,7 @@ const authController = {
       if (!isMatch) {
         return res.status(400).json({
           success: false,
-          message: "Sai tên đăng nhập hoặc mật khẩu.",
+          message: "Sai email hoặc mật khẩu.",
         });
       }
 
@@ -119,6 +119,23 @@ const authController = {
       });
     }
   },
+
+  getAllUsers: async (req, res) => {
+    try {
+      // Lấy tất cả user nhưng trừ trường password
+      const users = await User.find().select("-password").populate("branchId", "name"); // Populate tên chi nhánh
+      return res.json({
+        success: true,
+        data: users,
+      });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({
+        success: false,
+        message: "Lỗi server khi lấy danh sách nhân viên.",
+      });
+    }
+  }, 
 };
 
 module.exports = authController;
