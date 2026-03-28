@@ -10,16 +10,25 @@ import {
   ArrowRight,
   CheckCircle,
   Clock,
+  Loader2,
+  Receipt,
+  Package,
+  TrendingDown,
+  TrendingUp,
+  RotateCcw,
 } from "lucide-react";
 import api from "../../services/api";
 
 const TransactionHistoryPage = () => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // States cho bộ lọc
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState("ALL");
+  const [datePreset, setDatePreset] = useState("ALL"); // ALL, TODAY, THIS_MONTH, CUSTOM
+  const [dateRange, setDateRange] = useState({ startDate: "", endDate: "" });
 
-  // State cho Modal xem chi tiết phiếu
   const [selectedTx, setSelectedTx] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -39,14 +48,48 @@ const TransactionHistoryPage = () => {
     }
   };
 
-  // Lọc dữ liệu
+  // Logic lọc dữ liệu tổng hợp
   const filteredData = transactions.filter((tx) => {
+    // 1. Lọc theo từ khóa (Mã phiếu, tên NCC)
     const matchSearch =
       tx.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (tx.supplierName &&
         tx.supplierName.toLowerCase().includes(searchTerm.toLowerCase()));
+
+    // 2. Lọc theo loại phiếu
     const matchType = filterType === "ALL" || tx.type === filterType;
-    return matchSearch && matchType;
+
+    // 3. Lọc theo thời gian
+    let matchDate = true;
+    const txDate = new Date(tx.createdAt);
+    const today = new Date();
+
+    if (datePreset === "TODAY") {
+      matchDate =
+        txDate.getDate() === today.getDate() &&
+        txDate.getMonth() === today.getMonth() &&
+        txDate.getFullYear() === today.getFullYear();
+    } else if (datePreset === "THIS_MONTH") {
+      matchDate =
+        txDate.getMonth() === today.getMonth() &&
+        txDate.getFullYear() === today.getFullYear();
+    } else if (datePreset === "CUSTOM") {
+      const start = dateRange.startDate ? new Date(dateRange.startDate) : null;
+      if (start) start.setHours(0, 0, 0, 0);
+
+      const end = dateRange.endDate ? new Date(dateRange.endDate) : null;
+      if (end) end.setHours(23, 59, 59, 999);
+
+      if (start && end) {
+        matchDate = txDate >= start && txDate <= end;
+      } else if (start) {
+        matchDate = txDate >= start;
+      } else if (end) {
+        matchDate = txDate <= end;
+      }
+    }
+
+    return matchSearch && matchType && matchDate;
   });
 
   const handleOpenDetail = (tx) => {
@@ -54,318 +97,498 @@ const TransactionHistoryPage = () => {
     setIsModalOpen(true);
   };
 
-  // Helper hiển thị loại phiếu
   const getTxTypeBadge = (type) => {
     switch (type) {
       case "IMPORT_SUPPLIER":
         return (
-          <span className="px-2.5 py-1 bg-green-100 text-green-700 font-bold text-xs rounded-full">
-            Nhập từ NCC
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-50 text-emerald-700 font-bold text-[11px] rounded-full border border-emerald-100">
+            <TrendingDown size={10} /> Nhập từ NCC
           </span>
         );
       case "EXPORT_TO_BRANCH":
         return (
-          <span className="px-2.5 py-1 bg-blue-100 text-blue-700 font-bold text-xs rounded-full">
-            Luân chuyển nội bộ
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-sky-50 text-sky-700 font-bold text-[11px] rounded-full border border-sky-100">
+            <TrendingUp size={10} /> Luân chuyển nội bộ
           </span>
         );
       case "SALE_AT_BRANCH":
         return (
-          <span className="px-2.5 py-1 bg-yellow-100 text-yellow-700 font-bold text-xs rounded-full">
-            Bán lẻ tại quầy
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-amber-50 text-amber-700 font-bold text-[11px] rounded-full border border-amber-100">
+            <Receipt size={10} /> Bán lẻ tại quầy
           </span>
         );
       case "RETURN_TO_WAREHOUSE":
         return (
-          <span className="px-2.5 py-1 bg-red-100 text-red-700 font-bold text-xs rounded-full">
-            Trả hàng về kho
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-red-50 text-red-600 font-bold text-[11px] rounded-full border border-red-100">
+            <RotateCcw size={10} /> Trả hàng về kho
           </span>
         );
-
       default:
         return (
-          <span className="px-2.5 py-1 bg-gray-100 text-gray-700 font-bold text-xs rounded-full">
+          <span className="inline-flex items-center px-2.5 py-1 bg-slate-100 text-slate-500 font-bold text-[11px] rounded-full border border-slate-200">
             {type}
           </span>
         );
     }
   };
 
-  // Helper hiển thị trạng thái
   const getStatusBadge = (status) => {
     if (status === "COMPLETED")
       return (
-        <span className="flex items-center gap-1 text-green-600 font-bold text-xs">
-          <CheckCircle size={14} /> Hoàn tất
+        <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-50 text-emerald-600 font-bold text-[11px] rounded-full border border-emerald-100">
+          <CheckCircle size={10} /> Hoàn tất
         </span>
       );
     if (status === "PENDING")
       return (
-        <span className="flex items-center gap-1 text-orange-500 font-bold text-xs">
-          <Clock size={14} /> Chờ nhận
+        <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-amber-50 text-amber-700 font-bold text-[11px] rounded-full border border-amber-100">
+          <Clock size={10} /> Chờ nhận
         </span>
       );
-    return <span className="text-gray-500 text-xs">{status}</span>;
+    return (
+      <span className="inline-flex items-center px-2.5 py-1 bg-slate-100 text-slate-500 font-bold text-[11px] rounded-full border border-slate-200">
+        {status}
+      </span>
+    );
   };
 
-  return (
-    <div className="p-6 bg-gray-50 min-h-screen font-sans">
-      <h1 className="text-2xl font-bold mb-6 flex items-center gap-2 text-gray-800">
-        <FileText className="text-blue-600" /> Lịch sử Nhập / Xuất Kho
-      </h1>
+  const inputCls =
+    "w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 transition bg-white text-slate-800 placeholder:text-slate-400";
 
-      {/* --- THANH CÔNG CỤ LỌC --- */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6 flex gap-4">
-        <div className="relative w-80">
-          <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-            size={18}
-          />
-          <input
-            className="w-full pl-10 pr-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-            placeholder="Tìm theo Mã phiếu, Tên NCC..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+  return (
+    <div
+      className="min-h-screen p-6"
+      style={{
+        background: "#f0f4f8",
+        fontFamily: "'DM Sans', system-ui, sans-serif",
+      }}>
+      <style>{`
+        @keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes modalIn {
+          from { transform: translateY(14px) scale(.97); opacity: 0; }
+          to   { transform: none; opacity: 1; }
+        }
+        .scrollbar-thin::-webkit-scrollbar { width: 4px; }
+        .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+        .scrollbar-thin::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+      `}</style>
+
+      {/* ── PAGE HEADER ── */}
+      <div className="flex items-center gap-3 mb-6">
+        <div
+          className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0"
+          style={{
+            background: "linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%)",
+          }}>
+          <FileText size={22} color="white" />
         </div>
-        <div className="relative w-64">
-          <Filter
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-            size={18}
-          />
-          <select
-            className="w-full pl-10 pr-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-sm bg-white"
-            value={filterType}
-            onChange={(e) => setFilterType(e.target.value)}>
-            <option value="ALL">Tất cả loại phiếu</option>
-            <option value="IMPORT_SUPPLIER">Nhập từ Nhà Cung Cấp</option>
-            <option value="EXPORT_TO_BRANCH">Luân chuyển nội bộ</option>
-          </select>
+        <div>
+          <h1 className="text-xl font-bold text-slate-900 leading-tight">
+            Lịch sử Nhập / Xuất Kho
+          </h1>
+          <p className="text-xs text-slate-500">
+            {filteredData.length} phiếu ·{" "}
+            {new Date().toLocaleDateString("vi-VN", {
+              weekday: "long",
+              day: "numeric",
+              month: "numeric",
+            })}
+          </p>
         </div>
       </div>
 
-      {/* --- BẢNG DANH SÁCH PHIẾU --- */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-        <table className="w-full text-left text-sm">
-          <thead className="bg-gray-50 border-b text-gray-600">
-            <tr>
-              <th className="p-4 font-medium">Mã Phiếu</th>
-              <th className="p-4 font-medium">Thời gian tạo</th>
-              <th className="p-4 font-medium">Loại phiếu</th>
-              <th className="p-4 font-medium">Đối tác / Chi nhánh</th>
-              <th className="p-4 font-medium text-center">Trạng thái</th>
-              <th className="p-4 font-medium text-right">Thao tác</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100">
-            {loading ? (
-              <tr>
-                <td colSpan="6" className="text-center py-10 text-gray-500">
-                  Đang tải dữ liệu...
-                </td>
+      {/* ── FILTER BAR ── */}
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 mb-4">
+        <div className="flex flex-wrap gap-3 items-center">
+          {/* Tìm kiếm */}
+          <div className="relative w-72">
+            <Search
+              size={16}
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+            />
+            <input
+              className={inputCls + " pl-10"}
+              placeholder="Tìm mã phiếu, NCC..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+
+          {/* Lọc loại phiếu */}
+          <div className="relative w-56">
+            <Filter
+              size={14}
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+            />
+            <select
+              className={inputCls + " pl-9 appearance-none"}
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}>
+              <option value="ALL">Tất cả loại phiếu</option>
+              <option value="IMPORT_SUPPLIER">Nhập từ Nhà Cung Cấp</option>
+              <option value="EXPORT_TO_BRANCH">Luân chuyển nội bộ</option>
+              <option value="SALE_AT_BRANCH">Bán lẻ tại quầy</option>
+              <option value="RETURN_TO_WAREHOUSE">Trả hàng về kho tổng</option>
+              <option value="DISPOSAL">Phiếu xuất hủy</option>
+            </select>
+          </div>
+
+          {/* Lọc thời gian */}
+          <div className="relative w-52">
+            <Calendar
+              size={14}
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+            />
+            <select
+              className={
+                inputCls + " pl-9 appearance-none text-sky-700 bg-sky-50/50"
+              }
+              value={datePreset}
+              onChange={(e) => setDatePreset(e.target.value)}>
+              <option value="ALL">Tất cả thời gian</option>
+              <option value="TODAY">Trong ngày hôm nay</option>
+              <option value="THIS_MONTH">Trong tháng này</option>
+              <option value="CUSTOM">Khoảng thời gian tuỳ chỉnh...</option>
+            </select>
+          </div>
+
+          {/* Nhập khoảng thời gian tuỳ chỉnh (Chỉ hiện khi chọn CUSTOM) */}
+          {datePreset === "CUSTOM" && (
+            <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 h-[42px] animate-[fadeIn_0.2s_ease]">
+              <input
+                type="date"
+                className="bg-transparent border-none outline-none text-sm text-slate-700"
+                value={dateRange.startDate}
+                onChange={(e) =>
+                  setDateRange({ ...dateRange, startDate: e.target.value })
+                }
+              />
+              <span className="text-slate-400">-</span>
+              <input
+                type="date"
+                className="bg-transparent border-none outline-none text-sm text-slate-700"
+                value={dateRange.endDate}
+                onChange={(e) =>
+                  setDateRange({ ...dateRange, endDate: e.target.value })
+                }
+              />
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ── TRANSACTION TABLE ── */}
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm border-collapse">
+            <thead>
+              <tr className="bg-gradient-to-r border-b border-slate-100">
+                <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wide">
+                  Mã Phiếu
+                </th>
+                <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wide">
+                  Thời gian tạo
+                </th>
+                <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wide">
+                  Loại phiếu
+                </th>
+                <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wide">
+                  Đối tác / Chi nhánh
+                </th>
+                <th className="p-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wide whitespace-nowrap">
+                  Trạng thái
+                </th>
+                <th className="p-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wide whitespace-nowrap">
+                  Thao tác
+                </th>
               </tr>
-            ) : filteredData.length === 0 ? (
-              <tr>
-                <td colSpan="6" className="text-center py-10 text-gray-500">
-                  Không tìm thấy phiếu nào.
-                </td>
-              </tr>
-            ) : (
-              filteredData.map((tx) => (
-                <tr
-                  key={tx._id}
-                  className="hover:bg-blue-50/50 transition-colors">
-                  <td className="p-4 font-mono font-bold text-blue-700">
-                    {tx.code}
-                  </td>
-                  <td className="p-4 text-gray-600">
-                    {new Date(tx.createdAt).toLocaleString("vi-VN")}
-                  </td>
-                  <td className="p-4">{getTxTypeBadge(tx.type)}</td>
-                  <td className="p-4 font-medium text-gray-800">
-                    {tx.type === "IMPORT_SUPPLIER" ? (
-                      tx.supplierName
-                    ) : tx.type === "EXPORT_TO_BRANCH" ? (
-                      <span className="flex items-center gap-1.5">
-                        <Store size={14} className="text-gray-400" />{" "}
-                        {tx.fromBranch?.name || "Kho Tổng"}{" "}
-                        <ArrowRight size={14} className="text-gray-400" />{" "}
-                        {tx.toBranch?.name}
-                      </span>
-                    ) : (
-                      "---"
-                    )}
-                  </td>
-                  <td className="p-4 text-center">
-                    {getStatusBadge(tx.status)}
-                  </td>
-                  <td className="p-4 text-right">
-                    <button
-                      onClick={() => handleOpenDetail(tx)}
-                      className="inline-flex items-center gap-1 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm">
-                      <Eye size={14} /> Xem phiếu
-                    </button>
+            </thead>
+            <tbody className="divide-y divide-slate-50">
+              {loading ? (
+                <tr>
+                  <td colSpan="6" className="text-center py-16">
+                    <div className="flex flex-col items-center gap-3 text-slate-400">
+                      <Loader2
+                        size={32}
+                        className="animate-spin text-sky-400"
+                      />
+                      <p className="text-sm font-medium">Đang tải dữ liệu...</p>
+                    </div>
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : filteredData.length === 0 ? (
+                <tr>
+                  <td colSpan="6" className="text-center py-20">
+                    <div className="flex flex-col items-center gap-3">
+                      <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center">
+                        <FileText size={28} className="text-slate-300" />
+                      </div>
+                      <p className="text-base font-semibold text-slate-500">
+                        Không tìm thấy phiếu nào phù hợp
+                      </p>
+                      <p className="text-sm text-slate-400">
+                        Thử thay đổi bộ lọc hoặc từ khoá tìm kiếm
+                      </p>
+                    </div>
+                  </td>
+                </tr>
+              ) : (
+                filteredData.map((tx) => (
+                  <tr
+                    key={tx._id}
+                    className="hover:bg-sky-50/40 transition-colors duration-150">
+                    <td className="p-4">
+                      <span className="font-mono text-sm font-bold text-sky-600 bg-sky-50 px-2 py-0.5 rounded-lg">
+                        {tx.code}
+                      </span>
+                    </td>
+                    <td className="p-4 text-slate-500 text-sm">
+                      {new Date(tx.createdAt).toLocaleString("vi-VN")}
+                    </td>
+                    <td className="p-4">{getTxTypeBadge(tx.type)}</td>
+                    <td className="p-4 font-medium text-slate-700">
+                      {tx.type === "IMPORT_SUPPLIER" ? (
+                        tx.supplierName
+                      ) : tx.type === "EXPORT_TO_BRANCH" ||
+                        tx.type === "RETURN_TO_WAREHOUSE" ? (
+                        <span className="flex items-center gap-1.5 text-sm">
+                          <Store size={13} className="text-slate-400" />
+                          <span className="text-slate-600">
+                            {tx.fromBranch?.name || "Kho Tổng"}
+                          </span>
+                          <ArrowRight size={13} className="text-slate-400" />
+                          <span className="font-semibold text-slate-800">
+                            {tx.toBranch?.name || "Kho Tổng"}
+                          </span>
+                        </span>
+                      ) : (
+                        <span className="text-slate-400">
+                          {tx.customerName || "---"}
+                        </span>
+                      )}
+                    </td>
+                    <td className="p-4 text-center whitespace-nowrap">
+                      {getStatusBadge(tx.status)}
+                    </td>
+                    <td className="p-4 text-right whitespace-nowrap">
+                      <button
+                        onClick={() => handleOpenDetail(tx)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-sky-600 bg-sky-50 hover:bg-sky-100 border border-sky-100 transition-all hover:scale-105 whitespace-nowrap">
+                        <Eye size={13} /> Xem phiếu
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      {/* ================= MODAL XEM CHI TIẾT PHIẾU (GIỐNG HÓA ĐƠN) ================= */}
+      {/* ══════════════════════════════════════════
+          MODAL: XEM CHI TIẾT PHIẾU
+      ══════════════════════════════════════════ */}
       {isModalOpen && selectedTx && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-2xl w-[900px] max-h-[90vh] flex flex-col overflow-hidden">
-            {/* Header Modal */}
-            <div className="bg-gray-50 p-5 border-b border-gray-200 flex justify-between items-start">
+        <div
+          className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+          style={{ animation: "fadeIn .2s ease" }}
+          onClick={() => setIsModalOpen(false)}>
+          <div
+            className="bg-white rounded-2xl shadow-2xl w-[920px] max-h-[90vh] flex flex-col overflow-hidden"
+            style={{ animation: "modalIn .22s ease" }}
+            onClick={(e) => e.stopPropagation()}>
+            {/* Modal Header */}
+            <div className="flex justify-between items-center px-6 py-5 shrink-0 bg-[#0ea5e9]">
               <div>
-                <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-                  Chi Tiết Phiếu{" "}
-                  <span className="text-blue-600 font-mono">
+                <div className="flex items-center gap-3 mb-2">
+                  <FileText size={20} color="white" />
+                  <h2 className="text-xl font-bold text-white tracking-wide">
+                    Chi Tiết Phiếu
+                  </h2>
+                  <span className="font-mono font-bold text-white bg-white/20 px-3 py-1 rounded-full text-sm border border-white/10">
                     {selectedTx.code}
                   </span>
-                </h2>
-                <div className="mt-2 flex items-center gap-4 text-sm text-gray-600">
-                  <p>
-                    <Calendar size={14} className="inline mr-1 -mt-0.5" />{" "}
+                </div>
+                <div className="flex items-center gap-3 text-sky-100 text-xs font-medium">
+                  <span className="flex items-center gap-1.5">
+                    <Calendar size={13} />
                     {new Date(selectedTx.createdAt).toLocaleString("vi-VN")}
-                  </p>
-                  <p className="border-l pl-4">
+                  </span>
+                  <span className="opacity-50">·</span>
+                  <span>
                     Tạo bởi:{" "}
-                    <strong>
+                    <span className="font-bold text-white">
                       {selectedTx.createdBy?.fullName || "Hệ thống"}
-                    </strong>
-                  </p>
-                  <p className="border-l pl-4">
-                    {getStatusBadge(selectedTx.status)}
-                  </p>
+                    </span>
+                  </span>
+                  <span className="opacity-50">·</span>
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-white text-emerald-600 font-bold rounded-full shadow-sm text-[11px]">
+                    {selectedTx.status === "COMPLETED" ? (
+                      <>
+                        <CheckCircle size={11} /> Hoàn tất
+                      </>
+                    ) : (
+                      <>
+                        <Clock size={11} /> Chờ nhận
+                      </>
+                    )}
+                  </span>
                 </div>
               </div>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="text-gray-400 hover:text-red-500 p-2">
-                <X size={24} />
+                className="w-9 h-9 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-colors shrink-0">
+                <X size={18} color="white" />
               </button>
             </div>
 
-            {/* Thông tin đối tác */}
-            <div className="p-5 bg-white border-b border-dashed border-gray-300">
-              <div className="grid grid-cols-2 gap-8">
+            {/* Modal Body */}
+            <div className="p-6 overflow-y-auto bg-white flex-1 flex flex-col gap-6">
+              <div className="flex gap-16 px-2">
                 <div>
-                  <p className="text-xs text-gray-400 font-bold uppercase tracking-wider mb-1">
+                  <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wide mb-2">
                     Loại chứng từ
                   </p>
-                  <p className="font-medium text-gray-800">
-                    {getTxTypeBadge(selectedTx.type)}
-                  </p>
+                  {getTxTypeBadge(selectedTx.type)}
                 </div>
                 <div>
-                  <p className="text-xs text-gray-400 font-bold uppercase tracking-wider mb-1">
+                  <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wide mb-2">
                     {selectedTx.type === "IMPORT_SUPPLIER"
                       ? "Nhà cung cấp"
-                      : "Đơn vị nhận hàng"}
+                      : "Đơn vị liên quan"}
                   </p>
-                  <p className="font-bold text-lg text-gray-800 flex items-center gap-2">
+                  <p className="font-bold text-sm text-slate-800 flex items-center gap-2">
                     {selectedTx.type === "IMPORT_SUPPLIER" ? (
                       selectedTx.supplierName
-                    ) : selectedTx.type === "EXPORT_TO_BRANCH" ? (
-                      <>
-                        <Store size={18} className="text-blue-500" />{" "}
-                        {selectedTx.toBranch?.name}
-                      </>
+                    ) : selectedTx.type === "EXPORT_TO_BRANCH" ||
+                      selectedTx.type === "RETURN_TO_WAREHOUSE" ? (
+                      <span className="flex items-center gap-2">
+                        <span className="text-slate-600 italic">
+                          {selectedTx.fromBranch?.name || "Kho Tổng"}
+                        </span>
+                        <ArrowRight size={14} className="text-slate-400" />
+                        <span className="text-slate-800">
+                          {selectedTx.toBranch?.name || "Kho Tổng"}
+                        </span>
+                      </span>
                     ) : (
-                      <span className="text-gray-500 italic">
-                        {selectedTx.customerName} - {selectedTx.customerPhone || "Không có số điện thoại"}
+                      <span className="text-slate-800">
+                        {selectedTx.customerName || "Khách lẻ"}
+                        {selectedTx.customerPhone
+                          ? ` - ${selectedTx.customerPhone}`
+                          : " - Không có số điện thoại"}
                       </span>
                     )}
                   </p>
                 </div>
               </div>
-            </div>
 
-            {/* Danh sách hàng hóa */}
-            <div className="p-0 overflow-y-auto flex-1 bg-gray-50">
-              <table className="w-full text-sm text-left">
-                <thead className="bg-gray-100 text-gray-600 sticky top-0 shadow-sm">
-                  <tr>
-                    <th className="py-3 px-5 font-medium">Mã SKU</th>
-                    <th className="py-3 px-5 font-medium">
-                      Tên hàng hóa (Quy cách)
-                    </th>
-                    <th className="py-3 px-5 font-medium">Mã Lô (Kèm HSD)</th>
-                    <th className="py-3 px-5 font-medium text-center">
-                      Số lượng
-                    </th>
-                    <th className="py-3 px-5 font-medium text-right">
-                      Đơn giá
-                    </th>
-                    <th className="py-3 px-5 font-medium text-right">
-                      Thành tiền
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200 bg-white">
-                  {selectedTx.details.map((item, idx) => (
-                    <tr key={idx} className="hover:bg-blue-50/30">
-                      <td className="py-4 px-5 font-mono text-gray-500">
-                        {item.variantId?.sku}
-                      </td>
-                      <td className="py-4 px-5 font-bold text-gray-800">
-                        {item.variantId?.name}
-                      </td>
-                      <td className="py-4 px-5">
-                        <div className="flex flex-col">
-                          <span className="font-mono font-bold text-blue-700">
-                            {item.batchCode}
-                          </span>
-                          <span className="text-xs text-gray-400 mt-0.5">
-                            HSD:{" "}
-                            {new Date(item.expiryDate).toLocaleDateString(
-                              "vi-VN",
-                            )}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="py-4 px-5 text-center font-bold text-lg text-gray-700">
-                        {item.quantity}{" "}
-                        <span className="text-sm text-gray-500 font-normal">
-                          {item.variantId?.unit}
-                        </span>
-                      </td>
-                      <td className="py-4 px-5 text-right font-medium text-gray-600">
-                        {item.price?.toLocaleString() || 0}đ
-                      </td>
-                      <td className="py-4 px-5 text-right font-bold text-red-600 text-lg">
-                        {(
-                          (item.quantity || 0) * (item.price || 0)
-                        ).toLocaleString()}
-                        đ
-                      </td>
+              {/* Table */}
+              <div className="border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                <table className="w-full text-sm text-left">
+                  <thead className="bg-slate-50 text-slate-500">
+                    <tr>
+                      <th className="py-3 px-5 text-xs font-bold uppercase tracking-wide whitespace-nowrap">
+                        Mã SKU
+                      </th>
+                      <th className="py-3 px-5 text-xs font-bold uppercase tracking-wide min-w-[180px]">
+                        Tên hàng hóa
+                      </th>
+                      <th className="py-3 px-5 text-xs font-bold uppercase tracking-wide whitespace-nowrap">
+                        Mã Lô / NSX - HSD
+                      </th>
+                      <th className="py-3 px-5 text-center text-xs font-bold uppercase tracking-wide whitespace-nowrap">
+                        Số lượng
+                      </th>
+                      <th className="py-3 px-5 text-right text-xs font-bold uppercase tracking-wide whitespace-nowrap">
+                        Đơn giá
+                      </th>
+                      <th className="py-3 px-5 text-right text-xs font-bold uppercase tracking-wide whitespace-nowrap">
+                        Thành tiền
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {selectedTx.details.map((item, idx) => (
+                      <tr
+                        key={idx}
+                        className="hover:bg-slate-50/50 transition-colors">
+                        <td className="py-4 px-5 whitespace-nowrap">
+                          <span className="font-mono text-xs font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200">
+                            {item.variantId?.sku || "---"}
+                          </span>
+                        </td>
+                        <td className="py-4 px-5 font-semibold text-slate-800 leading-snug">
+                          {item.variantId?.name || "Thuốc không tồn tại"}
+                        </td>
+                        <td className="py-4 px-5 whitespace-nowrap">
+                          <div className="flex flex-col gap-1">
+                            <span className="font-mono text-xs font-bold text-sky-600 bg-sky-50 px-2 py-0.5 rounded-md border border-sky-100 w-fit">
+                              {item.batchCode || "Không có lô"}
+                            </span>
+                            <span className="text-[11px] text-slate-400 mt-0.5">
+                              NSX:{" "}
+                              {item.manufacturingDate
+                                ? new Date(
+                                    item.manufacturingDate,
+                                  ).toLocaleDateString("vi-VN")
+                                : "---"}
+                            </span>
+                            <span className="text-[11px] text-slate-400">
+                              HSD:{" "}
+                              {item.expiryDate
+                                ? new Date(item.expiryDate).toLocaleDateString(
+                                    "vi-VN",
+                                  )
+                                : "---"}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="py-4 px-5 text-center whitespace-nowrap">
+                          <span className="font-bold text-base text-slate-700">
+                            {item.quantity}
+                          </span>
+                          <span className="text-xs text-slate-400 ml-1 font-medium">
+                            {item.variantId?.unit}
+                          </span>
+                        </td>
+                        <td className="py-4 px-5 text-right text-slate-500 text-sm whitespace-nowrap">
+                          {item.price?.toLocaleString() || 0}đ
+                        </td>
+                        <td className="py-4 px-5 text-right font-bold text-red-500 text-base whitespace-nowrap">
+                          {(
+                            (item.quantity || 0) * (item.price || 0)
+                          ).toLocaleString()}
+                          đ
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
 
-            {/* Tổng cộng footer */}
-            <div className="bg-white p-5 border-t border-gray-200 flex justify-end items-center gap-6">
-              <p className="text-gray-500">
-                Tổng số mặt hàng:{" "}
-                <span className="font-bold text-gray-800">
+            {/* Modal Footer */}
+            <div className="px-6 py-4 border-t border-slate-100 bg-white flex justify-between items-center shrink-0">
+              <div className="flex items-center gap-2 text-sm text-slate-500">
+                <Package size={16} className="text-slate-400" />
+                Tổng số mặt hàng:
+                <span className="font-bold text-slate-700 ml-1">
                   {selectedTx.details.length}
                 </span>
-              </p>
-              <div className="text-xl">
-                Tổng giá trị phiếu:{" "}
-                <span className="font-bold text-red-600 text-2xl ml-2">
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-slate-500 font-medium">
+                  Tổng giá trị phiếu:
+                </span>
+                <span className="text-xl font-black text-red-500 bg-red-50 px-4 py-2 rounded-xl border border-red-100">
                   {selectedTx.details
                     .reduce(
                       (sum, item) => sum + item.quantity * (item.price || 0),
                       0,
                     )
-                    .toLocaleString()}{" "}
-                  VNĐ
+                    .toLocaleString()}
+                  đ
                 </span>
               </div>
             </div>

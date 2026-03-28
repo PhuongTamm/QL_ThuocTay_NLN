@@ -227,7 +227,7 @@ const CategoryList = () => {
         .cat-btn-warning:hover { opacity: .9; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(245,158,11,.35); }
 
         .table-row { transition: background .15s; }
-        .table-row:hover { background: #eef9fe; }
+        .table-row:hover { background: #ebf9ff; }
 
         .badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 999px; font-size: .75rem; font-weight: 600; }
       `}</style>

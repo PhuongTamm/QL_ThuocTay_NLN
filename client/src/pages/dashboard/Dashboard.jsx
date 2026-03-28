@@ -9,6 +9,7 @@ import {
   Calendar,
   Award,
   ArrowRight,
+  TrendingDown,
 } from "lucide-react";
 import {
   AreaChart,
@@ -45,7 +46,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
 
   // State cho bộ lọc
-  const [datePreset, setDatePreset] = useState("THIS_MONTH"); // TODAY, LAST_7_DAYS, THIS_MONTH, CUSTOM
+  const [datePreset, setDatePreset] = useState("THIS_MONTH");
   const [customRange, setCustomRange] = useState({
     startDate: "",
     endDate: "",
@@ -59,7 +60,6 @@ const Dashboard = () => {
   const loadAllData = async () => {
     setLoading(true);
     try {
-      // 1. Xử lý logic ngày tháng từ Preset
       let start = "",
         end = "";
       const today = new Date();
@@ -81,7 +81,6 @@ const Dashboard = () => {
         end = customRange.endDate;
       }
 
-      // 2. Gọi song song 3 APIs (Stats, Chart, Top Medicines) để tối ưu tốc độ
       const [statsRes, chartRes, topRes] = await Promise.all([
         api.get("/reports/dashboard", {
           params: { startDate: start, endDate: end, transactionType },
@@ -89,12 +88,41 @@ const Dashboard = () => {
         api.get("/reports/revenue", {
           params: { fromDate: start, toDate: end },
         }),
-        api.get("/reports/top-medicines"), // Top thuốc thường lấy all-time hoặc theo tháng
+        api.get("/reports/top-medicines"),
       ]);
 
       setStats(statsRes.data.data);
-      setChartData(chartRes.data.data?.chartData || []);
       setTopMedicines(topRes.data.data || []);
+
+      // 3. XỬ LÝ LẤP ĐẦY NGÀY TRỐNG & NGÀY ĐỆM CHO BIỂU ĐỒ
+      const rawChartData = chartRes.data.data?.chartData || [];
+      let filledData = [];
+
+      // MẸO: Lùi lại 1 ngày so với mốc bắt đầu để tạo "Điểm neo 0đ" giúp Recharts vẽ tia lên mượt hơn
+      const padStart = new Date(start);
+      padStart.setDate(padStart.getDate() - 1);
+      const endDateObj = new Date(end);
+
+      for (
+        let d = new Date(padStart);
+        d <= endDateObj;
+        d.setDate(d.getDate() + 1)
+      ) {
+        const dateStr =
+          d.getFullYear() +
+          "-" +
+          String(d.getMonth() + 1).padStart(2, "0") +
+          "-" +
+          String(d.getDate()).padStart(2, "0");
+        const existingData = rawChartData.find((item) => item._id === dateStr);
+        filledData.push({
+          _id: dateStr,
+          revenue: existingData ? existingData.revenue : 0,
+          orders: existingData ? existingData.orders : 0,
+        });
+      }
+
+      setChartData(filledData);
     } catch (error) {
       console.error("Lỗi tải dữ liệu Dashboard", error);
     } finally {
@@ -112,6 +140,7 @@ const Dashboard = () => {
       style: "currency",
       currency: "VND",
     }).format(amount);
+
   const formatDateTime = (dateString) =>
     new Date(dateString).toLocaleString("vi-VN", {
       hour: "2-digit",
@@ -130,13 +159,14 @@ const Dashboard = () => {
       case "EXPORT_TO_BRANCH":
         return { text: "Xuất kho", color: "text-purple-600 bg-purple-50" };
       case "RETURN_TO_WAREHOUSE":
-        return { text: "Trả hàng", color: "text-red-600 bg-red-50" };
+        return { text: "Trả hàng", color: "text-orange-600 bg-orange-50" };
+      case "DISPOSAL":
+        return { text: "Xuất hủy", color: "text-red-600 bg-red-50" };
       default:
         return { text: type, color: "text-gray-600 bg-gray-50" };
     }
   };
 
-  // Custom Tooltip cho Biểu đồ
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
@@ -158,7 +188,6 @@ const Dashboard = () => {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen font-sans">
-      {/* HEADER & QUICK FILTERS */}
       <div className="flex flex-col md:flex-row md:justify-between items-start md:items-center mb-8 gap-4">
         <div>
           <h1 className="text-2xl font-black text-gray-800 tracking-tight">
@@ -185,9 +214,7 @@ const Dashboard = () => {
             className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${datePreset === "THIS_MONTH" ? "bg-blue-600 text-white shadow-md" : "text-gray-500 hover:bg-gray-100"}`}>
             Tháng này
           </button>
-
           <div className="w-px h-6 bg-gray-300 mx-1"></div>
-
           <div className="flex items-center gap-2 px-2">
             <Calendar size={16} className="text-gray-400" />
             <input
@@ -222,8 +249,7 @@ const Dashboard = () => {
         </div>
       ) : (
         <>
-          {/* ================= ROW 1: 4 STAT CARDS ================= */}
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-6 mb-6">
             <StatCard
               title="Doanh thu bán hàng"
               value={formatCurrency(stats?.totalRevenue || 0)}
@@ -249,14 +275,19 @@ const Dashboard = () => {
               title="Cận/Hết hạn (< 90 Ngày)"
               value={(stats?.expiredCount || 0).toLocaleString()}
               icon={AlertOctagon}
-              color="bg-red-500"
-              bgIcon="bg-red-500"
+              color="bg-orange-500"
+              bgIcon="bg-orange-500"
+            />
+            <StatCard
+              title="Chi phí tổn thất"
+              value={formatCurrency(stats?.totalDisposalLoss || 0)}
+              icon={TrendingDown}
+              color="bg-red-600"
+              bgIcon="bg-red-600"
             />
           </div>
 
-          {/* ================= ROW 2: CHART & TOP MEDICINES ================= */}
           <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">
-            {/* Cột Trái: Biểu đồ (Chiếm 2/3) */}
             <div className="xl:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col">
               <div className="flex justify-between items-center mb-6">
                 <div>
@@ -268,13 +299,13 @@ const Dashboard = () => {
                   </p>
                 </div>
               </div>
-
-              <div className="flex-1 w-full h-[300px]">
+              <div className="flex-1 w-full min-h-[250px] max-h-[400px]">
                 {chartData.length > 0 ? (
                   <ResponsiveContainer width="100%" height="100%">
+                    {/* Thêm margin top/bottom để đường vẽ không bị cắt xén */}
                     <AreaChart
                       data={chartData}
-                      margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                      margin={{ top: 20, right: 20, left: 0, bottom: 0 }}>
                       <defs>
                         <linearGradient
                           id="colorRevenue"
@@ -304,23 +335,29 @@ const Dashboard = () => {
                         axisLine={false}
                         tickLine={false}
                         tick={{ fontSize: 12, fill: "#64748b" }}
-                        tickFormatter={(val) =>
-                          new Date(val).getDate() +
-                          "/" +
-                          (new Date(val).getMonth() + 1)
-                        }
+                        tickFormatter={(val) => {
+                          const d = new Date(val);
+                          return `${d.getDate()}/${d.getMonth() + 1}`;
+                        }}
                         dy={10}
                       />
                       <YAxis
                         axisLine={false}
                         tickLine={false}
                         tick={{ fontSize: 12, fill: "#64748b" }}
-                        tickFormatter={(val) => val / 1000000 + "M"}
+                        // THUẬT TOÁN ĐỊNH DẠNG TRỤC Y THÔNG MINH
+                        tickFormatter={(val) => {
+                          if (val >= 1000000)
+                            return (val / 1000000).toFixed(1) + "M";
+                          if (val >= 1000) return (val / 1000).toFixed(0) + "k";
+                          return val;
+                        }}
                         dx={-10}
                       />
                       <Tooltip content={<CustomTooltip />} />
+                      {/* ĐỔI TYPE THÀNH monotoneX ĐỂ VẼ MƯỢT KHI CÓ ÍT ĐIỂM DỮ LIỆU */}
                       <Area
-                        type="monotone"
+                        type="monotoneX"
                         dataKey="revenue"
                         stroke="#2563eb"
                         strokeWidth={3}
@@ -338,7 +375,6 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* Cột Phải: Top Thuốc (Chiếm 1/3) */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="font-bold text-lg text-gray-800 flex items-center gap-2">
@@ -381,7 +417,6 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* ================= ROW 3: BẢNG GIAO DỊCH GẦN ĐÂY ================= */}
           <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
             <div className="flex justify-between items-center mb-6">
               <h2 className="font-bold text-lg text-gray-800">
@@ -397,6 +432,7 @@ const Dashboard = () => {
                   <option value="SALE_AT_BRANCH">Bán lẻ (Thu tiền)</option>
                   <option value="IMPORT_SUPPLIER">Nhập NCC (Chi tiền)</option>
                   <option value="EXPORT_TO_BRANCH">Xuất kho nội bộ</option>
+                  <option value="DISPOSAL">Phiếu xuất hủy</option>
                 </select>
               </div>
             </div>
@@ -438,8 +474,12 @@ const Dashboard = () => {
                           {actorName}
                         </td>
                         <td
-                          className={`p-3 text-right font-black ${trx.type === "SALE_AT_BRANCH" ? "text-green-600" : "text-gray-800"}`}>
-                          {trx.type === "SALE_AT_BRANCH" ? "+" : ""}
+                          className={`p-3 text-right font-black ${trx.type === "SALE_AT_BRANCH" ? "text-green-600" : trx.type === "DISPOSAL" ? "text-red-600" : "text-gray-800"}`}>
+                          {trx.type === "SALE_AT_BRANCH"
+                            ? "+"
+                            : trx.type === "DISPOSAL"
+                              ? "-"
+                              : ""}
                           {formatCurrency(
                             trx.totalAmount || trx.totalValue || 0,
                           )}

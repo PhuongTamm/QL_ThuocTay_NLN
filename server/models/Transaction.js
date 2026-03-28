@@ -12,6 +12,7 @@ const transactionSchema = new mongoose.Schema(
         "EXPORT_TO_BRANCH", // Xuất từ Kho tổng sang Chi nhánh
         "SALE_AT_BRANCH", // Bán lẻ tại chi nhánh
         "RETURN_TO_WAREHOUSE", // Trả hàng về kho tổng
+        "DISPOSAL", //xuất hủy
       ],
       required: true,
     },
@@ -58,6 +59,7 @@ const transactionSchema = new mongoose.Schema(
         // - Xuất chi nhánh: Giá vốn (ImportPrice)
         // - Bán lẻ: Giá bán ra
         price: { type: Number },
+        reason: { type: String, enum: ["OVERSTOCK", "EXPIRED", "DAMAGED"] }, //lý do hủy
       },
     ],
 

@@ -7,7 +7,7 @@ router.get("/", verifyToken, inventoryController.getInventoryByBranch);
 router.get(
   "/monthly-report",
   verifyToken,
-  checkRole(["admin", "warehouse_manager"]),
+  checkRole(["admin", "warehouse_manager", "branch_manager"]),
   inventoryController.getMonthlyReport,
 );
 module.exports = router;

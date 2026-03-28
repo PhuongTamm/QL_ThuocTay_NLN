@@ -3,26 +3,6 @@ const MonthlyInventory = require("../models/MonthlyInventory");
 const MedicineVariant = require("../models/MedicineVariant");
 
 // 1. Xem tồn kho hiện tại (Realtime)
-// exports.getInventoryByBranch = async (req, res) => {
-//   try {
-//     let { branchId } = req.query;
-//     if (req.user.role === "branch_manager" || req.user.role === "pharmacist") {
-//       branchId = req.user.branchId;
-//     }
-
-//     // Populate sâu: Inventory -> Variant -> Medicine
-//     const inventory = await Inventory.find({ branchId })
-//       .populate({
-//         path: "variantId",
-//         populate: { path: "medicineId", select: "name manufacturer" }, // Lấy tên thuốc gốc
-//       })
-//       .lean();
-
-//     res.status(200).json({ success: true, data: inventory });
-//   } catch (error) {
-//     res.status(500).json({ success: false, message: error.message });
-//   }
-// };
 exports.getInventoryByBranch = async (req, res) => {
   try {
     let { branchId } = req.query;
@@ -71,29 +51,73 @@ exports.getInventoryByBranch = async (req, res) => {
   }
 };
 
-// 2. Xem báo cáo xuất nhập tồn tháng (Yêu cầu của thầy)
+// 2. Xem báo cáo xuất nhập tồn tháng (Monthly Report)
 exports.getMonthlyReport = async (req, res) => {
   try {
     const { month, year, warehouseId } = req.query;
 
-    if (!month || !year || !warehouseId) {
-      return res.status(400).json({
-        success: false,
-        message: "Thiếu thông tin lọc (tháng, năm, kho)",
-      });
+    if (!month || !year) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Vui lòng chọn tháng và năm." });
     }
 
+    // Xử lý Phân quyền
+    let targetBranchId = warehouseId;
+    if (req.user.role === "branch_manager" || req.user.role === "pharmacist") {
+      targetBranchId = req.user.branchId;
+    } else if (
+      !warehouseId &&
+      (req.user.role === "admin" || req.user.role === "warehouse_manager")
+    ) {
+      targetBranchId = req.user.branchId;
+    }
+
+    if (!targetBranchId) {
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "Không xác định được Kho cần xem báo cáo.",
+        });
+    }
+
+    // 1. Lấy dữ liệu Xuất Nhập Tồn tháng
     const report = await MonthlyInventory.find({
-      month,
-      year,
-      warehouseId,
-    }).populate({
-      path: "variantId",
-      select: "sku name unit", // Lấy tên biến thể và đơn vị tính
-      populate: { path: "medicineId", select: "name" },
+      month: Number(month),
+      year: Number(year),
+      warehouseId: targetBranchId,
+    })
+      .populate("medicineId", "code name baseUnit")
+      .lean();
+
+    // 2. Lấy Tồn kho hiện tại (để móc ra chi tiết các Lô)
+    const inventories = await Inventory.find({
+      branchId: targetBranchId,
+    }).lean();
+
+    // 3. Ghép mảng lô (batches) vào báo cáo tháng
+    const enrichedReport = report.map((r) => {
+      const inv = inventories.find(
+        (i) =>
+          i.medicineId &&
+          r.medicineId &&
+          i.medicineId.toString() === r.medicineId._id.toString(),
+      );
+      return {
+        ...r,
+        batches: inv ? inv.batches : [], // Gắn mảng batches vào đây
+      };
     });
 
-    res.status(200).json({ success: true, data: report });
+    // 4. Sắp xếp theo tên thuốc A-Z
+    enrichedReport.sort((a, b) => {
+      const nameA = a.medicineId?.name || "";
+      const nameB = b.medicineId?.name || "";
+      return nameA.localeCompare(nameB);
+    });
+
+    res.status(200).json({ success: true, data: enrichedReport });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

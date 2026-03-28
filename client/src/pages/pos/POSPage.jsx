@@ -587,12 +587,7 @@ const POSPageInner = () => {
           </div>
           <div>
             <h1
-              style={{
-                fontSize: 20,
-                fontWeight: 700,
-                color: "#0f172a",
-                lineHeight: 1.2,
-              }}>
+              className="brand-font text-2xl font-bold text-gray-900">
               Bán lẻ thuốc
             </h1>
             <p style={{ fontSize: 12, color: "#64748b" }}>
@@ -1058,7 +1053,8 @@ const POSPageInner = () => {
               const activeVariant = currentInv?.variants.find(
                 (v) => v._id === item.variantId,
               );
-              return (
+              {
+                /* return (
                 <div
                   key={idx}
                   style={{
@@ -1140,6 +1136,126 @@ const POSPageInner = () => {
                       {(item.price * item.quantity).toLocaleString()}đ
                     </p>
                   </div>
+                </div>
+              ); */
+              }
+              return (
+                <div
+                  key={idx}
+                  style={{
+                    background: "white",
+                    border: "1.5px solid #f1f5f9",
+                    borderRadius: 14,
+                    padding: "12px 14px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 12,
+                    boxShadow: "0 1px 4px rgba(0,0,0,.04)",
+                    animation: "fadeIn .2s ease",
+                  }}>
+                  {/* Tên & Đơn giá */}
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p
+                      style={{
+                        fontSize: 13,
+                        fontWeight: 700,
+                        color: "#0f172a",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}>
+                      {item.name}
+                    </p>
+                    <p style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}>
+                      {item.price.toLocaleString()}đ / {item.unit}
+                    </p>
+                  </div>
+
+                  {/* Tăng / Giảm Số lượng */}
+                  <div className="qty-control">
+                    <button
+                      className="qty-btn"
+                      onClick={() => {
+                        if (item.quantity > 1) {
+                          const nc = [...cart];
+                          nc[idx].quantity -= 1;
+                          setCart(nc);
+                        } else {
+                          const nc = [...cart];
+                          nc.splice(idx, 1);
+                          setCart(nc);
+                        }
+                      }}>
+                      <Minus size={12} />
+                    </button>
+                    <input
+                      type="number"
+                      min="1"
+                      className="qty-input"
+                      value={item.quantity}
+                      onChange={(e) =>
+                        handleUpdateQuantity(
+                          currentInv,
+                          activeVariant,
+                          parseInt(e.target.value) || 1,
+                        )
+                      }
+                    />
+                    <button
+                      className="qty-btn"
+                      style={{ color: "#0ea5e9" }}
+                      onClick={() =>
+                        handleUpdateQuantity(
+                          currentInv,
+                          activeVariant,
+                          item.quantity + 1,
+                        )
+                      }>
+                      <Plus size={12} />
+                    </button>
+                  </div>
+
+                  {/* Tổng tiền của món đó */}
+                  <div style={{ minWidth: 65, textAlign: "right" }}>
+                    <p
+                      style={{
+                        fontSize: 13,
+                        fontWeight: 800,
+                        color: "#ef4444", // Màu đỏ
+                      }}>
+                      {(item.price * item.quantity).toLocaleString()}đ
+                    </p>
+                  </div>
+
+                  {/* NÚT THÙNG RÁC (ĐỎ ĐẬM, CỐ ĐỊNH Ở CUỐI DÒNG) */}
+                  <button
+                    onClick={() => {
+                      const newCart = [...cart];
+                      newCart.splice(idx, 1);
+                      setCart(newCart);
+                    }}
+                    style={{
+                      background: "transparent",
+                      border: "none",
+                      color: "#ef4444", // Set mặc định màu đỏ luôn cho giống ảnh
+                      cursor: "pointer",
+                      padding: "6px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      borderRadius: "8px",
+                      transition: "all 0.2s",
+                      marginLeft: "2px",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = "#fee2e2"; // Rê chuột vào hiện nền đỏ nhạt
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = "transparent";
+                    }}
+                    title="Xóa sản phẩm khỏi giỏ">
+                    <Trash2 size={18} strokeWidth={2.5} />
+                  </button>
                 </div>
               );
             })

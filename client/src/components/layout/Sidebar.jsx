@@ -65,7 +65,7 @@ const Sidebar = () => {
       path: "/distribute",
       icon: <ArrowRightLeft size={20} />,
       label: "Phân phối hàng",
-      roles: ["admin", "warehouse_manager"],
+      roles: ["admin", "warehouse_manager", "branch_manager"],
     },
     {
       path: "/pending-imports",
@@ -88,10 +88,10 @@ const Sidebar = () => {
       roles: ["admin"],
     },
     {
-      path: "/reports",
+      path: "/monthly-reports",
       icon: <BarChart size={20} />,
       label: "Báo cáo doanh thu",
-      roles: ["admin", "branch_manager"],
+      roles: ["admin", "branch_manager", "warehouse_manager"],
     },
   ];
 

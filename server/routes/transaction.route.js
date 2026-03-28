@@ -56,4 +56,6 @@ router.get(
   transactionController.getTransactionHistory,
 );
 
+router.post("/return", verifyToken, transactionController.returnToWarehouse); //trả hàng về kho tổng
+router.post("/dispose", verifyToken, checkRole(["admin", "warehouse_manager"]), transactionController.disposeInventory); //hủy hàng tồn kho (hết hạn, hư hỏng)
 module.exports = router;

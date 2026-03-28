@@ -3,6 +3,7 @@ const Inventory = require("../models/Inventory");
 const MonthlyInventory = require("../models/MonthlyInventory");
 const MedicineVariant = require("../models/MedicineVariant");
 const Customer = require("../models/Customer");
+const Branch = require("../models/Branch");
 
 // --- HELPER: Cập nhật sổ cái (Đã đổi variantId thành medicineId) ---
 const updateMonthlyReport = async (
@@ -121,7 +122,7 @@ exports.importFromSupplier = async (req, res) => {
           quantity: baseQuantity, // Lưu số lượng viên
           initialQuantity: baseQuantity,
           importPrice: baseImportPrice, // Lưu giá vốn của 1 viên
-          quality: "Good",
+          quality: "GOOD",
         });
       }
 
@@ -141,6 +142,9 @@ exports.importFromSupplier = async (req, res) => {
         variantId: item.variantId,
         batchCode: item.batchCode,
         expiryDate: new Date(item.expiryDate),
+        manufacturingDate: item.manufacturingDate
+          ? new Date(item.manufacturingDate)
+          : null,
         quantity: Number(item.quantity),
         price: Number(item.price),
       });
@@ -186,9 +190,10 @@ exports.createDistributionRequest = async (req, res) => {
       });
 
       if (!sourceInv || sourceInv.totalQuantity < baseQtyToDeduct) {
-        throw new Error(
-          `Thuốc không đủ hàng (Tồn: ${sourceInv?.totalQuantity || 0}, Cần xuất: ${baseQtyToDeduct} đơn vị cơ sở)`,
-        );
+        return res.status(400).json({
+          success: false,
+          message: `Kho tổng không đủ số lượng cho thuốc ${variant.name} (Yêu cầu: ${baseQtyToDeduct}, Tồn: ${sourceInv ? sourceInv.totalQuantity : 0})`,
+        });
       }
 
       sourceInv.batches.sort(
@@ -261,7 +266,7 @@ exports.getPendingImports = async (req, res) => {
   }
 };
 
-// 4. Xác nhận nhập kho tại Chi nhánh
+// 4. Xác nhận nhập kho tại Chi nhánh (VÀ CẢ KHO TỔNG NHẬN HÀNG TRẢ VỀ)
 exports.confirmImport = async (req, res) => {
   try {
     const { id } = req.params;
@@ -269,13 +274,9 @@ exports.confirmImport = async (req, res) => {
     const trans = await Transaction.findById(id);
 
     if (!trans)
-      return res
-        .status(404)
-        .json({ success: false, message: "Không tìm thấy phiếu" });
+      return res.status(404).json({ success: false, message: "Không tìm thấy phiếu" });
     if (trans.status !== "PENDING")
-      return res
-        .status(400)
-        .json({ success: false, message: "Phiếu không hợp lệ" });
+      return res.status(400).json({ success: false, message: "Phiếu không hợp lệ" });
     if (trans.toBranch.toString() !== currentBranchId.toString())
       return res.status(403).json({ message: "Không có quyền" });
 
@@ -297,6 +298,11 @@ exports.confirmImport = async (req, res) => {
           batches: [],
         });
       }
+      
+      let batchQuality = "GOOD";
+      if (trans.type === "RETURN_TO_WAREHOUSE" && item.reason) {
+          batchQuality = item.reason; 
+      }
 
       inventory.batches.push({
         batchCode: item.batchCode,
@@ -305,13 +311,20 @@ exports.confirmImport = async (req, res) => {
         quantity: baseQuantity,
         initialQuantity: baseQuantity,
         importPrice: baseImportPrice,
-        quality: "Good",
+        quality: batchQuality, 
       });
 
       inventory.totalQuantity += baseQuantity;
       await inventory.save();
-    }
 
+      await updateMonthlyReport(
+        currentBranchId, // Ghi sổ cho chi nhánh hiện tại đang ấn nút "Nhận hàng"
+        medicineId,
+        baseQuantity,
+        "IMPORT" // Ghi nhận là "Nhập trong kỳ"
+      );
+
+    }
     trans.status = "COMPLETED";
     await trans.save();
     return res
@@ -323,103 +336,6 @@ exports.confirmImport = async (req, res) => {
 };
 
 // 5. BÁN LẺ TẠI CHI NHÁNH
-// exports.sellAtBranch = async (req, res) => {
-//   try {
-//     const { items } = req.body;
-//     const currentBranchId = req.user.branchId;
-//     if (!currentBranchId)
-//       return res
-//         .status(400)
-//         .json({ success: false, message: "User chưa thuộc chi nhánh nào" });
-
-//     const transactionDetails = [];
-//     let totalValue = 0;
-
-//     for (const item of items) {
-//       // 1. Tìm thông tin biến thể và tỷ lệ quy đổi
-//       const variant = await MedicineVariant.findById(item.variantId);
-//       if (!variant)
-//         throw new Error(`Không tìm thấy biến thể thuốc ID: ${item.variantId}`);
-
-//       const medicineId = variant.medicineId;
-//       const baseQtyToDeduct = Number(item.quantity) * variant.conversionRate; // VD mua 1 vỉ -> cần trừ 10 viên
-
-//       // 2. Tìm tồn kho thuốc gốc
-//       const inventory = await Inventory.findOne({
-//         branchId: currentBranchId,
-//         medicineId: medicineId,
-//       });
-
-//       if (!inventory || inventory.totalQuantity < baseQtyToDeduct) {
-//         throw new Error(
-//           `Thuốc [${variant.name}] không đủ tồn kho để bán. Yêu cầu: ${baseQtyToDeduct} đơn vị cơ sở, Tồn kho: ${inventory ? inventory.totalQuantity : 0}`,
-//         );
-//       }
-
-//       // 3. Sắp xếp lô theo hạn sử dụng (FEFO)
-//       inventory.batches.sort(
-//         (a, b) => new Date(a.expiryDate) - new Date(b.expiryDate),
-//       );
-
-//       let remainQty = baseQtyToDeduct;
-
-//       // 4. Quét qua các lô để lấy hàng
-//       for (let i = 0; i < inventory.batches.length; i++) {
-//         if (remainQty <= 0) break;
-//         let batch = inventory.batches[i];
-
-//         if (batch.quantity > 0) {
-//           // Lấy số viên tối đa có thể từ lô này
-//           let take = Math.min(batch.quantity, remainQty);
-
-//           batch.quantity -= take;
-//           remainQty -= take;
-
-//           // Ghi nhận vào hóa đơn (Quy đổi số viên vừa lấy ngược lại thành Đơn vị hiển thị: Vỉ/Hộp)
-//           transactionDetails.push({
-//             variantId: item.variantId,
-//             batchCode: batch.batchCode,
-//             expiryDate: batch.expiryDate,
-//             // SỬA BUG: Lấy số viên thực tế chia cho tỷ lệ quy đổi
-//             quantity: take / variant.conversionRate,
-//             price: item.price,
-//           });
-//         }
-//       }
-
-//       if (remainQty > 0)
-//         throw new Error(
-//           `Lỗi tính toán FEFO: Không đủ lô hàng hợp lệ cho ${variant.name}`,
-//         );
-
-//       // 5. Cập nhật tổng kho và lưu lại
-//       inventory.totalQuantity -= baseQtyToDeduct;
-//       await inventory.save();
-
-//       totalValue += item.quantity * item.price;
-//     }
-
-//     // 6. Tạo hóa đơn
-//     const newTrans = await Transaction.create({
-//       code: `HD${Date.now()}`,
-//       type: "SALE_AT_BRANCH",
-//       status: "COMPLETED",
-//       fromBranch: currentBranchId,
-//       toBranch: null,
-//       createdBy: req.user.id,
-//       details: transactionDetails,
-//       totalValue: totalValue,
-//     });
-
-//     return res.status(200).json({
-//       success: true,
-//       message: "Bán hàng thành công",
-//       transaction: newTrans,
-//     });
-//   } catch (error) {
-//     return res.status(500).json({ success: false, message: error.message });
-//   }
-// };
 exports.sellAtBranch = async (req, res) => {
   try {
     const { items, customerPhone, customerName, paymentMethod, customerId } =
@@ -631,6 +547,198 @@ exports.getTransactionHistory = async (req, res) => {
       .sort({ createdAt: -1 });
 
     res.status(200).json({ success: true, data: transactions });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// 6. XUẤT TRẢ VỀ KHO TỔNG (RETURN_TO_WAREHOUSE)
+exports.returnToWarehouse = async (req, res) => {
+  try {
+    const { items } = req.body;
+    const fromBranchId = req.user.branchId;
+
+    if (!fromBranchId) {
+      return res
+        .status(400)
+        .json({ message: "Kho tổng không thể tự trả hàng cho chính mình!" });
+    }
+
+    // Tự động tìm ID của Kho tổng (isMainWarehouse: true)
+    const mainWarehouse = await Branch.findOne({ type: "warehouse" });
+    if (!mainWarehouse) {
+      return res
+        .status(500)
+        .json({ message: "Không tìm thấy dữ liệu Kho tổng trên hệ thống!" });
+    }
+
+    const details = [];
+    let totalValue = 0;
+
+    for (const item of items) {
+      const variant = await MedicineVariant.findById(item.variantId);
+      if (!variant) throw new Error("Không tìm thấy quy cách!");
+
+      const medicineId = variant.medicineId;
+      const baseQtyToDeduct = Number(item.quantity) * variant.conversionRate;
+
+      const sourceInv = await Inventory.findOne({
+        branchId: fromBranchId,
+        medicineId: medicineId,
+      });
+      if (!sourceInv) throw new Error("Không tìm thấy tồn kho!");
+
+      // TÌM ĐÍCH DANH MÃ LÔ CẦN TRẢ
+      const batchIndex = sourceInv.batches.findIndex(
+        (b) => b.batchCode === item.batchCode,
+      );
+      if (batchIndex === -1)
+        throw new Error(`Không tìm thấy lô ${item.batchCode} trong kho!`);
+
+      const batch = sourceInv.batches[batchIndex];
+      if (batch.quantity < baseQtyToDeduct) {
+        throw new Error(
+          `Lô ${item.batchCode} không đủ số lượng để trả (Tồn: ${batch.quantity})`,
+        );
+      }
+
+      // Trừ kho chi nhánh
+      batch.quantity -= baseQtyToDeduct;
+      sourceInv.totalQuantity -= baseQtyToDeduct;
+      await sourceInv.save();
+
+      // Cập nhật sổ cái hàng tháng
+      await updateMonthlyReport(
+        fromBranchId,
+        medicineId,
+        baseQtyToDeduct,
+        "EXPORT",
+      );
+
+      // Tính tổng giá trị hàng trả lại (dựa trên giá vốn lúc nhập)
+      const itemValue = baseQtyToDeduct * batch.importPrice;
+      totalValue += itemValue;
+
+      details.push({
+        variantId: item.variantId,
+        batchCode: batch.batchCode,
+        expiryDate: batch.expiryDate,
+        manufacturingDate: batch.manufacturingDate,
+        quantity: item.quantity,
+        price: batch.importPrice * variant.conversionRate, // Giá vốn quy đổi theo đơn vị (Hộp/Vỉ)
+        reason: item.reason, // OVERSTOCK, EXPIRED, DAMAGED
+      });
+    }
+
+    // TẠO PHIẾU CHỜ NHẬN TẠI KHO TỔNG
+    const trans = await Transaction.create({
+      code: `PT${Date.now()}`, // PT = Phiếu Trả
+      type: "RETURN_TO_WAREHOUSE",
+      status: "PENDING", // Trạng thái Chờ Kho tổng xác nhận
+      fromBranch: fromBranchId,
+      toBranch: mainWarehouse._id,
+      createdBy: req.user._id || req.user.id,
+      details: details,
+      totalValue: totalValue,
+    });
+
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: "Tạo phiếu trả hàng về Kho tổng thành công!",
+        transaction: trans,
+      });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// 7. XUẤT HỦY HÀNG HÓA TỔN THẤT (DISPOSAL)
+exports.disposeInventory = async (req, res) => {
+  try {
+    const { items } = req.body;
+    // Lấy branchId: Nếu là Quản lý Kho tổng thao tác thì branchId là null, nếu là Chi nhánh thì có ID.
+    const currentBranchId = req.user.branchId || null;
+
+    const details = [];
+    let totalLossValue = 0; // Biến tính TỔNG CHI PHÍ TỔN THẤT
+
+    for (const item of items) {
+      const variant = await MedicineVariant.findById(item.variantId);
+      if (!variant) throw new Error("Không tìm thấy quy cách!");
+
+      const medicineId = variant.medicineId;
+      const baseQtyToDeduct = Number(item.quantity) * variant.conversionRate;
+
+      const sourceInv = await Inventory.findOne({
+        branchId: currentBranchId,
+        medicineId: medicineId,
+      });
+      if (!sourceInv) throw new Error("Không tìm thấy tồn kho!");
+
+      // TÌM ĐÍCH DANH MÃ LÔ CẦN HỦY
+      const batchIndex = sourceInv.batches.findIndex(
+        (b) =>
+          b.batchCode === item.batchCode && b.quality === item.batchQuality,
+      );
+
+      if (batchIndex === -1)
+        throw new Error(
+          `Không tìm thấy lô ${item.batchCode} (Trạng thái: ${item.batchQuality}) trong kho!`,
+        );
+
+      const batch = sourceInv.batches[batchIndex];
+      if (batch.quantity < baseQtyToDeduct) {
+        throw new Error(`Lô ${item.batchCode} không đủ số lượng để xuất hủy!`);
+      }
+
+      // TRỪ VĨNH VIỄN KHỎI KHO
+      batch.quantity -= baseQtyToDeduct;
+      sourceInv.totalQuantity -= baseQtyToDeduct;
+      await sourceInv.save();
+
+      // Cập nhật sổ cái hàng tháng
+      await updateMonthlyReport(
+        currentBranchId,
+        medicineId,
+        baseQtyToDeduct,
+        "EXPORT",
+      );
+
+      // TÍNH TOÁN CHI PHÍ TỔN THẤT (Số lượng cơ sở hủy đi x Giá vốn cơ sở)
+      const lossValue = baseQtyToDeduct * batch.importPrice;
+      totalLossValue += lossValue;
+
+      details.push({
+        variantId: item.variantId,
+        batchCode: batch.batchCode,
+        expiryDate: batch.expiryDate,
+        manufacturingDate: batch.manufacturingDate,
+        quantity: item.quantity,
+        price: batch.importPrice * variant.conversionRate,
+        reason: item.reason, // Ghi nhận lý do hủy: EXPIRED, DAMAGED
+      });
+    }
+
+    // TẠO PHIẾU XUẤT HỦY (Chốt luôn, không chờ ai nhận)
+    const trans = await Transaction.create({
+      code: `PH${Date.now()}`, // PH = Phiếu Hủy
+      type: "DISPOSAL",
+      status: "COMPLETED", // Hoàn tất ngay lập tức
+      fromBranch: currentBranchId,
+      createdBy: req.user._id || req.user.id,
+      details: details,
+      totalValue: totalLossValue, // <--- ĐÂY LÀ CON SỐ TỔN THẤT ĐỂ KẾ TOÁN LÊN BÁO CÁO
+    });
+
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: "Đã xuất hủy và ghi nhận chi phí tổn thất thành công!",
+        transaction: trans,
+      });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

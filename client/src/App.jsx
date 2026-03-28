@@ -25,9 +25,8 @@ import BranchUserManagement from "./pages/admin/BranchUserManagement"; // Trang 
 import ReportPage from "./pages/reports/ReportPage";
 
 // (Giữ lại các file cũ nếu bạn cần tham khảo thêm, nhưng trên menu sẽ không gọi đến)
-import TransactionDetail from "./pages/transactions/TransactionDetail";
-import TransactionList from "./pages/transactions/TransactionList";
 import TransactionHistoryPage from "./pages/transactions/TransactionHistoryPage";
+import MonthlyReportPage from "./pages/reports/MonthlyReportPage";
 
 // Layout bọc các trang cần đăng nhập
 const MainLayout = ({ children }) => (
@@ -155,9 +154,19 @@ function App() {
           <Route
             path="/distribute"
             element={
-              <PrivateRoute allowedRoles={["admin", "warehouse_manager"]}>
+              <PrivateRoute allowedRoles={["admin", "warehouse_manager", "branch_manager"]}>
                 <MainLayout>
                   <DistributePage />
+                </MainLayout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/monthly-reports"
+            element={
+              <PrivateRoute allowedRoles={["admin", "warehouse_manager", "branch_manager"]}>
+                <MainLayout>
+                  <MonthlyReportPage />
                 </MainLayout>
               </PrivateRoute>
             }
@@ -183,16 +192,6 @@ function App() {
               <PrivateRoute allowedRoles={["admin"]}>
                 <MainLayout>
                   <BranchUserManagement />
-                </MainLayout>
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/reports"
-            element={
-              <PrivateRoute allowedRoles={["admin", "branch_manager"]}>
-                <MainLayout>
-                  <ReportPage />
                 </MainLayout>
               </PrivateRoute>
             }
@@ -225,28 +224,6 @@ function App() {
               <PrivateRoute>
                 <MainLayout>
                   <PendingImportPage />
-                </MainLayout>
-              </PrivateRoute>
-            }
-          />
-
-          {/* Các route lịch sử giao dịch (Dùng để xem chi tiết khi click vào báo cáo) */}
-          <Route
-            path="/transactions"
-            element={
-              <PrivateRoute>
-                <MainLayout>
-                  <TransactionList />
-                </MainLayout>
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/transactions/:id"
-            element={
-              <PrivateRoute>
-                <MainLayout>
-                  <TransactionDetail />
                 </MainLayout>
               </PrivateRoute>
             }

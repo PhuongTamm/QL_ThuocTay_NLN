@@ -106,11 +106,33 @@ exports.getDashboardStats = async (req, res) => {
       .populate("toBranch", "name")
       .populate("createdBy", "fullName");
 
+    // 1. Ép kiểu và cấu hình lại giờ để bao trọn cả ngày
+    const start = new Date(startDate);
+    start.setHours(0, 0, 0, 0); // Bắt đầu từ 00:00:00
+
+    const end = new Date(endDate);
+    end.setHours(23, 59, 59, 999); // Kết thúc ở 23:59:59 của ngày đó
+
+    // 2. Chạy Query với Date object chuẩn
+    const disposalAgg = await Transaction.aggregate([
+      {
+        $match: {
+          type: "DISPOSAL",
+          status: "COMPLETED",
+          createdAt: { $gte: start, $lte: end }, // <- Dùng biến start và end đã xử lý
+        },
+      },
+      { $group: { _id: null, totalLoss: { $sum: "$totalValue" } } },
+    ]);
+
+    const totalDisposalLoss =
+      disposalAgg.length > 0 ? disposalAgg[0].totalLoss : 0;
     res.status(200).json({
       success: true,
       data: {
         totalRevenue,
         totalOrders,
+        totalDisposalLoss,
         lowStockCount,
         expiredCount,
         recentTransactions,

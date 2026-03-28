@@ -28,8 +28,8 @@ const inventorySchema = new mongoose.Schema(
 
         quality: {
           type: String,
-          enum: ["Good", "Damaged", "Expired"],
-          default: "Good",
+          enum: ["GOOD", "OVERSTOCK", "EXPIRED", "DAMAGED"],
+          default: "GOOD",
         },
       },
     ],
