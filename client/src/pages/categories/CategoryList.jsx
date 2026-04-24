@@ -1,22 +1,22 @@
-import React, { useState, useEffect, useCallback } from "react";
 import {
-  fetchCategories,
-  createCategory,
-  updateCategory,
-  deleteCategory,
-} from "../../services/api";
-import {
-  Edit,
-  Trash2,
-  Search,
-  X,
-  Plus,
-  Tag,
-  CheckCircle,
   AlertTriangle,
-  Loader2,
+  CheckCircle,
+  Edit,
   FolderOpen,
+  Loader2,
+  Plus,
+  Search,
+  Tag,
+  Trash2,
+  X,
 } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import {
+  createCategory,
+  deleteCategory,
+  fetchCategories,
+  updateCategory,
+} from "../../services/api";
 
 // ─── Toast Notification System ───────────────────────────────────────────────
 const Toast = ({ toasts, removeToast }) => (
@@ -132,11 +132,19 @@ const CategoryList = () => {
     setSubmitting(true);
     try {
       if (editingId) {
-        await updateCategory(editingId, formData);
-        addToast("Cập nhật danh mục thành công!");
+        const result = await updateCategory(editingId, formData);
+        if (result.data.success) {
+          addToast("Cập nhật danh mục thành công!");
+        } else {
+          addToast(result.data.message || "Cập nhật thất bại!", "error");
+        }
       } else {
-        await createCategory(formData);
-        addToast("Thêm danh mục thành công!");
+        const result = await createCategory(formData);
+        if (result.data.success) {
+          addToast("Thêm danh mục thành công!");
+        } else {
+          addToast(result.data.message || "Thêm thất bại!", "error");
+        }
       }
       setFormData({ name: "", description: "" });
       setEditingId(null);
@@ -158,8 +166,12 @@ const CategoryList = () => {
   const handleDelete = async () => {
     if (!confirmDelete) return;
     try {
-      await deleteCategory(confirmDelete.id);
-      addToast("Xóa danh mục thành công!");
+      const result = await deleteCategory(confirmDelete.id);
+      if (result.data.success) {
+        addToast("Xóa danh mục thành công!");
+      } else {
+        addToast(result.data.message || "Lỗi khi xóa danh mục!", "error");
+      }
       loadCategories();
     } catch (error) {
       addToast("Lỗi khi xóa danh mục!", "error");
@@ -201,7 +213,6 @@ const CategoryList = () => {
           from { opacity: 0; transform: translateY(12px); }
           to   { opacity: 1; transform: translateY(0); }
         }
-        .row-anim { animation: fadeUp .3s ease both; }
         .row-anim:nth-child(1)  { animation-delay: .04s }
         .row-anim:nth-child(2)  { animation-delay: .08s }
         .row-anim:nth-child(3)  { animation-delay: .12s }
@@ -269,7 +280,7 @@ const CategoryList = () => {
           {/* Form Card */}
           <div
             className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6"
-            style={{ animation: "fadeUp .4s ease" }}>
+            >
             <div className="flex items-center gap-2 mb-5">
               <div
                 className={`w-7 h-7 rounded-lg flex items-center justify-center ${editingId ? "bg-amber-100" : "bg-[#0ea5e9]"}`}>
@@ -345,7 +356,7 @@ const CategoryList = () => {
           {/* Search & Stats Bar */}
           <div
             className="bg-white rounded-2xl shadow-sm border border-gray-100 px-5 py-4 mb-4 flex flex-wrap gap-3 items-center justify-between"
-            style={{ animation: "fadeUp .5s ease" }}>
+            >
             <div className="relative flex-1 min-w-[220px] max-w-4.5xl">
               <Search
                 size={16}
@@ -385,7 +396,7 @@ const CategoryList = () => {
           {/* Table Card */}
           <div
             className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
-            style={{ animation: "fadeUp .6s ease" }}>
+            >
             {loading ? (
               <div className="flex flex-col items-center justify-center py-20 gap-3 text-gray-400">
                 <Loader2 size={32} className="animate-spin text-indigo-400" />

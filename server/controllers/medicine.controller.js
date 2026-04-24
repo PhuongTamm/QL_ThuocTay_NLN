@@ -1,5 +1,8 @@
 const Medicine = require("../models/Medicine");
 const MedicineVariant = require("../models/MedicineVariant");
+const Category = require("../models/Category");
+const fs = require("fs");
+const path = require("path");
 
 const generateNamePrefix = (str) => {
   if (!str) return "MED";
@@ -125,16 +128,6 @@ exports.createMedicine = async (req, res) => {
     }
 
     const code = await generateMedicineCode(name);
-    // const newMed = await Medicine.create({
-    //   code,
-    //   name: name.trim(),
-    //   categoryId,
-    //   isPrescription,
-    //   manufacturer,
-    //   ingredients,
-    //   description,
-    //   images: imageLinks,
-    // });
     const newMed = await Medicine.create({
       code,
       name: name.trim(),
@@ -212,15 +205,15 @@ exports.deleteMedicine = async (req, res) => {
 
 exports.createVariant = async (req, res) => {
   try {
-      let {
-        medicineId,
-        sku,
-        name,
-        unit,
-        packagingSpecification,
-        currentPrice,
-        conversionRate,
-      } = req.body;
+    let {
+      medicineId,
+      sku,
+      name,
+      unit,
+      packagingSpecification,
+      currentPrice,
+      conversionRate,
+    } = req.body;
 
     // [RÀNG BUỘC] 1. Kiểm tra dữ liệu đầu vào
     if (!name || name.trim() === "")
@@ -354,6 +347,99 @@ exports.getAllVariants = async (req, res) => {
     );
     res.json({ success: true, data: variants });
   } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.seedMedicines = async (req, res) => {
+  try {
+    // 1. Đọc file JSON
+    const filePath = path.join(__dirname, "../data/medicines_ak.json");
+    const rawData = fs.readFileSync(filePath, "utf-8");
+    const seedData = JSON.parse(rawData);
+
+    // 2. Lấy tất cả danh mục hiện có trên Database
+    const categories = await Category.find();
+
+    let successCount = 0;
+    let skipCount = 0;
+
+    // 3. Vòng lặp Insert
+    for (const item of seedData) {
+      // BƯỚC A: TÌM DANH MỤC PHÙ HỢP (Giải thuật Smart Matching bằng Regex)
+      // Chuyển keyword thành Regex không phân biệt hoa thường
+      const keywordRegex = new RegExp(item.categoryKeyword, "i");
+      const matchedCategory = categories.find((cat) =>
+        keywordRegex.test(cat.name),
+      );
+
+      if (!matchedCategory) {
+        console.log(
+          `Bỏ qua [${item.name}]: Không tìm thấy danh mục chứa từ khóa "${item.categoryKeyword}"`,
+        );
+        skipCount++;
+        continue;
+      }
+
+      // Kiểm tra trùng tên thuốc
+      const existMed = await Medicine.findOne({
+        name: { $regex: new RegExp("^" + item.name.trim() + "$", "i") },
+      });
+
+      if (existMed) {
+        console.log(`Bỏ qua [${item.name}]: Thuốc đã tồn tại.`);
+        skipCount++;
+        continue;
+      }
+
+      // BƯỚC B: TẠO THUỐC GỐC
+      const code = await generateMedicineCode(item.name);
+      const newMed = await Medicine.create({
+        code: code,
+        name: item.name,
+        categoryId: matchedCategory._id,
+        isPrescription: item.isPrescription,
+        manufacturer: item.manufacturer,
+        ingredients: item.ingredients,
+        description: item.description,
+        baseUnit: item.baseUnit,
+
+        // SỬA Ở DÒNG NÀY: Lấy mảng images từ JSON, nếu JSON không có thì gán mảng rỗng
+        images: item.images || [],
+      });
+
+      // BƯỚC C: TẠO CÁC BIẾN THỂ (QUY CÁCH)
+      if (item.variants && item.variants.length > 0) {
+        for (const variant of item.variants) {
+          const sku = `${newMed.code}-${generateUnitPrefix(variant.unit)}`;
+
+          await MedicineVariant.create({
+            medicineId: newMed._id,
+            sku: sku,
+            name: variant.name,
+            unit: variant.unit,
+            packagingSpecification: variant.packagingSpecification,
+            currentPrice: variant.currentPrice,
+            conversionRate: variant.conversionRate,
+            priceHistory: [
+              {
+                price: variant.currentPrice,
+                // Trong seeder không có req.user.id nên ta để null hoặc bỏ trống
+              },
+            ],
+          });
+        }
+      }
+      successCount++;
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Seed dữ liệu hoàn tất!",
+      result: `Thành công: ${successCount} thuốc. Bỏ qua: ${skipCount} thuốc.`,
+    });
+  } catch (error) {
+    console.error("Lỗi Seed data:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };

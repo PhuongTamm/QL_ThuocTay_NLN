@@ -1,28 +1,27 @@
-import React, { useState, useEffect } from "react";
+import html2pdf from "html2pdf.js";
 import {
+  AlertTriangle,
+  Banknote,
+  CheckCircle2,
+  ChevronRight,
+  Info,
+  Minus,
+  Package,
+  Phone,
+  Pill,
+  Plus,
+  QrCode,
+  Receipt,
   Search,
   ShoppingCart,
-  Plus,
-  Minus,
-  CreditCard,
   Trash2,
-  Printer,
-  Banknote,
-  QrCode,
-  XCircle,
   User,
-  Phone,
-  Info,
-  CheckCircle2,
-  Package,
-  AlertTriangle,
-  Receipt,
-  ChevronRight,
-  Pill,
   X,
+  Store, // Thêm icon Store
 } from "lucide-react";
+import React, { useEffect, useState } from "react";
 import api from "../../services/api";
-import html2pdf from "html2pdf.js";
+import { useAuth } from "../../context/AuthContext";
 
 /* ─────────────────────────────────────────
    TOAST ALERT SYSTEM
@@ -113,6 +112,10 @@ const ConfirmDialog = ({ open, message, onConfirm, onCancel }) => {
 ───────────────────────────────────────── */
 const POSPageInner = () => {
   const toast = useToast();
+  const { user } = useAuth(); // Lấy thông tin user đăng nhập
+
+  const [branches, setBranches] = useState([]);
+  const [selectedBranchId, setSelectedBranchId] = useState("");
 
   const [inventories, setInventories] = useState([]);
   const [cart, setCart] = useState([]);
@@ -141,14 +144,50 @@ const POSPageInner = () => {
     onConfirm: null,
   });
 
+  const ROLE_LABELS = {
+    admin: "Quản trị viên",
+    warehouse_manager: "Quản lý kho",
+    branch_manager: "Quản lý chi nhánh",
+    pharmacist: "Dược sĩ",
+  };
+
+  // 1. Tải danh sách khách hàng và chi nhánh lúc đầu
   useEffect(() => {
-    fetchInventory();
     fetchCustomers();
+    fetchBranches();
   }, []);
 
-  const fetchInventory = async () => {
+  // 2. Fetch tồn kho mỗi khi selectedBranchId thay đổi
+  useEffect(() => {
+    if (selectedBranchId) {
+      fetchInventory(selectedBranchId);
+      // Làm sạch giỏ hàng khi đổi chi nhánh để tránh lỗi hàng
+      setCart([]);
+    }
+  }, [selectedBranchId]);
+
+  const fetchBranches = async () => {
     try {
-      const res = await api.get("/inventories");
+      const res = await api.get("/branches");
+      const storeBranches = (res.data.data || []).filter(
+        (b) => b.type !== "warehouse",
+      );
+      setBranches(storeBranches);
+
+      // Mặc định chọn chi nhánh của user nếu có, không thì chọn cái đầu tiên
+      if (user?.branchId) {
+        setSelectedBranchId(user.branchId);
+      } else if (storeBranches.length > 0) {
+        setSelectedBranchId(storeBranches[0]._id);
+      }
+    } catch (e) {
+      console.error("Lỗi lấy chi nhánh", e);
+    }
+  };
+
+  const fetchInventory = async (branchId) => {
+    try {
+      const res = await api.get(`/inventories?branchId=${branchId}`);
       const data = res.data.data || [];
       setInventories(data);
       const initialSelected = {};
@@ -177,8 +216,14 @@ const POSPageInner = () => {
   };
 
   const handlePhoneChange = (e) => {
-    const val = e.target.value;
+    // 1. Chỉ giữ lại số, loại bỏ chữ và ký tự đặc biệt
+    const val = e.target.value.replace(/\D/g, "");
+
+    // 2. Chặn không cho nhập quá 10 số
+    if (val.length > 10) return;
+
     setCustomerInfo({ ...customerInfo, phone: val, _id: null });
+
     if (val.trim()) {
       const filtered = customers.filter((c) => c.phone.includes(val));
       setFilteredCustomers(filtered);
@@ -203,27 +248,80 @@ const POSPageInner = () => {
     setShowCustomerDropdown(false);
   };
 
+  // const handleUpdateQuantity = (inv, activeVariant, newQuantity) => {
+  //   if (newQuantity < 1) return false;
+  //   const medId = inv.medicineId._id;
+  //   const existingBaseQtyInCart = cart
+  //     .filter(
+  //       (item) =>
+  //         item.medicineId === medId && item.variantId !== activeVariant._id,
+  //     )
+  //     .reduce((sum, item) => sum + item.quantity * item.conversionRate, 0);
+  //   const neededBaseQty =
+  //     existingBaseQtyInCart + newQuantity * activeVariant.conversionRate;
+  //   if (neededBaseQty > inv.totalQuantity) {
+  //     toast(
+  //       `Không đủ tồn kho! Còn ${inv.totalQuantity} ${inv.medicineId.baseUnit}.`,
+  //       "warning",
+  //     );
+  //     return false;
+  //   }
+  //   const existingItemIndex = cart.findIndex(
+  //     (item) => item.variantId === activeVariant._id,
+  //   );
+  //   if (existingItemIndex > -1) {
+  //     const newCart = [...cart];
+  //     newCart[existingItemIndex].quantity = newQuantity;
+  //     setCart(newCart);
+  //   } else {
+  //     setCart([
+  //       ...cart,
+  //       {
+  //         medicineId: medId,
+  //         variantId: activeVariant._id,
+  //         name: activeVariant.name,
+  //         unit: activeVariant.unit,
+  //         price: activeVariant.currentPrice,
+  //         conversionRate: activeVariant.conversionRate,
+  //         quantity: newQuantity,
+  //       },
+  //     ]);
+  //   }
+  //   return true;
+  // };
+
+  // BƯỚC 2: THAY THẾ HÀM handleUpdateQuantity CŨ
   const handleUpdateQuantity = (inv, activeVariant, newQuantity) => {
     if (newQuantity < 1) return false;
     const medId = inv.medicineId._id;
+
+    // Tính tổng số lượng (theo đơn vị cơ sở) của các quy cách KHÁC của cùng thuốc này đang có trong giỏ
     const existingBaseQtyInCart = cart
       .filter(
         (item) =>
           item.medicineId === medId && item.variantId !== activeVariant._id,
       )
       .reduce((sum, item) => sum + item.quantity * item.conversionRate, 0);
+
     const neededBaseQty =
       existingBaseQtyInCart + newQuantity * activeVariant.conversionRate;
-    if (neededBaseQty > inv.totalQuantity) {
+
+    // Tính số lượng tồn kho THỰC TẾ HỢP LỆ
+    const validQty = getValidBaseQuantity(inv);
+
+    // Ràng buộc: Chặn nếu vượt quá Tồn kho hợp lệ
+    if (neededBaseQty > validQty) {
       toast(
-        `Không đủ tồn kho! Còn ${inv.totalQuantity} ${inv.medicineId.baseUnit}.`,
+        `Không đủ hàng hợp lệ! Chỉ còn ${validQty} ${inv.medicineId.baseUnit} (Đã loại trừ hàng cận/lỗi).`,
         "warning",
       );
       return false;
     }
+
     const existingItemIndex = cart.findIndex(
       (item) => item.variantId === activeVariant._id,
     );
+
     if (existingItemIndex > -1) {
       const newCart = [...cart];
       newCart[existingItemIndex].quantity = newQuantity;
@@ -255,7 +353,6 @@ const POSPageInner = () => {
     );
     const currentQty = existingCartItem ? existingCartItem.quantity : 0;
     const success = handleUpdateQuantity(inv, activeVariant, currentQty + 1);
-    // if (success) toast(`Đã thêm ${activeVariant.name}`, "success");
   };
 
   const clearCart = () => {
@@ -273,19 +370,57 @@ const POSPageInner = () => {
   const total = cart.reduce((sum, item) => sum + item.quantity * item.price, 0);
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
+  // BƯỚC 1: THÊM HÀM NÀY VÀO TRONG POSPageInner
+  const getValidBaseQuantity = (inv) => {
+    if (!inv || !inv.batches) return 0;
+    const today = new Date();
+    return inv.batches.reduce((sum, b) => {
+      // Chỉ cộng dồn những lô CÒN HÀNG, CHẤT LƯỢNG TỐT và CHƯA HẾT HẠN
+      if (
+        b.quantity > 0 &&
+        b.quality === "GOOD" &&
+        new Date(b.expiryDate) > today
+      ) {
+        return sum + b.quantity;
+      }
+      return sum;
+    }, 0);
+  };
+
   const handleOpenCheckoutModal = () => {
     if (cart.length === 0) return;
-    if (customerInfo.phone && !customerInfo.name) {
-      return toast("Vui lòng nhập tên cho khách hàng mới!", "warning");
+
+    if (customerInfo.phone) {
+      if (customerInfo.phone.length !== 10) {
+        return toast(
+          "Số điện thoại khách hàng phải bao gồm đúng 10 số!",
+          "warning",
+        );
+      }
+      if (!customerInfo.name) {
+        return toast("Vui lòng nhập tên cho khách hàng mới!", "warning");
+      }
     }
+
     setCustomerGivenMoney("");
+
+    // TÌM VÀ CẬP NHẬT ĐOẠN NÀY: Tìm chi nhánh đang chọn để gán Tên & SĐT vào hóa đơn
+    const currentBranch = branches.find((b) => b._id === selectedBranchId);
+    const branchName = currentBranch?.name || "Chi nhánh hiện tại";
+    const branchPhone = currentBranch?.phone || "Đang cập nhật...";
+
     setReceiptData({
       code: "HD" + Date.now(),
       date: new Date().toLocaleString("vi-VN"),
+      branchName: branchName,
+      branchPhone: branchPhone, // Bổ sung SĐT chi nhánh
       items: [...cart],
       total: total,
       customer: customerInfo,
       paymentMethod: paymentMethod,
+      // Bổ sung thông tin người lập phiếu
+      staffName: user?.fullName || user?.username || "Nhân viên",
+      staffRole: ROLE_LABELS[user?.role] || "Nhân viên",
     });
     setShowCheckoutModal(true);
   };
@@ -298,6 +433,7 @@ const POSPageInner = () => {
     }
     try {
       const payload = {
+        branchId: selectedBranchId, // Bổ sung branchId động
         customerId: customerInfo._id,
         customerName: customerInfo.name,
         customerPhone: customerInfo.phone,
@@ -315,7 +451,7 @@ const POSPageInner = () => {
       }));
       setCart([]);
       setCustomerInfo({ _id: null, name: "", phone: "" });
-      fetchInventory();
+      fetchInventory(selectedBranchId); // Tải lại tồn kho nhánh hiện tại
       fetchCustomers();
       setShowCheckoutModal(false);
       setShowReceipt(true);
@@ -556,7 +692,7 @@ const POSPageInner = () => {
           to { transform: none; opacity: 1; }
         }
 
-        .badge-stock { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; }
+        .badge-stock { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; width: fit-content; }
         .badge-stock.ok { background: #dcfce7; color: #15803d; }
         .badge-stock.low { background: #fef3c7; color: #92400e; }
         .badge-stock.out { background: #fee2e2; color: #b91c1c; }
@@ -573,31 +709,50 @@ const POSPageInner = () => {
       <div
         className="flex-1 flex flex-col h-full overflow-hidden"
         style={{ padding: "20px 16px 20px 20px" }}>
-        {/* Header */}
-        <div className="mb-4 flex items-center gap-3">
-          <div
-            style={{
-              background: "linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%)",
-              borderRadius: 14,
-              width: 44,
-              height: 44,
-            }}
-            className="flex items-center justify-center shrink-0">
-            <Pill size={22} color="white" />
+        {/* Header & Branch Selector */}
+        <div className="mb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div
+              style={{
+                background: "linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%)",
+                borderRadius: 14,
+                width: 44,
+                height: 44,
+              }}
+              className="flex items-center justify-center shrink-0">
+              <Pill size={22} color="white" />
+            </div>
+            <div>
+              <h1 className="brand-font text-2xl font-bold text-gray-900">
+                Bán lẻ thuốc
+              </h1>
+              <p style={{ fontSize: 12, color: "#64748b" }}>
+                {filteredInventory.length} sản phẩm ·{" "}
+                {new Date().toLocaleDateString("vi-VN", {
+                  weekday: "long",
+                  day: "numeric",
+                  month: "numeric",
+                })}
+              </p>
+            </div>
           </div>
-          <div>
-            <h1
-              className="brand-font text-2xl font-bold text-gray-900">
-              Bán lẻ thuốc
-            </h1>
-            <p style={{ fontSize: 12, color: "#64748b" }}>
-              {filteredInventory.length} sản phẩm ·{" "}
-              {new Date().toLocaleDateString("vi-VN", {
-                weekday: "long",
-                day: "numeric",
-                month: "numeric",
-              })}
-            </p>
+
+          {/* DROPDOWN CHỌN CHI NHÁNH */}
+          <div className="flex items-center gap-2 bg-white px-3 py-2 rounded-xl border border-slate-200 shadow-sm">
+            <Store size={16} className="text-slate-400" />
+            <span className="text-[13px] font-bold text-slate-500 uppercase tracking-wide">
+              Chi nhánh:
+            </span>
+            <select
+              value={selectedBranchId}
+              onChange={(e) => setSelectedBranchId(e.target.value)}
+              className="bg-transparent text-sm font-bold text-sky-600 outline-none cursor-pointer">
+              {branches.map((b) => (
+                <option key={b._id} value={b._id}>
+                  {b.name}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 
@@ -657,12 +812,11 @@ const POSPageInner = () => {
               const activeVar = inv.variants?.find(
                 (v) => v._id === activeVarId,
               );
+
+              const validQty = getValidBaseQuantity(inv);
+
               const stockLevel =
-                inv.totalQuantity === 0
-                  ? "out"
-                  : inv.totalQuantity < 10
-                    ? "low"
-                    : "ok";
+                validQty === 0 ? "out" : validQty < 10 ? "low" : "ok";
 
               return (
                 <div
@@ -677,13 +831,80 @@ const POSPageInner = () => {
                       alignItems: "flex-start",
                       marginBottom: 10,
                     }}>
-                    <span className={`badge-stock ${stockLevel}`}>
-                      <Package size={10} />
-                      {inv.totalQuantity} {med.baseUnit}
-                    </span>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 6,
+                      }}>
+                      <span className={`badge-stock ${stockLevel}`}>
+                        <Package size={10} />
+                        {validQty} {med.baseUnit}
+                      </span>
+                      {med.isPrescription ? (
+                        <span
+                          style={{
+                            fontSize: 10,
+                            fontWeight: 700,
+                            color: "#ef4444",
+                            background: "#fee2e2",
+                            padding: "3px 8px",
+                            borderRadius: 6,
+                            width: "fit-content",
+                          }}>
+                          Thuốc kê đơn
+                        </span>
+                      ) : (
+                        <span
+                          style={{
+                            fontSize: 10,
+                            fontWeight: 700,
+                            color: "#10b981",
+                            background: "#d1fae5",
+                            padding: "3px 8px",
+                            borderRadius: 6,
+                            width: "fit-content",
+                          }}>
+                          Không kê đơn
+                        </span>
+                      )}
+                    </div>
                     <span style={{ color: "#cbd5e1", transition: "color .2s" }}>
                       <Info size={15} />
                     </span>
+                  </div>
+                  <div
+                    style={{
+                      width: "100%",
+                      height: 140,
+                      marginBottom: 12,
+                      background: "#f8fafc",
+                      borderRadius: 12,
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      overflow: "hidden",
+                    }}>
+                    <img
+                      src={
+                        med.images && med.images.length > 0
+                          ? med.images[0].startsWith("http")
+                            ? med.images[0]
+                            : `http://localhost:5000${med.images[0]}`
+                          : "https://via.placeholder.com/150?text=No+Image"
+                      }
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "contain",
+                        mixBlendMode: "darken",
+                      }}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src =
+                          "https://via.placeholder.com/150?text=No+Image";
+                      }}
+                    />
                   </div>
 
                   {/* Name */}
@@ -757,7 +978,7 @@ const POSPageInner = () => {
                           e.stopPropagation();
                           addToCart(inv);
                         }}
-                        disabled={inv.totalQuantity <= 0}>
+                        disabled={validQty <= 0}>
                         <Plus size={14} strokeWidth={3} /> Thêm
                       </button>
                     </div>
@@ -1053,92 +1274,7 @@ const POSPageInner = () => {
               const activeVariant = currentInv?.variants.find(
                 (v) => v._id === item.variantId,
               );
-              {
-                /* return (
-                <div
-                  key={idx}
-                  style={{
-                    background: "white",
-                    border: "1.5px solid #f1f5f9",
-                    borderRadius: 14,
-                    padding: "12px 14px",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 10,
-                    boxShadow: "0 1px 4px rgba(0,0,0,.04)",
-                    animation: "fadeIn .2s ease",
-                  }}>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <p
-                      style={{
-                        fontSize: 13,
-                        fontWeight: 700,
-                        color: "#0f172a",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}>
-                      {item.name}
-                    </p>
-                    <p style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}>
-                      {item.price.toLocaleString()}đ / {item.unit}
-                    </p>
-                  </div>
-                  <div className="qty-control">
-                    <button
-                      className="qty-btn"
-                      onClick={() => {
-                        if (item.quantity > 1) {
-                          const nc = [...cart];
-                          nc[idx].quantity -= 1;
-                          setCart(nc);
-                        } else {
-                          const nc = [...cart];
-                          nc.splice(idx, 1);
-                          setCart(nc);
-                        }
-                      }}>
-                      <Minus size={12} />
-                    </button>
-                    <input
-                      type="number"
-                      min="1"
-                      className="qty-input"
-                      value={item.quantity}
-                      onChange={(e) =>
-                        handleUpdateQuantity(
-                          currentInv,
-                          activeVariant,
-                          parseInt(e.target.value) || 1,
-                        )
-                      }
-                    />
-                    <button
-                      className="qty-btn"
-                      style={{ color: "#0ea5e9" }}
-                      onClick={() =>
-                        handleUpdateQuantity(
-                          currentInv,
-                          activeVariant,
-                          item.quantity + 1,
-                        )
-                      }>
-                      <Plus size={12} />
-                    </button>
-                  </div>
-                  <div style={{ minWidth: 72, textAlign: "right" }}>
-                    <p
-                      style={{
-                        fontSize: 13,
-                        fontWeight: 800,
-                        color: "#ef4444",
-                      }}>
-                      {(item.price * item.quantity).toLocaleString()}đ
-                    </p>
-                  </div>
-                </div>
-              ); */
-              }
+
               return (
                 <div
                   key={idx}
@@ -1227,7 +1363,7 @@ const POSPageInner = () => {
                     </p>
                   </div>
 
-                  {/* NÚT THÙNG RÁC (ĐỎ ĐẬM, CỐ ĐỊNH Ở CUỐI DÒNG) */}
+                  {/* NÚT THÙNG RÁC */}
                   <button
                     onClick={() => {
                       const newCart = [...cart];
@@ -1237,7 +1373,7 @@ const POSPageInner = () => {
                     style={{
                       background: "transparent",
                       border: "none",
-                      color: "#ef4444", // Set mặc định màu đỏ luôn cho giống ảnh
+                      color: "#ef4444",
                       cursor: "pointer",
                       padding: "6px",
                       display: "flex",
@@ -1248,7 +1384,7 @@ const POSPageInner = () => {
                       marginLeft: "2px",
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = "#fee2e2"; // Rê chuột vào hiện nền đỏ nhạt
+                      e.currentTarget.style.background = "#fee2e2";
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.background = "transparent";
@@ -1330,13 +1466,15 @@ const POSPageInner = () => {
           className="modal-overlay"
           onClick={() => setMedicineDetailModal(null)}>
           <div
-            className="modal-box"
+            className="modal-box scrollbar-thin"
             style={{
               background: "white",
               borderRadius: 20,
               padding: 24,
               width: "100%",
-              maxWidth: 480,
+              maxWidth: 520,
+              maxHeight: "90vh",
+              overflowY: "auto",
               boxShadow: "0 20px 60px rgba(0,0,0,.2)",
             }}
             onClick={(e) => e.stopPropagation()}>
@@ -1402,6 +1540,46 @@ const POSPageInner = () => {
               </button>
             </div>
 
+            {medicineDetailModal.medicineId.images &&
+              medicineDetailModal.medicineId.images.length > 0 && (
+                <div
+                  className="scrollbar-thin"
+                  style={{
+                    display: "flex",
+                    gap: 12,
+                    overflowX: "auto",
+                    marginBottom: 20,
+                    paddingBottom: 8,
+                  }}>
+                  {medicineDetailModal.medicineId.images.map((imgUrl, idx) => (
+                    <img
+                      key={idx}
+                      src={
+                        imgUrl.startsWith("http")
+                          ? imgUrl
+                          : `http://localhost:5000${imgUrl}`
+                      }
+                      alt={`${medicineDetailModal.medicineId.name}-${idx}`}
+                      style={{
+                        height: 120,
+                        width: 120,
+                        objectFit: "contain",
+                        mixBlendMode: "darken",
+                        borderRadius: 12,
+                        border: "1.5px solid #e2e8f0",
+                        flexShrink: 0,
+                        background: "#f8fafc",
+                      }}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src =
+                          "https://via.placeholder.com/120?text=No+Image";
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
+
             <div
               style={{
                 display: "flex",
@@ -1414,6 +1592,17 @@ const POSPageInner = () => {
               }}>
               {[
                 [
+                  "Phân loại",
+                  medicineDetailModal.medicineId.isPrescription
+                    ? "Thuốc kê đơn (Rx)"
+                    : "Thuốc không kê đơn",
+                ],
+                [
+                  "Công dụng",
+                  medicineDetailModal.medicineId.description ||
+                    "Đang cập nhật...",
+                ],
+                [
                   "Hoạt chất",
                   medicineDetailModal.medicineId.ingredients || "Đang cập nhật",
                 ],
@@ -1424,25 +1613,44 @@ const POSPageInner = () => {
                 ],
                 ["Đơn vị cơ sở", medicineDetailModal.medicineId.baseUnit],
                 [
-                  "Tồn kho hiện tại",
-                  `${medicineDetailModal.totalQuantity} ${medicineDetailModal.medicineId.baseUnit}`,
+                  "Tồn kho hợp lệ (Bán được)",
+                  `${getValidBaseQuantity(medicineDetailModal)} ${medicineDetailModal.medicineId.baseUnit}`,
                 ],
-              ].map(([label, value], i) => (
+              ].map(([label, value], i, arr) => (
                 <div
                   key={i}
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    alignItems: "center",
+                    alignItems: "flex-start",
+                    gap: 16,
                     padding: "11px 16px",
                     background: i % 2 === 0 ? "white" : "#f8fafc",
-                    borderBottom: i < 3 ? "1px solid #f1f5f9" : "none",
+                    borderBottom:
+                      i < arr.length - 1 ? "1px solid #f1f5f9" : "none",
                   }}>
-                  <span style={{ fontSize: 13, color: "#64748b" }}>
+                  <span
+                    style={{
+                      fontSize: 13,
+                      color: "#64748b",
+                      flexShrink: 0,
+                      minWidth: 90,
+                    }}>
                     {label}
                   </span>
                   <span
-                    style={{ fontSize: 13, fontWeight: 700, color: "#0f172a" }}>
+                    style={{
+                      fontSize: 13,
+                      fontWeight: 700,
+                      color:
+                        label === "Phân loại" &&
+                        medicineDetailModal.medicineId.isPrescription
+                          ? "#ef4444"
+                          : "#0f172a",
+                      textAlign: "right",
+                      wordBreak: "break-word",
+                      lineHeight: 1.5,
+                    }}>
                     {value}
                   </span>
                 </div>
@@ -1565,6 +1773,33 @@ const POSPageInner = () => {
                     fontFamily: "monospace",
                     fontSize: 12,
                   }}>
+                  {/* <div
+                    style={{
+                      textAlign: "center",
+                      borderBottom: "1px dashed #d1d5db",
+                      paddingBottom: 10,
+                      marginBottom: 10,
+                    }}>
+                    <p
+                      style={{
+                        fontWeight: 700,
+                        fontSize: 14,
+                        textTransform: "uppercase",
+                      }}>
+                      Nhà Thuốc Của Bạn
+                    </p>
+                    <p style={{ fontSize: 10, color: "#6b7280" }}>
+                      Đ/c: {receiptData.branchName}
+                    </p>
+                    <p
+                      style={{
+                        fontWeight: 700,
+                        marginTop: 6,
+                        textTransform: "uppercase",
+                      }}>
+                      Hóa Đơn Bán Lẻ
+                    </p>
+                  </div> */}
                   <div
                     style={{
                       textAlign: "center",
@@ -1581,7 +1816,11 @@ const POSPageInner = () => {
                       Nhà Thuốc Của Bạn
                     </p>
                     <p style={{ fontSize: 10, color: "#6b7280" }}>
-                      Đ/c: Khu vực Cần Thơ
+                      Đ/c: {receiptData.branchName}
+                    </p>
+                    {/* BỔ SUNG SĐT CHI NHÁNH VÀO XEM TRƯỚC */}
+                    <p style={{ fontSize: 10, color: "#6b7280" }}>
+                      SĐT: {receiptData.branchPhone}
                     </p>
                     <p
                       style={{
@@ -1634,6 +1873,19 @@ const POSPageInner = () => {
                     }}>
                     <span>Tổng cộng:</span>
                     <span>{receiptData.total.toLocaleString()}đ</span>
+                  </div>
+                  {/* BỔ SUNG NGƯỜI LẬP VÀO XEM TRƯỚC */}
+                  <div
+                    style={{
+                      textAlign: "center",
+                      marginTop: 12,
+                      fontSize: 10,
+                      color: "#6b7280",
+                    }}>
+                    <p style={{ fontWeight: 600 }}>
+                      Người lập: {receiptData.staffRole} -{" "}
+                      {receiptData.staffName}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -1933,6 +2185,34 @@ const POSPageInner = () => {
                   fontSize: 13,
                   lineHeight: 1.5,
                 }}>
+                {/* <div
+                  style={{
+                    textAlign: "center",
+                    borderBottom: "1px dashed #9ca3af",
+                    paddingBottom: 10,
+                    marginBottom: 10,
+                  }}>
+                  <p
+                    style={{
+                      fontWeight: 700,
+                      fontSize: 16,
+                      textTransform: "uppercase",
+                    }}>
+                    Nhà Thuốc Của Bạn
+                  </p>
+                  <p style={{ fontSize: 11 }}>Đ/c: {receiptData.branchName}</p>
+                  <p style={{ fontSize: 11 }}>SĐT: 0123.456.789</p>
+                  <p
+                    style={{
+                      fontWeight: 700,
+                      marginTop: 6,
+                      textTransform: "uppercase",
+                    }}>
+                    Hóa Đơn Bán Lẻ
+                  </p>
+                  <p style={{ fontSize: 11 }}>Mã: {receiptData.code}</p>
+                  <p style={{ fontSize: 11 }}>Ngày: {receiptData.date}</p>
+                </div> */}
                 <div
                   style={{
                     textAlign: "center",
@@ -1948,8 +2228,10 @@ const POSPageInner = () => {
                     }}>
                     Nhà Thuốc Của Bạn
                   </p>
-                  <p style={{ fontSize: 11 }}>Đ/c: Khu vực Cần Thơ</p>
-                  <p style={{ fontSize: 11 }}>SĐT: 0123.456.789</p>
+                  <p style={{ fontSize: 11 }}>Đ/c: {receiptData.branchName}</p>
+                  {/* SỬA LẠI THÀNH SĐT ĐỘNG CỦA CHI NHÁNH */}
+                  <p style={{ fontSize: 11 }}>SĐT: {receiptData.branchPhone}</p>
+
                   <p
                     style={{
                       fontWeight: 700,
@@ -2039,6 +2321,14 @@ const POSPageInner = () => {
                     fontSize: 10,
                     fontStyle: "italic",
                   }}>
+                  <p
+                    style={{
+                      fontWeight: 700,
+                      fontStyle: "normal",
+                      marginBottom: 4,
+                    }}>
+                    Người lập: {receiptData.staffRole} - {receiptData.staffName}
+                  </p>
                   <p>Cảm ơn quý khách và hẹn gặp lại!</p>
                   <p>(Hàng mua rồi miễn đổi trả)</p>
                 </div>
@@ -2057,7 +2347,7 @@ const POSPageInner = () => {
       />
     </div>
   );
-};
+};;;
 
 const POSPage = () => (
   <ToastProvider>

@@ -16,7 +16,7 @@ const inventorySchema = new mongoose.Schema(
       {
         batchCode: { type: String, required: true },
         expiryDate: { type: Date, required: true },
-        manufacturingDate: { type: Date },
+        manufacturingDate: { type: Date, required: true },
 
         // Số lượng hiện tại còn trong kho (Realtime stock)
         quantity: { type: Number, default: 0 },

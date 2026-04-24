@@ -5,18 +5,16 @@ const MedicineVariant = require("../models/MedicineVariant");
 // 1. Xem tồn kho hiện tại (Realtime)
 exports.getInventoryByBranch = async (req, res) => {
   try {
+    // TÌM VÀ SỬA ĐOẠN NÀY
     let { branchId } = req.query;
 
-    // 1. Xử lý logic quyền hạn Chi nhánh
     if (req.user.role === "branch_manager" || req.user.role === "pharmacist") {
-      // Ép cứng xem kho của mình
-      branchId = req.user.branchId;
+      // Cho phép lấy branchId từ query, nếu không có mới dùng mặc định của user
+      branchId = branchId || req.user.branchId;
     } else if (
       (req.user.role === "admin" || req.user.role === "warehouse_manager") &&
       !branchId
     ) {
-      // Nếu là Admin/Kho tổng mà không truyền ?branchId=... trên URL
-      // -> Lấy mặc định kho mà tài khoản này đang trực thuộc
       branchId = req.user.branchId;
     }
 
@@ -74,12 +72,10 @@ exports.getMonthlyReport = async (req, res) => {
     }
 
     if (!targetBranchId) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Không xác định được Kho cần xem báo cáo.",
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Không xác định được Kho cần xem báo cáo.",
+      });
     }
 
     // 1. Lấy dữ liệu Xuất Nhập Tồn tháng

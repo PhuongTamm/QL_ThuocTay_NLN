@@ -23,7 +23,7 @@ router.post(
 router.get(
   "/pending-import",
   verifyToken,
-  checkRole(["branch_manager", "admin"]),
+  checkRole(["branch_manager", "admin", "warehouse_manager"]),
   transactionController.getPendingImports,
 );
 
@@ -37,7 +37,7 @@ router.get(
 router.put(
   "/:id/confirm-import",
   verifyToken,
-  checkRole(["branch_manager", "admin"]),
+  checkRole(["branch_manager", "admin", "warehouse_manager"]),
   transactionController.confirmImport,
 );
 

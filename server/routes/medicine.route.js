@@ -48,4 +48,11 @@ router.delete(
   medicineController.deleteVariant,
 );
 
+router.post(
+  "/seed",
+  verifyToken,
+  checkRole(["admin"]),
+  medicineController.seedMedicines,
+);
+
 module.exports = router;

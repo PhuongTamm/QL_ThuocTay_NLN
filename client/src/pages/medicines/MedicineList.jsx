@@ -106,8 +106,16 @@ const MedicineList = () => {
       )
     ) {
       try {
-        await api.delete(`/medicines/${medicineId}`);
-        fetchData();
+        const response = await api.delete(`/medicines/${medicineId}`);
+        if (response.success) {
+          window.alert("Xóa thuốc gốc thành công!");
+          fetchData();
+        } else {
+          window.alert(
+            "Xóa thuốc gốc thất bại: " +
+              (response.message || "Lỗi không xác định"),
+          );
+        }
       } catch (error) {
         alert(error.response?.data?.message || "Đã xảy ra lỗi khi xóa thuốc!");
       }
@@ -146,6 +154,7 @@ const MedicineList = () => {
       formData.append("ingredients", editingMed.ingredients || "");
       formData.append("manufacturer", editingMed.manufacturer || "");
       formData.append("isPrescription", editingMed.isPrescription);
+      formData.append("description", editingMed.description || "");
       editImages.forEach((img) => {
         formData.append("images", img);
       });
@@ -239,12 +248,15 @@ const MedicineList = () => {
       return alert("Tên hiển thị không được để trống!");
     if (Number(editingVariant.currentPrice) < 0)
       return alert("Giá bán lẻ không được nhỏ hơn 0!");
+    if (Number(editingVariant.conversionRate) < 1)
+      return alert("Tỷ lệ quy đổi phải lớn hơn hoặc bằng 1!");
     setIsSubmitting(true);
     try {
       await api.put(`/medicines/variants/${editingVariant._id}`, {
         name: editingVariant.name,
         packagingSpecification: editingVariant.packagingSpecification,
         currentPrice: Number(editingVariant.currentPrice),
+        conversionRate: Number(editingVariant.conversionRate),
       });
       setIsEditVariantModalOpen(false);
       fetchData();
@@ -821,6 +833,22 @@ const MedicineList = () => {
                 </span>
               </label>
 
+              <div>
+                <label className={labelCls}>Mô tả chi tiết / Cách dùng</label>
+                <textarea
+                  value={editingMed.description || ""}
+                  onChange={(e) =>
+                    setEditingMed({
+                      ...editingMed,
+                      description: e.target.value,
+                    })
+                  }
+                  rows="3"
+                  className={inputCls + " resize-none"}
+                  placeholder="Mô tả công dụng, liều dùng..."
+                />
+              </div>
+
               {/* Image upload */}
               <div className="pt-4 border-t border-slate-100">
                 <label className={labelCls}>Hình ảnh</label>
@@ -1147,6 +1175,29 @@ const MedicineList = () => {
                   }
                   className={inputCls}
                   placeholder="VD: Hộp 10 vỉ"
+                />
+              </div>
+
+              <div className="bg-sky-50 border border-sky-100 rounded-xl p-4">
+                <label className={labelCls + " text-sky-600"}>
+                  Tỷ lệ quy đổi ra đơn vị cơ sở{" "}
+                  <span className="text-red-400">*</span>
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  required
+                  value={editingVariant.conversionRate || 1}
+                  onChange={(e) =>
+                    setEditingVariant({
+                      ...editingVariant,
+                      conversionRate: e.target.value,
+                    })
+                  }
+                  className={
+                    inputCls + " focus:ring-sky-400 focus:border-sky-400"
+                  }
+                  placeholder="VD: 100"
                 />
               </div>
             </form>

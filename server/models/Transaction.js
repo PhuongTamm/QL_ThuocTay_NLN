@@ -50,7 +50,7 @@ const transactionSchema = new mongoose.Schema(
         // Thông tin Lô
         batchCode: { type: String, required: true }, // A123
         expiryDate: { type: Date, required: true },
-        manufacturingDate: { type: Date }, // Bổ sung ngày sản xuất
+        manufacturingDate: { type: Date, required: true }, // Bổ sung ngày sản xuất
 
         quantity: { type: Number, required: true },
 

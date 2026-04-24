@@ -31,7 +31,7 @@ const Sidebar = () => {
       path: "/pos",
       icon: <ShoppingCart size={20} />,
       label: "POS Bán hàng",
-      roles: ["admin", "branch_manager", "pharmacist"],
+      roles: ["branch_manager", "pharmacist"],
     },
 
     // Quản lý Dữ liệu
@@ -39,7 +39,7 @@ const Sidebar = () => {
       path: "/categories",
       icon: <Tags size={20} />,
       label: "Danh mục Thuốc",
-      roles: ["admin", "warehouse_manager"],
+      roles: ["admin"],
     },
     {
       path: "/medicines",
@@ -71,7 +71,7 @@ const Sidebar = () => {
       path: "/pending-imports",
       icon: <Download size={20} />,
       label: "Xác nhận nhận hàng",
-      roles: ["admin", "branch_manager", "pharmacist"],
+      roles: ["admin", "branch_manager", "warehouse_manager"],
     },
     {
       path: "/history-imports",
@@ -90,7 +90,7 @@ const Sidebar = () => {
     {
       path: "/monthly-reports",
       icon: <BarChart size={20} />,
-      label: "Báo cáo doanh thu",
+      label: "Báo cáo tồn kho",
       roles: ["admin", "branch_manager", "warehouse_manager"],
     },
   ];
@@ -105,7 +105,6 @@ const Sidebar = () => {
     <div className="min-h-screen w-64 bg-gray-900 text-white flex flex-col overflow-y-auto">
       <div className="p-6 text-2xl font-bold text-[#0ea5e9]">PharmaApp</div>
 
-      {/* Hiển thị tên & role của nhân viên cho pro */}
       <div className="px-6 pb-4 border-b border-gray-800 mb-4">
         <p className="font-bold text-gray-200">{user?.fullName}</p>
         <p className="text-xs text-[#0ea5e9] uppercase tracking-wider">

@@ -16,14 +16,14 @@ router.get(
 // 2. Báo cáo doanh thu (Kèm chart data)
 router.get(
   "/revenue",
-  checkRole(["admin", "branch_manager"]),
+  checkRole(["admin", "branch_manager", "warehouse_manager"]),
   reportController.getRevenueReport,
 );
 
 // 3. Top thuốc bán chạy
 router.get(
   "/top-medicines",
-  checkRole(["admin", "branch_manager", "pharmacist"]),
+  checkRole(["admin", "branch_manager", "warehouse_manager", "pharmacist"]),
   reportController.getTopMedicines,
 );
 

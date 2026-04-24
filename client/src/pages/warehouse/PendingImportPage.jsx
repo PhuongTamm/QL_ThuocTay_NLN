@@ -6,6 +6,10 @@ import {
   PackageOpen,
   Loader2,
   Store,
+  Package,
+  Hash,
+  CalendarDays,
+  AlertTriangle,
 } from "lucide-react";
 import api from "../../services/api";
 
@@ -32,139 +36,531 @@ const PendingImportPage = () => {
   const handleConfirm = async (id) => {
     if (
       window.confirm(
-        "Kiểm tra hàng hóa thực tế đã khớp với phiếu. Bạn xác nhận đưa số hàng này vào tồn kho của chi nhánh?",
+        "Kiểm tra hàng hóa thực tế đã khớp với phiếu. Bạn xác nhận đưa số hàng này vào tồn kho?",
       )
     ) {
       try {
         await api.put(`/transactions/${id}/confirm-import`);
-        alert("Nhập kho chi nhánh thành công!");
-        fetchPending(); // Refresh lại danh sách
+        alert("Nhập kho thành công!");
+        fetchPending();
       } catch (error) {
         alert("Lỗi: " + (error.response?.data?.message || error.message));
       }
     }
   };
 
+  // Helper: Dịch lý do trả hàng
+  const getReasonText = (reason) => {
+    switch (reason) {
+      case "OVERSTOCK":
+        return "Bán chậm / Quá tồn";
+      case "EXPIRED":
+        return "Cận date / Hết hạn";
+      case "DAMAGED":
+        return "Hư hỏng / Lỗi NSX";
+      default:
+        return "---";
+    }
+  };
+
   if (loading) {
     return (
-      <div className="p-6 text-center text-gray-500 mt-20">
-        <Loader2 className="animate-spin inline mr-2" /> Đang tải dữ liệu...
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{
+          background: "#f0f4f8",
+          fontFamily: "'DM Sans', system-ui, sans-serif",
+        }}>
+        <div className="flex flex-col items-center gap-3">
+          <div
+            style={{
+              width: 52,
+              height: 52,
+              background: "linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%)",
+              borderRadius: 16,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow: "0 6px 20px rgba(14,165,233,.4)",
+            }}>
+            <Loader2 size={26} color="white" className="animate-spin" />
+          </div>
+          <p style={{ color: "#64748b", fontWeight: 600, fontSize: 14 }}>
+            Đang tải dữ liệu...
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen font-sans">
-      <div className="max-w-5xl mx-auto">
-        <h1 className="text-2xl font-bold mb-6 flex items-center gap-2 text-gray-800">
-          <Download className="text-blue-600" /> Phiếu Chờ Xác Nhận Nhận Hàng
-        </h1>
+    <div
+      className="min-h-screen p-6"
+      style={{
+        background: "#f0f4f8",
+        fontFamily: "'DM Sans', system-ui, sans-serif",
+      }}>
+      <style>{`
+        .scrollbar-thin::-webkit-scrollbar { width: 4px; }
+        .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+        .scrollbar-thin::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
 
-        {transactions.length === 0 ? (
-          <div className="bg-white p-16 text-center rounded-2xl border border-dashed border-gray-300 flex flex-col items-center justify-center">
-            <PackageOpen size={48} className="text-gray-300 mb-4" />
-            <p className="text-gray-500 text-lg">
-              Không có kiện hàng nào đang chờ nhận.
+        .pending-card {
+          background: white;
+          border: 1.5px solid #e2e8f0;
+          border-radius: 18px;
+          overflow: hidden;
+          box-shadow: 0 2px 8px rgba(0,0,0,.05);
+          transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .pending-card:hover {
+          border-color: #7dd3fc;
+          box-shadow: 0 4px 18px rgba(14,165,233,.1);
+        }
+
+        .confirm-btn {
+          background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+          color: white;
+          border: none;
+          border-radius: 12px;
+          padding: 10px 20px;
+          font-size: 13px;
+          font-weight: 700;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 7px;
+          white-space: nowrap;
+          box-shadow: 0 4px 12px rgba(16,185,129,.35);
+          transition: all 0.2s ease;
+        }
+        .confirm-btn:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 6px 18px rgba(16,185,129,.45);
+        }
+        .confirm-btn:active { transform: scale(0.97); }
+
+        .detail-table thead th {
+          background: #f8fafc;
+          color: #64748b;
+          font-weight: 600;
+          font-size: 12px;
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
+          padding: 11px 18px;
+          border-bottom: 1.5px solid #f1f5f9;
+        }
+        .detail-table tbody tr {
+          border-bottom: 1px solid #f8fafc;
+          transition: background 0.15s;
+        }
+        .detail-table tbody tr:last-child { border-bottom: none; }
+        .detail-table tbody tr:hover { background: #f0f9ff; }
+        .detail-table tbody td { padding: 12px 18px; font-size: 13px; }
+      `}</style>
+
+      <div style={{ maxWidth: 1380, margin: "0 auto" }}>
+        {/* ── Page Header ── */}
+        <div className="flex items-center gap-3 mb-7">
+          <div
+            style={{
+              background: "linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%)",
+              borderRadius: 14,
+              width: 46,
+              height: 46,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow: "0 6px 16px rgba(14,165,233,.35)",
+              flexShrink: 0,
+            }}>
+            <Download size={22} color="white" />
+          </div>
+          <div>
+            <h1
+              style={{
+                fontSize: 22,
+                fontWeight: 800,
+                color: "#0f172a",
+                lineHeight: 1.2,
+              }}>
+              Phiếu Chờ Xác Nhận Nhận Hàng
+            </h1>
+            <p style={{ fontSize: 12, color: "#64748b", marginTop: 2 }}>
+              {transactions.length > 0
+                ? `${transactions.length} kiện hàng đang chờ xác nhận`
+                : "Không có kiện hàng nào đang chờ"}
             </p>
-            <p className="text-gray-400 text-sm mt-2">
-              Khi Kho Tổng xuất hàng, phiếu sẽ hiển thị tại đây.
+          </div>
+        </div>
+
+        {/* ── Empty State ── */}
+        {transactions.length === 0 ? (
+          <div
+            style={{
+              background: "white",
+              border: "1.5px dashed #cbd5e1",
+              borderRadius: 20,
+              padding: "72px 24px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow: "0 1px 4px rgba(0,0,0,.04)",
+            }}>
+            <div
+              style={{
+                width: 72,
+                height: 72,
+                background: "#f1f5f9",
+                borderRadius: 20,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: 16,
+              }}>
+              <PackageOpen size={34} color="#cbd5e1" />
+            </div>
+            <p style={{ fontSize: 16, fontWeight: 700, color: "#94a3b8" }}>
+              Không có kiện hàng nào đang chờ nhận
+            </p>
+            <p style={{ fontSize: 13, color: "#cbd5e1", marginTop: 6 }}>
+              Khi có luân chuyển hoặc trả hàng, phiếu sẽ hiển thị tại đây.
             </p>
           </div>
         ) : (
-          <div className="space-y-6">
+          <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
             {transactions.map((trans) => (
-              <div
-                key={trans._id}
-                className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:border-blue-300 transition-colors">
-                {/* Header Phiếu */}
-                <div className="bg-blue-50/50 p-5 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="bg-blue-100 text-blue-700 font-bold px-2.5 py-0.5 rounded text-sm uppercase tracking-wide">
-                        Mã Phiếu
-                      </span>
-                      <h3 className="font-mono text-lg font-bold text-gray-800">
+              <div key={trans._id} className="pending-card">
+                {/* ── Card Header ── */}
+                <div
+                  style={{
+                    padding: "16px 20px",
+                    background:
+                      trans.type === "RETURN_TO_WAREHOUSE"
+                        ? "linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%)" // Cam nhạt nếu là Phiếu trả hàng
+                        : "linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)", // Xanh nếu là Phiếu luân chuyển
+                    borderBottom: `1.5px solid ${trans.type === "RETURN_TO_WAREHOUSE" ? "#fed7aa" : "#bae6fd"}`,
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                    gap: 14,
+                  }}>
+                  {/* Left: Meta info */}
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 8,
+                    }}>
+                    {/* Mã phiếu & Nhãn phân loại */}
+                    <div
+                      style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      <div
+                        style={{
+                          background:
+                            trans.type === "RETURN_TO_WAREHOUSE"
+                              ? "linear-gradient(135deg, #f97316, #ea580c)"
+                              : "linear-gradient(135deg, #0ea5e9, #06b6d4)",
+                          borderRadius: 8,
+                          padding: "3px 10px",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 5,
+                        }}>
+                        <Hash size={11} color="white" />
+                        <span
+                          style={{
+                            fontSize: 11,
+                            fontWeight: 800,
+                            color: "white",
+                            letterSpacing: "0.06em",
+                            textTransform: "uppercase",
+                          }}>
+                          Mã phiếu
+                        </span>
+                      </div>
+                      <span
+                        style={{
+                          fontFamily: "monospace",
+                          fontSize: 16,
+                          fontWeight: 800,
+                          color: "#0f172a",
+                          letterSpacing: "0.04em",
+                        }}>
                         {trans.code}
-                      </h3>
-                    </div>
-                    <p className="text-sm text-gray-600 flex items-center gap-1.5 mt-2">
-                      <Store size={14} className="text-gray-400" /> Từ:{" "}
-                      <span className="font-bold text-gray-700">
-                        {trans.fromBranch?.name || "Kho Tổng"}
                       </span>
-                    </p>
-                    <p className="text-sm text-gray-500 flex items-center gap-1.5 mt-1">
-                      <Clock size={14} className="text-gray-400" /> Thời gian
-                      xuất:{" "}
-                      {new Date(trans.createdAt).toLocaleString("vi-VN", {
-                        dateStyle: "full",
-                        timeStyle: "short",
-                      })}
-                    </p>
+
+                      {/* BỔ SUNG: BADGE PHÂN LOẠI PHIẾU */}
+                      <span
+                        style={{
+                          fontSize: 10,
+                          fontWeight: 800,
+                          padding: "3px 8px",
+                          borderRadius: 6,
+                          textTransform: "uppercase",
+                          background:
+                            trans.type === "RETURN_TO_WAREHOUSE"
+                              ? "white"
+                              : "white",
+                          color:
+                            trans.type === "RETURN_TO_WAREHOUSE"
+                              ? "#c2410c"
+                              : "#0284c7",
+                          border: `1px solid ${trans.type === "RETURN_TO_WAREHOUSE" ? "#fed7aa" : "#bae6fd"}`,
+                        }}>
+                        {trans.type === "RETURN_TO_WAREHOUSE"
+                          ? "Phiếu Trả Hàng"
+                          : "Phiếu Luân Chuyển"}
+                      </span>
+                    </div>
+
+                    {/* Từ chi nhánh */}
+                    <div
+                      style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                      <Store size={14} color="#64748b" />
+                      <span style={{ fontSize: 13, color: "#64748b" }}>
+                        Từ:{" "}
+                        <span style={{ fontWeight: 700, color: "#0f172a" }}>
+                          {trans.fromBranch?.name || "Kho Tổng"}
+                        </span>
+                      </span>
+                    </div>
+
+                    {/* Thời gian */}
+                    <div
+                      style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                      <Clock size={14} color="#94a3b8" />
+                      <span style={{ fontSize: 12, color: "#94a3b8" }}>
+                        {new Date(trans.createdAt).toLocaleString("vi-VN", {
+                          dateStyle: "full",
+                          timeStyle: "short",
+                        })}
+                      </span>
+                    </div>
                   </div>
 
+                  {/* Right: CTA button */}
                   <button
-                    onClick={() => handleConfirm(trans._id)}
-                    className="bg-green-600 text-white px-6 py-2.5 rounded-lg font-bold flex items-center gap-2 hover:bg-green-700 shadow-sm transition-transform active:scale-95 whitespace-nowrap">
-                    <CheckCircle size={20} /> Xác Nhận Nhận Hàng
+                    className="confirm-btn"
+                    onClick={() => handleConfirm(trans._id)}>
+                    <CheckCircle size={18} />
+                    Xác Nhận Nhận Hàng
                   </button>
                 </div>
 
-                {/* Chi tiết Hàng hóa */}
-                <div className="p-0">
-                  <table className="w-full text-sm text-left">
-                    <thead className="bg-gray-50 text-gray-500">
+                {/* ── Detail Table ── */}
+                <div style={{ overflowX: "auto" }}>
+                  <table
+                    className="detail-table"
+                    style={{ width: "100%", borderCollapse: "collapse" }}>
+                    <thead>
                       <tr>
-                        <th className="py-3 px-5 font-medium w-12 text-center">
-                          STT
-                        </th>
-                        <th className="py-3 px-5 font-medium">Mã SKU</th>
-                        <th className="py-3 px-5 font-medium">
-                          Tên hàng hóa (Quy cách)
-                        </th>
-                        <th className="py-3 px-5 font-medium">
-                          Mã Lô (Kèm HSD)
-                        </th>
-                        <th className="py-3 px-5 font-medium text-right">
-                          Số lượng chuyển
-                        </th>
+                        <th style={{ textAlign: "center", width: 48 }}>STT</th>
+                        <th>Mã SKU</th>
+                        <th>Tên hàng hóa (Quy cách)</th>
+                        <th>Mã Lô / HSD</th>
+                        {/* HIỆN CỘT LÝ DO NẾU LÀ PHIẾU TRẢ HÀNG */}
+                        {trans.type === "RETURN_TO_WAREHOUSE" && (
+                          <th>Lý do trả hàng</th>
+                        )}
+                        <th style={{ textAlign: "right" }}>Số lượng</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-100">
+                    <tbody>
                       {trans.details.map((detail, idx) => (
-                        <tr key={idx} className="hover:bg-gray-50/50">
-                          <td className="py-3 px-5 text-center text-gray-400">
-                            {idx + 1}
+                        <tr key={idx}>
+                          {/* STT */}
+                          <td style={{ textAlign: "center" }}>
+                            <span
+                              style={{
+                                display: "inline-flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                width: 24,
+                                height: 24,
+                                background: "#f1f5f9",
+                                borderRadius: 6,
+                                fontSize: 11,
+                                fontWeight: 700,
+                                color: "#94a3b8",
+                              }}>
+                              {idx + 1}
+                            </span>
                           </td>
-                          <td className="py-3 px-5 font-mono text-gray-500">
-                            {detail.variantId?.sku}
+
+                          {/* SKU */}
+                          <td style={{ textAlign: "center" }}>
+                            <span
+                              style={{
+                                fontFamily: "monospace",
+                                fontSize: 12,
+                                color: "#64748b",
+                                background: "#f8fafc",
+                                border: "1px solid #e2e8f0",
+                                borderRadius: 6,
+                                padding: "2px 8px",
+                              }}>
+                              {detail.variantId?.sku}
+                            </span>
                           </td>
-                          <td className="py-3 px-5 font-bold text-gray-700">
-                            {detail.variantId?.name}
-                          </td>
-                          <td className="py-3 px-5">
-                            <div className="flex flex-col">
-                              <span className="font-mono font-bold text-gray-600">
-                                {detail.batchCode}
-                              </span>
-                              <span className="text-xs text-gray-400">
-                                HSD:{" "}
-                                {new Date(detail.expiryDate).toLocaleDateString(
-                                  "vi-VN",
-                                )}
+
+                          {/* Tên thuốc */}
+                          <td style={{ textAlign: "center" }}>
+                            <div
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                gap: 7,
+                              }}>
+                              <div
+                                style={{
+                                  width: 30,
+                                  height: 30,
+                                  background: "#e0f2fe",
+                                  borderRadius: 8,
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  flexShrink: 0,
+                                }}>
+                                <Package size={14} color="#0284c7" />
+                              </div>
+                              <span
+                                style={{
+                                  fontWeight: 700,
+                                  color: "#0f172a",
+                                  fontSize: 13,
+                                }}>
+                                {detail.variantId?.name}
                               </span>
                             </div>
                           </td>
-                          <td className="py-3 px-5 text-right font-bold text-blue-600 text-lg">
-                            {detail.quantity}{" "}
-                            <span className="text-sm font-medium text-gray-500">
-                              {detail.variantId?.unit}
-                            </span>
+
+                          {/* Lô & HSD */}
+                          <td style={{ textAlign: "center" }}>
+                            <div
+                              style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: 2,
+                              }}>
+                              <span
+                                style={{
+                                  fontFamily: "monospace",
+                                  fontWeight: 700,
+                                  color: "#0f172a",
+                                  fontSize: 13,
+                                }}>
+                                {detail.batchCode}
+                              </span>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  gap: 4,
+                                }}>
+                                <CalendarDays size={11} color="#94a3b8" />
+                                <span
+                                  style={{ fontSize: 11, color: "#94a3b8" }}>
+                                  HSD:{" "}
+                                  {new Date(
+                                    detail.expiryDate,
+                                  ).toLocaleDateString("vi-VN")}
+                                </span>
+                              </div>
+                            </div>
+                          </td>
+
+                          {/* BỔ SUNG: CỘT LÝ DO TRẢ HÀNG */}
+                          {trans.type === "RETURN_TO_WAREHOUSE" && (
+                            <td style={{ textAlign: "center" }}>
+                              <span
+                                style={{
+                                  display: "inline-flex",
+                                  alignItems: "center",
+                                  fontSize: 11,
+                                  fontWeight: 700,
+                                  color:
+                                    detail.reason === "DAMAGED"
+                                      ? "#b91c1c" // Đỏ
+                                      : detail.reason === "EXPIRED"
+                                        ? "#c2410c" // Cam
+                                        : "#0f172a", // Đen nhạt
+                                  background:
+                                    detail.reason === "DAMAGED"
+                                      ? "#fee2e2"
+                                      : detail.reason === "EXPIRED"
+                                        ? "#ffedd5"
+                                        : "#f1f5f9",
+                                  border: `1px solid ${
+                                    detail.reason === "DAMAGED"
+                                      ? "#fecaca"
+                                      : detail.reason === "EXPIRED"
+                                        ? "#fed7aa"
+                                        : "#e2e8f0"
+                                  }`,
+                                  padding: "3px 8px",
+                                  borderRadius: 6,
+                                  whiteSpace: "nowrap",
+                                }}>
+                                {getReasonText(detail.reason)}
+                              </span>
+                            </td>
+                          )}
+
+                          {/* Số lượng */}
+                          <td style={{ textAlign: "right" }}>
+                            <div
+                              style={{
+                                display: "inline-flex",
+                                alignItems: "baseline",
+                                gap: 4,
+                                background: "#f0f9ff",
+                                border: "1.5px solid #bae6fd",
+                                borderRadius: 10,
+                                padding: "4px 12px",
+                              }}>
+                              <span
+                                style={{
+                                  fontSize: 18,
+                                  fontWeight: 800,
+                                  color: "#0284c7",
+                                }}>
+                                {detail.quantity}
+                              </span>
+                              <span
+                                style={{
+                                  fontSize: 11,
+                                  fontWeight: 600,
+                                  color: "#64748b",
+                                }}>
+                                {detail.variantId?.unit}
+                              </span>
+                            </div>
                           </td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
+                </div>
+
+                {/* ── Card Footer ── */}
+                <div
+                  style={{
+                    padding: "10px 20px",
+                    background: "#f8fafc",
+                    borderTop: "1px solid #f1f5f9",
+                    display: "flex",
+                    justifyContent: "flex-end",
+                  }}>
+                  <span
+                    style={{ fontSize: 12, color: "#94a3b8", fontWeight: 600 }}>
+                    {trans.details.length} mặt hàng trong phiếu
+                  </span>
                 </div>
               </div>
             ))}

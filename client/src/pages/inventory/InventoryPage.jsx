@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import api from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
-import html2pdf from "html2pdf.js"; // BỔ SUNG IMPORT ĐỂ XUẤT PDF
+import html2pdf from "html2pdf.js";
 
 /* ─── 1. ĐƯA MODAL OVERLAY RA NGOÀI ĐỂ KHÔNG BỊ GIẬT/LOAD LẠI KHI GÕ PHÍM ─── */
 const ModalOverlay = ({ children, onClose, zIndex = "z-40" }) => (
@@ -69,7 +69,7 @@ const InventoryPage = () => {
   const [disposeSearchTerm, setDisposeSearchTerm] = useState("");
   const [disposeCart, setDisposeCart] = useState([]);
   const [isSubmittingDispose, setIsSubmittingDispose] = useState(false);
-  const [isExportingPDF, setIsExportingPDF] = useState(false); // State loading PDF
+  const [isExportingPDF, setIsExportingPDF] = useState(false);
 
   useEffect(() => {
     if (user?.role === "admin" || user?.role === "warehouse_manager") {
@@ -141,14 +141,18 @@ const InventoryPage = () => {
     setIsModalOpen(true);
   };
 
-  const handleOpenBatchHistory = async (batchCode, importPrice) => {
+  const handleOpenBatchHistory = async (
+    batchCode,
+    importPrice,
+    batchQuality,
+  ) => {
     setSelectedBatchCode(batchCode);
     setIsHistoryModalOpen(true);
     setLoadingHistory(true);
     try {
       const targetBranch = selectedBranchId || user.branchId;
       const res = await api.get(
-        `/transactions/batch-history?branchId=${targetBranch}&medicineId=${selectedInventory.medicineId._id}&batchCode=${batchCode}&importPrice=${importPrice}`,
+        `/transactions/batch-history?branchId=${targetBranch}&medicineId=${selectedInventory.medicineId._id}&batchCode=${batchCode}&importPrice=${importPrice}&batchQuality=${batchQuality}`,
       );
       setBatchHistory(res.data.data || []);
     } catch (error) {
@@ -210,20 +214,20 @@ const InventoryPage = () => {
     };
   };
 
-  /* ─── 2. LOGIC XUẤT PDF ─── */
+  /* ─── LOGIC IN PHIẾU BÁO CÁO TỒN KHO PDF ─── */
   const handleExportPDF = () => {
     setIsExportingPDF(true);
 
-    // 1. XÁC ĐỊNH THÔNG TIN CƠ BẢN
     let branchName = user?.branchId
       ? branches.find((x) => x._id === user.branchId)?.name
       : "Kho của tôi";
     if (selectedBranchId) {
       const b = branches.find((x) => x._id === selectedBranchId);
       if (b)
-        branchName = b.isMainWarehouse
-          ? `Kho Tổng: ${b.name}`
-          : `Chi nhánh: ${b.name}`;
+        branchName =
+          b.type === "warehouse"
+            ? `Kho Tổng: ${b.name}`
+            : `Chi nhánh: ${b.name}`;
     } else if (user?.role === "branch_manager" || user?.role === "pharmacist") {
       branchName = "Kho Chi nhánh của tôi";
     }
@@ -238,7 +242,6 @@ const InventoryPage = () => {
       year: "numeric",
     });
 
-    // 2. TÍNH TOÁN CÁC CHỈ SỐ THỐNG KÊ TỔNG QUAN
     let totalMedicines = processedData.length;
     let totalBatches = 0;
     let totalBaseQuantity = 0;
@@ -250,17 +253,14 @@ const InventoryPage = () => {
       totalBatches += activeBatches.length;
       totalBaseQuantity += inv.totalQuantity;
 
-      // 2.1 Tính Tổng giá trị Nhập (Vốn)
       let itemTotalBaseQty = 0;
       activeBatches.forEach((b) => {
         totalImportValue += b.quantity * (b.importPrice || 0);
         itemTotalBaseQty += b.quantity;
       });
 
-      // 2.2 Tính Tổng giá trị Bán ước tính (Thuật toán Chia lấy dư)
       let itemRetailValue = 0;
       if (inv.variants && inv.variants.length > 0) {
-        // Sắp xếp quy cách theo tỷ lệ quy đổi GIẢM DẦN (VD: Hộp 30 -> Vỉ 10 -> Viên 1)
         const sortedVariants = [...inv.variants].sort(
           (a, b) => b.conversionRate - a.conversionRate,
         );
@@ -269,15 +269,11 @@ const InventoryPage = () => {
 
         for (const variant of sortedVariants) {
           if (remainQty <= 0) break;
-          // Lấy phần nguyên (Số lượng chẵn theo quy cách này)
           const qtyForVariant = Math.floor(remainQty / variant.conversionRate);
-          // Cộng tiền
           itemRetailValue += qtyForVariant * variant.currentPrice;
-          // Lấy phần dư chuyển xuống quy cách nhỏ hơn
           remainQty = remainQty % variant.conversionRate;
         }
 
-        // Đề phòng trường hợp thuốc không có quy cách tỷ lệ 1 (dư lẻ), ta nhân tỷ lệ quy cách nhỏ nhất
         if (remainQty > 0) {
           const smallestVariant = sortedVariants[sortedVariants.length - 1];
           itemRetailValue +=
@@ -289,7 +285,6 @@ const InventoryPage = () => {
       totalRetailValue += itemRetailValue;
     });
 
-    // 3. XÂY DỰNG GIAO DIỆN HTML CHO BÁO CÁO
     const printDiv = document.createElement("div");
     printDiv.style.fontFamily = "Arial, sans-serif";
     printDiv.style.color = "#000000";
@@ -388,7 +383,134 @@ const InventoryPage = () => {
       });
   };
 
-  /* ─── LOGIC XỬ LÝ XUẤT HỦY ─── */
+  /* ─── LOGIC IN PHIẾU XUẤT HỦY (MỚI THÊM) ─── */
+  const generateDisposalPDF = async (transaction) => {
+    let branchName = user?.branchId
+      ? branches.find((x) => x._id === user.branchId)?.name
+      : "Kho của tôi";
+    if (selectedBranchId) {
+      const b = branches.find((x) => x._id === selectedBranchId);
+      if (b)
+        branchName =
+          b.type === "warehouse"
+            ? `Kho Tổng: ${b.name}`
+            : `Chi nhánh: ${b.name}`;
+    } else if (user?.role === "branch_manager" || user?.role === "pharmacist") {
+      branchName = "Kho Chi nhánh của tôi";
+    }
+
+    const creatorName = user?.fullName || user?.username || "Admin";
+    const txDate = new Date(transaction.createdAt).toLocaleString("vi-VN");
+
+    let totalValue = 0;
+    let htmlRows = "";
+
+    transaction.details.forEach((item, idx) => {
+      // Tìm thông tin biến thể từ dữ liệu disposeCart hiện tại hoặc fallback
+      const cartItem = disposeCart.find((c) => c.variantId === item.variantId);
+      const name = cartItem?.medicine?.name || "Sản phẩm không rõ";
+      const unit =
+        cartItem?.inventory?.variants?.find((v) => v._id === item.variantId)
+          ?.unit || "---";
+      const expiry = item.expiryDate
+        ? new Date(item.expiryDate).toLocaleDateString("vi-VN")
+        : "---";
+
+      const itemTotal = (item.quantity || 0) * (item.price || 0);
+      totalValue += itemTotal;
+
+      let reasonText = "";
+      if (item.reason === "EXPIRED") reasonText = "Hết hạn/Cận date";
+      else if (item.reason === "DAMAGED") reasonText = "Hư hỏng";
+      else reasonText = item.reason || "Lý do khác";
+
+      htmlRows += `
+        <tr>
+          <td style="border: 1px solid #000; padding: 8px; text-align: center;">${idx + 1}</td>
+          <td style="border: 1px solid #000; padding: 8px;">${name}</td>
+          <td style="border: 1px solid #000; padding: 8px; text-align: center;">${item.batchCode || "---"}</td>
+          <td style="border: 1px solid #000; padding: 8px; text-align: center;">${expiry}</td>
+          <td style="border: 1px solid #000; padding: 8px; text-align: center;">${unit}</td>
+          <td style="border: 1px solid #000; padding: 8px; text-align: center; font-weight: bold;">${item.quantity}</td>
+          <td style="border: 1px solid #000; padding: 8px; text-align: center;">${reasonText}</td>
+          <td style="border: 1px solid #000; padding: 8px; text-align: right;">${(item.price || 0).toLocaleString("vi-VN")}</td>
+          <td style="border: 1px solid #000; padding: 8px; text-align: right;">${itemTotal.toLocaleString("vi-VN")}</td>
+        </tr>
+      `;
+    });
+
+    const html = `
+      <div style="font-family: 'Times New Roman', Times, serif; padding: 30px; color: #000; width: 1000px; margin: 0 auto; box-sizing: border-box;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 25px;">
+          <div>
+            <h3 style="margin: 0; font-size: 16px; font-weight: bold; text-transform: uppercase;">HỆ THỐNG PHARMA APP</h3>
+            <p style="margin: 5px 0; font-size: 14px;">Đơn vị hủy: <strong>${branchName}</strong></p>
+          </div>
+          <div style="text-align: right;">
+            <p style="margin: 0; font-size: 14px; font-weight: bold;">Mã phiếu: ${transaction.code}</p>
+            <p style="margin: 5px 0; font-size: 14px; font-style: italic;">Ngày lập: ${txDate}</p>
+          </div>
+        </div>
+
+        <h2 style="text-align: center; font-size: 22px; font-weight: bold; margin-bottom: 25px;">PHIẾU XUẤT HỦY HÀNG HÓA</h2>
+
+        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+          <thead>
+            <tr style="background-color: #f9fafb;">
+              <th style="border: 1px solid #000; padding: 10px; width: 5%;">STT</th>
+              <th style="border: 1px solid #000; padding: 10px; width: 25%;">Tên hàng hóa</th>
+              <th style="border: 1px solid #000; padding: 10px; width: 10%;">Số lô</th>
+              <th style="border: 1px solid #000; padding: 10px; width: 10%;">Hạn SD</th>
+              <th style="border: 1px solid #000; padding: 10px; width: 8%;">ĐVT</th>
+              <th style="border: 1px solid #000; padding: 10px; width: 7%;">S.Lượng</th>
+              <th style="border: 1px solid #000; padding: 10px; width: 10%;">Lý do</th>
+              <th style="border: 1px solid #000; padding: 10px; width: 10%;">Đơn giá vốn</th>
+              <th style="border: 1px solid #000; padding: 10px; width: 15%;">Trị giá tổn thất</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${htmlRows}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="8" style="border: 1px solid #000; padding: 10px; text-align: right; font-weight: bold; text-transform: uppercase;">Tổng giá trị xuất hủy (Tổn thất):</td>
+              <td style="border: 1px solid #000; padding: 10px; text-align: right; font-weight: bold; color: #dc2626;">${totalValue.toLocaleString("vi-VN")} đ</td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 40px; text-align: center; font-size: 14px;">
+          <div style="width: 30%;">
+            <strong style="display: block; margin-bottom: 80px;">Người lập phiếu</strong>
+            <span>${creatorName}</span>
+          </div>
+          <div style="width: 30%;">
+            <strong style="display: block; margin-bottom: 80px;">Thủ kho / Dược sĩ</strong>
+            <span>(Ký, ghi rõ họ tên)</span>
+          </div>
+          <div style="width: 30%;">
+            <strong style="display: block; margin-bottom: 80px;">Giám đốc</strong>
+            <span>(Ký, ghi rõ họ tên)</span>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const printDiv = document.createElement("div");
+    printDiv.innerHTML = html;
+
+    const opt = {
+      margin: 10,
+      filename: `${transaction.code}_${new Date().getTime()}.pdf`,
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
+    };
+
+    await html2pdf().set(opt).from(printDiv).save();
+  };
+
+  /* ─── LOGIC XỬ LÝ CART XUẤT HỦY ─── */
   const getFlatBatchesForDisposal = () => {
     const list = [];
     inventories.forEach((inv) => {
@@ -423,7 +545,7 @@ const InventoryPage = () => {
   };
 
   const handleAddToDisposeCart = (med, inv, batch) => {
-    const cartItemId = `${med._id}_${batch.batchCode}_${batch.quality}`;
+    const cartItemId = `${med._id}_${batch._id}`;
     const existing = disposeCart.find((item) => item.cartItemId === cartItemId);
 
     if (existing) {
@@ -481,7 +603,7 @@ const InventoryPage = () => {
         items: disposeCart.map((item) => ({
           variantId: item.variantId,
           batchCode: item.batch.batchCode,
-          batchQuality: item.batch.quality,
+          batchId: item.batch._id,
           quantity: Number(item.quantity),
           reason: item.reason,
         })),
@@ -489,9 +611,14 @@ const InventoryPage = () => {
 
       const res = await api.post("/transactions/dispose", payload);
       if (res.data.success) {
-        alert(
-          "Chốt phiếu xuất hủy thành công! Chi phí tổn thất đã được ghi nhận.",
+        // ĐÃ CẬP NHẬT: Hỏi và In PDF
+        const wantToPrint = window.confirm(
+          "Chốt phiếu xuất hủy thành công! Chi phí tổn thất đã được ghi nhận. Bạn có muốn in PHIẾU XUẤT HỦY không?",
         );
+        if (wantToPrint && res.data.transaction) {
+          await generateDisposalPDF(res.data.transaction);
+        }
+
         setIsDisposeModalOpen(false);
         setDisposeCart([]);
         fetchInventory();
@@ -503,17 +630,15 @@ const InventoryPage = () => {
     }
   };
 
-  // 3. TÍNH TOÁN TỔNG CHI PHÍ TỔN THẤT ĐỂ HIỂN THỊ TRƯỚC KHI HỦY
   const totalDisposalLossValue = disposeCart.reduce((sum, item) => {
     const variant = item.inventory.variants.find(
       (v) => v._id === item.variantId,
     );
     if (!variant) return sum;
     const baseQty = item.quantity * variant.conversionRate;
-    return sum + baseQty * item.batch.importPrice; // Giá vốn cơ sở * Số lượng cơ sở hủy
+    return sum + baseQty * item.batch.importPrice;
   }, 0);
 
-  /* ── shared styles ── */
   const inputCls =
     "w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 transition bg-white text-slate-800 placeholder:text-slate-400";
 
@@ -530,8 +655,6 @@ const InventoryPage = () => {
         .scrollbar-thin::-webkit-scrollbar { width: 5px; height: 5px; }
         .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
         .scrollbar-thin::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        
-        /* Ẩn các nút thao tác khi in PDF */
         @media print {
           .no-print { display: none !important; }
         }
@@ -562,7 +685,6 @@ const InventoryPage = () => {
           </div>
         </div>
 
-        {/* NÚT XUẤT PDF VÀ NÚT MỞ MODAL XUẤT HỦY */}
         <div className="flex items-center gap-3">
           <button
             onClick={handleExportPDF}
@@ -647,7 +769,8 @@ const InventoryPage = () => {
                 <option value="">-- Kho của tôi (Mặc định) --</option>
                 {branches.map((b) => (
                   <option key={b._id} value={b._id}>
-                    {b.isMainWarehouse ? "🏢 Kho Tổng: " : "🏪 CN: "} {b.name}
+                    {b.type === "warehouse" ? "🏢 Kho Tổng: " : "🏪 CN: "}{" "}
+                    {b.name}
                   </option>
                 ))}
               </select>
@@ -656,11 +779,10 @@ const InventoryPage = () => {
         </div>
       </div>
 
-      {/* ── INVENTORY TABLE (Có thêm ID để xuất PDF) ── */}
+      {/* ── INVENTORY TABLE ── */}
       <div
         id="inventory-table-print"
         className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-        {/* Header ẩn, chỉ hiện khi in PDF để nhìn chuyên nghiệp hơn */}
         <div className="hidden print:block p-6 border-b border-slate-200 mb-4 text-center">
           <h1 className="text-2xl font-bold uppercase mb-2">
             Báo Cáo Tồn Kho Hiện Tại
@@ -776,7 +898,17 @@ const InventoryPage = () => {
                         <button
                           onClick={() => handleOpenDetail(inv)}
                           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-sky-600 bg-sky-50 hover:bg-sky-100 border border-sky-100 transition-all hover:scale-105">
-                          <Eye size={13} /> Chi tiết ({inv.batches.length} lô)
+                          <Eye size={13} /> Chi tiết (
+                          {
+                            inv.batches.filter((item, index, self) => {
+                              return (
+                                self.findIndex(
+                                  (x) => x.batchCode === item.batchCode,
+                                ) === index
+                              );
+                            }).length
+                          }{" "}
+                          lô)
                         </button>
                       </td>
                     </tr>
@@ -796,7 +928,6 @@ const InventoryPage = () => {
           onClose={() => setIsDisposeModalOpen(false)}
           zIndex="z-[60]">
           <div className="bg-white rounded-2xl shadow-2xl w-[1200px] max-w-[95vw] h-[85vh] flex flex-col overflow-hidden">
-            {/* Header Modal Hủy */}
             <div className="flex justify-between items-center px-6 py-4 bg-red-600 text-white shrink-0">
               <div className="flex items-center gap-3">
                 <FileWarning size={24} />
@@ -815,9 +946,7 @@ const InventoryPage = () => {
               </button>
             </div>
 
-            {/* Body 2 Cột */}
             <div className="flex-1 flex overflow-hidden bg-slate-50">
-              {/* CỘT TRÁI: Tìm kiếm Lô thuốc */}
               <div className="w-1/2 flex flex-col border-r border-slate-200 bg-white">
                 <div className="p-4 border-b border-slate-100 shrink-0">
                   <div className="relative">
@@ -908,7 +1037,6 @@ const InventoryPage = () => {
                 </div>
               </div>
 
-              {/* CỘT PHẢI: Danh sách hủy (Cart) */}
               <div className="w-1/2 flex flex-col bg-slate-50">
                 <div className="p-4 border-b border-slate-200 bg-white shrink-0 flex justify-between items-center">
                   <h3 className="font-bold text-slate-800">
@@ -1091,7 +1219,7 @@ const InventoryPage = () => {
       )}
 
       {/* ══════════════════════════════════════════
-          MODAL 1: CHI TIẾT LÔ HÀNG (GIỮ NGUYÊN)
+          MODAL 1: CHI TIẾT LÔ HÀNG
       ══════════════════════════════════════════ */}
       {isModalOpen && selectedInventory && (
         <ModalOverlay onClose={() => setIsModalOpen(false)} zIndex="z-30">
@@ -1222,6 +1350,7 @@ const InventoryPage = () => {
                                   handleOpenBatchHistory(
                                     batch.batchCode,
                                     batch.importPrice,
+                                    batch.quality,
                                   )
                                 }
                                 className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-bold border transition-all hover:scale-105 ${isOutOfStock ? "text-slate-400 border-slate-200 bg-slate-50 hover:bg-slate-100" : "text-sky-600 border-sky-100 bg-white hover:bg-sky-50"}`}>
@@ -1240,7 +1369,7 @@ const InventoryPage = () => {
       )}
 
       {/* ══════════════════════════════════════════
-          MODAL 2: LỊCH SỬ NHẬP LÔ (GIỮ NGUYÊN)
+          MODAL 2: LỊCH SỬ NHẬP LÔ
       ══════════════════════════════════════════ */}
       {isHistoryModalOpen && (
         <ModalOverlay

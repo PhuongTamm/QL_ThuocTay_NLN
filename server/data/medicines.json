@@ -1,0 +1,740 @@
+[
+  {
+    "categoryKeyword": "Thực Phẩm",
+    "name": "Hoạt Huyết Dưỡng Não Traphaco",
+    "isPrescription": false,
+    "manufacturer": "Traphaco",
+    "ingredients": "Cao Đinh Lăng, Cao Bạch Quả",
+    "description": "Bổ bầu thần kinh, giảm đau đầu, chóng mặt, tăng cường trí nhớ.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Hoạt huyết dưỡng não (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 1000,
+        "conversionRate": 1
+      },
+      {
+        "name": "Hoạt huyết dưỡng não (Vỉ 20 viên)",
+        "unit": "Vỉ",
+        "packagingSpecification": "1 Vỉ x 20 Viên",
+        "currentPrice": 19500,
+        "conversionRate": 20
+      },
+      {
+        "name": "Hoạt huyết dưỡng não (Hộp 5 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 5 vỉ x 20 viên",
+        "currentPrice": 95000,
+        "conversionRate": 100
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Thực Phẩm",
+    "name": "Boganic Traphaco",
+    "isPrescription": false,
+    "manufacturer": "Traphaco",
+    "ingredients": "Actiso, Rau đắng đất, Bìm bìm",
+    "description": "Bổ gan, giải độc gan, hạ men gan.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Boganic (Viên nang mềm)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên nang",
+        "currentPrice": 2000,
+        "conversionRate": 1
+      },
+      {
+        "name": "Boganic (Hộp 5 vỉ nang mềm)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 5 vỉ x 10 viên",
+        "currentPrice": 90000,
+        "conversionRate": 50
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Giảm Đau",
+    "name": "Panadol Cảm Cúm (Đỏ)",
+    "isPrescription": false,
+    "manufacturer": "GSK",
+    "ingredients": "Paracetamol 500mg, Caffeine 25mg, Phenylephrine 5mg",
+    "description": "Giảm các triệu chứng cảm cúm, nghẹt mũi, hạ sốt.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Panadol Cảm Cúm (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 1500,
+        "conversionRate": 1
+      },
+      {
+        "name": "Panadol Cảm Cúm (Vỉ 12 viên)",
+        "unit": "Vỉ",
+        "packagingSpecification": "Vỉ 12 viên",
+        "currentPrice": 16500,
+        "conversionRate": 12
+      },
+      {
+        "name": "Panadol Cảm Cúm (Hộp 15 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 15 vỉ x 12 viên",
+        "currentPrice": 240000,
+        "conversionRate": 180
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Giảm Đau",
+    "name": "Hapacol 250",
+    "isPrescription": false,
+    "manufacturer": "Dược Hậu Giang",
+    "ingredients": "Paracetamol 250mg",
+    "description": "Thuốc bột sủi bọt hạ sốt, giảm đau vị cam cho trẻ em.",
+    "baseUnit": "Gói",
+
+"images": [],    "variants": [
+      {
+        "name": "Hapacol 250 (Gói)",
+        "unit": "Gói",
+        "packagingSpecification": "1 Gói",
+        "currentPrice": 2500,
+        "conversionRate": 1
+      },
+      {
+        "name": "Hapacol 250 (Hộp 24 gói)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 24 gói",
+        "currentPrice": 55000,
+        "conversionRate": 24
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Tiêu Hóa",
+    "name": "Thuốc dạ dày Phosphalugel (Thuốc chữ P)",
+    "isPrescription": false,
+    "manufacturer": "Pharmatis",
+    "ingredients": "Aluminum phosphate",
+    "description": "Đặc trị viêm loét dạ dày, tá tràng, trào ngược axit.",
+    "baseUnit": "Gói",
+
+"images": [],    "variants": [
+      {
+        "name": "Phosphalugel (Gói 20g)",
+        "unit": "Gói",
+        "packagingSpecification": "1 Gói",
+        "currentPrice": 5000,
+        "conversionRate": 1
+      },
+      {
+        "name": "Phosphalugel (Hộp 26 gói)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 26 gói",
+        "currentPrice": 125000,
+        "conversionRate": 26
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Tiêu Hóa",
+    "name": "Men vi sinh Bioflora 200mg",
+    "isPrescription": false,
+    "manufacturer": "Biocodex",
+    "ingredients": "Saccharomyces boulardii",
+    "description": "Điều trị tiêu chảy cấp, cân bằng hệ vi sinh đường ruột.",
+    "baseUnit": "Gói",
+
+"images": [],    "variants": [
+      {
+        "name": "Bioflora 200mg (Gói)",
+        "unit": "Gói",
+        "packagingSpecification": "1 Gói",
+        "currentPrice": 8500,
+        "conversionRate": 1
+      },
+      {
+        "name": "Bioflora 200mg (Hộp 20 gói)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 20 gói",
+        "currentPrice": 165000,
+        "conversionRate": 20
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Da Liễu",
+    "name": "Kem trị mụn Derma Forte",
+    "isPrescription": false,
+    "manufacturer": "Gamma Chemicals",
+    "ingredients": "Azelaic Acid, Vitamin E, Vitamin C",
+    "description": "Trị mụn trứng cá, mụn thâm, làm mờ sẹo.",
+    "baseUnit": "Tuýp",
+    "images": [],
+    "variants": [
+      {
+        "name": "Derma Forte (Tuýp 15g)",
+        "unit": "Tuýp",
+        "packagingSpecification": "Tuýp 15g",
+        "currentPrice": 105000,
+        "conversionRate": 1
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Da Liễu",
+    "name": "Kem bôi da Yoosun Rau Má",
+    "isPrescription": false,
+    "manufacturer": "Đại Bắc",
+    "ingredients": "Chiết xuất rau má, Vitamin E",
+    "description": "Làm mát da, trị rôm sảy, mẩn ngứa, côn trùng cắn.",
+    "baseUnit": "Tuýp",
+    "images": [],
+    "variants": [
+      {
+        "name": "Yoosun Rau Má (Tuýp 25g)",
+        "unit": "Tuýp",
+        "packagingSpecification": "Tuýp 25g",
+        "currentPrice": 25000,
+        "conversionRate": 1
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Hô Hấp",
+    "name": "Siro ho Bổ Phế Nam Hà Chỉ Khái Lộ",
+    "isPrescription": false,
+    "manufacturer": "Dược Nam Hà",
+    "ingredients": "Bách bộ, Tỳ bà diệp, Cát cánh, Bạc hà",
+    "description": "Chữa ho tiêu đờm, viêm phế quản.",
+    "baseUnit": "Chai",
+    "images": [],
+    "variants": [
+      {
+        "name": "Siro Bổ Phế Nam Hà (Chai 125ml)",
+        "unit": "Chai",
+        "packagingSpecification": "Chai 125ml",
+        "currentPrice": 35000,
+        "conversionRate": 1
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Hô Hấp",
+    "name": "Kẹo ngậm Bảo Thanh",
+    "isPrescription": false,
+    "manufacturer": "Dược Hoa Linh",
+    "ingredients": "Xuyên bối mẫu, Tỳ bà diệp, Mật ong",
+    "description": "Trị ho khan, ho có đờm, khản tiếng.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Viên ngậm Bảo Thanh",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 1000,
+        "conversionRate": 1
+      },
+      {
+        "name": "Kẹo Bảo Thanh (Vỉ 5 viên)",
+        "unit": "Vỉ",
+        "packagingSpecification": "Vỉ 5 viên",
+        "currentPrice": 4500,
+        "conversionRate": 5
+      },
+      {
+        "name": "Kẹo Bảo Thanh (Hộp 20 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 20 vỉ x 5 viên",
+        "currentPrice": 85000,
+        "conversionRate": 100
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Kháng Sinh",
+    "name": "Augmentin 1g",
+    "isPrescription": true,
+    "manufacturer": "GSK",
+    "ingredients": "Amoxicillin 875mg, Clavulanic Acid 125mg",
+    "description": "Kháng sinh phổ rộng trị nhiễm khuẩn hô hấp, tiết niệu.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Augmentin 1g (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 20000,
+        "conversionRate": 1
+      },
+      {
+        "name": "Augmentin 1g (Hộp 2 vỉ x 7 viên)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 14 viên",
+        "currentPrice": 270000,
+        "conversionRate": 14
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Thực Phẩm",
+    "name": "Sâm Alipas",
+    "isPrescription": false,
+    "manufacturer": "EcoPharma",
+    "ingredients": "Eurycoma Longifolia Extract",
+    "description": "Tăng cường sinh lực phái mạnh, cải thiện sinh lý.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Sâm Alipas (Lọ 30 viên)",
+        "unit": "Lọ",
+        "packagingSpecification": "Lọ 30 viên",
+        "currentPrice": 750000,
+        "conversionRate": 30
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Thực Phẩm",
+    "name": "Vitamin E Đỏ Nga 400mg",
+    "isPrescription": false,
+    "manufacturer": "Zentiva",
+    "ingredients": "Vitamin E 400mg",
+    "description": "Chống oxy hóa, làm đẹp da, cân bằng nội tiết tố.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Vitamin E Đỏ (Vỉ 10 viên)",
+        "unit": "Vỉ",
+        "packagingSpecification": "Vỉ 10 viên",
+        "currentPrice": 90000,
+        "conversionRate": 10
+      },
+      {
+        "name": "Vitamin E Đỏ (Hộp 3 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 30 viên",
+        "currentPrice": 260000,
+        "conversionRate": 30
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Giảm Đau",
+    "name": "Salonpas (Cao dán)",
+    "isPrescription": false,
+    "manufacturer": "Hisamitsu",
+    "ingredients": "Methyl Salicylate, L-Menthol",
+    "description": "Giảm đau cơ, đau lưng, bong gân.",
+    "baseUnit": "Miếng",
+    "images": [],
+    "variants": [
+      {
+        "name": "Salonpas (Gói 12 miếng)",
+        "unit": "Gói",
+        "packagingSpecification": "Gói 12 miếng",
+        "currentPrice": 16000,
+        "conversionRate": 12
+      },
+      {
+        "name": "Salonpas (Hộp 10 gói)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 10 gói x 12 miếng",
+        "currentPrice": 155000,
+        "conversionRate": 120
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Da Liễu",
+    "name": "Dung dịch vệ sinh Dạ Hương",
+    "isPrescription": false,
+    "manufacturer": "Hoa Linh",
+    "ingredients": "Lô hội, Cúc la mã, Vitamin E",
+    "description": "Làm sạch nhẹ nhàng, khử mùi hôi vùng kín.",
+    "baseUnit": "Chai",
+    "images": [],
+    "variants": [
+      {
+        "name": "Dạ Hương Xanh (Chai 100ml)",
+        "unit": "Chai",
+        "packagingSpecification": "Chai 100ml",
+        "currentPrice": 32000,
+        "conversionRate": 1
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Hô Hấp",
+    "name": "Nước biển sâu Sterimar (Cá heo)",
+    "isPrescription": false,
+    "manufacturer": "Sofibel",
+    "ingredients": "Nước biển tinh khiết 100%",
+    "description": "Xịt mũi vệ sinh, làm sạch và thông thoáng đường thở.",
+    "baseUnit": "Chai",
+    "images": [],
+    "variants": [
+      {
+        "name": "Xịt mũi Sterimar 50ml",
+        "unit": "Chai",
+        "packagingSpecification": "Chai 50ml",
+        "currentPrice": 110000,
+        "conversionRate": 1
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Hô Hấp",
+    "name": "Viên ngậm Strepsils Original",
+    "isPrescription": false,
+    "manufacturer": "Reckitt Benckiser",
+    "ingredients": "2,4-Dichlorobenzyl Alcohol, Amylmetacresol",
+    "description": "Giảm đau họng, sát khuẩn vòm họng.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Strepsils (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 1500,
+        "conversionRate": 1
+      },
+      {
+        "name": "Strepsils (Hộp 2 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 2 vỉ x 12 viên",
+        "currentPrice": 35000,
+        "conversionRate": 24
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Da Liễu",
+    "name": "Thuốc mỡ Bepanthen Balm",
+    "isPrescription": false,
+    "manufacturer": "Bayer",
+    "ingredients": "Dexpanthenol 5%",
+    "description": "Trị hăm tã ở trẻ sơ sinh, nứt nẻ da, nứt đầu ti.",
+    "baseUnit": "Tuýp",
+    "images": [],
+    "variants": [
+      {
+        "name": "Bepanthen Balm (Tuýp 30g)",
+        "unit": "Tuýp",
+        "packagingSpecification": "Tuýp 30g",
+        "currentPrice": 75000,
+        "conversionRate": 1
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Da Liễu",
+    "name": "Kem bôi Nizoral 2%",
+    "isPrescription": false,
+    "manufacturer": "Janssen",
+    "ingredients": "Ketoconazole 2%",
+    "description": "Đặc trị nấm da, hắc lào, lang ben.",
+    "baseUnit": "Tuýp",
+    "images": [],
+    "variants": [
+      {
+        "name": "Nizoral Cream 10g",
+        "unit": "Tuýp",
+        "packagingSpecification": "Tuýp 10g",
+        "currentPrice": 38000,
+        "conversionRate": 1
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Tiêu Hóa",
+    "name": "Oresol 245",
+    "isPrescription": false,
+    "manufacturer": "Dược Trung Ương 2",
+    "ingredients": "Glucose, Natri Clorid, Kali Clorid",
+    "description": "Bù nước và điện giải khi bị tiêu chảy, sốt cao.",
+    "baseUnit": "Gói",
+
+"images": [],    "variants": [
+      {
+        "name": "Oresol 245 (Gói)",
+        "unit": "Gói",
+        "packagingSpecification": "1 Gói",
+        "currentPrice": 2500,
+        "conversionRate": 1
+      },
+      {
+        "name": "Oresol 245 (Hộp 40 gói)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 40 gói",
+        "currentPrice": 95000,
+        "conversionRate": 40
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Tiêu Hóa",
+    "name": "Motilium-M 10mg",
+    "isPrescription": true,
+    "manufacturer": "Janssen",
+    "ingredients": "Domperidone 10mg",
+    "description": "Điều trị buồn nôn, nôn mửa, đầy bụng khó tiêu.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Motilium-M (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 3000,
+        "conversionRate": 1
+      },
+      {
+        "name": "Motilium-M (Hộp 10 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 10 vỉ x 10 viên",
+        "currentPrice": 280000,
+        "conversionRate": 100
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Thực Phẩm",
+    "name": "Bổ xương khớp Jex Max",
+    "isPrescription": false,
+    "manufacturer": "EcoPharma",
+    "ingredients": "Peptan, Collagen type 2",
+    "description": "Giảm đau nhức xương khớp, tái tạo sụn khớp.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Jex Max (Lọ 30 viên)",
+        "unit": "Lọ",
+        "packagingSpecification": "Lọ 30 viên",
+        "currentPrice": 345000,
+        "conversionRate": 30
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Thực Phẩm",
+    "name": "Sắt Ferrovit",
+    "isPrescription": false,
+    "manufacturer": "Mega Lifesciences",
+    "ingredients": "Sắt Fumarate, Folic Acid, Vitamin B12",
+    "description": "Bổ sung sắt cho phụ nữ có thai, người thiếu máu.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Ferrovit (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên nang",
+        "currentPrice": 1500,
+        "conversionRate": 1
+      },
+      {
+        "name": "Ferrovit (Hộp 5 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 5 vỉ x 10 viên",
+        "currentPrice": 70000,
+        "conversionRate": 50
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Thực Phẩm",
+    "name": "Canxi Nước Corbiere",
+    "isPrescription": false,
+    "manufacturer": "Sanofi",
+    "ingredients": "Calcium Glucoheptonate, Vitamin C, Vitamin PP",
+    "description": "Bổ sung canxi cho trẻ em đang lớn, mẹ bầu.",
+    "baseUnit": "Ống",
+
+"images": [],    "variants": [
+      {
+        "name": "Canxi Corbiere (Ống 10ml)",
+        "unit": "Ống",
+        "packagingSpecification": "1 Ống 10ml",
+        "currentPrice": 6000,
+        "conversionRate": 1
+      },
+      {
+        "name": "Canxi Corbiere (Hộp 30 ống)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 30 ống x 10ml",
+        "currentPrice": 165000,
+        "conversionRate": 30
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Giảm Đau",
+    "name": "Gel bôi Voltaren Emulgel 1%",
+    "isPrescription": false,
+    "manufacturer": "Novartis",
+    "ingredients": "Diclofenac Diethylamine",
+    "description": "Giảm đau, kháng viêm ngoài da cho cơ xương khớp.",
+    "baseUnit": "Tuýp",
+    "images": [],
+    "variants": [
+      {
+        "name": "Voltaren Gel (Tuýp 20g)",
+        "unit": "Tuýp",
+        "packagingSpecification": "Tuýp 20g",
+        "currentPrice": 75000,
+        "conversionRate": 1
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Giảm Đau",
+    "name": "Decolgen Forte",
+    "isPrescription": false,
+    "manufacturer": "United International Pharma",
+    "ingredients": "Paracetamol, Chlorpheniramine, Phenylephrine",
+    "description": "Trị cảm cúm, sổ mũi, nhức đầu.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Decolgen (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 1200,
+        "conversionRate": 1
+      },
+      {
+        "name": "Decolgen (Vỉ 4 viên)",
+        "unit": "Vỉ",
+        "packagingSpecification": "Vỉ 4 viên",
+        "currentPrice": 4800,
+        "conversionRate": 4
+      },
+      {
+        "name": "Decolgen (Hộp 25 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 25 vỉ x 4 viên",
+        "currentPrice": 115000,
+        "conversionRate": 100
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Kháng Sinh",
+    "name": "Cefuroxim 500mg",
+    "isPrescription": true,
+    "manufacturer": "Domesco",
+    "ingredients": "Cefuroxime 500mg",
+    "description": "Kháng sinh nhóm Cephalosporin thế hệ 2.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Cefuroxim 500mg (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 5000,
+        "conversionRate": 1
+      },
+      {
+        "name": "Cefuroxim 500mg (Hộp 2 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 2 vỉ x 10 viên",
+        "currentPrice": 95000,
+        "conversionRate": 20
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Kháng Sinh",
+    "name": "Cefixim 200mg",
+    "isPrescription": true,
+    "manufacturer": "Imexpharm",
+    "ingredients": "Cefixime 200mg",
+    "description": "Kháng sinh thế hệ 3 trị viêm họng, viêm phế quản.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Cefixim 200mg (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 6000,
+        "conversionRate": 1
+      },
+      {
+        "name": "Cefixim 200mg (Hộp 1 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 1 vỉ x 10 viên",
+        "currentPrice": 58000,
+        "conversionRate": 10
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Tim Mạch",
+    "name": "Atorvastatin 20mg",
+    "isPrescription": true,
+    "manufacturer": "Dược Hậu Giang",
+    "ingredients": "Atorvastatin 20mg",
+    "description": "Thuốc hạ mỡ máu, giảm cholesterol.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Atorvastatin 20mg (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 2500,
+        "conversionRate": 1
+      },
+      {
+        "name": "Atorvastatin 20mg (Hộp 3 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 3 vỉ x 10 viên",
+        "currentPrice": 70000,
+        "conversionRate": 30
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Tim Mạch",
+    "name": "Plavix 75mg",
+    "isPrescription": true,
+    "manufacturer": "Sanofi",
+    "ingredients": "Clopidogrel 75mg",
+    "description": "Thuốc chống kết tập tiểu cầu, ngừa huyết khối.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Plavix 75mg (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 20000,
+        "conversionRate": 1
+      },
+      {
+        "name": "Plavix 75mg (Hộp 14 viên)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 1 vỉ x 14 viên",
+        "currentPrice": 275000,
+        "conversionRate": 14
+      }
+    ]
+  }
+]

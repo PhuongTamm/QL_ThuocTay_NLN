@@ -418,13 +418,16 @@ const AddMedicine = () => {
               {/* Tỷ lệ quy đổi */}
               <div className="bg-sky-50 border border-sky-100 rounded-xl p-4">
                 <label className={labelCls + " text-sky-600"}>
-                  Tỷ lệ quy đổi ra đơn vị cơ sở
+                  Tỷ lệ quy đổi ra đơn vị cơ sở{" "}
+                  <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="number"
                   min="1"
                   name="conversionRate"
+                  value={data.conversionRate}
                   onChange={handleChange}
+                  required
                   className="w-full px-3 py-2.5 text-sm border border-sky-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 transition bg-white text-slate-800"
                   placeholder="VD: 1 Hộp = 100 Viên → Nhập 100"
                 />

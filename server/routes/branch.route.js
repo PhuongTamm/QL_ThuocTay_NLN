@@ -6,12 +6,19 @@ const {
   getAllBranches,
   updateBranch,
   deleteBranch,
-} = require("../controllers/branch.controller"); //chỉ lấy 2 hàm này ở branch.controller
+  getBranchById,
+} = require("../controllers/branch.controller");
 
 router.get("/", verifyToken, getAllBranches);
 router.post("/", verifyToken, checkRole(["admin"]), createBranch);
 
 router.put("/:id", verifyToken, checkRole(["admin"]), updateBranch);
 router.delete("/:id", verifyToken, checkRole(["admin"]), deleteBranch);
+router.get(
+  "/:id",
+  verifyToken,
+  checkRole(["admin", "branch_manager", "warehouse_manager"]),
+  getBranchById,
+);
 
 module.exports = router;

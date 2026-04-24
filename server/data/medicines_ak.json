@@ -1,0 +1,953 @@
+[
+  {
+    "categoryKeyword": "Hô Hấp",
+    "name": "Ausmuco 750V",
+    "isPrescription": true,
+    "manufacturer": "DHT",
+    "ingredients": "Carbocistein 750mg",
+    "description": "Điều trị hỗ trợ trong bệnh lý hô hấp có tăng tiết nhầy.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Ausmuco 750V (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 2900,
+        "conversionRate": 1
+      },
+      {
+        "name": "Ausmuco 750V (Hộp 2 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 2 vỉ x 10 viên",
+        "currentPrice": 58000,
+        "conversionRate": 20
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Hô Hấp",
+    "name": "Halixol 30mg",
+    "isPrescription": false,
+    "manufacturer": "Egis",
+    "ingredients": "Ambroxol hydrochloride 30mg",
+    "description": "Điều trị tắc nghẽn đường hô hấp, hòa tan dịch nhầy.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Halixol 30mg (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 2000,
+        "conversionRate": 1
+      },
+      {
+        "name": "Halixol 30mg (Vỉ 10 viên)",
+        "unit": "Vỉ",
+        "packagingSpecification": "Vỉ 10 viên",
+        "currentPrice": 20000,
+        "conversionRate": 10
+      },
+      {
+        "name": "Halixol 30mg (Hộp 2 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 2 vỉ x 10 viên",
+        "currentPrice": 40000,
+        "conversionRate": 20
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Hô Hấp",
+    "name": "Bisolvon 8mg",
+    "isPrescription": false,
+    "manufacturer": "Sanofi",
+    "ingredients": "Bromhexin hydrochloride 8mg",
+    "description": "Loãng đờm trong bệnh phế quản phổi.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Bisolvon 8mg (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 2000,
+        "conversionRate": 1
+      },
+      {
+        "name": "Bisolvon 8mg (Hộp 3 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 3 vỉ x 10 viên",
+        "currentPrice": 60000,
+        "conversionRate": 30
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Hô Hấp",
+    "name": "Viên ngậm Difflam",
+    "isPrescription": false,
+    "manufacturer": "iNova",
+    "ingredients": "Benzydamine hydrochloride",
+    "description": "Viên ngậm kháng viêm vị quả mâm xôi giảm đau họng.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Difflam (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 5500,
+        "conversionRate": 1
+      },
+      {
+        "name": "Difflam (Vỉ 8 viên)",
+        "unit": "Vỉ",
+        "packagingSpecification": "Vỉ 8 viên",
+        "currentPrice": 44500,
+        "conversionRate": 8
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Hô Hấp",
+    "name": "Fluimucil 600mg",
+    "isPrescription": false,
+    "manufacturer": "Zambon",
+    "ingredients": "Acetylcysteine 600mg",
+    "description": "Viên nén sủi giúp tiêu chất nhầy.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Fluimucil 600mg (Viên sủi)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên sủi",
+        "currentPrice": 17000,
+        "conversionRate": 1
+      },
+      {
+        "name": "Fluimucil 600mg (Hộp 10 viên)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 5 vỉ x 2 viên",
+        "currentPrice": 170000,
+        "conversionRate": 10
+      }
+    ]
+  },
+
+  {
+    "categoryKeyword": "Giảm Đau",
+    "name": "SaVi Alvic",
+    "isPrescription": false,
+    "manufacturer": "Savipharm",
+    "ingredients": "Paracetamol + Ibuprofen",
+    "description": "Giảm đau, hạ sốt, kháng viêm.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "SaVi Alvic (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 1000,
+        "conversionRate": 1
+      },
+      {
+        "name": "SaVi Alvic (Vỉ 10 viên)",
+        "unit": "Vỉ",
+        "packagingSpecification": "Vỉ 10 viên",
+        "currentPrice": 10000,
+        "conversionRate": 10
+      },
+      {
+        "name": "SaVi Alvic (Hộp 10 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 10 vỉ x 10 viên",
+        "currentPrice": 100000,
+        "conversionRate": 100
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Giảm Đau",
+    "name": "Dolfenal 500mg",
+    "isPrescription": false,
+    "manufacturer": "United International Pharma",
+    "ingredients": "Axit mefenamic 500mg",
+    "description": "Trị cơn đau nhẹ đến trung bình.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Dolfenal 500mg (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 1500,
+        "conversionRate": 1
+      },
+      {
+        "name": "Dolfenal 500mg (Vỉ 4 viên)",
+        "unit": "Vỉ",
+        "packagingSpecification": "Vỉ 4 viên",
+        "currentPrice": 6000,
+        "conversionRate": 4
+      },
+      {
+        "name": "Dolfenal 500mg (Hộp 25 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 25 vỉ x 4 viên",
+        "currentPrice": 150000,
+        "conversionRate": 100
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Giảm Đau",
+    "name": "Effer-Paralmax 325",
+    "isPrescription": false,
+    "manufacturer": "Boston",
+    "ingredients": "Paracetamol 325mg",
+    "description": "Viên sủi giảm đau, hạ sốt.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Effer-Paralmax 325 (Viên sủi)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên sủi",
+        "currentPrice": 2000,
+        "conversionRate": 1
+      },
+      {
+        "name": "Effer-Paralmax 325 (Hộp 20 viên)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 5 vỉ x 4 viên",
+        "currentPrice": 40000,
+        "conversionRate": 20
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Giảm Đau",
+    "name": "Panadol Extra",
+    "isPrescription": false,
+    "manufacturer": "GSK",
+    "ingredients": "Paracetamol 500mg, Caffeine 65mg",
+    "description": "Giảm đau, hạ sốt.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Panadol Extra (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 1500,
+        "conversionRate": 1
+      },
+      {
+        "name": "Panadol Extra (Hộp 15 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 15 vỉ x 12 viên",
+        "currentPrice": 270000,
+        "conversionRate": 180
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Giảm Đau",
+    "name": "Paralmax 650 Sủi",
+    "isPrescription": false,
+    "manufacturer": "Boston",
+    "ingredients": "Paracetamol 650mg",
+    "description": "Viên sủi giảm đau, hạ sốt từ nhẹ đến vừa.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Paralmax 650 Sủi (Viên sủi)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên sủi",
+        "currentPrice": 2900,
+        "conversionRate": 1
+      },
+      {
+        "name": "Paralmax 650 Sủi (Vỉ 4 viên)",
+        "unit": "Vỉ",
+        "packagingSpecification": "Vỉ 4 viên",
+        "currentPrice": 11600,
+        "conversionRate": 4
+      },
+      {
+        "name": "Paralmax 650 Sủi (Hộp 5 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 5 vỉ x 4 viên",
+        "currentPrice": 58000,
+        "conversionRate": 20
+      }
+    ]
+  },
+
+  {
+    "categoryKeyword": "Tiêu Hóa",
+    "name": "Spamerin 135mg",
+    "isPrescription": true,
+    "manufacturer": "Abbott",
+    "ingredients": "Alverine citrate 135mg",
+    "description": "Trị các triệu chứng của hội chứng ruột kích thích.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Spamerin 135mg (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 2300,
+        "conversionRate": 1
+      },
+      {
+        "name": "Spamerin 135mg (Vỉ 10 viên)",
+        "unit": "Vỉ",
+        "packagingSpecification": "Vỉ 10 viên",
+        "currentPrice": 23000,
+        "conversionRate": 10
+      },
+      {
+        "name": "Spamerin 135mg (Hộp 3 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 3 vỉ x 10 viên",
+        "currentPrice": 69000,
+        "conversionRate": 30
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Tiêu Hóa",
+    "name": "Biolac 500mg",
+    "isPrescription": false,
+    "manufacturer": "Biopharma",
+    "ingredients": "Men vi sinh sống",
+    "description": "Bổ sung vi sinh, trị tiêu chảy và táo bón.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Biolac 500mg (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 1000,
+        "conversionRate": 1
+      },
+      {
+        "name": "Biolac 500mg (Hộp 10 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 10 vỉ x 10 viên",
+        "currentPrice": 96300,
+        "conversionRate": 100
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Tiêu Hóa",
+    "name": "Buscopan 10mg",
+    "isPrescription": false,
+    "manufacturer": "Sanofi",
+    "ingredients": "Hyoscine butylbromide 10mg",
+    "description": "Trị co thắt đường tiêu hoá, sinh dục - tiết niệu.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Buscopan 10mg (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 1500,
+        "conversionRate": 1
+      },
+      {
+        "name": "Buscopan 10mg (Hộp 5 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 5 vỉ x 20 viên",
+        "currentPrice": 150000,
+        "conversionRate": 100
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Tiêu Hóa",
+    "name": "Viên nhai Kremil-S",
+    "isPrescription": false,
+    "manufacturer": "United International Pharma",
+    "ingredients": "Aluminium hydroxide, Magnesium",
+    "description": "Làm dịu các triệu chứng đầy hơi, đau dạ dày.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Kremil-S (Viên nhai)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 1200,
+        "conversionRate": 1
+      },
+      {
+        "name": "Kremil-S (Hộp 10 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 10 vỉ x 10 viên",
+        "currentPrice": 120000,
+        "conversionRate": 100
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Tiêu Hóa",
+    "name": "Lopradium 2mg",
+    "isPrescription": false,
+    "manufacturer": "Imexpharm",
+    "ingredients": "Loperamid 2mg",
+    "description": "Đặc trị tiêu chảy cấp.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Lopradium 2mg (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 380,
+        "conversionRate": 1
+      },
+      {
+        "name": "Lopradium 2mg (Vỉ 10 viên)",
+        "unit": "Vỉ",
+        "packagingSpecification": "Vỉ 10 viên",
+        "currentPrice": 3800,
+        "conversionRate": 10
+      },
+      {
+        "name": "Lopradium 2mg (Hộp 10 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 10 vỉ x 10 viên",
+        "currentPrice": 38000,
+        "conversionRate": 100
+      }
+    ]
+  },
+
+  {
+    "categoryKeyword": "Tim Mạch",
+    "name": "Shikamic 50mg",
+    "isPrescription": true,
+    "manufacturer": "Hasan",
+    "ingredients": "Trimetazidine 50mg",
+    "description": "Hỗ trợ điều trị suy tim, phòng ngừa độc tính trên tim.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Shikamic 50mg (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 9300,
+        "conversionRate": 1
+      },
+      {
+        "name": "Shikamic 50mg (Hộp 3 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 3 vỉ x 10 viên",
+        "currentPrice": 279000,
+        "conversionRate": 30
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Tim Mạch",
+    "name": "Cardioton",
+    "isPrescription": false,
+    "manufacturer": "Agimexpharm",
+    "ingredients": "Vitamin, khoáng chất",
+    "description": "Hỗ trợ chức năng tim mạch và giúp hệ tim mạch khỏe mạnh.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Cardioton (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 7700,
+        "conversionRate": 1
+      },
+      {
+        "name": "Cardioton (Hộp 6 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 6 vỉ x 10 viên",
+        "currentPrice": 462000,
+        "conversionRate": 60
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Tim Mạch",
+    "name": "ZY-10 Forte 100mg",
+    "isPrescription": false,
+    "manufacturer": "ZY",
+    "ingredients": "Coenzyme Q10 100mg",
+    "description": "Trị bệnh tim mạch, bổ sung năng lượng cho tim.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "ZY-10 Forte (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 15700,
+        "conversionRate": 1
+      },
+      {
+        "name": "ZY-10 Forte (Hộp 3 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 3 vỉ x 10 viên",
+        "currentPrice": 471000,
+        "conversionRate": 30
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Tim Mạch",
+    "name": "Ticonet 30mg",
+    "isPrescription": false,
+    "manufacturer": "Dược Hậu Giang",
+    "ingredients": "Ubidecarenon (Coenzyme Q10) 30mg",
+    "description": "Hỗ trợ duy trì sức khỏe tim mạch.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Ticonet 30mg (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 4700,
+        "conversionRate": 1
+      },
+      {
+        "name": "Ticonet 30mg (Hộp 10 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 10 vỉ x 10 viên",
+        "currentPrice": 470000,
+        "conversionRate": 100
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Tim Mạch",
+    "name": "Panangin",
+    "isPrescription": true,
+    "manufacturer": "Gedeon Richter",
+    "ingredients": "Magnesium aspartate, Potassium aspartate",
+    "description": "Trị suy tim, loạn nhịp.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Panangin (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 2820,
+        "conversionRate": 1
+      },
+      {
+        "name": "Panangin (Hộp 50 viên)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 1 lọ x 50 viên",
+        "currentPrice": 141000,
+        "conversionRate": 50
+      }
+    ]
+  },
+
+  {
+    "categoryKeyword": "Da Liễu",
+    "name": "Thuốc Xoang Nhất Nhất",
+    "isPrescription": false,
+    "manufacturer": "Nhất Nhất",
+    "ingredients": "Thảo dược",
+    "description": "Trị viêm xoang, viêm mũi dị ứng.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Xoang Nhất Nhất (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 5400,
+        "conversionRate": 1
+      },
+      {
+        "name": "Xoang Nhất Nhất (Hộp 3 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 3 vỉ x 10 viên",
+        "currentPrice": 162000,
+        "conversionRate": 30
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Da Liễu",
+    "name": "Hỗn dịch uống Oralegic 30mg/5ml",
+    "isPrescription": true,
+    "manufacturer": "Dược Hậu Giang",
+    "ingredients": "Fexofenadine 30mg/5ml",
+    "description": "Điều trị viêm mũi dị ứng theo mùa.",
+    "baseUnit": "Ống",
+    "images": [],
+    "variants": [
+      {
+        "name": "Oralegic 30mg/5ml (Ống)",
+        "unit": "Ống",
+        "packagingSpecification": "1 Ống 5ml",
+        "currentPrice": 9000,
+        "conversionRate": 1
+      },
+      {
+        "name": "Oralegic 30mg/5ml (Hộp 10 ống)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 10 ống x 5ml",
+        "currentPrice": 90000,
+        "conversionRate": 10
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Da Liễu",
+    "name": "Deslornine 5mg",
+    "isPrescription": false,
+    "manufacturer": "Abbott",
+    "ingredients": "Desloratadine 5mg",
+    "description": "Làm giảm các triệu chứng của viêm mũi dị ứng, mày đay.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Deslornine 5mg (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 3000,
+        "conversionRate": 1
+      },
+      {
+        "name": "Deslornine 5mg (Hộp 3 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 3 vỉ x 10 viên",
+        "currentPrice": 90000,
+        "conversionRate": 30
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Da Liễu",
+    "name": "Telfast HD 180mg",
+    "isPrescription": false,
+    "manufacturer": "Sanofi",
+    "ingredients": "Fexofenadine 180mg",
+    "description": "Trị viêm mũi dị ứng, mề đay vô căn mạn tính.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Telfast HD 180mg (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 8900,
+        "conversionRate": 1
+      },
+      {
+        "name": "Telfast HD 180mg (Hộp 3 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 3 vỉ x 10 viên",
+        "currentPrice": 268000,
+        "conversionRate": 30
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Da Liễu",
+    "name": "A.T Fexofenadin 30mg/5ml",
+    "isPrescription": false,
+    "manufacturer": "An Thiên",
+    "ingredients": "Fexofenadin HCl",
+    "description": "Trị viêm mũi dị ứng, mày đay cho trẻ.",
+    "baseUnit": "Gói",
+    "images": [],
+    "variants": [
+      {
+        "name": "A.T Fexofenadin (Gói)",
+        "unit": "Gói",
+        "packagingSpecification": "1 Gói 5ml",
+        "currentPrice": 5000,
+        "conversionRate": 1
+      },
+      {
+        "name": "A.T Fexofenadin (Hộp 30 gói)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 30 gói x 5ml",
+        "currentPrice": 150000,
+        "conversionRate": 30
+      }
+    ]
+  },
+
+  {
+    "categoryKeyword": "Thực Phẩm",
+    "name": "Orlistat RVN 120mg",
+    "isPrescription": true,
+    "manufacturer": "Merap",
+    "ingredients": "Orlistat 120mg",
+    "description": "Kiểm soát cân nặng, hỗ trợ điều trị béo phì.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Orlistat RVN 120 (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 10500,
+        "conversionRate": 1
+      },
+      {
+        "name": "Orlistat RVN 120 (Hộp 3 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 3 vỉ x 10 viên",
+        "currentPrice": 315000,
+        "conversionRate": 30
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Thực Phẩm",
+    "name": "Bisbeta 120",
+    "isPrescription": true,
+    "manufacturer": "SPM",
+    "ingredients": "Orlistat 120mg",
+    "description": "Kiểm soát cân nặng, hỗ trợ trị béo phì.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Bisbeta 120 (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 9000,
+        "conversionRate": 1
+      },
+      {
+        "name": "Bisbeta 120 (Hộp 2 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 2 vỉ x 21 viên",
+        "currentPrice": 378000,
+        "conversionRate": 42
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Thực Phẩm",
+    "name": "Orlistat Stada 120mg",
+    "isPrescription": true,
+    "manufacturer": "Stada",
+    "ingredients": "Orlistat 120mg",
+    "description": "Kiểm soát cân nặng, hỗ trợ trị béo phì.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Orlistat Stada 120 (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 8300,
+        "conversionRate": 1
+      },
+      {
+        "name": "Orlistat Stada 120 (Hộp 2 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 2 vỉ x 21 viên",
+        "currentPrice": 348600,
+        "conversionRate": 42
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Thực Phẩm",
+    "name": "Cystine B6 Bailleul",
+    "isPrescription": false,
+    "manufacturer": "Bailleul",
+    "ingredients": "L-Cystine, Vitamin B6",
+    "description": "Trị bệnh lý liên quan đến tóc, móng (rụng tóc, móng yếu).",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Cystine B6 Bailleul (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 5800,
+        "conversionRate": 1
+      },
+      {
+        "name": "Cystine B6 Bailleul (Hộp 1 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 1 vỉ x 20 viên",
+        "currentPrice": 116000,
+        "conversionRate": 20
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Thực Phẩm",
+    "name": "Dầu cá Omega 3 Healthy Care",
+    "isPrescription": false,
+    "manufacturer": "Healthy Care",
+    "ingredients": "Fish Oil 1000mg",
+    "description": "Hỗ trợ tim mạch, bổ mắt, làm đẹp da.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Omega 3 (Lọ 400 viên)",
+        "unit": "Lọ",
+        "packagingSpecification": "Lọ 400 viên",
+        "currentPrice": 450000,
+        "conversionRate": 400
+      }
+    ]
+  },
+
+  {
+    "categoryKeyword": "Kháng Sinh",
+    "name": "Amoxicillin 500mg",
+    "isPrescription": true,
+    "manufacturer": "Domesco",
+    "ingredients": "Amoxicillin 500mg",
+    "description": "Kháng sinh nhóm Penicillin.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Amoxicillin 500mg (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 1000,
+        "conversionRate": 1
+      },
+      {
+        "name": "Amoxicillin 500mg (Hộp 10 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 10 vỉ x 10 viên",
+        "currentPrice": 100000,
+        "conversionRate": 100
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Kháng Sinh",
+    "name": "Augmentin 625mg",
+    "isPrescription": true,
+    "manufacturer": "GSK",
+    "ingredients": "Amoxicillin 500mg, Clavulanate 125mg",
+    "description": "Kháng sinh phổ rộng trị nhiễm khuẩn.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Augmentin 625mg (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 15000,
+        "conversionRate": 1
+      },
+      {
+        "name": "Augmentin 625mg (Hộp 2 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 2 vỉ x 7 viên",
+        "currentPrice": 210000,
+        "conversionRate": 14
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Kháng Sinh",
+    "name": "Cefuroxim 500mg",
+    "isPrescription": true,
+    "manufacturer": "Dược Hậu Giang",
+    "ingredients": "Cefuroxime 500mg",
+    "description": "Kháng sinh nhóm Cephalosporin.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Cefuroxim 500mg (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 5000,
+        "conversionRate": 1
+      },
+      {
+        "name": "Cefuroxim 500mg (Hộp 2 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 2 vỉ x 10 viên",
+        "currentPrice": 100000,
+        "conversionRate": 20
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Kháng Sinh",
+    "name": "Azithromycin 250mg",
+    "isPrescription": true,
+    "manufacturer": "Stella",
+    "ingredients": "Azithromycin 250mg",
+    "description": "Kháng sinh trị nhiễm khuẩn đường hô hấp.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Azithromycin 250mg (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 6000,
+        "conversionRate": 1
+      },
+      {
+        "name": "Azithromycin 250mg (Hộp 1 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 1 vỉ x 6 viên",
+        "currentPrice": 36000,
+        "conversionRate": 6
+      }
+    ]
+  },
+  {
+    "categoryKeyword": "Kháng Sinh",
+    "name": "Cephalexin 500mg",
+    "isPrescription": true,
+    "manufacturer": "Vidipha",
+    "ingredients": "Cephalexin 500mg",
+    "description": "Kháng sinh điều trị nhiễm khuẩn da, mô mềm.",
+    "baseUnit": "Viên",
+    "images": [],
+    "variants": [
+      {
+        "name": "Cephalexin 500mg (Viên)",
+        "unit": "Viên",
+        "packagingSpecification": "1 Viên",
+        "currentPrice": 1500,
+        "conversionRate": 1
+      },
+      {
+        "name": "Cephalexin 500mg (Hộp 10 vỉ)",
+        "unit": "Hộp",
+        "packagingSpecification": "Hộp 10 vỉ x 10 viên",
+        "currentPrice": 150000,
+        "conversionRate": 100
+      }
+    ]
+  }
+]

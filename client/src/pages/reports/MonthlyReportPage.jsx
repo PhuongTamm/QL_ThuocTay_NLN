@@ -72,7 +72,7 @@ const MonthlyReportPage = () => {
     if (selectedBranchId) {
       const b = branches.find((x) => x._id === selectedBranchId);
       if (b)
-        branchName = b.isMainWarehouse
+        branchName = b.type === "warehouse"
           ? `Kho Tổng: ${b.name}`
           : `Chi nhánh: ${b.name}`;
     } else if (user?.role !== "admin" && user?.role !== "warehouse_manager") {
@@ -147,8 +147,8 @@ const MonthlyReportPage = () => {
     `;
 
     filteredReports.forEach((r, idx) => {
-      // Quét các Lô thuốc (từ mảng batches đã gài ở backend)
-      const activeBatches = (r.batches || []).filter((b) => b.quantity > 0);
+      // ĐÃ SỬA: Không filter quantity > 0 nữa, lấy toàn bộ mảng batches
+      const activeBatches = r.batches || [];
       let batchHtml = "";
 
       if (activeBatches.length > 0) {
@@ -157,18 +157,28 @@ const MonthlyReportPage = () => {
             const expiry = b.expiryDate
               ? new Date(b.expiryDate).toLocaleDateString("vi-VN")
               : "---";
+
+            // Xử lý Text Trạng Thái (Lỗi, Hết hạn...)
             const qualityText =
               b.quality !== "GOOD"
-                ? ` <br/><span style="color: #ef4444; font-size: 10px; font-weight: bold;">(${b.quality})</span>`
+                ? `<br/><span style="color: #ef4444; font-size: 10px; font-weight: bold;">(${b.quality})</span>`
                 : "";
 
-            return `<div style="margin-bottom: 6px; padding-bottom: 6px; border-bottom: 1px dashed #cbd5e1; font-family: monospace;">
-                    <strong>${b.batchCode}</strong> | HSD: ${expiry} | Tồn: <span style="color: #ef4444; font-weight: bold;">${b.quantity}</span> | Vốn: ${b.importPrice?.toLocaleString() || 0}đ${qualityText}
-                  </div>`;
+            // Xử lý hiển thị Số lượng (Nếu = 0 thì bôi xám, nếu > 0 thì bôi đỏ)
+            const isOutOfStock = b.quantity === 0;
+            const qtyColor = isOutOfStock ? "#94a3b8" : "#ef4444";
+
+            // Hiển thị Số hiện tại / Số gốc
+            const stockDisplay = `<span style="color: ${qtyColor}; font-weight: bold;">${b.quantity}</span> <span style="color: #94a3b8; font-size: 11px;">/ ${b.initialQuantity || b.quantity}</span>`;
+
+            return `
+              <div style="margin-bottom: 6px; padding-bottom: 6px; border-bottom: 1px dashed #cbd5e1; font-family: monospace; ${isOutOfStock ? "opacity: 0.6;" : ""}">
+                <strong>${b.batchCode}</strong> | HSD: ${expiry} | Tồn: ${stockDisplay} | Vốn: ${b.importPrice?.toLocaleString() || 0}đ${qualityText}
+              </div>`;
           })
           .join("");
       } else {
-        batchHtml = `<span style="color: #94a3b8; font-style: italic;">Đã xuất sạch / Hết hàng</span>`;
+        batchHtml = `<span style="color: #94a3b8; font-style: italic;">Chưa có dữ liệu lô hàng</span>`;
       }
 
       html += `
@@ -176,9 +186,7 @@ const MonthlyReportPage = () => {
           <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: center; vertical-align: top;">${idx + 1}</td>
           <td style="padding: 10px 8px; border: 1px solid #94a3b8; font-family: monospace; vertical-align: top;"><strong>${r.medicineId?.code || ""}</strong></td>
           <td style="padding: 10px 8px; border: 1px solid #94a3b8; vertical-align: top;">${r.medicineId?.name || ""}</td>
-          
           <td style="padding: 10px 8px; border: 1px solid #94a3b8; vertical-align: top;">${batchHtml}</td>
-
           <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: center; font-weight: bold; color: #1d4ed8; vertical-align: top;">${r.startQuantity.toLocaleString()}</td>
           <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: center; font-weight: bold; color: #059669; vertical-align: top;">+${r.importQuantity.toLocaleString()}</td>
           <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: center; font-weight: bold; color: #ea580c; vertical-align: top;">-${r.exportQuantity.toLocaleString()}</td>
@@ -309,7 +317,7 @@ const MonthlyReportPage = () => {
                 <option value="">-- Kho của tôi (Mặc định) --</option>
                 {branches.map((b) => (
                   <option key={b._id} value={b._id}>
-                    {b.isMainWarehouse ? "🏢 Kho Tổng: " : "🏪 CN: "} {b.name}
+                    {b.type === "warehouse" ? "🏢 Kho Tổng: " : "🏪 CN: "} {b.name}
                   </option>
                 ))}
               </select>
@@ -409,12 +417,14 @@ const MonthlyReportPage = () => {
                     </td>
 
                     {/* Tồn cuối kỳ */}
-                    <td className="p-4 text-center font-black text-sky-700 bg-sky-50/50 flex items-center justify-center gap-2">
-                      <ArrowRight
-                        size={14}
-                        className="text-sky-300 opacity-50"
-                      />
-                      {r.endQuantity.toLocaleString()}
+                    <td className="p-4 text-center font-black text-sky-700 bg-sky-50/50 gap-2">
+                      <div className="flex items-center justify-center gap-2">
+                        <ArrowRight
+                          size={14}
+                          className="text-sky-300 opacity-50"
+                        />
+                        {r.endQuantity.toLocaleString()}
+                      </div>
                     </td>
                   </tr>
                 ))

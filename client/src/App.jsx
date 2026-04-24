@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Sidebar from "./components/layout/Sidebar";
+import AIChatbot from "./components/Chatbot/AIChatbot";
 
 // --- IMPORT CÁC TRANG (PAGES) ---
 import LoginPage from "./pages/auth/LoginPage";
@@ -30,9 +31,15 @@ import MonthlyReportPage from "./pages/reports/MonthlyReportPage";
 
 // Layout bọc các trang cần đăng nhập
 const MainLayout = ({ children }) => (
-  <div className="flex h-screen overflow-hidden">
+  // Thêm class 'relative' vào thẻ div tổng để đảm bảo Chatbot (dùng position: fixed/absolute) neo đúng vị trí
+  <div className="flex h-screen overflow-hidden relative">
     <Sidebar />
-    <div className="flex-1 bg-gray-50 h-full overflow-y-auto">{children}</div>
+    <div className="flex-1 bg-gray-50 h-full overflow-y-auto">
+      {children}
+    </div>
+    
+    {/* Chèn Chatbot vào đây */}
+    <AIChatbot />
   </div>
 );
 
@@ -92,7 +99,7 @@ function App() {
             path="/pos"
             element={
               <PrivateRoute
-                allowedRoles={["admin", "branch_manager", "pharmacist"]}>
+                allowedRoles={["branch_manager", "pharmacist"]}>
                 <MainLayout>
                   <POSPage />
                 </MainLayout>
@@ -177,7 +184,7 @@ function App() {
             path="/pending-imports"
             element={
               <PrivateRoute
-                allowedRoles={["admin", "branch_manager", "pharmacist"]}>
+                allowedRoles={["admin", "branch_manager", "pharmacist", "warehouse_manager"]}>
                 <MainLayout>
                   <PendingImportPage />
                 </MainLayout>

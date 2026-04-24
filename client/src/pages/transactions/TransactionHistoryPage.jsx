@@ -16,10 +16,15 @@ import {
   TrendingDown,
   TrendingUp,
   RotateCcw,
+  Printer,
+  DollarSign,
 } from "lucide-react";
 import api from "../../services/api";
+import html2pdf from "html2pdf.js";
+import { useAuth } from "../../context/AuthContext";
 
 const TransactionHistoryPage = () => {
+  const { user } = useAuth();
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -32,8 +37,14 @@ const TransactionHistoryPage = () => {
   const [selectedTx, setSelectedTx] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // State xuất PDF
+  const [exportingType, setExportingType] = useState(null); // 'IMPORT_EXPORT' | 'REVENUE' | null
+
+  const [branches, setBranches] = useState([]);
+
   useEffect(() => {
     fetchHistory();
+    api.get("/branches").then((res) => setBranches(res.data.data || []));
   }, []);
 
   const fetchHistory = async () => {
@@ -97,6 +108,236 @@ const TransactionHistoryPage = () => {
     setIsModalOpen(true);
   };
 
+  /* ─── LOGIC XUẤT PDF CÁC LOẠI BÁO CÁO ─── */
+  const handleExportPDF = (reportType) => {
+    setExportingType(reportType);
+
+    // 1. CHUẨN BỊ DỮ LIỆU & TIÊU ĐỀ
+    let targetData = [];
+    let title = "";
+    if (reportType === "IMPORT_EXPORT") {
+      title = "BÁO CÁO LỊCH SỬ NHẬP / XUẤT KHO";
+      targetData = filteredData.filter((tx) => tx.type !== "SALE_AT_BRANCH");
+    } else if (reportType === "REVENUE") {
+      title = "BÁO CÁO DOANH THU BÁN LẺ TẠI QUẦY";
+      targetData = filteredData.filter((tx) => tx.type === "SALE_AT_BRANCH");
+    }
+
+    // 2. LẤY THÔNG TIN CƠ BẢN (NGƯỜI LẬP, CHI NHÁNH, THỜI GIAN)
+    const exportTime = new Date().toLocaleString("vi-VN", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+
+    const creatorName = user?.fullName || user?.username;
+    // Tìm chi nhánh của người dùng hiện tại
+    const myBranch = branches.find((b) => b._id === user?.branchId);
+    
+    const branchName = myBranch
+      ? myBranch.type === "warehouse"
+        ? `${myBranch.name}`
+        : `${myBranch.name}`
+      : user?.role === "admin"
+        ? "Trung tâm điều hành hệ thống"
+        : "---";
+
+    let periodText = "Tất cả thời gian";
+    if (datePreset === "TODAY")
+      periodText = `${new Date().toLocaleDateString("vi-VN")}`;
+    else if (datePreset === "THIS_MONTH")
+      periodText = `Tháng ${new Date().getMonth() + 1}/${new Date().getFullYear()}`;
+    else if (datePreset === "CUSTOM") {
+      const sDate = dateRange.startDate
+        ? new Date(dateRange.startDate).toLocaleDateString("vi-VN")
+        : "...";
+      const eDate = dateRange.endDate
+        ? new Date(dateRange.endDate).toLocaleDateString("vi-VN")
+        : "...";
+      periodText = `Từ ${sDate} đến ${eDate}`;
+    }
+
+    // 3. TÍNH TOÁN CÁC CHỈ SỐ THỐNG KÊ (NHẬP, HỦY, DOANH THU)
+    let totalImportCost = 0;
+    let totalDisposalCost = 0;
+    let totalRevenueAmount = 0;
+
+    targetData.forEach((tx) => {
+      const txTotal = tx.details.reduce(
+        (sum, item) => sum + item.quantity * (item.price || 0),
+        0,
+      );
+      if (reportType === "IMPORT_EXPORT") {
+        if (tx.type === "IMPORT_SUPPLIER") totalImportCost += txTotal;
+        if (tx.type === "DISPOSAL") totalDisposalCost += txTotal;
+      } else if (reportType === "REVENUE") {
+        totalRevenueAmount += txTotal;
+      }
+    });
+
+    // 4. XÂY DỰNG GIAO DIỆN HTML
+    const printDiv = document.createElement("div");
+    printDiv.style.fontFamily = "Arial, sans-serif";
+    printDiv.style.color = "#000000";
+    printDiv.style.backgroundColor = "#ffffff";
+    printDiv.style.padding = "20px";
+
+    let html = `
+      <div style="text-align: center; margin-bottom: 30px;">
+        <h2 style="margin: 0; font-size: 24px; text-transform: uppercase; font-weight: bold;">${title}</h2>
+      </div>
+
+      <div style="margin-bottom: 25px; font-size: 14px; line-height: 1.6;">
+        <p style="margin: 0;">Kho / Vị trí: <strong>${branchName}</strong></p>
+        <p style="margin: 0;">Giai đoạn báo cáo: <strong>${periodText}</strong></p>
+        <p style="margin: 0;">Ngày xuất báo cáo: <strong>${exportTime}</strong></p>
+        <p style="margin: 0;">Người lập phiếu: <strong>${creatorName}</strong></p>
+      </div>
+
+      <div style="margin-bottom: 30px; font-size: 14px; line-height: 1.8;">
+        <h3 style="font-size: 16px; margin-bottom: 12px; text-transform: uppercase; font-weight: bold; border-bottom: 1px solid #000; display: inline-block; padding-bottom: 4px;">THỐNG KÊ TỔNG QUAN</h3>
+        <p style="margin: 0;">Tổng số giao dịch phát sinh: <strong>${targetData.length} phiếu</strong></p>
+        ${
+          reportType === "IMPORT_EXPORT"
+            ? `
+          <p style="margin: 0;">Tổng chi phí nhập hàng (từ NCC): <strong style="color: #059669;">+ ${totalImportCost.toLocaleString()} VNĐ</strong></p>
+          <p style="margin: 0;">Tổng chi phí tổn thất (Hủy hàng): <strong style="color: #ea580c;">- ${totalDisposalCost.toLocaleString()} VNĐ</strong></p>
+        `
+            : `
+          <p style="margin: 0;">Tổng doanh thu bán lẻ: <strong style="color: #0284c7;">+ ${totalRevenueAmount.toLocaleString()} VNĐ</strong></p>
+        `
+        }
+      </div>
+
+      <h3 style="font-size: 16px; margin-bottom: 10px; text-transform: uppercase; font-weight: bold;">BẢNG KÊ CHI TIẾT</h3>
+      <table style="width: 100%; border-collapse: collapse; font-size: 12px; text-align: left;">
+        <thead>
+          <tr style="background-color: #f1f5f9;">
+            <th style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: center; width: 5%;">STT</th>
+            <th style="padding: 10px 8px; border: 1px solid #94a3b8; width: 15%;">Mã Phiếu / Ngày</th>
+            <th style="padding: 10px 8px; border: 1px solid #94a3b8; width: 18%;">${reportType === "IMPORT_EXPORT" ? "Loại / Đối tác" : "Khách hàng"}</th>
+            <th style="padding: 10px 8px; border: 1px solid #94a3b8; width: 32%;">Chi tiết hàng hóa (Mã - Tên - Lô - HSD)</th>
+            <th style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: center; width: 8%;">SL</th>
+            <th style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: right; width: 10%;">Đơn giá</th>
+            <th style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: right; width: 12%;">Thành tiền</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
+    let stt = 1;
+
+    targetData.forEach((tx) => {
+      const txDate = new Date(tx.createdAt).toLocaleDateString("vi-VN");
+
+      // Xử lý Cột Đối tác / Khách hàng
+      let partnerInfo = "";
+      if (reportType === "IMPORT_EXPORT") {
+        const typeMap = {
+          IMPORT_SUPPLIER: "Nhập từ NCC",
+          EXPORT_TO_BRANCH: "Luân chuyển nội bộ",
+          RETURN_TO_WAREHOUSE: "Trả hàng về kho",
+          DISPOSAL: "Xuất hủy",
+        };
+        const txTypeLabel = typeMap[tx.type] || tx.type;
+        let partnerName = "---";
+        if (tx.type === "IMPORT_SUPPLIER") partnerName = tx.supplierName;
+        else if (
+          tx.type === "EXPORT_TO_BRANCH" ||
+          tx.type === "RETURN_TO_WAREHOUSE"
+        )
+          partnerName = `${tx.fromBranch?.name || "Kho Tổng"} -> ${tx.toBranch?.name || "Kho Tổng"}`;
+
+        partnerInfo = `<strong>${txTypeLabel}</strong><br/><span style="color: #64748b; font-size: 11px;">${partnerName}</span>`;
+      } else {
+        partnerInfo = `<strong>${tx.customerName || "Khách vãng lai"}</strong><br/><span style="color: #64748b; font-size: 11px;">${tx.customerPhone || "---"}</span>`;
+      }
+
+      // Xử lý Cột Hàng hóa (Rowspan để gộp chung 1 phiếu)
+      tx.details.forEach((item, idx) => {
+        const itemTotal = (item.quantity || 0) * (item.price || 0);
+
+        const isFirstItem = idx === 0;
+        const rowSpanStr =
+          isFirstItem && tx.details.length > 1
+            ? `rowspan="${tx.details.length}"`
+            : "";
+
+        let txMetaCols = "";
+        if (isFirstItem) {
+          txMetaCols = `
+            <td ${rowSpanStr} style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: center; vertical-align: top;">${stt++}</td>
+            <td ${rowSpanStr} style="padding: 10px 8px; border: 1px solid #94a3b8; vertical-align: top;">
+              <strong>${tx.code}</strong><br/>
+              <span style="font-size: 11px; color: #64748b;">${txDate}</span>
+            </td>
+            <td ${rowSpanStr} style="padding: 10px 8px; border: 1px solid #94a3b8; vertical-align: top;">${partnerInfo}</td>
+          `;
+        }
+
+        const expiry = item.expiryDate
+          ? new Date(item.expiryDate).toLocaleDateString("vi-VN")
+          : "---";
+
+        html += `
+          <tr>
+            ${txMetaCols}
+            <td style="padding: 10px 8px; border: 1px solid #94a3b8; vertical-align: top;">
+              <strong style="color: #1e293b;">${item.variantId?.name || "Thuốc không tồn tại"}</strong><br/>
+              <span style="font-size: 11px; color: #64748b;">Mã: ${item.variantId?.sku || "---"} | Lô: ${item.batchCode || "---"} | HSD: ${expiry}</span>
+            </td>
+            <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: center; vertical-align: top;">
+              <span style="font-weight: bold; color: #0369a1;">${item.quantity}</span> <span style="font-size: 10px; color: #64748b;">${item.variantId?.unit || ""}</span>
+            </td>
+            <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: right; vertical-align: top;">${(item.price || 0).toLocaleString()}đ</td>
+            <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: right; vertical-align: top; font-weight: bold; color: ${reportType === "REVENUE" ? "#059669" : "#0f172a"};">${itemTotal.toLocaleString()}đ</td>
+          </tr>
+        `;
+      });
+    });
+
+    // Nếu là Báo cáo doanh thu thì thêm dòng Tổng cuối bảng
+    html += `
+        </tbody>
+        ${
+          reportType === "REVENUE"
+            ? `
+        <tfoot>
+          <tr style="background-color: #f8fafc;">
+            <td colspan="6" style="padding: 12px 8px; border: 1px solid #94a3b8; text-align: right; font-weight: bold; font-size: 14px;">TỔNG DOANH THU BÁN LẺ:</td>
+            <td style="padding: 12px 8px; border: 1px solid #94a3b8; text-align: right; font-weight: bold; font-size: 16px; color: #dc2626;">${totalRevenueAmount.toLocaleString()}đ</td>
+          </tr>
+        </tfoot>
+        `
+            : ""
+        }
+      </table>
+    `;
+
+    printDiv.innerHTML = html;
+
+    const fileNamePrefix =
+      reportType === "IMPORT_EXPORT"
+        ? "BaoCao_NhapXuatKho"
+        : "BaoCao_DoanhThuBanLe";
+    const opt = {
+      margin: 10,
+      filename: `${fileNamePrefix}_${new Date().toLocaleDateString("vi-VN").replace(/\//g, "-")}.pdf`,
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: "mm", format: "a4", orientation: "landscape" }, // In khổ ngang để bảng rộng rãi
+    };
+
+    html2pdf()
+      .set(opt)
+      .from(printDiv)
+      .save()
+      .then(() => setExportingType(null));
+  };;
+
   const getTxTypeBadge = (type) => {
     switch (type) {
       case "IMPORT_SUPPLIER":
@@ -119,8 +360,14 @@ const TransactionHistoryPage = () => {
         );
       case "RETURN_TO_WAREHOUSE":
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-red-50 text-red-600 font-bold text-[11px] rounded-full border border-red-100">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-orange-50 text-orange-600 font-bold text-[11px] rounded-full border border-orange-100">
             <RotateCcw size={10} /> Trả hàng về kho
+          </span>
+        );
+      case "DISPOSAL":
+        return (
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-red-50 text-red-600 font-bold text-[11px] rounded-full border border-red-100">
+            <X size={10} /> Hủy hàng
           </span>
         );
       default:
@@ -174,33 +421,64 @@ const TransactionHistoryPage = () => {
       `}</style>
 
       {/* ── PAGE HEADER ── */}
-      <div className="flex items-center gap-3 mb-6">
-        <div
-          className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0"
-          style={{
-            background: "linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%)",
-          }}>
-          <FileText size={22} color="white" />
+      <div className="flex flex-col md:flex-row md:justify-between items-start md:items-center gap-4 mb-6">
+        <div className="flex items-center gap-3">
+          <div
+            className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0"
+            style={{
+              background: "linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%)",
+            }}>
+            <FileText size={22} color="white" />
+          </div>
+          <div>
+            <h1 className="text-xl font-bold text-slate-900 leading-tight">
+              Lịch sử Nhập / Xuất Kho
+            </h1>
+            <p className="text-xs text-slate-500">
+              {filteredData.length} phiếu đang hiển thị
+            </p>
+          </div>
         </div>
-        <div>
-          <h1 className="text-xl font-bold text-slate-900 leading-tight">
-            Lịch sử Nhập / Xuất Kho
-          </h1>
-          <p className="text-xs text-slate-500">
-            {filteredData.length} phiếu ·{" "}
-            {new Date().toLocaleDateString("vi-VN", {
-              weekday: "long",
-              day: "numeric",
-              month: "numeric",
-            })}
-          </p>
+
+        {/* ── CỤM NÚT XUẤT PDF ── */}
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => handleExportPDF("IMPORT_EXPORT")}
+            disabled={
+              exportingType !== null ||
+              filteredData.filter((tx) => tx.type !== "SALE_AT_BRANCH")
+                .length === 0
+            }
+            className="flex items-center gap-2 px-4 py-2.5 bg-white text-slate-700 font-bold border border-slate-200 rounded-xl shadow-sm hover:bg-slate-50 transition-all disabled:opacity-50">
+            {exportingType === "IMPORT_EXPORT" ? (
+              <Loader2 size={16} className="animate-spin" />
+            ) : (
+              <Printer size={16} />
+            )}
+            In Báo Cáo Kho
+          </button>
+
+          <button
+            onClick={() => handleExportPDF("REVENUE")}
+            disabled={
+              exportingType !== null ||
+              filteredData.filter((tx) => tx.type === "SALE_AT_BRANCH")
+                .length === 0
+            }
+            className="flex items-center gap-2 px-4 py-2.5 bg-emerald-500 text-white font-bold rounded-xl shadow-sm hover:bg-emerald-600 transition-all disabled:opacity-50 shadow-emerald-500/30">
+            {exportingType === "REVENUE" ? (
+              <Loader2 size={16} className="animate-spin" />
+            ) : (
+              <DollarSign size={16} />
+            )}
+            In Báo Cáo Bán Lẻ
+          </button>
         </div>
       </div>
 
       {/* ── FILTER BAR ── */}
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 mb-4">
         <div className="flex flex-wrap gap-3 items-center">
-          {/* Tìm kiếm */}
           <div className="relative w-72">
             <Search
               size={16}
@@ -214,7 +492,6 @@ const TransactionHistoryPage = () => {
             />
           </div>
 
-          {/* Lọc loại phiếu */}
           <div className="relative w-56">
             <Filter
               size={14}
@@ -233,7 +510,6 @@ const TransactionHistoryPage = () => {
             </select>
           </div>
 
-          {/* Lọc thời gian */}
           <div className="relative w-52">
             <Calendar
               size={14}
@@ -252,7 +528,6 @@ const TransactionHistoryPage = () => {
             </select>
           </div>
 
-          {/* Nhập khoảng thời gian tuỳ chỉnh (Chỉ hiện khi chọn CUSTOM) */}
           {datePreset === "CUSTOM" && (
             <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 h-[42px] animate-[fadeIn_0.2s_ease]">
               <input
@@ -326,9 +601,6 @@ const TransactionHistoryPage = () => {
                       <p className="text-base font-semibold text-slate-500">
                         Không tìm thấy phiếu nào phù hợp
                       </p>
-                      <p className="text-sm text-slate-400">
-                        Thử thay đổi bộ lọc hoặc từ khoá tìm kiếm
-                      </p>
                     </div>
                   </td>
                 </tr>
@@ -386,7 +658,7 @@ const TransactionHistoryPage = () => {
       </div>
 
       {/* ══════════════════════════════════════════
-          MODAL: XEM CHI TIẾT PHIẾU
+          MODAL: XEM CHI TIẾT PHIẾU (GIỮ NGUYÊN)
       ══════════════════════════════════════════ */}
       {isModalOpen && selectedTx && (
         <div
@@ -397,7 +669,6 @@ const TransactionHistoryPage = () => {
             className="bg-white rounded-2xl shadow-2xl w-[920px] max-h-[90vh] flex flex-col overflow-hidden"
             style={{ animation: "modalIn .22s ease" }}
             onClick={(e) => e.stopPropagation()}>
-            {/* Modal Header */}
             <div className="flex justify-between items-center px-6 py-5 shrink-0 bg-[#0ea5e9]">
               <div>
                 <div className="flex items-center gap-3 mb-2">
@@ -411,7 +682,7 @@ const TransactionHistoryPage = () => {
                 </div>
                 <div className="flex items-center gap-3 text-sky-100 text-xs font-medium">
                   <span className="flex items-center gap-1.5">
-                    <Calendar size={13} />
+                    <Calendar size={13} />{" "}
                     {new Date(selectedTx.createdAt).toLocaleString("vi-VN")}
                   </span>
                   <span className="opacity-50">·</span>
@@ -442,7 +713,6 @@ const TransactionHistoryPage = () => {
               </button>
             </div>
 
-            {/* Modal Body */}
             <div className="p-6 overflow-y-auto bg-white flex-1 flex flex-col gap-6">
               <div className="flex gap-16 px-2">
                 <div>
@@ -483,8 +753,7 @@ const TransactionHistoryPage = () => {
                 </div>
               </div>
 
-              {/* Table */}
-              <div className="border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+              <div className="border border-slate-200 rounded-xl overflow-y-auto shadow-sm">
                 <table className="w-full text-sm text-left">
                   <thead className="bg-slate-50 text-slate-500">
                     <tr>
@@ -568,11 +837,10 @@ const TransactionHistoryPage = () => {
               </div>
             </div>
 
-            {/* Modal Footer */}
             <div className="px-6 py-4 border-t border-slate-100 bg-white flex justify-between items-center shrink-0">
               <div className="flex items-center gap-2 text-sm text-slate-500">
-                <Package size={16} className="text-slate-400" />
-                Tổng số mặt hàng:
+                <Package size={16} className="text-slate-400" /> Tổng số mặt
+                hàng:{" "}
                 <span className="font-bold text-slate-700 ml-1">
                   {selectedTx.details.length}
                 </span>

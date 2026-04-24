@@ -79,3 +79,17 @@ exports.deleteBranch = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+exports.getBranchById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const branch = await Branch.findById(id);
+    if (!branch) {
+      return res.status(404).json({ success: false, message: "Không tìm thấy chi nhánh" });
+    }
+    res.status(200).json({ success: true, data: branch });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
