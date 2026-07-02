@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+@layer base {
+
+  *,
+  *::before,
+  *::after {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+}
+
+input,
+textarea,
+select {
+  @apply border border-gray-300 rounded-md;
+}
+
+button {
+  @apply cursor-pointer;
+}

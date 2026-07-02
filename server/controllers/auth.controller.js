@@ -123,7 +123,9 @@ const authController = {
   getAllUsers: async (req, res) => {
     try {
       // Lấy tất cả user nhưng trừ trường password
-      const users = await User.find().select("-password").populate("branchId", "name"); // Populate tên chi nhánh
+      const users = await User.find()
+        .select("-password")
+        .populate("branchId", "name"); // Populate tên chi nhánh
       return res.json({
         success: true,
         data: users,
@@ -135,7 +137,38 @@ const authController = {
         message: "Lỗi server khi lấy danh sách nhân viên.",
       });
     }
-  }, 
+  },
+
+  // Cập nhật thông tin cá nhân (Avatar)
+  updateProfile: async (req, res) => {
+    try {
+      const userId = req.user.id;
+      const updateData = {};
+
+      // Nếu có file ảnh được upload lên qua middleware Cloudinary
+      if (req.file) {
+        updateData.avatar = req.file.path;
+      }
+
+      // Có thể nhận thêm các trường khác nếu sau này bạn muốn cho phép đổi sđt, tên...
+      if (req.body.phone) updateData.phone = req.body.phone;
+
+      // Cập nhật và trả về user mới (trừ password)
+      const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
+        new: true,
+      })
+        .select("-password")
+        .populate("branchId", "name"); // Lấy luôn tên chi nhánh nếu có
+
+      res.status(200).json({
+        success: true,
+        message: "Cập nhật thông tin thành công!",
+        user: updatedUser,
+      });
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+    }
+  },
 };
 
 module.exports = authController;

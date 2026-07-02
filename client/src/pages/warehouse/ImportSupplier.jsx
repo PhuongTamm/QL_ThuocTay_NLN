@@ -3,11 +3,16 @@ import {
   Plus,
   Trash2,
   Save,
-  PackageCheck,
   Search,
   Tag,
-  CalendarDays,
+  PackageCheck,
   Layers,
+  User,
+  CalendarDays,
+  Store,
+  Pill,
+  X,
+  Info,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
@@ -17,77 +22,124 @@ import { useAuth } from "../../context/AuthContext";
 const ImportSupplier = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const [supplierName, setSupplierName] = useState("");
 
+  // ─── STATE QUẢN LÝ DỮ LIỆU GỐC HỆ THỐNG ─────────────────────────────────
+  const [supplierName, setSupplierName] = useState("");
   const [medicines, setMedicines] = useState([]);
   const [allVariants, setAllVariants] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [inventories, setInventories] = useState([]);
   const [branches, setBranches] = useState([]);
 
-  const [items, setItems] = useState([
-    {
-      medicineId: "",
-      medicineSearchTerm: "",
-      isMedicineDropdownOpen: false,
-      batchSelection: "NEW",
-      variantId: "",
+  // ─── STATE BỘ LỌC TÌM KIẾM (BÊN TRÁI) ──────────────────────────────────
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [filterRx, setFilterRx] = useState("ALL");
+
+  // ─── STATE MODAL CHI TIẾT THUỐC ────────────────────────────────────────
+  const [selectedMedicine, setSelectedMedicine] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // ─── STATE PHIẾU NHẬP HÀNG (BÊN PHẢI) ──────────────────────────────────
+  const [items, setItems] = useState([]);
+
+  const todayString = new Date().toLocaleDateString("vi-VN");
+  const todayISOString = new Date().toISOString().split("T")[0];
+
+  // ─── TẢI DỮ LIỆU TỪ BACKEND KHI KHỞI CHẠY ──────────────────────────────
+  useEffect(() => {
+    const loadInitialData = async () => {
+      try {
+        const [medRes, varRes, catRes, invRes, branchRes] = await Promise.all([
+          api.get("/medicines"),
+          api.get("/medicines/variants"),
+          api.get("/categories"),
+          api.get("/inventories"),
+          api.get("/branches"),
+        ]);
+        setMedicines(medRes.data?.data || medRes.data || []);
+        setAllVariants(varRes.data?.data || varRes.data || []);
+        setCategories(catRes.data?.data || catRes.data || []);
+        setInventories(invRes.data?.data || invRes.data || []);
+        setBranches(branchRes.data?.data || branchRes.data || []);
+      } catch (error) {
+        console.error("Lỗi tải dữ liệu hệ thống:", error);
+      }
+    };
+    loadInitialData();
+  }, []);
+
+  // ─── XỬ LÝ LỌC THUỐC ĐA TIÊU CHÍ (DANH SÁCH BÊN TRÁI) ───────────────────
+  const filteredMedicines = medicines.filter((med) => {
+    const matchesSearch =
+      med.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      med.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (med.ingredients &&
+        med.ingredients.toLowerCase().includes(searchTerm.toLowerCase()));
+
+    const matchesCategory =
+      selectedCategory === "" ||
+      med.categoryId?._id === selectedCategory ||
+      med.categoryId === selectedCategory;
+
+    const matchesRx =
+      filterRx === "ALL" ||
+      (filterRx === "RX" && med.isPrescription === true) ||
+      (filterRx === "NON_RX" && med.isPrescription === false);
+
+    return matchesSearch && matchesCategory && matchesRx;
+  });
+
+  // Mở modal xem thông tin chi tiết thuốc
+  const handleOpenDetailModal = (medicine) => {
+    setSelectedMedicine(medicine);
+    setIsModalOpen(true);
+  };
+
+  // ─── LOGIC THÊM THUỐC VÀO PHIẾU NHẬP ────────────────────────
+  const handleSelectVariantToImport = (medicine, variant) => {
+    const isExist = items.some(
+      (item) => item.variantId === variant._id && item.batchSelection === "NEW",
+    );
+
+    if (isExist) {
+      alert(
+        `Sản phẩm ${variant.name} đang có dòng chờ điền thông tin lô mới trong phiếu nhập.`,
+      );
+      return;
+    }
+
+    const newItem = {
+      medicineId: medicine._id,
+      medicineName: medicine.name,
+      medicineCode: medicine.code,
+      variantId: variant._id,
+      variantName: variant.name,
+      unit: variant.unit,
+      conversionRate: variant.conversionRate || 1,
+      batchSelection: "NEW", // NEW hoặc mã lô cụ thể
       batchCode: "",
       manufacturingDate: "",
       expiryDate: "",
       quantity: 1,
-      price: 0,
-    },
-  ]);
+      price: "", // Khởi tạo rỗng để người dùng bắt buộc nhập giá nhập (không lấy currentPrice giá bán)
+    };
 
-  const todayString = new Date().toISOString().split("T")[0];
-
-  useEffect(() => {
-    Promise.all([
-      api.get("/medicines"),
-      api.get("/medicines/variants"),
-      api.get("/inventories"),
-      api.get("/branches"),
-    ])
-      .then(([medRes, varRes, invRes, branchRes]) => {
-        setMedicines(medRes.data.data || []);
-        setAllVariants(varRes.data.data || []);
-        setInventories(invRes.data.data || []);
-        setBranches(branchRes.data.data || []);
-      })
-      .catch((err) => console.error("Lỗi tải dữ liệu", err));
-  }, []);
-
-  const handleItemChange = (index, field, value) => {
-    const newItems = [...items];
-    newItems[index][field] = value;
-    if (field === "medicineSearchTerm") {
-      newItems[index].isMedicineDropdownOpen = true;
-      newItems[index].medicineId = "";
-      newItems[index].variantId = "";
-      newItems[index].batchSelection = "NEW";
-      newItems[index].batchCode = "";
-      newItems[index].manufacturingDate = "";
-      newItems[index].expiryDate = "";
-    }
-    setItems(newItems);
+    setItems([...items, newItem]);
+    setIsModalOpen(false); // Đóng modal nếu gọi từ modal
   };
 
-  const handleSelectMedicine = (index, medicine) => {
-    const newItems = [...items];
-    newItems[index].medicineId = medicine._id;
-    newItems[index].medicineSearchTerm = medicine.name;
-    newItems[index].isMedicineDropdownOpen = false;
-    newItems[index].variantId = "";
-    newItems[index].batchSelection = "NEW";
-    newItems[index].batchCode = "";
-    newItems[index].manufacturingDate = "";
-    newItems[index].expiryDate = "";
-    setItems(newItems);
+  // ─── CÁC HÀM THAO TÁC TRÊN PHIẾU NHẬP ──────────────────────────────────
+  const handleItemChange = (index, field, value) => {
+    const updatedItems = [...items];
+    updatedItems[index][field] = value;
+    setItems(updatedItems);
   };
 
   const handleBatchSelection = (index, batchCodeValue, availableBatches) => {
     const newItems = [...items];
     newItems[index].batchSelection = batchCodeValue;
+
     if (batchCodeValue === "NEW") {
       newItems[index].batchCode = "";
       newItems[index].manufacturingDate = "";
@@ -111,34 +163,29 @@ const ImportSupplier = () => {
     setItems(newItems);
   };
 
-  const addItemRow = () => {
-    setItems([
-      ...items,
-      {
-        medicineId: "",
-        medicineSearchTerm: "",
-        isMedicineDropdownOpen: false,
-        batchSelection: "NEW",
-        variantId: "",
-        batchCode: "",
-        manufacturingDate: "",
-        expiryDate: "",
-        quantity: 1,
-        price: 0,
-      },
-    ]);
+  const handleRemoveItem = (index) => {
+    setItems(items.filter((_, i) => i !== index));
   };
 
-  const removeItemRow = (index) =>
-    setItems(items.filter((_, i) => i !== index));
+  const handleClearAll = () => {
+    if (window.confirm("Bạn có chắc chắn muốn xóa toàn bộ danh sách nhập?")) {
+      setItems([]);
+    }
+  };
 
-  /* ─── LOGIC IN PHIẾU PDF ─── */
+  // Tính tổng tiền dựa trên số lượng và giá trị người dùng vừa gõ
+  const totalValue = items.reduce(
+    (sum, item) => sum + Number(item.quantity || 0) * Number(item.price || 0),
+    0,
+  );
+
+  // ─── LOGIC IN PHIẾU PDF ───────────────────────────────────────────────
   const generatePDF = async (transaction) => {
     const toName =
       branches.find((b) => b._id === user?.branchId)?.name || "Kho Tổng";
     const txDate = new Date(transaction.createdAt).toLocaleString("vi-VN");
 
-    let totalValue = 0;
+    let totalVal = 0;
     let htmlRows = "";
 
     transaction.details.forEach((item, idx) => {
@@ -150,7 +197,7 @@ const ImportSupplier = () => {
         : "---";
 
       const itemTotal = (item.quantity || 0) * (item.price || 0);
-      totalValue += itemTotal;
+      totalVal += itemTotal;
 
       htmlRows += `
         <tr>
@@ -201,7 +248,7 @@ const ImportSupplier = () => {
           <tfoot>
             <tr>
               <td colspan="7" style="border: 1px solid #000; padding: 10px; text-align: right; font-weight: bold; text-transform: uppercase;">Cộng thành tiền:</td>
-              <td style="border: 1px solid #000; padding: 10px; text-align: right; font-weight: bold;">${totalValue.toLocaleString("vi-VN")} đ</td>
+              <td style="border: 1px solid #000; padding: 10px; text-align: right; font-weight: bold;">${totalVal.toLocaleString("vi-VN")} đ</td>
             </tr>
           </tfoot>
         </table>
@@ -241,150 +288,372 @@ const ImportSupplier = () => {
     await html2pdf().set(opt).from(printDiv).save();
   };
 
+  // ─── LOGIC LƯU PHIẾU NHẬP ────────────────────────
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      if (!supplierName) return alert("Vui lòng nhập tên Nhà cung cấp");
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
 
-      for (let i = 0; i < items.length; i++) {
-        const item = items[i];
-        const finalBatchCode =
-          item.batchSelection === "NEW" ? item.batchCode : item.batchSelection;
-        if (!item.medicineId)
-          return alert(
-            `Dòng thứ ${i + 1}: Bạn chưa chọn Thuốc gốc từ danh sách!`,
-          );
-        if (
-          !item.variantId ||
-          !finalBatchCode ||
-          !item.manufacturingDate ||
-          !item.expiryDate
-        )
-          return alert(
-            `Dòng thứ ${i + 1}: Vui lòng điền đầy đủ Quy cách, Mã Lô và Ngày tháng!`,
-          );
-        const mfgDate = new Date(item.manufacturingDate);
-        const expDate = new Date(item.expiryDate);
-        if (mfgDate > today)
-          return alert(
-            `Dòng thứ ${i + 1}: Ngày sản xuất không được ở tương lai!`,
-          );
-        if (expDate <= mfgDate)
-          return alert(
-            `Dòng thứ ${i + 1}: Hạn sử dụng phải lớn hơn Ngày sản xuất!`,
-          );
-        if (expDate <= today)
-          return alert(`Dòng thứ ${i + 1}: Thuốc này đã hết hạn sử dụng!`);
+    if (!supplierName.trim()) {
+      alert("Vui lòng nhập tên Nhà cung cấp.");
+      return;
+    }
+
+    if (items.length === 0) {
+      alert("Phiếu nhập phải có ít nhất 1 mặt hàng.");
+      return;
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      const finalBatchCode =
+        item.batchSelection === "NEW" ? item.batchCode : item.batchSelection;
+
+      if (!finalBatchCode.trim()) {
+        alert(`Dòng số ${i + 1}: Vui lòng điền Mã Lô.`);
+        return;
       }
-
-      const payloadItems = items.map((item) => ({
-        variantId: item.variantId,
-        batchCode:
-          item.batchSelection === "NEW" ? item.batchCode : item.batchSelection,
-        manufacturingDate: item.manufacturingDate,
-        expiryDate: item.expiryDate,
-        quantity: Number(item.quantity),
-        price: Number(parseFloat(item.price).toFixed(2)),
-      }));
-
-      const response = await api.post("/transactions/import-supplier", {
-        supplierName,
-        items: payloadItems,
-      });
-
-      if (response?.data?.success) {
-        // Hỏi in phiếu
-        const wantToPrint = window.confirm(
-          "Nhập kho thành công! Bạn có muốn in PHIẾU NHẬP KHO không?",
+      if (!item.manufacturingDate || !item.expiryDate) {
+        alert(
+          `Dòng số ${i + 1}: Vui lòng điền đầy đủ Ngày sản xuất & Hạn sử dụng.`,
         );
-        if (wantToPrint && response.data.transaction) {
-          await generatePDF(response.data.transaction);
+        return;
+      }
+      if (item.price === "" || Number(item.price) <= 0) {
+        alert(`Dòng số ${i + 1}: Vui lòng điền Giá Nhập hợp lệ (lớn hơn 0).`);
+        return;
+      }
+      const mfgDate = new Date(item.manufacturingDate);
+      const expDate = new Date(item.expiryDate);
+      if (mfgDate > today) {
+        alert(`Dòng số ${i + 1}: Ngày sản xuất không được ở tương lai.`);
+        return;
+      }
+      if (expDate <= mfgDate) {
+        alert(`Dòng số ${i + 1}: Ngày sản xuất phải nhỏ hơn Hạn sử dụng.`);
+        return;
+      }
+      if (expDate <= today) {
+        alert(`Dòng số ${i + 1}: Lô thuốc này đã hết hạn sử dụng!`);
+        return;
+      }
+      if (item.quantity <= 0) {
+        alert(`Dòng số ${i + 1}: Số lượng nhập phải lớn hơn 0.`);
+        return;
+      }
+    }
+
+    try {
+      const payload = {
+        supplierName: supplierName.trim(),
+        details: items.map((item) => ({
+          variantId: item.variantId,
+          batchCode:
+            item.batchSelection === "NEW"
+              ? item.batchCode.trim().toUpperCase()
+              : item.batchSelection,
+          manufacturingDate: item.manufacturingDate,
+          expiryDate: item.expiryDate,
+          quantity: Number(item.quantity),
+          price: Number(item.price),
+        })),
+      };
+
+      const res = await api.post("/transactions/import-supplier", payload);
+
+      if (res.data?.success || res.success) {
+        const wantToPrint = window.confirm(
+          "Nhập hàng thành công! Bạn có muốn in PHIẾU NHẬP KHO không?",
+        );
+        if (wantToPrint && (res.data?.transaction || res.transaction)) {
+          await generatePDF(res.data?.transaction || res.transaction);
         }
+        setItems([]);
+        setSupplierName("");
         navigate("/inventory");
       } else {
-        alert(response.data?.message || "Đã có lỗi xảy ra!");
+        alert(res.data?.message || "Có lỗi xảy ra khi nhập hàng.");
       }
     } catch (error) {
-      alert(
-        "Lỗi nhập kho: " + (error.response?.data?.message || error.message),
-      );
+      console.error("Lỗi gửi dữ liệu nhập kho:", error);
+      alert(error.response?.data?.message || "Lỗi kết nối máy chủ.");
     }
   };
 
-  const totalValue = items.reduce(
-    (sum, item) => sum + Number(item.quantity) * Number(item.price),
-    0,
-  );
-
-  // Shared input/select class helpers
   const inputBase =
-    "w-full border border-slate-200 rounded-lg px-3 py-2 text-sm font-semibold text-slate-800 bg-white outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-100 disabled:bg-slate-50 disabled:text-slate-400 disabled:cursor-not-allowed read-only:bg-slate-50 read-only:text-slate-400 read-only:cursor-not-allowed";
-  const labelBase = "block text-[10px] font-bold uppercase tracking-wide mb-1";
+    "w-full border border-slate-200 rounded-lg px-2.5 py-2 text-xs font-medium text-slate-800 bg-white outline-none transition focus:border-[#1d5fa7] focus:ring-2 focus:ring-[#1d5fa7]/20 disabled:bg-slate-50 disabled:text-slate-500 read-only:bg-slate-50 read-only:text-slate-500 read-only:font-bold";
 
   return (
     <div
-      className="min-h-screen bg-slate-100 p-5"
+      className="flex flex-col h-[calc(100vh-40px)] bg-slate-50 p-4 overflow-hidden"
       style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
-      <div className="max-w-screen-xl mx-auto">
-        {/* ── Page Header ── */}
-        <div className="flex items-center gap-3 mb-5">
-          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-sky-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-sky-200 shrink-0">
-            <PackageCheck size={20} color="white" />
-          </div>
-          <div>
-            <h1 className="text-xl font-extrabold text-slate-900 leading-tight">
-              Nhập Hàng Từ Nhà Cung Cấp
-            </h1>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Tạo phiếu nhập kho mới từ nhà cung cấp
-            </p>
-          </div>
-        </div>
+      <style>{`
+        /* HIỆU ỨNG FLOAT BAY LÊN (FADE UP) CHO TOÀN BỘ TRANG */
+        @keyframes floatUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-float-up {
+          animation: floatUp 0.5s ease-out forwards;
+        }
 
-        {/* ── Main Card ── */}
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-          {/* ── Supplier Banner ── */}
-          <div className=" to-cyan-50 border-b border-sky-100 px-6 py-4">
-            <div className="max-w-sm">
-              <label className={`${labelBase} text-sky-600`}>
-                Tên Nhà Cung Cấp <span className="text-red-500">*</span>
-              </label>
-              <input
-                required
-                value={supplierName}
-                onChange={(e) => setSupplierName(e.target.value)}
-                className={`${inputBase} border-sky-200 focus:border-sky-400`}
-                placeholder="VD: Dược Hậu Giang, Pymepharco..."
+        /* Hiệu ứng Fade In cho Modal */
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        .animate-fade-in {
+          animation: fadeIn 0.2s ease-out forwards;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar { width: 4px; height: 4px; }
+        .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+        .scrollbar-thin::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+      `}</style>
+
+      {/* HEADER GIỮ NGUYÊN GIAO DIỆN CŨ */}
+      <div className="flex items-center gap-3 mb-4 shrink-0 animate-float-up">
+        <div
+          className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 text-white"
+          style={{
+            background: "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+            boxShadow: "0 4px 14px rgba(29, 95, 167, 0.3)",
+          }}>
+          <PackageCheck size={20} />
+        </div>
+        <div>
+          <h1 className="text-xl font-bold text-slate-900 leading-tight">
+            Nhập Hàng Từ Nhà Cung Cấp
+          </h1>
+          <p className="text-xs text-slate-500 mt-0.5">
+            Tạo phiếu nhập kho mới từ nhà cung cấp
+          </p>
+        </div>
+      </div>
+
+      {/* WORKSPACE CHIA LÀM 2 PHẦN */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1 overflow-hidden animate-float-up">
+        {/* ==================== PHẦN BÊN TRÁI: DANH SÁCH THUỐC ==================== */}
+        <div className="lg:col-span-4 flex flex-col bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden h-full">
+          <div className="p-4 border-b border-slate-100 bg-slate-50/50 shrink-0">
+            <h2 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+              <Pill size={16} className="text-[#1d5fa7]" /> Tìm & Chọn Thuốc
+            </h2>
+
+            {/* Thanh tìm kiếm nâng cao */}
+            <div className="relative mb-3">
+              <Search
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
+                size={16}
               />
+              <input
+                type="text"
+                placeholder="Tìm theo tên thuốc, mã, hoạt chất..."
+                className="w-full pl-10 pr-4 py-2.5 bg-white text-sm outline-none transition-all placeholder:text-slate-400 font-medium text-slate-800 border border-slate-200 rounded-xl focus:border-[#1d5fa7] focus:ring-2 focus:ring-[#1d5fa7]/20"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+
+            {/* Bộ lọc đa tiêu chí */}
+            <div className="grid grid-cols-2 gap-2">
+              <select
+                className="w-full text-xs p-2.5 border border-slate-200 rounded-xl bg-white outline-none font-medium text-slate-600 focus:border-[#1d5fa7]"
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}>
+                <option value="">Tất cả danh mục</option>
+                {categories.map((cat) => (
+                  <option key={cat._id} value={cat._id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
+              <select
+                className="w-full text-xs p-2.5 border border-slate-200 rounded-xl bg-white outline-none font-medium text-slate-600 focus:border-[#1d5fa7]"
+                value={filterRx}
+                onChange={(e) => setFilterRx(e.target.value)}>
+                <option value="ALL">Tất cả phân loại</option>
+                <option value="RX">Thuốc kê đơn (Rx)</option>
+                <option value="NON_RX">Không kê đơn</option>
+              </select>
             </div>
           </div>
 
-          {/* ── Form ── */}
-          <form onSubmit={handleSubmit}>
-            <div className="p-5">
-              {/* Section Label */}
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center">
-                  <Layers size={14} className="text-slate-500" />
-                </div>
-                <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wide">
-                  Danh sách mặt hàng nhập
+          {/* Khối hiển thị danh sách thuốc (Có nút chọn quy cách ra ngoài) */}
+          <div className="flex-1 overflow-y-auto p-3 space-y-2 bg-slate-50/30 scrollbar-thin">
+            {filteredMedicines.length === 0 ? (
+              <div className="text-center py-12 text-slate-400 text-sm font-medium">
+                Không tìm thấy loại thuốc nào phù hợp.
+              </div>
+            ) : (
+              filteredMedicines.map((med) => {
+                const medVariants = allVariants.filter(
+                  (v) =>
+                    v.medicineId?._id === med._id || v.medicineId === med._id,
+                );
+
+                return (
+                  <div
+                    key={med._id}
+                    className="bg-white border border-slate-100 rounded-xl p-3 shadow-sm hover:border-[#1d5fa7] hover:shadow-md transition-all duration-200 flex flex-col">
+                    {/* Phần top: Click mở Modal chi tiết */}
+                    <div
+                      className="flex justify-between items-start mb-2 cursor-pointer group"
+                      onClick={() => handleOpenDetailModal(med)}>
+                      <div className="flex-1 min-w-0 pr-2">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-[10px] font-bold px-1.5 py-0.5 bg-slate-100 text-slate-600 rounded">
+                            {med.code}
+                          </span>
+                          {med.isPrescription && (
+                            <span className="text-[10px] font-extrabold px-1.5 py-0.5 bg-rose-50 text-rose-600 rounded border border-rose-100">
+                              Rx
+                            </span>
+                          )}
+                        </div>
+                        <h3 className="font-bold text-slate-800 text-sm truncate group-hover:text-[#1d5fa7] transition-colors">
+                          {med.name}
+                        </h3>
+                        <p
+                          className="text-xs text-slate-400 truncate mt-0.5"
+                          title={med.ingredients}>
+                          HC: {med.ingredients || "---"}
+                        </p>
+                      </div>
+                      <div
+                        className="shrink-0 p-1.5 bg-slate-50 group-hover:bg-blue-50 text-slate-400 group-hover:text-[#1d5fa7] rounded-lg transition-colors"
+                        title="Xem chi tiết">
+                        <Info size={16} />
+                      </div>
+                    </div>
+
+                    {/* Danh sách quy cách (Biến thể) inline để bấm thêm nhanh */}
+                    <div className="mt-1 pt-2 border-t border-slate-100 space-y-1.5">
+                      {medVariants.length === 0 ? (
+                        <p className="text-[11px] text-amber-500 italic">
+                          Chưa cấu hình đơn vị bán.
+                        </p>
+                      ) : (
+                        medVariants.map((variant) => (
+                          <div
+                            key={variant._id}
+                            className="flex justify-between items-center bg-slate-50 p-2 rounded-lg border border-slate-100 hover:border-blue-200 transition-colors">
+                            <div className="min-w-0 flex-1 pr-2">
+                              <span className="text-xs font-semibold text-slate-700 block line-clamp-1">
+                                {variant.name}
+                              </span>
+                              <span className="text-[10px] text-slate-500">
+                                ĐV: {variant.unit}
+                              </span>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation(); // Ngăn chặn sự kiện click mở modal
+                                handleSelectVariantToImport(med, variant);
+                              }}
+                              className="shrink-0 flex items-center gap-1 text-[11px] font-bold bg-blue-50 text-[#1d5fa7] px-2.5 py-1.5 rounded-md hover:bg-[#1d5fa7] hover:text-white transition-colors border border-blue-100 hover:border-[#1d5fa7]">
+                              <Plus size={12} strokeWidth={3} /> Chọn
+                            </button>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </div>
+
+        {/* ==================== PHẦN BÊN PHẢI: GIAO DIỆN PHIẾU NHẬP THUỐC ==================== */}
+        <form
+          onSubmit={handleSubmit}
+          className="lg:col-span-8 flex flex-col bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden h-full">
+          {/* Thông tin nhà cung cấp và Header phiếu */}
+          <div className="p-4 border-b border-slate-100 bg-slate-50/50 shrink-0">
+            {/* Box Thông Tin Phiếu: Ngày Lập, Nhân Viên, Vị Trí Nhập (Cùng 1 hàng ngang) */}
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm mb-4">
+              <div className="flex items-center gap-1.5">
+                <span className="text-slate-400 font-medium flex items-center gap-1">
+                  <CalendarDays size={14} /> Ngày lập:
                 </span>
-                <span className="bg-slate-100 text-slate-500 text-[11px] font-bold rounded-md px-2 py-0.5">
-                  {items.length} dòng
+                <span className="font-bold text-slate-800">{todayString}</span>
+              </div>
+              <div className="w-px h-4 bg-slate-200 hidden md:block"></div>
+
+              <div className="flex items-center gap-1.5">
+                <span className="text-slate-400 font-medium flex items-center gap-1">
+                  <User size={14} /> Nhân viên:
+                </span>
+                <span className="font-bold text-slate-800">
+                  {user?.fullName || "Hệ thống"}
                 </span>
               </div>
+              <div className="w-px h-4 bg-slate-200 hidden md:block"></div>
 
-              {/* ── Item Rows ── */}
-              <div className="flex flex-col gap-3">
+              <div className="flex items-center gap-1.5">
+                <span className="text-slate-400 font-medium flex items-center gap-1">
+                  <Store size={14} /> Vị trí nhập:
+                </span>
+                <span className="font-bold text-slate-800">
+                  {branches.find((b) => b._id === user?.branchId)?.name ||
+                    "Kho Tổng"}
+                </span>
+              </div>
+            </div>
+            <div className="flex flex-col md:flex-row gap-4">
+              {/* Box Nhà Cung Cấp */}
+              <div className="flex-1">
+                <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+                  Tên Nhà Cung Cấp <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="VD: Dược Hậu Giang, Pymepharco..."
+                  className="w-full px-3 py-2 text-sm outline-none border border-slate-200 rounded-xl focus:border-[#1d5fa7] focus:ring-2 focus:ring-[#1d5fa7]/20 transition-all font-semibold text-slate-800"
+                  value={supplierName}
+                  onChange={(e) => setSupplierName(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Dải tiêu đề của Bảng chi tiết mặt hàng */}
+          <div className="px-4 py-3 border-b border-slate-100 bg-white flex justify-between items-center shrink-0">
+            <div className="flex items-center gap-2">
+              <Layers size={16} className="text-[#1d5fa7]" />
+              <span className="text-sm font-bold text-slate-700">
+                Chi tiết nhập hàng ({items.length})
+              </span>
+            </div>
+            {items.length > 0 && (
+              <button
+                type="button"
+                onClick={handleClearAll}
+                className="text-xs font-bold text-rose-500 hover:text-rose-700 flex items-center gap-1 px-2 py-1 rounded hover:bg-rose-50 transition-colors">
+                <Trash2 size={14} /> Xóa tất cả
+              </button>
+            )}
+          </div>
+
+          {/* Bảng chi tiết các cột thuộc tính phiếu nhập dữ liệu tự động wrap responsive */}
+          <div className="flex-1 overflow-auto p-4 bg-slate-50/30 scrollbar-thin">
+            {items.length === 0 ? (
+              <div className="h-full flex flex-col items-center justify-center text-slate-400 space-y-2 py-10">
+                <Tag size={40} className="text-slate-200" />
+                <p className="text-sm font-medium text-slate-500">
+                  Chưa có sản phẩm nào trong phiếu.
+                </p>
+                <p className="text-xs text-slate-400">
+                  Chọn quy cách thuốc ở danh sách bên trái để thêm vào phiếu.
+                </p>
+              </div>
+            ) : (
+              <div className="w-full flex flex-col gap-3">
                 {items.map((item, index) => {
-                  const filteredVariants = allVariants.filter(
-                    (v) =>
-                      v.medicineId === item.medicineId ||
-                      v.medicineId?._id === item.medicineId,
-                  );
                   const medInventory = inventories.find(
                     (inv) =>
                       inv.medicineId === item.medicineId ||
@@ -397,122 +666,38 @@ const ImportSupplier = () => {
                         ).values(),
                       )
                     : [];
-                  const selectedVariantObj = allVariants.find(
-                    (v) => v._id === item.variantId,
-                  );
-                  const unitLabel = selectedVariantObj
-                    ? selectedVariantObj.unit
-                    : "đ.vị";
                   const isExistingBatch = item.batchSelection !== "NEW";
-                  const searchedMedicines = medicines.filter(
-                    (m) =>
-                      m.name
-                        .toLowerCase()
-                        .includes(item.medicineSearchTerm.toLowerCase()) ||
-                      m.code
-                        .toLowerCase()
-                        .includes(item.medicineSearchTerm.toLowerCase()),
-                  );
 
                   return (
                     <div
-                      key={index}
-                      className="bg-slate-50 border border-slate-200 rounded-xl p-4 hover:border-sky-200 hover:shadow-sm transition-all duration-200">
-                      {/* Row number badge */}
-                      <div className="flex items-center gap-2 mb-3">
-                        <span className="w-6 h-6 bg-white border border-slate-200 rounded-md flex items-center justify-center text-[11px] font-bold text-slate-400">
-                          {index + 1}
-                        </span>
-                        <div className="h-px flex-1 bg-slate-200" />
+                      key={`${item.variantId}-${index}`}
+                      className="bg-white border border-slate-200 rounded-xl p-3 shadow-sm hover:border-[#1d5fa7]/30 transition-colors">
+                      <div className="flex justify-between items-start mb-3 border-b border-slate-100 pb-2">
+                        <div>
+                          <p className="font-bold text-slate-800 text-sm">
+                            {item.variantName}
+                          </p>
+                          <p className="text-xs text-slate-500 mt-0.5">
+                            Mã thuốc: {item.medicineCode} | ĐV: {item.unit}
+                          </p>
+                        </div>
                         <button
                           type="button"
-                          onClick={() => removeItemRow(index)}
-                          className="w-7 h-7 bg-white border border-slate-200 rounded-lg flex items-center justify-center text-slate-400 hover:bg-red-50 hover:border-red-200 hover:text-red-500 transition-all duration-150">
-                          <Trash2 size={14} />
+                          onClick={() => handleRemoveItem(index)}
+                          className="text-slate-400 hover:text-rose-500 hover:bg-rose-50 p-1.5 rounded-lg transition-colors"
+                          title="Xóa dòng">
+                          <X size={16} />
                         </button>
                       </div>
 
-                      {/* ── ROW 1: Tìm thuốc | Lô | Mã lô | Quy cách ── */}
-                      <div className="grid grid-cols-4 gap-3 mb-3">
-                        {/* 1. TÌM THUỐC */}
-                        <div className="relative">
-                          <label className={`${labelBase} text-slate-500`}>
-                            Tìm &amp; Chọn Thuốc
-                          </label>
-                          <div className="relative">
-                            <Search
-                              size={13}
-                              className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
-                            />
-                            <input
-                              type="text"
-                              required
-                              placeholder="Nhập tên hoặc mã thuốc..."
-                              value={item.medicineSearchTerm}
-                              onChange={(e) =>
-                                handleItemChange(
-                                  index,
-                                  "medicineSearchTerm",
-                                  e.target.value,
-                                )
-                              }
-                              onFocus={() =>
-                                handleItemChange(
-                                  index,
-                                  "isMedicineDropdownOpen",
-                                  true,
-                                )
-                              }
-                              onBlur={() =>
-                                setTimeout(
-                                  () =>
-                                    handleItemChange(
-                                      index,
-                                      "isMedicineDropdownOpen",
-                                      false,
-                                    ),
-                                  200,
-                                )
-                              }
-                              className={`${inputBase} pl-8 ${item.medicineId ? "border-sky-200" : ""}`}
-                            />
-                          </div>
-
-                          {/* Dropdown */}
-                          {item.isMedicineDropdownOpen && (
-                            <ul className="absolute z-50 w-full bg-white border border-slate-200 rounded-xl shadow-xl mt-1 max-h-52 overflow-y-auto">
-                              {searchedMedicines.length > 0 ? (
-                                searchedMedicines.map((m) => (
-                                  <li
-                                    key={m._id}
-                                    onClick={() =>
-                                      handleSelectMedicine(index, m)
-                                    }
-                                    className="px-3 py-2.5 cursor-pointer border-b border-slate-50 hover:bg-sky-50 transition-colors last:border-0">
-                                    <p className="font-bold text-slate-800 text-[13px]">
-                                      {m.name}
-                                    </p>
-                                    <p className="text-[11px] text-slate-400 mt-0.5">
-                                      Mã: {m.code}
-                                    </p>
-                                  </li>
-                                ))
-                              ) : (
-                                <li className="px-3 py-3.5 text-center text-[13px] text-slate-400 italic">
-                                  Không tìm thấy thuốc
-                                </li>
-                              )}
-                            </ul>
-                          )}
-                        </div>
-
-                        {/* 2. CHỌN LÔ */}
+                      {/* Sử dụng Responsive Grid linh hoạt */}
+                      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3">
+                        {/* Chọn Lô */}
                         <div>
-                          <label className={`${labelBase} text-slate-500`}>
-                            Lô (Batch)
+                          <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">
+                            Loại Lô
                           </label>
                           <select
-                            disabled={!item.medicineId}
                             value={item.batchSelection}
                             onChange={(e) =>
                               handleBatchSelection(
@@ -521,90 +706,49 @@ const ImportSupplier = () => {
                                 availableBatches,
                               )
                             }
-                            className={`${inputBase} cursor-pointer disabled:cursor-not-allowed ${item.medicineId ? "border-sky-200 focus:border-sky-400 focus:ring-sky-100" : ""}`}>
-                            <option value="NEW">➕ Tạo lô mới</option>
+                            className={inputBase}>
+                            <option value="NEW">➕ Tạo Lô Mới</option>
                             {availableBatches.map((b) => (
                               <option key={b.batchCode} value={b.batchCode}>
-                                {b.batchCode}
+                                Lô Cũ: {b.batchCode}
                               </option>
                             ))}
                           </select>
                         </div>
 
-                        {/* 3. MÃ LÔ MỚI (conditional) / placeholder khi existing */}
-                        {!isExistingBatch ? (
-                          <div>
-                            <label className={`${labelBase} text-slate-500`}>
-                              Mã Lô
-                            </label>
-                            <input
-                              required
-                              value={item.batchCode}
-                              onChange={(e) =>
-                                handleItemChange(
-                                  index,
-                                  "batchCode",
-                                  e.target.value,
-                                )
-                              }
-                              className={`${inputBase} border-sky-200 focus:border-sky-400 focus:ring-sky-100`}
-                              placeholder="Mã lô..."
-                            />
-                          </div>
-                        ) : (
-                          <div>
-                            <label className={`${labelBase} text-slate-500`}>
-                              Mã Lô
-                            </label>
-                            <input
-                              readOnly
-                              value={item.batchCode}
-                              className={inputBase}
-                            />
-                          </div>
-                        )}
-
-                        {/* 4. QUY CÁCH */}
+                        {/* Mã Lô */}
                         <div>
-                          <label className={`${labelBase} text-slate-500`}>
-                            Quy Cách
+                          <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">
+                            Mã Lô <span className="text-red-500">*</span>
                           </label>
-                          <select
+                          <input
+                            type="text"
                             required
-                            disabled={!item.medicineId}
-                            value={item.variantId}
+                            placeholder="Mã Lô..."
+                            readOnly={isExistingBatch}
+                            className={`${inputBase} uppercase font-bold ${isExistingBatch ? "bg-slate-50 text-slate-500" : "text-slate-800"}`}
+                            value={item.batchCode}
                             onChange={(e) =>
                               handleItemChange(
                                 index,
-                                "variantId",
+                                "batchCode",
                                 e.target.value,
                               )
                             }
-                            className={`${inputBase} cursor-pointer disabled:cursor-not-allowed ${item.medicineId ? "border-sky-200 focus:border-sky-400 focus:ring-sky-100" : ""}`}>
-                            <option value="">-- Chọn --</option>
-                            {filteredVariants.map((v) => (
-                              <option key={v._id} value={v._id}>
-                                {v.unit} ({v.sku})
-                              </option>
-                            ))}
-                          </select>
+                          />
                         </div>
-                      </div>
 
-                      {/* ── ROW 2: Ngày SX | Hạn SD | SL Nhập | Giá nhập ── */}
-                      <div className="grid grid-cols-4 gap-3">
-                        {/* 5. NGÀY SẢN XUẤT */}
+                        {/* NSX */}
                         <div>
-                          <label className={`${labelBase} text-slate-500`}>
-                            <span className="flex items-center gap-1">
-                              <CalendarDays size={10} /> Ngày Sản Xuất
-                            </span>
+                          <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">
+                            Ngày SX <span className="text-red-500">*</span>
                           </label>
                           <input
                             type="date"
                             required
-                            max={todayString}
+                            max={todayISOString}
                             readOnly={isExistingBatch}
+                            className={`${inputBase} ${isExistingBatch ? "bg-slate-50 text-slate-500" : ""}`}
                             value={item.manufacturingDate}
                             onChange={(e) =>
                               handleItemChange(
@@ -613,22 +757,20 @@ const ImportSupplier = () => {
                                 e.target.value,
                               )
                             }
-                            className={inputBase}
                           />
                         </div>
 
-                        {/* 6. HẠN SỬ DỤNG */}
+                        {/* HSD */}
                         <div>
-                          <label className={`${labelBase} text-slate-500`}>
-                            <span className="flex items-center gap-1">
-                              <CalendarDays size={10} /> Hạn Sử Dụng
-                            </span>
+                          <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">
+                            Hạn SD <span className="text-red-500">*</span>
                           </label>
                           <input
                             type="date"
                             required
-                            min={item.manufacturingDate || todayString}
+                            min={item.manufacturingDate || todayISOString}
                             readOnly={isExistingBatch}
+                            className={`${inputBase} ${isExistingBatch ? "bg-slate-50 text-slate-500" : ""}`}
                             value={item.expiryDate}
                             onChange={(e) =>
                               handleItemChange(
@@ -637,101 +779,190 @@ const ImportSupplier = () => {
                                 e.target.value,
                               )
                             }
-                            className={inputBase}
                           />
                         </div>
 
-                        {/* 7. SỐ LƯỢNG */}
+                        {/* Số lượng */}
                         <div>
-                          <label className={`${labelBase} text-slate-500`}>
-                            SL Nhập
+                          <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">
+                            Số Lượng <span className="text-red-500">*</span>
                           </label>
                           <input
                             type="number"
                             min="1"
                             required
+                            className={`${inputBase} text-center font-extrabold text-[#1d5fa7] text-sm`}
                             value={item.quantity}
                             onChange={(e) =>
                               handleItemChange(
                                 index,
                                 "quantity",
-                                e.target.value,
+                                Math.max(1, parseInt(e.target.value) || 1),
                               )
                             }
-                            className={`${inputBase} text-center font-extrabold text-base text-sky-600 focus:border-sky-400 focus:ring-sky-100`}
                           />
                         </div>
 
-                        {/* 8. GIÁ NHẬP */}
+                        {/* Giá Nhập */}
                         <div>
-                          <label className={`${labelBase} text-red-500`}>
-                            Giá Nhập / {unitLabel}
+                          <label className="block text-[10px] font-bold text-rose-500 uppercase tracking-wide mb-1">
+                            Giá Nhập (đ) <span className="text-red-500">*</span>
                           </label>
-                          <div className="relative">
-                            <input
-                              type="number"
-                              min="0"
-                              step="0.01"
-                              required
-                              value={item.price}
-                              onChange={(e) =>
-                                handleItemChange(index, "price", e.target.value)
-                              }
-                              className={`${inputBase} border-red-200 text-red-600 font-bold pr-7 focus:border-red-400 focus:ring-red-100`}
-                            />
-                            <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[11px] text-slate-400 font-bold pointer-events-none">
-                              đ
-                            </span>
-                          </div>
+                          <input
+                            type="number"
+                            min="0"
+                            step="500"
+                            required
+                            placeholder="Nhập giá"
+                            className={`${inputBase} text-right font-extrabold text-rose-600 text-sm focus:border-rose-400 focus:ring-rose-100`}
+                            value={item.price}
+                            onChange={(e) =>
+                              handleItemChange(
+                                index,
+                                "price",
+                                e.target.value === ""
+                                  ? ""
+                                  : Math.max(0, parseFloat(e.target.value)),
+                              )
+                            }
+                          />
                         </div>
                       </div>
                     </div>
                   );
                 })}
               </div>
+            )}
+          </div>
 
-              {/* Add Row */}
+          {/* FOOTER: HIỂN THỊ TỔNG TIỀN VÀ NÚT LƯU PHIẾU CHỐT SỐ LIỆU */}
+          <div className="px-6 py-4 border-t border-slate-100 bg-slate-50 flex flex-col sm:flex-row justify-between items-center gap-4 shrink-0">
+            <div className="flex items-center gap-3 bg-white px-4 py-2.5 rounded-xl border border-slate-200 shadow-sm">
+              <span className="text-sm text-slate-600 font-bold uppercase tracking-wide">
+                Tổng tiền phiếu nhập:
+              </span>
+              <span className="text-xl font-black text-rose-600 tracking-tight">
+                {totalValue.toLocaleString()}{" "}
+                <span className="text-sm font-bold ml-0.5 text-rose-500">
+                  đ
+                </span>
+              </span>
+            </div>
+
+            <button
+              type="submit"
+              disabled={items.length === 0}
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3 text-white rounded-xl text-sm font-bold transition-all hover:-translate-y-0.5 tracking-wide shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{
+                background:
+                  items.length > 0
+                    ? "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)"
+                    : "#94a3b8",
+                boxShadow:
+                  items.length > 0
+                    ? "0 4px 14px rgba(29, 95, 167, 0.4)"
+                    : "none",
+              }}>
+              <Save size={18} />
+              Hoàn Tất Nhập Kho
+            </button>
+          </div>
+        </form>
+      </div>
+
+      {/* ==================== DIALOG MODAL: CHI TIẾT THUỐC ==================== */}
+      {isModalOpen && selectedMedicine && (
+        <div
+          className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-[150] p-4 animate-fade-in"
+          onClick={() => setIsModalOpen(false)}>
+          <div
+            className="bg-white rounded-2xl border border-slate-100 shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]"
+            onClick={(e) => e.stopPropagation()}>
+            {/* Modal Header */}
+            <div className="p-4 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#1d5fa7] flex items-center justify-center font-bold text-sm">
+                  <Pill size={16} />
+                </div>
+                <div>
+                  <h2 className="font-black text-slate-800 text-base leading-tight">
+                    Thông Tin Chi Tiết Thuốc
+                  </h2>
+                  <p className="text-[11px] text-slate-400 mt-0.5">
+                    Mã thuốc hệ thống:{" "}
+                    <span className="font-bold text-slate-600">
+                      {selectedMedicine.code}
+                    </span>
+                  </p>
+                </div>
+              </div>
               <button
-                type="button"
-                onClick={addItemRow}
-                className="mt-3 flex items-center gap-2 px-4 py-2.5 bg-transparent border border-dashed border-sky-300 rounded-xl text-[13px] font-bold text-sky-600 hover:bg-sky-50 transition-colors duration-200">
-                <Plus size={15} strokeWidth={2.5} />
-                Thêm dòng mặt hàng
+                onClick={() => setIsModalOpen(false)}
+                className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-200/50 rounded-xl transition-colors">
+                <X size={18} />
               </button>
             </div>
 
-            {/* ── Footer ── */}
-            <div className="px-6 py-4 border-t border-slate-100 bg-slate-50 flex flex-wrap justify-between items-center gap-3">
-              {/* Total Value */}
-              <div className="flex items-center gap-3 bg-orange-50 border border-orange-200 rounded-xl px-4 py-2.5">
-                <span className="text-[13px] text-orange-800 font-semibold">
-                  Tổng giá trị phiếu nhập:
-                </span>
-                <span className="text-xl font-black text-red-600 leading-none">
-                  {totalValue.toLocaleString()}
-                  <span className="text-[13px] font-bold ml-0.5">đ</span>
-                </span>
+            {/* Modal Content */}
+            <div className="p-5 space-y-4 overflow-y-auto flex-1 text-sm text-slate-700">
+              <div>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-wide">
+                  Tên thuốc gốc
+                </p>
+                <p className="font-bold text-slate-800 text-base mt-0.5">
+                  {selectedMedicine.name}
+                </p>
               </div>
 
-              {/* Buttons */}
-              <div className="flex gap-2.5">
-                <button
-                  type="button"
-                  onClick={() => navigate(-1)}
-                  className="px-5 py-2.5 bg-white border border-slate-200 rounded-xl text-[13px] font-bold text-slate-600 hover:bg-slate-100 transition-colors duration-200">
-                  ← Quay lại
-                </button>
-                <button
-                  type="submit"
-                  className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-sky-500 to-sky-400 border-none rounded-xl text-[14px] font-extrabold text-white shadow-lg shadow-sky-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-sky-100 active:translate-y-0 transition-all duration-200 tracking-wide">
-                  <Save size={16} />
-                  Hoàn tất nhập kho
-                </button>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wide">
+                    Phân loại đơn
+                  </p>
+                  <p className="font-semibold text-slate-700 mt-0.5">
+                    {selectedMedicine.isPrescription ? (
+                      <span className="text-xs font-extrabold text-rose-600 bg-rose-50 px-2 py-0.5 rounded border border-rose-100">
+                        Thuốc Kê Đơn (Rx)
+                      </span>
+                    ) : (
+                      <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">
+                        Thuốc Không Kê Đơn
+                      </span>
+                    )}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wide">
+                    Đơn vị cơ sở gốc
+                  </p>
+                  <p className="font-bold text-slate-700 mt-0.5">
+                    {selectedMedicine.baseUnit || "Viên"}
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-wide">
+                  Thành phần / Hoạt chất chính
+                </p>
+                <p className="font-medium text-slate-800 mt-0.5 bg-slate-50 p-2.5 rounded-xl border border-slate-100 italic">
+                  {selectedMedicine.ingredients ||
+                    "Chưa cập nhật dữ liệu hoạt chất lâm sàng."}
+                </p>
+              </div>
+
+              <div>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-wide">
+                  Hãng / Nhà sản xuất
+                </p>
+                <p className="font-semibold text-slate-700 mt-0.5">
+                  {selectedMedicine.manufacturer || "Chưa rõ nguồn gốc xuất xứ"}
+                </p>
               </div>
             </div>
-          </form>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

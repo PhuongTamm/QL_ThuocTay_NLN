@@ -136,7 +136,7 @@ const TransactionHistoryPage = () => {
     const creatorName = user?.fullName || user?.username;
     // Tìm chi nhánh của người dùng hiện tại
     const myBranch = branches.find((b) => b._id === user?.branchId);
-    
+
     const branchName = myBranch
       ? myBranch.type === "warehouse"
         ? `${myBranch.name}`
@@ -336,43 +336,43 @@ const TransactionHistoryPage = () => {
       .from(printDiv)
       .save()
       .then(() => setExportingType(null));
-  };;
+  };
 
   const getTxTypeBadge = (type) => {
     switch (type) {
       case "IMPORT_SUPPLIER":
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-50 text-emerald-700 font-bold text-[11px] rounded-full border border-emerald-100">
-            <TrendingDown size={10} /> Nhập từ NCC
+          <span className="inline-flex items-center gap-1 text-slate-500 text-sm">
+           Nhập từ NCC
           </span>
         );
       case "EXPORT_TO_BRANCH":
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-sky-50 text-sky-700 font-bold text-[11px] rounded-full border border-sky-100">
-            <TrendingUp size={10} /> Luân chuyển nội bộ
+          <span className="inline-flex items-center gap-1 text-slate-500 text-sm">
+            Luân chuyển nội bộ
           </span>
         );
       case "SALE_AT_BRANCH":
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-amber-50 text-amber-700 font-bold text-[11px] rounded-full border border-amber-100">
-            <Receipt size={10} /> Bán lẻ tại quầy
+          <span className="inline-flex items-center gap-1 text-slate-500 text-sm">
+            Bán lẻ tại quầy
           </span>
         );
       case "RETURN_TO_WAREHOUSE":
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-orange-50 text-orange-600 font-bold text-[11px] rounded-full border border-orange-100">
-            <RotateCcw size={10} /> Trả hàng về kho
+          <span className="inline-flex items-center gap-1 text-slate-500 text-sm">
+            Trả hàng về kho
           </span>
         );
       case "DISPOSAL":
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-red-50 text-red-600 font-bold text-[11px] rounded-full border border-red-100">
-            <X size={10} /> Hủy hàng
+          <span className="inline-flex items-center gap-1 text-slate-500 text-sm">
+            Hủy hàng
           </span>
         );
       default:
         return (
-          <span className="inline-flex items-center px-2.5 py-1 bg-slate-100 text-slate-500 font-bold text-[11px] rounded-full border border-slate-200">
+          <span className="inline-flex items-center gap-1 text-slate-500 font-bold text-[11px]">
             {type}
           </span>
         );
@@ -400,16 +400,21 @@ const TransactionHistoryPage = () => {
   };
 
   const inputCls =
-    "w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 transition bg-white text-slate-800 placeholder:text-slate-400";
+    "w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#1d5fa7]/30 focus:border-[#1d5fa7] transition bg-white text-slate-800 placeholder:text-slate-400";
 
   return (
     <div
-      className="min-h-screen p-6"
-      style={{
-        background: "#f0f4f8",
-        fontFamily: "'DM Sans', system-ui, sans-serif",
-      }}>
+      className="cat-root min-h-screen bg-gradient-to-br from-[#1d5fa7]/5 via-blue-50/50 to-slate-50 p-6"
+      style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
       <style>{`
+        @keyframes fadeInPage {
+          from { opacity: 0; transform: translateY(12px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-page-in {
+          animation: fadeInPage 0.4s ease-out forwards;
+        }
+
         @keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
         @keyframes modalIn {
           from { transform: translateY(14px) scale(.97); opacity: 0; }
@@ -420,240 +425,247 @@ const TransactionHistoryPage = () => {
         .scrollbar-thin::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
       `}</style>
 
-      {/* ── PAGE HEADER ── */}
-      <div className="flex flex-col md:flex-row md:justify-between items-start md:items-center gap-4 mb-6">
-        <div className="flex items-center gap-3">
-          <div
-            className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0"
-            style={{
-              background: "linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%)",
-            }}>
-            <FileText size={22} color="white" />
-          </div>
-          <div>
-            <h1 className="text-xl font-bold text-slate-900 leading-tight">
-              Lịch sử Nhập / Xuất Kho
-            </h1>
-            <p className="text-xs text-slate-500">
-              {filteredData.length} phiếu đang hiển thị
-            </p>
-          </div>
-        </div>
-
-        {/* ── CỤM NÚT XUẤT PDF ── */}
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => handleExportPDF("IMPORT_EXPORT")}
-            disabled={
-              exportingType !== null ||
-              filteredData.filter((tx) => tx.type !== "SALE_AT_BRANCH")
-                .length === 0
-            }
-            className="flex items-center gap-2 px-4 py-2.5 bg-white text-slate-700 font-bold border border-slate-200 rounded-xl shadow-sm hover:bg-slate-50 transition-all disabled:opacity-50">
-            {exportingType === "IMPORT_EXPORT" ? (
-              <Loader2 size={16} className="animate-spin" />
-            ) : (
-              <Printer size={16} />
-            )}
-            In Báo Cáo Kho
-          </button>
-
-          <button
-            onClick={() => handleExportPDF("REVENUE")}
-            disabled={
-              exportingType !== null ||
-              filteredData.filter((tx) => tx.type === "SALE_AT_BRANCH")
-                .length === 0
-            }
-            className="flex items-center gap-2 px-4 py-2.5 bg-emerald-500 text-white font-bold rounded-xl shadow-sm hover:bg-emerald-600 transition-all disabled:opacity-50 shadow-emerald-500/30">
-            {exportingType === "REVENUE" ? (
-              <Loader2 size={16} className="animate-spin" />
-            ) : (
-              <DollarSign size={16} />
-            )}
-            In Báo Cáo Bán Lẻ
-          </button>
-        </div>
-      </div>
-
-      {/* ── FILTER BAR ── */}
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 mb-4">
-        <div className="flex flex-wrap gap-3 items-center">
-          <div className="relative w-72">
-            <Search
-              size={16}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
-            />
-            <input
-              className={inputCls + " pl-10"}
-              placeholder="Tìm mã phiếu, NCC..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+      <div className="animate-page-in">
+        {/* ── PAGE HEADER ── */}
+        <div className="flex flex-col md:flex-row md:justify-between items-start md:items-center gap-4 mb-6">
+          <div className="flex items-center gap-3">
+            <div
+              className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0"
+              style={{
+                background: "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+                boxShadow: "0 4px 14px rgba(29, 95, 167, 0.3)",
+              }}>
+              <FileText size={22} color="white" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-slate-900 leading-tight">
+                Lịch sử Nhập / Xuất Kho
+              </h1>
+              <p className="text-xs text-slate-500">
+                {filteredData.length} phiếu đang hiển thị
+              </p>
+            </div>
           </div>
 
-          <div className="relative w-56">
-            <Filter
-              size={14}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
-            />
-            <select
-              className={inputCls + " pl-9 appearance-none"}
-              value={filterType}
-              onChange={(e) => setFilterType(e.target.value)}>
-              <option value="ALL">Tất cả loại phiếu</option>
-              <option value="IMPORT_SUPPLIER">Nhập từ Nhà Cung Cấp</option>
-              <option value="EXPORT_TO_BRANCH">Luân chuyển nội bộ</option>
-              <option value="SALE_AT_BRANCH">Bán lẻ tại quầy</option>
-              <option value="RETURN_TO_WAREHOUSE">Trả hàng về kho tổng</option>
-              <option value="DISPOSAL">Phiếu xuất hủy</option>
-            </select>
-          </div>
-
-          <div className="relative w-52">
-            <Calendar
-              size={14}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
-            />
-            <select
-              className={
-                inputCls + " pl-9 appearance-none text-sky-700 bg-sky-50/50"
+          {/* ── CỤM NÚT XUẤT PDF ── */}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => handleExportPDF("IMPORT_EXPORT")}
+              disabled={
+                exportingType !== null ||
+                filteredData.filter((tx) => tx.type !== "SALE_AT_BRANCH")
+                  .length === 0
               }
-              value={datePreset}
-              onChange={(e) => setDatePreset(e.target.value)}>
-              <option value="ALL">Tất cả thời gian</option>
-              <option value="TODAY">Trong ngày hôm nay</option>
-              <option value="THIS_MONTH">Trong tháng này</option>
-              <option value="CUSTOM">Khoảng thời gian tuỳ chỉnh...</option>
-            </select>
-          </div>
+              className="flex items-center gap-2 px-4 py-2.5 bg-white text-slate-700 font-bold border border-slate-200 rounded-xl shadow-sm hover:bg-slate-50 transition-all disabled:opacity-50">
+              {exportingType === "IMPORT_EXPORT" ? (
+                <Loader2 size={16} className="animate-spin" />
+              ) : (
+                <Printer size={16} />
+              )}
+              In Báo Cáo Kho
+            </button>
 
-          {datePreset === "CUSTOM" && (
-            <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 h-[42px] animate-[fadeIn_0.2s_ease]">
-              <input
-                type="date"
-                className="bg-transparent border-none outline-none text-sm text-slate-700"
-                value={dateRange.startDate}
-                onChange={(e) =>
-                  setDateRange({ ...dateRange, startDate: e.target.value })
-                }
+            <button
+              onClick={() => handleExportPDF("REVENUE")}
+              disabled={
+                exportingType !== null ||
+                filteredData.filter((tx) => tx.type === "SALE_AT_BRANCH")
+                  .length === 0
+              }
+              className="flex items-center gap-2 px-4 py-2.5 bg-white text-slate-700 font-bold border border-slate-200 rounded-xl shadow-sm hover:bg-slate-50 transition-all disabled:opacity-50">
+              {exportingType === "REVENUE" ? (
+                <Loader2 size={16} className="animate-spin" />
+              ) : (
+                <DollarSign size={16} />
+              )}
+              In Báo Cáo Bán Lẻ
+            </button>
+          </div>
+        </div>
+
+        {/* ── FILTER BAR ── */}
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 mb-4">
+          <div className="flex flex-wrap gap-3 items-center">
+            <div className="relative w-72">
+              <Search
+                size={16}
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
               />
-              <span className="text-slate-400">-</span>
               <input
-                type="date"
-                className="bg-transparent border-none outline-none text-sm text-slate-700"
-                value={dateRange.endDate}
-                onChange={(e) =>
-                  setDateRange({ ...dateRange, endDate: e.target.value })
-                }
+                className={inputCls + " pl-10"}
+                placeholder="Tìm mã phiếu, NCC..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
-          )}
-        </div>
-      </div>
 
-      {/* ── TRANSACTION TABLE ── */}
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm border-collapse">
-            <thead>
-              <tr className="bg-gradient-to-r border-b border-slate-100">
-                <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wide">
-                  Mã Phiếu
-                </th>
-                <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wide">
-                  Thời gian tạo
-                </th>
-                <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wide">
-                  Loại phiếu
-                </th>
-                <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wide">
-                  Đối tác / Chi nhánh
-                </th>
-                <th className="p-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wide whitespace-nowrap">
-                  Trạng thái
-                </th>
-                <th className="p-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wide whitespace-nowrap">
-                  Thao tác
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-50">
-              {loading ? (
-                <tr>
-                  <td colSpan="6" className="text-center py-16">
-                    <div className="flex flex-col items-center gap-3 text-slate-400">
-                      <Loader2
-                        size={32}
-                        className="animate-spin text-sky-400"
-                      />
-                      <p className="text-sm font-medium">Đang tải dữ liệu...</p>
-                    </div>
-                  </td>
+            <div className="relative w-56">
+              <Filter
+                size={14}
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+              />
+              <select
+                className={inputCls + " pl-9 appearance-none"}
+                value={filterType}
+                onChange={(e) => setFilterType(e.target.value)}>
+                <option value="ALL">Tất cả loại phiếu</option>
+                <option value="IMPORT_SUPPLIER">Nhập từ Nhà Cung Cấp</option>
+                <option value="EXPORT_TO_BRANCH">Luân chuyển nội bộ</option>
+                <option value="SALE_AT_BRANCH">Bán lẻ tại quầy</option>
+                <option value="RETURN_TO_WAREHOUSE">
+                  Trả hàng về kho tổng
+                </option>
+                <option value="DISPOSAL">Phiếu xuất hủy</option>
+              </select>
+            </div>
+
+            <div className="relative w-52">
+              <Calendar
+                size={14}
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+              />
+              <select
+                className={
+                  inputCls +
+                  " pl-9 appearance-none text-[#1d5fa7] bg-[#1d5fa7]/5"
+                }
+                value={datePreset}
+                onChange={(e) => setDatePreset(e.target.value)}>
+                <option value="ALL">Tất cả thời gian</option>
+                <option value="TODAY">Trong ngày hôm nay</option>
+                <option value="THIS_MONTH">Trong tháng này</option>
+                <option value="CUSTOM">Khoảng thời gian tuỳ chỉnh...</option>
+              </select>
+            </div>
+
+            {datePreset === "CUSTOM" && (
+              <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 h-[42px] animate-[fadeIn_0.2s_ease]">
+                <input
+                  type="date"
+                  className="bg-transparent border-none outline-none text-sm text-slate-700"
+                  value={dateRange.startDate}
+                  onChange={(e) =>
+                    setDateRange({ ...dateRange, startDate: e.target.value })
+                  }
+                />
+                <span className="text-slate-400">-</span>
+                <input
+                  type="date"
+                  className="bg-transparent border-none outline-none text-sm text-slate-700"
+                  value={dateRange.endDate}
+                  onChange={(e) =>
+                    setDateRange({ ...dateRange, endDate: e.target.value })
+                  }
+                />
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* ── TRANSACTION TABLE ── */}
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm border-collapse">
+              <thead>
+                <tr className="bg-gradient-to-r border-b border-slate-100">
+                  <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wide">
+                    Mã Phiếu
+                  </th>
+                  <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wide">
+                    Thời gian tạo
+                  </th>
+                  <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wide">
+                    Loại phiếu
+                  </th>
+                  <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wide">
+                    Đối tác / Chi nhánh
+                  </th>
+                  <th className="p-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wide whitespace-nowrap">
+                    Trạng thái
+                  </th>
+                  <th className="p-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wide whitespace-nowrap">
+                    Thao tác
+                  </th>
                 </tr>
-              ) : filteredData.length === 0 ? (
-                <tr>
-                  <td colSpan="6" className="text-center py-20">
-                    <div className="flex flex-col items-center gap-3">
-                      <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center">
-                        <FileText size={28} className="text-slate-300" />
+              </thead>
+              <tbody className="divide-y divide-slate-50">
+                {loading ? (
+                  <tr>
+                    <td colSpan="6" className="text-center py-16">
+                      <div className="flex flex-col items-center gap-3 text-slate-400">
+                        <Loader2
+                          size={32}
+                          className="animate-spin text-[#1d5fa7]"
+                        />
+                        <p className="text-sm font-medium">
+                          Đang tải dữ liệu...
+                        </p>
                       </div>
-                      <p className="text-base font-semibold text-slate-500">
-                        Không tìm thấy phiếu nào phù hợp
-                      </p>
-                    </div>
-                  </td>
-                </tr>
-              ) : (
-                filteredData.map((tx) => (
-                  <tr
-                    key={tx._id}
-                    className="hover:bg-sky-50/40 transition-colors duration-150">
-                    <td className="p-4">
-                      <span className="font-mono text-sm font-bold text-sky-600 bg-sky-50 px-2 py-0.5 rounded-lg">
-                        {tx.code}
-                      </span>
-                    </td>
-                    <td className="p-4 text-slate-500 text-sm">
-                      {new Date(tx.createdAt).toLocaleString("vi-VN")}
-                    </td>
-                    <td className="p-4">{getTxTypeBadge(tx.type)}</td>
-                    <td className="p-4 font-medium text-slate-700">
-                      {tx.type === "IMPORT_SUPPLIER" ? (
-                        tx.supplierName
-                      ) : tx.type === "EXPORT_TO_BRANCH" ||
-                        tx.type === "RETURN_TO_WAREHOUSE" ? (
-                        <span className="flex items-center gap-1.5 text-sm">
-                          <Store size={13} className="text-slate-400" />
-                          <span className="text-slate-600">
-                            {tx.fromBranch?.name || "Kho Tổng"}
-                          </span>
-                          <ArrowRight size={13} className="text-slate-400" />
-                          <span className="font-semibold text-slate-800">
-                            {tx.toBranch?.name || "Kho Tổng"}
-                          </span>
-                        </span>
-                      ) : (
-                        <span className="text-slate-400">
-                          {tx.customerName || "---"}
-                        </span>
-                      )}
-                    </td>
-                    <td className="p-4 text-center whitespace-nowrap">
-                      {getStatusBadge(tx.status)}
-                    </td>
-                    <td className="p-4 text-right whitespace-nowrap">
-                      <button
-                        onClick={() => handleOpenDetail(tx)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-sky-600 bg-sky-50 hover:bg-sky-100 border border-sky-100 transition-all hover:scale-105 whitespace-nowrap">
-                        <Eye size={13} /> Xem phiếu
-                      </button>
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : filteredData.length === 0 ? (
+                  <tr>
+                    <td colSpan="6" className="text-center py-20">
+                      <div className="flex flex-col items-center gap-3">
+                        <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center">
+                          <FileText size={28} className="text-slate-300" />
+                        </div>
+                        <p className="text-base font-semibold text-slate-500">
+                          Không tìm thấy phiếu nào phù hợp
+                        </p>
+                      </div>
+                    </td>
+                  </tr>
+                ) : (
+                  filteredData.map((tx) => (
+                    <tr
+                      key={tx._id}
+                      className="hover:bg-[#1d5fa7]/5 transition-colors duration-150">
+                      <td className="p-4">
+                        <span className="text-sm font-normal text-slate-700">
+                          {tx.code}
+                        </span>
+                      </td>
+                      <td className="p-4 text-slate-600 text-sm font-normal">
+                        {new Date(tx.createdAt).toLocaleString("vi-VN")}
+                      </td>
+                      <td className="p-4">{getTxTypeBadge(tx.type)}</td>
+                      <td className="p-4 font-normal text-slate-700">
+                        {tx.type === "IMPORT_SUPPLIER" ? (
+                          tx.supplierName
+                        ) : tx.type === "EXPORT_TO_BRANCH" ||
+                          tx.type === "RETURN_TO_WAREHOUSE" ? (
+                          <span className="flex items-center gap-1.5 text-sm">
+                            <span className="text-slate-700">
+                              {tx.fromBranch?.name || "Kho Tổng"}
+                            </span>
+                            <ArrowRight size={13} className="text-slate-400" />
+                            <span className="text-slate-700">
+                              {tx.toBranch?.name || "Kho Tổng"}
+                            </span>
+                          </span>
+                        ) : (
+                          <span className="text-slate-600">
+                            {tx.customerName || "---"}
+                          </span>
+                        )}
+                      </td>
+                      <td className="p-4 text-center whitespace-nowrap">
+                        {getStatusBadge(tx.status)}
+                      </td>
+                      <td className="p-4 text-right whitespace-nowrap">
+                        <button
+                          onClick={() => handleOpenDetail(tx)}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-[#1d5fa7] bg-[#1d5fa7]/5 hover:bg-[#1d5fa7]/10 border border-[#1d5fa7]/20 transition-all hover:scale-105 whitespace-nowrap">
+                          <Eye size={13} /> Xem phiếu
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
@@ -669,7 +681,11 @@ const TransactionHistoryPage = () => {
             className="bg-white rounded-2xl shadow-2xl w-[920px] max-h-[90vh] flex flex-col overflow-hidden"
             style={{ animation: "modalIn .22s ease" }}
             onClick={(e) => e.stopPropagation()}>
-            <div className="flex justify-between items-center px-6 py-5 shrink-0 bg-[#0ea5e9]">
+            <div
+              className="flex justify-between items-center px-6 py-5 shrink-0"
+              style={{
+                background: "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+              }}>
               <div>
                 <div className="flex items-center gap-3 mb-2">
                   <FileText size={20} color="white" />
@@ -680,7 +696,7 @@ const TransactionHistoryPage = () => {
                     {selectedTx.code}
                   </span>
                 </div>
-                <div className="flex items-center gap-3 text-sky-100 text-xs font-medium">
+                <div className="flex items-center gap-3 text-white/80 text-xs font-medium">
                   <span className="flex items-center gap-1.5">
                     <Calendar size={13} />{" "}
                     {new Date(selectedTx.createdAt).toLocaleString("vi-VN")}
@@ -783,19 +799,19 @@ const TransactionHistoryPage = () => {
                         key={idx}
                         className="hover:bg-slate-50/50 transition-colors">
                         <td className="py-4 px-5 whitespace-nowrap">
-                          <span className="font-mono text-xs font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200">
+                          <span className="font-mono text-xs font-normal text-slate-700">
                             {item.variantId?.sku || "---"}
                           </span>
                         </td>
-                        <td className="py-4 px-5 font-semibold text-slate-800 leading-snug">
+                        <td className="py-4 px-5 font-normal text-slate-800 leading-snug">
                           {item.variantId?.name || "Thuốc không tồn tại"}
                         </td>
                         <td className="py-4 px-5 whitespace-nowrap">
                           <div className="flex flex-col gap-1">
-                            <span className="font-mono text-xs font-bold text-sky-600 bg-sky-50 px-2 py-0.5 rounded-md border border-sky-100 w-fit">
+                            <span className="font-mono text-xs font-normal text-slate-800">
                               {item.batchCode || "Không có lô"}
                             </span>
-                            <span className="text-[11px] text-slate-400 mt-0.5">
+                            <span className="text-[11px] text-slate-500 mt-0.5">
                               NSX:{" "}
                               {item.manufacturingDate
                                 ? new Date(
@@ -803,7 +819,7 @@ const TransactionHistoryPage = () => {
                                   ).toLocaleDateString("vi-VN")
                                 : "---"}
                             </span>
-                            <span className="text-[11px] text-slate-400">
+                            <span className="text-[11px] text-slate-500">
                               HSD:{" "}
                               {item.expiryDate
                                 ? new Date(item.expiryDate).toLocaleDateString(
@@ -814,14 +830,14 @@ const TransactionHistoryPage = () => {
                           </div>
                         </td>
                         <td className="py-4 px-5 text-center whitespace-nowrap">
-                          <span className="font-bold text-base text-slate-700">
+                          <span className="font-normal text-base text-slate-800">
                             {item.quantity}
                           </span>
-                          <span className="text-xs text-slate-400 ml-1 font-medium">
+                          <span className="text-xs text-slate-500 ml-1 font-normal">
                             {item.variantId?.unit}
                           </span>
                         </td>
-                        <td className="py-4 px-5 text-right text-slate-500 text-sm whitespace-nowrap">
+                        <td className="py-4 px-5 text-right text-slate-600 text-sm whitespace-nowrap font-normal">
                           {item.price?.toLocaleString() || 0}đ
                         </td>
                         <td className="py-4 px-5 text-right font-bold text-red-500 text-base whitespace-nowrap">

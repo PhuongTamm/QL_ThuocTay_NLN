@@ -6,10 +6,8 @@ import {
   PackageOpen,
   Loader2,
   Store,
-  Package,
-  Hash,
+  Layers,
   CalendarDays,
-  AlertTriangle,
 } from "lucide-react";
 import api from "../../services/api";
 
@@ -66,26 +64,18 @@ const PendingImportPage = () => {
   if (loading) {
     return (
       <div
-        className="min-h-screen flex items-center justify-center"
-        style={{
-          background: "#f0f4f8",
-          fontFamily: "'DM Sans', system-ui, sans-serif",
-        }}>
+        className="min-h-screen flex items-center justify-center bg-slate-50"
+        style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
         <div className="flex flex-col items-center gap-3">
           <div
+            className="w-14 h-14 rounded-2xl flex items-center justify-center text-white"
             style={{
-              width: 52,
-              height: 52,
-              background: "linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%)",
-              borderRadius: 16,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              boxShadow: "0 6px 20px rgba(14,165,233,.4)",
+              background: "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+              boxShadow: "0 4px 14px rgba(29, 95, 167, 0.3)",
             }}>
-            <Loader2 size={26} color="white" className="animate-spin" />
+            <Loader2 size={28} className="animate-spin" />
           </div>
-          <p style={{ color: "#64748b", fontWeight: 600, fontSize: 14 }}>
+          <p className="text-slate-500 font-semibold text-sm">
             Đang tải dữ liệu...
           </p>
         </div>
@@ -95,98 +85,37 @@ const PendingImportPage = () => {
 
   return (
     <div
-      className="min-h-screen p-6"
-      style={{
-        background: "#f0f4f8",
-        fontFamily: "'DM Sans', system-ui, sans-serif",
-      }}>
+      className="cat-root min-h-screen bg-gradient-to-br from-sky-50 via-blue-50 p-6"
+      style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
       <style>{`
-        .scrollbar-thin::-webkit-scrollbar { width: 4px; }
+        @keyframes fadeInPage {
+          from { opacity: 0; transform: translateY(12px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-page-in {
+          animation: fadeInPage 0.4s ease-out forwards;
+        }
+        .scrollbar-thin::-webkit-scrollbar { width: 4px; height: 4px; }
         .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
         .scrollbar-thin::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-
-        .pending-card {
-          background: white;
-          border: 1.5px solid #e2e8f0;
-          border-radius: 18px;
-          overflow: hidden;
-          box-shadow: 0 2px 8px rgba(0,0,0,.05);
-          transition: border-color 0.2s, box-shadow 0.2s;
-        }
-        .pending-card:hover {
-          border-color: #7dd3fc;
-          box-shadow: 0 4px 18px rgba(14,165,233,.1);
-        }
-
-        .confirm-btn {
-          background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-          color: white;
-          border: none;
-          border-radius: 12px;
-          padding: 10px 20px;
-          font-size: 13px;
-          font-weight: 700;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          gap: 7px;
-          white-space: nowrap;
-          box-shadow: 0 4px 12px rgba(16,185,129,.35);
-          transition: all 0.2s ease;
-        }
-        .confirm-btn:hover {
-          transform: translateY(-1px);
-          box-shadow: 0 6px 18px rgba(16,185,129,.45);
-        }
-        .confirm-btn:active { transform: scale(0.97); }
-
-        .detail-table thead th {
-          background: #f8fafc;
-          color: #64748b;
-          font-weight: 600;
-          font-size: 12px;
-          text-transform: uppercase;
-          letter-spacing: 0.04em;
-          padding: 11px 18px;
-          border-bottom: 1.5px solid #f1f5f9;
-        }
-        .detail-table tbody tr {
-          border-bottom: 1px solid #f8fafc;
-          transition: background 0.15s;
-        }
-        .detail-table tbody tr:last-child { border-bottom: none; }
-        .detail-table tbody tr:hover { background: #f0f9ff; }
-        .detail-table tbody td { padding: 12px 18px; font-size: 13px; }
       `}</style>
 
-      <div style={{ maxWidth: 1380, margin: "0 auto" }}>
+      <div className="animate-page-in space-y-6">
         {/* ── Page Header ── */}
-        <div className="flex items-center gap-3 mb-7">
+        <div className="flex items-center gap-3 mb-6">
           <div
+            className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 text-white"
             style={{
-              background: "linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%)",
-              borderRadius: 14,
-              width: 46,
-              height: 46,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              boxShadow: "0 6px 16px rgba(14,165,233,.35)",
-              flexShrink: 0,
+              background: "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+              boxShadow: "0 4px 14px rgba(29, 95, 167, 0.3)",
             }}>
-            <Download size={22} color="white" />
+            <Download size={22} />
           </div>
           <div>
-            <h1
-              style={{
-                fontSize: 22,
-                fontWeight: 800,
-                color: "#0f172a",
-                lineHeight: 1.2,
-              }}>
-              Phiếu Chờ Xác Nhận Nhận Hàng
+            <h1 className="text-xl font-bold text-slate-900 leading-tight">
+              Phiếu Chờ Xác Nhận Nhập Kho
             </h1>
-            <p style={{ fontSize: 12, color: "#64748b", marginTop: 2 }}>
+            <p className="text-xs text-slate-500 mt-0.5">
               {transactions.length > 0
                 ? `${transactions.length} kiện hàng đang chờ xác nhận`
                 : "Không có kiện hàng nào đang chờ"}
@@ -196,277 +125,128 @@ const PendingImportPage = () => {
 
         {/* ── Empty State ── */}
         {transactions.length === 0 ? (
-          <div
-            style={{
-              background: "white",
-              border: "1.5px dashed #cbd5e1",
-              borderRadius: 20,
-              padding: "72px 24px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              boxShadow: "0 1px 4px rgba(0,0,0,.04)",
-            }}>
-            <div
-              style={{
-                width: 72,
-                height: 72,
-                background: "#f1f5f9",
-                borderRadius: 20,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                marginBottom: 16,
-              }}>
-              <PackageOpen size={34} color="#cbd5e1" />
+          <div className="bg-white border border-dashed border-slate-300 rounded-2xl py-20 flex flex-col items-center justify-center shadow-sm">
+            <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mb-4">
+              <PackageOpen size={32} className="text-slate-300" />
             </div>
-            <p style={{ fontSize: 16, fontWeight: 700, color: "#94a3b8" }}>
+            <p className="text-base font-bold text-slate-500">
               Không có kiện hàng nào đang chờ nhận
             </p>
-            <p style={{ fontSize: 13, color: "#cbd5e1", marginTop: 6 }}>
+            <p className="text-sm text-slate-400 mt-1">
               Khi có luân chuyển hoặc trả hàng, phiếu sẽ hiển thị tại đây.
             </p>
           </div>
         ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+          <div className="flex flex-col gap-6">
             {transactions.map((trans) => (
-              <div key={trans._id} className="pending-card">
-                {/* ── Card Header ── */}
-                <div
-                  style={{
-                    padding: "16px 20px",
-                    background:
-                      trans.type === "RETURN_TO_WAREHOUSE"
-                        ? "linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%)" // Cam nhạt nếu là Phiếu trả hàng
-                        : "linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)", // Xanh nếu là Phiếu luân chuyển
-                    borderBottom: `1.5px solid ${trans.type === "RETURN_TO_WAREHOUSE" ? "#fed7aa" : "#bae6fd"}`,
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    flexWrap: "wrap",
-                    gap: 14,
-                  }}>
-                  {/* Left: Meta info */}
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 8,
-                    }}>
-                    {/* Mã phiếu & Nhãn phân loại */}
-                    <div
-                      style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                      <div
-                        style={{
-                          background:
-                            trans.type === "RETURN_TO_WAREHOUSE"
-                              ? "linear-gradient(135deg, #f97316, #ea580c)"
-                              : "linear-gradient(135deg, #0ea5e9, #06b6d4)",
-                          borderRadius: 8,
-                          padding: "3px 10px",
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 5,
-                        }}>
-                        <Hash size={11} color="white" />
-                        <span
-                          style={{
-                            fontSize: 11,
-                            fontWeight: 800,
-                            color: "white",
-                            letterSpacing: "0.06em",
-                            textTransform: "uppercase",
-                          }}>
-                          Mã phiếu
+              <div
+                key={trans._id}
+                className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:border-[#1d5fa7]/30 transition-all duration-200">
+                {/* ── Card Header (Nền nhạt, chữ tối màu) ── */}
+                <div className="p-5 flex flex-col md:flex-row md:justify-between md:items-start gap-4 bg-[#1d5fa7]/5 border-b border-[#1d5fa7]/10">
+                  <div className="flex flex-col gap-3">
+                    {/* Nhãn phân loại */}
+                    <span className="text-[10px] font-bold px-2.5 py-1 rounded-md text-[#1d5fa7] border border-[#1d5fa7]/20 bg-white w-fit uppercase tracking-wide shadow-sm">
+                      {trans.type === "RETURN_TO_WAREHOUSE"
+                        ? "Phiếu Trả Hàng"
+                        : "Phiếu Luân Chuyển"}
+                    </span>
+
+                    {/* Meta Info */}
+                    <div className="flex flex-col flex-wrap gap-1 text-[13px] text-slate-600">
+                      <div className="flex items-center gap-1.5">
+                        <Store size={14} className="text-slate-400" />
+                        <span>
+                          Từ:{" "}
+                          <span className="font-bold text-slate-800">
+                            {trans.fromBranch?.name || "Kho Tổng"}
+                          </span>
                         </span>
                       </div>
-                      <span
-                        style={{
-                          fontFamily: "monospace",
-                          fontSize: 16,
-                          fontWeight: 800,
-                          color: "#0f172a",
-                          letterSpacing: "0.04em",
-                        }}>
-                        {trans.code}
-                      </span>
-
-                      {/* BỔ SUNG: BADGE PHÂN LOẠI PHIẾU */}
-                      <span
-                        style={{
-                          fontSize: 10,
-                          fontWeight: 800,
-                          padding: "3px 8px",
-                          borderRadius: 6,
-                          textTransform: "uppercase",
-                          background:
-                            trans.type === "RETURN_TO_WAREHOUSE"
-                              ? "white"
-                              : "white",
-                          color:
-                            trans.type === "RETURN_TO_WAREHOUSE"
-                              ? "#c2410c"
-                              : "#0284c7",
-                          border: `1px solid ${trans.type === "RETURN_TO_WAREHOUSE" ? "#fed7aa" : "#bae6fd"}`,
-                        }}>
-                        {trans.type === "RETURN_TO_WAREHOUSE"
-                          ? "Phiếu Trả Hàng"
-                          : "Phiếu Luân Chuyển"}
-                      </span>
-                    </div>
-
-                    {/* Từ chi nhánh */}
-                    <div
-                      style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                      <Store size={14} color="#64748b" />
-                      <span style={{ fontSize: 13, color: "#64748b" }}>
-                        Từ:{" "}
-                        <span style={{ fontWeight: 700, color: "#0f172a" }}>
-                          {trans.fromBranch?.name || "Kho Tổng"}
+                      {/* <div className="w-1 h-1 rounded-full bg-slate-300 hidden sm:block" /> */}
+                      <div className="flex items-center gap-1.5">
+                        <Clock size={14} className="text-slate-400" />
+                        <span className="font-sm text-slate-500">
+                          {new Date(trans.createdAt).toLocaleString("vi-VN", {
+                            dateStyle: "medium",
+                            timeStyle: "short",
+                          })}
                         </span>
-                      </span>
-                    </div>
-
-                    {/* Thời gian */}
-                    <div
-                      style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                      <Clock size={14} color="#94a3b8" />
-                      <span style={{ fontSize: 12, color: "#94a3b8" }}>
-                        {new Date(trans.createdAt).toLocaleString("vi-VN", {
-                          dateStyle: "full",
-                          timeStyle: "short",
-                        })}
-                      </span>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Right: CTA button */}
-                  <button
-                    className="confirm-btn"
-                    onClick={() => handleConfirm(trans._id)}>
-                    <CheckCircle size={18} />
-                    Xác Nhận Nhận Hàng
-                  </button>
+                  {/* Mã phiếu & Số mặt hàng */}
+                  <div className="text-left md:text-right">
+                    <span className="text-[10px] text-slate-500 uppercase font-bold tracking-wide block mb-0.5">
+                      Mã phiếu
+                    </span>
+                    <span className="text-base font-bold text-slate-800 block mb-2">
+                      {trans.code}
+                    </span>
+                    <div className="flex items-center justify-start md:justify-end gap-1.5 text-[13px] text-slate-600">
+                      <Layers size={14} className="text-slate-400" />
+                      <span className="font-medium">
+                        {trans.details.length} mặt hàng trong phiếu
+                      </span>
+                    </div>
+                  </div>
                 </div>
 
                 {/* ── Detail Table ── */}
-                <div style={{ overflowX: "auto" }}>
-                  <table
-                    className="detail-table"
-                    style={{ width: "100%", borderCollapse: "collapse" }}>
+                <div className="overflow-x-auto scrollbar-thin">
+                  <table className="w-full text-left text-sm border-collapse">
                     <thead>
-                      <tr>
-                        <th style={{ textAlign: "center", width: 48 }}>STT</th>
-                        <th>Mã SKU</th>
-                        <th>Tên hàng hóa (Quy cách)</th>
-                        <th>Mã Lô / HSD</th>
-                        {/* HIỆN CỘT LÝ DO NẾU LÀ PHIẾU TRẢ HÀNG */}
+                      <tr className="border-b border-slate-100">
+                        <th className="py-3 px-5 text-center text-xs font-bold text-slate-500 uppercase tracking-wide w-12">
+                          STT
+                        </th>
+                        <th className="py-3 px-5 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
+                          Mã SKU
+                        </th>
+                        <th className="py-3 px-5 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
+                          Tên hàng hóa (Quy cách)
+                        </th>
+                        <th className="py-3 px-5 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
+                          Mã Lô / HSD
+                        </th>
                         {trans.type === "RETURN_TO_WAREHOUSE" && (
-                          <th>Lý do trả hàng</th>
+                          <th className="py-3 px-5 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
+                            Lý do trả hàng
+                          </th>
                         )}
-                        <th style={{ textAlign: "right" }}>Số lượng</th>
+                        <th className="py-3 px-5 text-right text-xs font-bold text-slate-500 uppercase tracking-wide">
+                          Số lượng
+                        </th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="divide-y divide-slate-50">
                       {trans.details.map((detail, idx) => (
-                        <tr key={idx}>
+                        <tr
+                          key={idx}
+                          className="hover:bg-[#1d5fa7]/5 transition-colors">
                           {/* STT */}
-                          <td style={{ textAlign: "center" }}>
-                            <span
-                              style={{
-                                display: "inline-flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                width: 24,
-                                height: 24,
-                                background: "#f1f5f9",
-                                borderRadius: 6,
-                                fontSize: 11,
-                                fontWeight: 700,
-                                color: "#94a3b8",
-                              }}>
-                              {idx + 1}
-                            </span>
+                          <td className="py-4 px-5 text-center text-slate-500 font-normal">
+                            {idx + 1}
                           </td>
 
                           {/* SKU */}
-                          <td style={{ textAlign: "center" }}>
-                            <span
-                              style={{
-                                fontFamily: "monospace",
-                                fontSize: 12,
-                                color: "#64748b",
-                                background: "#f8fafc",
-                                border: "1px solid #e2e8f0",
-                                borderRadius: 6,
-                                padding: "2px 8px",
-                              }}>
-                              {detail.variantId?.sku}
-                            </span>
+                          <td className="py-4 px-5 text-center text-slate-600 font-normal">
+                            {detail.variantId?.sku}
                           </td>
 
                           {/* Tên thuốc */}
-                          <td style={{ textAlign: "center" }}>
-                            <div
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                gap: 7,
-                              }}>
-                              <div
-                                style={{
-                                  width: 30,
-                                  height: 30,
-                                  background: "#e0f2fe",
-                                  borderRadius: 8,
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                  flexShrink: 0,
-                                }}>
-                                <Package size={14} color="#0284c7" />
-                              </div>
-                              <span
-                                style={{
-                                  fontWeight: 700,
-                                  color: "#0f172a",
-                                  fontSize: 13,
-                                }}>
-                                {detail.variantId?.name}
-                              </span>
-                            </div>
+                          <td className="py-4 px-5 text-center text-slate-800 font-normal">
+                            {detail.variantId?.name}
                           </td>
 
                           {/* Lô & HSD */}
-                          <td style={{ textAlign: "center" }}>
-                            <div
-                              style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                gap: 2,
-                              }}>
-                              <span
-                                style={{
-                                  fontFamily: "monospace",
-                                  fontWeight: 700,
-                                  color: "#0f172a",
-                                  fontSize: 13,
-                                }}>
-                                {detail.batchCode}
-                              </span>
-                              <div
-                                style={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                  gap: 4,
-                                }}>
-                                <CalendarDays size={11} color="#94a3b8" />
-                                <span
-                                  style={{ fontSize: 11, color: "#94a3b8" }}>
-                                  HSD:{" "}
+                          <td className="py-4 px-5 text-center">
+                            <div className="flex flex-col items-center gap-1 text-slate-700 font-normal">
+                              <span>{detail.batchCode}</span>
+                              <div className="flex items-center gap-1 text-xs text-slate-500">
+                                <CalendarDays size={10} />
+                                <span>
                                   {new Date(
                                     detail.expiryDate,
                                   ).toLocaleDateString("vi-VN")}
@@ -475,72 +255,28 @@ const PendingImportPage = () => {
                             </div>
                           </td>
 
-                          {/* BỔ SUNG: CỘT LÝ DO TRẢ HÀNG */}
+                          {/* Lý do trả hàng (vẫn giữ nguyên format cảnh báo) */}
                           {trans.type === "RETURN_TO_WAREHOUSE" && (
-                            <td style={{ textAlign: "center" }}>
+                            <td className="py-4 px-5 text-center">
                               <span
-                                style={{
-                                  display: "inline-flex",
-                                  alignItems: "center",
-                                  fontSize: 11,
-                                  fontWeight: 700,
-                                  color:
-                                    detail.reason === "DAMAGED"
-                                      ? "#b91c1c" // Đỏ
-                                      : detail.reason === "EXPIRED"
-                                        ? "#c2410c" // Cam
-                                        : "#0f172a", // Đen nhạt
-                                  background:
-                                    detail.reason === "DAMAGED"
-                                      ? "#fee2e2"
-                                      : detail.reason === "EXPIRED"
-                                        ? "#ffedd5"
-                                        : "#f1f5f9",
-                                  border: `1px solid ${
-                                    detail.reason === "DAMAGED"
-                                      ? "#fecaca"
-                                      : detail.reason === "EXPIRED"
-                                        ? "#fed7aa"
-                                        : "#e2e8f0"
-                                  }`,
-                                  padding: "3px 8px",
-                                  borderRadius: 6,
-                                  whiteSpace: "nowrap",
-                                }}>
+                                className={`inline-flex items-center text-[11px] font-bold px-2.5 py-1 rounded-md border ${
+                                  detail.reason === "DAMAGED"
+                                    ? "text-red-700 bg-red-50 border-red-200"
+                                    : detail.reason === "EXPIRED"
+                                      ? "text-orange-700 bg-orange-50 border-orange-200"
+                                      : "text-slate-700 bg-slate-50 border-slate-200"
+                                }`}>
                                 {getReasonText(detail.reason)}
                               </span>
                             </td>
                           )}
 
                           {/* Số lượng */}
-                          <td style={{ textAlign: "right" }}>
-                            <div
-                              style={{
-                                display: "inline-flex",
-                                alignItems: "baseline",
-                                gap: 4,
-                                background: "#f0f9ff",
-                                border: "1.5px solid #bae6fd",
-                                borderRadius: 10,
-                                padding: "4px 12px",
-                              }}>
-                              <span
-                                style={{
-                                  fontSize: 18,
-                                  fontWeight: 800,
-                                  color: "#0284c7",
-                                }}>
-                                {detail.quantity}
-                              </span>
-                              <span
-                                style={{
-                                  fontSize: 11,
-                                  fontWeight: 600,
-                                  color: "#64748b",
-                                }}>
-                                {detail.variantId?.unit}
-                              </span>
-                            </div>
+                          <td className="py-4 px-5 text-right text-slate-800 font-normal">
+                            {detail.quantity}{" "}
+                            <span className="text-slate-500 text-xs ml-0.5">
+                              {detail.variantId?.unit}
+                            </span>
                           </td>
                         </tr>
                       ))}
@@ -549,18 +285,18 @@ const PendingImportPage = () => {
                 </div>
 
                 {/* ── Card Footer ── */}
-                <div
-                  style={{
-                    padding: "10px 20px",
-                    background: "#f8fafc",
-                    borderTop: "1px solid #f1f5f9",
-                    display: "flex",
-                    justifyContent: "flex-end",
-                  }}>
-                  <span
-                    style={{ fontSize: 12, color: "#94a3b8", fontWeight: 600 }}>
-                    {trans.details.length} mặt hàng trong phiếu
-                  </span>
+                <div className="p-4 border-t border-slate-100 bg-slate-50 flex justify-end">
+                  <button
+                    onClick={() => handleConfirm(trans._id)}
+                    className="flex items-center gap-2 px-6 py-2.5 text-white rounded-xl text-sm font-bold transition-all hover:-translate-y-0.5"
+                    style={{
+                      background:
+                        "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+                      boxShadow: "0 4px 14px rgba(29, 95, 167, 0.4)",
+                    }}>
+                    <CheckCircle size={18} />
+                    Xác Nhận
+                  </button>
                 </div>
               </div>
             ))}

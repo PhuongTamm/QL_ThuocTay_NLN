@@ -1,8 +1,9 @@
 // auth.route.js
 const express = require("express");
 const router = express.Router();
-const authController = require("../controllers/auth.controller"); // Import controller
-const { verifyToken, checkRole } = require("../middleware/authMiddleware"); // Import middleware
+const authController = require("../controllers/auth.controller");
+const { verifyToken, checkRole } = require("../middleware/authMiddleware");
+const uploadCloud = require("../configs/cloudinary");
 
 // Route công khai
 router.post("/login", authController.login);
@@ -26,5 +27,12 @@ router.get(
 
 // Route lấy thông tin cá nhân (Yêu cầu phải đăng nhập)
 router.get("/me", verifyToken, authController.getMe);
+
+router.put(
+  "/profile",
+  verifyToken,
+  uploadCloud.single("avatar"),
+  authController.updateProfile,
+);
 
 module.exports = router;

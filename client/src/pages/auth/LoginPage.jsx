@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Lock, Loader, HeartPulse } from "lucide-react";
+import { User, Lock, Loader, HeartPulse, ShieldCheck } from "lucide-react";
 import api from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
 
@@ -22,14 +22,12 @@ const LoginPage = () => {
       const res = await api.post("/auth/login", { email, password });
       const { accessToken, user } = res.data;
 
-      // Lưu thông tin vào Context
       login(user, accessToken);
 
-      // --- ĐIỀU HƯỚNG DỰA TRÊN ROLE ---
       if (user.role === "pharmacist") {
-        navigate("/pos"); // Dược sĩ vào thẳng quầy thu ngân
+        navigate("/pos");
       } else {
-        navigate("/"); // Quản lý & Admin vào trang Tổng quan (Dashboard)
+        navigate("/");
       }
     } catch (err) {
       setError(
@@ -42,81 +40,142 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 font-sans">
-      <div className="bg-white p-10 rounded-2xl shadow-xl w-full max-w-md border border-white">
-        {/* Header Login */}
-        <div className="flex flex-col items-center justify-center mb-8">
-          <div className="bg-blue-600 p-3 rounded-xl shadow-lg mb-4">
-            <HeartPulse size={36} className="text-white" />
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 md:p-8 font-sans">
+      {/* Khung chứa chính dạng Split-card chuyên nghiệp */}
+      <div className="max-w-5xl w-full bg-white rounded-[2rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] overflow-hidden flex flex-col md:flex-row min-h-[600px]">
+        {/* ─── PHẦN BÊN TRÁI: Branding & Decor (Màu chủ đạo #1d5fa7) ─── */}
+        <div className="md:w-5/12 bg-gradient-to-br from-[#1d5fa7] to-[#12427a] p-10 lg:p-12 text-white flex flex-col justify-between relative overflow-hidden hidden md:flex">
+          {/* Họa tiết nền mờ */}
+          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-white opacity-5 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-[#4ca1ff] opacity-10 rounded-full blur-3xl"></div>
+
+          <div className="relative z-10">
+            <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center mb-8 border border-white/20 shadow-inner">
+              <HeartPulse size={36} className="text-white" strokeWidth={2} />
+            </div>
+            <h2 className="text-4xl font-black tracking-tight mb-4 leading-tight">
+              PharmaSys
+            </h2>
+            <p className="text-white/80 text-lg font-medium leading-relaxed max-w-sm">
+              Hệ thống quản lý nhà thuốc toàn diện. Tối ưu vận hành, kiểm soát
+              chặt chẽ.
+            </p>
           </div>
-          <h2 className="text-3xl font-black text-gray-800 tracking-tight">
-            PharmaApp
-          </h2>
-          <p className="text-gray-500 text-sm mt-2 font-medium">
-            Đăng nhập để vào hệ thống quản lý
-          </p>
+
+          <div className="relative z-10 mt-12">
+            <div className="flex items-center gap-3 text-sm font-semibold text-white/90 bg-white/10 w-fit px-4 py-2.5 rounded-full backdrop-blur-sm border border-white/10">
+              <ShieldCheck size={18} className="text-emerald-300" />
+              <span>Bảo mật dữ liệu cấp y tế</span>
+            </div>
+            <p className="text-white/50 text-xs font-medium mt-6">
+              © {new Date().getFullYear()} Pharmacy Management System.
+            </p>
+          </div>
         </div>
 
-        {/* Báo lỗi */}
-        {error && (
-          <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl mb-6 text-sm font-medium flex items-center justify-center animate-pulse">
-            {error}
-          </div>
-        )}
-
-        {/* Form Đăng nhập */}
-        <form onSubmit={handleLogin} className="space-y-5">
-          <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1.5 ml-1">
-              Email đăng nhập
-            </label>
-            <div className="relative group">
-              <User
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500 transition-colors"
-                size={20}
-              />
-              <input
-                type="email"
-                required
-                className="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all font-medium text-gray-800"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Ví dụ: admin@pharma.com"
-              />
+        {/* ─── PHẦN BÊN PHẢI: Form Đăng nhập ─── */}
+        <div className="md:w-7/12 p-8 sm:p-12 lg:p-16 flex flex-col justify-center relative bg-white">
+          {/* Logo hiển thị trên mobile (ẩn trên PC) */}
+          <div className="md:hidden flex items-center gap-3 mb-8">
+            <div className="w-12 h-12 bg-[#1d5fa7] rounded-xl flex items-center justify-center shadow-lg shadow-[#1d5fa7]/30">
+              <HeartPulse size={24} className="text-white" strokeWidth={2.5} />
             </div>
+            <h2 className="text-2xl font-black text-slate-800 tracking-tight">
+              PharmaSys
+            </h2>
           </div>
 
-          <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1.5 ml-1">
-              Mật khẩu
-            </label>
-            <div className="relative group">
-              <Lock
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500 transition-colors"
-                size={20}
-              />
-              <input
-                type="password"
-                required
-                className="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all font-medium text-gray-800"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-              />
-            </div>
+          <div className="mb-10">
+            <h3 className="text-2xl md:text-3xl font-extrabold text-slate-800 tracking-tight mb-2">
+              Đăng nhập hệ thống
+            </h3>
+            <p className="text-slate-500 font-medium">
+              Vui lòng nhập thông tin xác thực để tiếp tục
+            </p>
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-blue-600 text-white py-3.5 rounded-xl font-bold text-lg hover:bg-blue-700 hover:shadow-lg transition-all flex justify-center items-center gap-2 mt-4 active:scale-[0.98] disabled:bg-gray-400 disabled:pointer-events-none">
-            {loading ? (
-              <Loader className="animate-spin" size={24} />
-            ) : (
-              "ĐĂNG NHẬP"
+          <form onSubmit={handleLogin} className="space-y-6">
+            {/* Hiển thị lỗi */}
+            {error && (
+              <div className="p-4 bg-red-50 border border-red-100 rounded-xl text-red-600 text-sm font-semibold flex items-start gap-3 animate-[fadeIn_.3s_ease]">
+                <div className="mt-0.5">
+                  <span className="flex w-2 h-2 rounded-full bg-red-500 relative">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                  </span>
+                </div>
+                {error}
+              </div>
             )}
-          </button>
-        </form>
+
+            <div className="space-y-5">
+              {/* Input Email */}
+              <div>
+                <label className="block text-sm font-bold text-slate-700 mb-2">
+                  Tài khoản Email
+                </label>
+                <div className="relative group">
+                  <User
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#1d5fa7] transition-colors"
+                    size={20}
+                  />
+                  <input
+                    type="email"
+                    required
+                    className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-4 focus:ring-[#1d5fa7]/10 focus:border-[#1d5fa7] outline-none transition-all font-medium text-slate-800 placeholder:text-slate-400"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="admin@pharmacy.com"
+                  />
+                </div>
+              </div>
+
+              {/* Input Mật khẩu */}
+              <div>
+                <label className="block text-sm font-bold text-slate-700 mb-2">
+                  Mật khẩu
+                </label>
+                <div className="relative group">
+                  <Lock
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#1d5fa7] transition-colors"
+                    size={20}
+                  />
+                  <input
+                    type="password"
+                    required
+                    className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-4 focus:ring-[#1d5fa7]/10 focus:border-[#1d5fa7] outline-none transition-all font-medium text-slate-800 placeholder:text-slate-400"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Quên mật khẩu (UI Placeholder) */}
+            <div className="flex justify-end mt-2">
+              <a
+                href="#"
+                className="text-sm font-bold text-[#1d5fa7] hover:text-[#12427a] transition-colors">
+                Quên mật khẩu?
+              </a>
+            </div>
+
+            {/* Nút Đăng nhập */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-[#1d5fa7] text-white py-4 rounded-xl font-bold text-base hover:bg-[#154a85] hover:shadow-lg hover:shadow-[#1d5fa7]/30 transition-all flex justify-center items-center gap-2 mt-6 active:scale-[0.98] disabled:opacity-70 disabled:pointer-events-none">
+              {loading ? (
+                <>
+                  <Loader className="animate-spin" size={20} />
+                  <span>Đang xử lý...</span>
+                </>
+              ) : (
+                "Đăng nhập"
+              )}
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

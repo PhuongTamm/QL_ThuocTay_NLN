@@ -1,7 +1,6 @@
 import {
   AlertCircle,
   ArrowRightLeft,
-  PackageX,
   Plus,
   Save,
   Search,
@@ -9,6 +8,8 @@ import {
   Trash,
   Trash2,
   Undo2,
+  Layers,
+  CheckCircle2,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -335,250 +336,161 @@ const DistributePage = () => {
   const themes = {
     DISTRIBUTE: {
       icon: <ArrowRightLeft size={22} color="white" />,
-      gradient: "linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%)",
-      shadow: "0 6px 16px rgba(14,165,233,.35)",
-      tabActive: { color: "#0284c7", background: "white" },
-      bannerBg: "#f0f9ff",
-      bannerBorder: "#bae6fd",
-      bannerIcon: <Store size={18} color="#0284c7" />,
-      rowBg: "#f8fafc",
-      rowBorder: "#e2e8f0",
-      submitGradient: "linear-gradient(135deg, #0ea5e9, #06b6d4)",
-      submitShadow: "0 6px 20px rgba(14,165,233,.4)",
-      addBtnColor: "#0284c7",
-      addBtnBorder: "#bae6fd",
-      addBtnHoverBg: "#f0f9ff",
+      gradient: "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+      shadow: "0 4px 14px rgba(29, 95, 167, 0.3)",
+      bannerBg: "bg-[#1d5fa7]/5",
+      bannerBorder: "border-[#1d5fa7]/20",
+      rowHover: "hover:border-[#1d5fa7]/30 hover:shadow-md",
+      submitGradient: "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+      submitShadow: "0 4px 14px rgba(29, 95, 167, 0.3)",
+      addBtn: "text-[#1d5fa7] border-[#1d5fa7]/40 hover:bg-[#1d5fa7]/5",
       title: "Luân Chuyển Xuất Kho",
       subtitle: "Phân phối hàng hóa từ Kho tổng đến các Chi nhánh",
-      submitLabel: "Tạo Phiếu Xuất",
-      addLabel: "Thêm thuốc luân chuyển",
+      submitLabel: "Hoàn tất",
+      addLabel: "Thêm dòng mặt hàng",
+      focusRing: "focus:border-[#1d5fa7] focus:ring-[#1d5fa7]/20",
+      textPrimary: "text-[#1d5fa7]",
     },
     RETURN: {
       icon: <Undo2 size={22} color="white" />,
-      gradient: "linear-gradient(135deg, #f97316 0%, #ea580c 100%)",
-      shadow: "0 6px 16px rgba(249,115,22,.35)",
-      tabActive: { color: "#c2410c", background: "white" },
-      bannerBg: "#fff7ed",
-      bannerBorder: "#fed7aa",
-      bannerIcon: <AlertCircle size={18} color="#ea580c" />,
-      rowBg: "#fff7ed",
-      rowBorder: "#fed7aa",
-      submitGradient: "linear-gradient(135deg, #f97316, #ea580c)",
-      submitShadow: "0 6px 20px rgba(249,115,22,.4)",
-      addBtnColor: "#c2410c",
-      addBtnBorder: "#fed7aa",
-      addBtnHoverBg: "#fff7ed",
+      gradient: "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+      shadow: "0 4px 14px rgba(29, 95, 167, 0.3)",
+      bannerBg: "bg-[#1d5fa7]/5",
+      bannerBorder: "border-[#1d5fa7]/20",
+      rowHover: "hover:border-[#1d5fa7]/30 hover:shadow-md",
+      submitGradient: "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+      submitShadow: "0 4px 14px rgba(29, 95, 167, 0.3)",
+      addBtn: "text-[#1d5fa7] border-[#1d5fa7]/40 hover:bg-[#1d5fa7]/5",
       title: "Trả Hàng Về Kho Tổng",
       subtitle: "Gửi trả hàng cận date, bán chậm về lại Kho tổng",
-      submitLabel: "Xác Nhận Trả Hàng",
-      addLabel: "Thêm thuốc trả về",
+      submitLabel: "Hoàn tất",
+      addLabel: "Thêm dòng hàng trả về",
+      focusRing: "focus:border-[#1d5fa7] focus:ring-[#1d5fa7]/20",
+      textPrimary: "text-[#1d5fa7]",
     },
     DISPOSE: {
       icon: <Trash size={22} color="white" />,
       gradient: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
-      shadow: "0 6px 16px rgba(239,68,68,.35)",
-      tabActive: { color: "#b91c1c", background: "white" },
-      bannerBg: "#fef2f2",
-      bannerBorder: "#fecaca",
-      bannerIcon: <Trash2 size={18} color="#ef4444" />,
-      rowBg: "#fef2f2",
-      rowBorder: "#fecaca",
+      shadow: "0 4px 14px rgba(239,68,68,.35)",
+      bannerBg: "bg-red-50/50",
+      bannerBorder: "border-red-200",
+      rowHover: "hover:border-red-300 hover:shadow-md",
       submitGradient: "linear-gradient(135deg, #ef4444, #dc2626)",
-      submitShadow: "0 6px 20px rgba(239,68,68,.4)",
-      addBtnColor: "#b91c1c",
-      addBtnBorder: "#fecaca",
-      addBtnHoverBg: "#fef2f2",
+      submitShadow: "0 4px 14px rgba(239,68,68,.35)",
+      addBtn: "text-[#dc2626] border-red-300 hover:bg-red-50",
       title: "Lập Phiếu Xuất Hủy",
-      subtitle:
-        "Hủy bỏ hàng hóa hết hạn, hư hỏng (Ghi nhận vào Chi phí tổn thất)",
+      subtitle: "Hủy bỏ hàng hóa hết hạn, hư hỏng (Ghi nhận vào tổn thất)",
       submitLabel: "Chốt Phiếu Xuất Hủy",
-      addLabel: "Thêm thuốc xuất hủy",
+      addLabel: "Thêm dòng hàng hủy",
+      focusRing: "focus:border-red-500 focus:ring-red-500/20",
+      textPrimary: "text-red-600",
     },
   };
   const t = themes[mode];
 
+  const inputBase = `w-full border border-slate-200 rounded-lg px-3 py-2 text-sm font-sm text-slate-800 bg-white outline-none transition ${t.focusRing} disabled:bg-slate-50 disabled:text-slate-400 disabled:cursor-not-allowed read-only:bg-slate-50 read-only:text-slate-400`;
+  const labelBase =
+    "block text-[10px] font-bold uppercase tracking-wide mb-1 text-slate-500";
+
   return (
     <div
-      className="min-h-screen p-6"
-      style={{
-        background: "#f0f4f8",
-        fontFamily: "'DM Sans', system-ui, sans-serif",
-      }}>
+      className="cat-root min-h-screen bg-gradient-to-br from-sky-50 via-blue-50 p-6"
+      style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
       <style>{`
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .scrollbar-thin::-webkit-scrollbar { width: 4px; }
-        .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
-        .scrollbar-thin::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        .dist-input { width: 100%; border: 1.5px solid #e2e8f0; padding: 10px 12px; font-size: 13px; font-weight: 600; color: #0f172a; border-radius: 10px; outline: none; background: white; transition: border-color .2s; }
-        .dist-input:focus { border-color: #0ea5e9; box-shadow: 0 0 0 3px rgba(14,165,233,.08); }
-        .dist-input:disabled { background: #f8fafc; color: #94a3b8; cursor: not-allowed; }
-        .dist-select { width: 100%; border: 1.5px solid #e2e8f0; padding: 10px 12px; font-size: 13px; font-weight: 600; color: #0f172a; border-radius: 10px; outline: none; background: white; transition: border-color .2s; cursor: pointer; }
-        .dist-select:focus { border-color: #0ea5e9; box-shadow: 0 0 0 3px rgba(14,165,233,.08); }
-        .dist-select:disabled { background: #f8fafc; color: #94a3b8; cursor: not-allowed; }
-        .submit-btn { display: flex; align-items: center; gap: 8px; padding: 13px 28px; border: none; border-radius: 14px; font-size: 14px; font-weight: 800; color: white; cursor: pointer; transition: all .2s ease; letter-spacing: .2px; }
-        .submit-btn:hover { transform: translateY(-1px); }
-        .submit-btn:active { transform: scale(.97); }
-        .item-row { border-radius: 14px; border: 1.5px solid; padding: 18px; display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-start; box-shadow: 0 1px 4px rgba(0,0,0,.04); transition: box-shadow .2s; }
-        .item-row:hover { box-shadow: 0 3px 12px rgba(0,0,0,.07); }
-        .field-label { display: block; font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 7px; }
-        .mode-tab { display: flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 10px; font-size: 13px; font-weight: 700; border: none; cursor: pointer; transition: all .2s; color: #94a3b8; background: transparent; }
-        .mode-tab.active { box-shadow: 0 2px 8px rgba(0,0,0,.1); }
-        .mode-tab:not(.active):hover { color: #64748b; background: rgba(255,255,255,.5); }
+        @keyframes fadeInPage {
+          from { opacity: 0; transform: translateY(12px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-page-in {
+          animation: fadeInPage 0.4s ease-out forwards;
+        }
       `}</style>
 
-      <div style={{ maxWidth: 1380, margin: "0 auto" }}>
-        <div className="flex flex-col md:flex-row md:justify-between items-start md:items-center mb-8 gap-6 border-b border-gray-100 pb-6">
-          <div className="flex items-center gap-3">
-            <div
-              style={{
-                background: t.gradient,
-                borderRadius: 14,
-                width: 46,
-                height: 46,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                boxShadow: t.shadow,
-                flexShrink: 0,
-              }}>
-              {t.icon}
-            </div>
-            <div>
-              <h1
-                style={{
-                  fontSize: 22,
-                  fontWeight: 800,
-                  color: "#0f172a",
-                  lineHeight: 1.2,
-                }}>
-                {t.title}
-              </h1>
-              <p style={{ fontSize: 12, color: "#64748b", marginTop: 2 }}>
-                {t.subtitle}
-              </p>
-            </div>
-          </div>
-
+      <div className="animate-page-in space-y-6">
+        {/* ── Page Header ── */}
+        <div className="flex items-center gap-3 mb-6">
           <div
+            className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 text-white"
             style={{
-              display: "flex",
-              background: "#e2e8f0",
-              borderRadius: 13,
-              padding: 4,
-              gap: 2,
+              background: t.gradient,
+              boxShadow: t.shadow,
             }}>
-            {[
-              {
-                key: "DISTRIBUTE",
-                icon: <ArrowRightLeft size={14} />,
-                label: "Xuất đi",
-              },
-              { key: "RETURN", icon: <Undo2 size={14} />, label: "Trả về" },
-            ].map(({ key, icon, label }) => (
-              <button
-                key={key}
-                type="button"
-                onClick={() => setMode(key)}
-                className={`mode-tab ${mode === key ? "active" : ""}`}
-                style={mode === key ? { ...themes[key].tabActive } : {}}>
-                {icon} {label}
-              </button>
-            ))}
+            {t.icon}
+          </div>
+          <div>
+            <h1 className="text-xl font-bold text-slate-900 leading-tight">
+              {t.title}
+            </h1>
+            <p className="text-xs text-slate-500 mt-0.5">{t.subtitle}</p>
           </div>
         </div>
 
-        <div
-          style={{
-            background: "white",
-            borderRadius: 20,
-            border: "1.5px solid #e2e8f0",
-            boxShadow: "0 2px 12px rgba(0,0,0,.06)",
-            overflow: "hidden",
-          }}>
+        {/* ── Mode Tabs (Giống giao diện Branch Management) ── */}
+        <div className="flex gap-1 bg-white rounded-2xl border border-slate-100 shadow-sm p-1.5 mb-4 w-fit">
+          {[
+            { key: "DISTRIBUTE", label: "Xuất đi" },
+            { key: "RETURN", label: "Trả về" },
+          ].map(({ key, label }) => (
+            <button
+              key={key}
+              type="button"
+              onClick={() => setMode(key)}
+              className={`flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                mode === key
+                  ? "text-white shadow-sm"
+                  : "text-slate-500 hover:text-slate-700 hover:bg-slate-50"
+              }`}
+              style={
+                mode === key
+                  ? { background: "linear-gradient(135deg, #1d5fa7, #2c78d6)" }
+                  : {}
+              }>
+              {label}
+            </button>
+          ))}
+        </div>
+
+        {/* ── Main Card ── */}
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          {/* ── Banner Info ── */}
           <div
-            style={{
-              background: t.bannerBg,
-              borderBottom: `1.5px solid ${t.bannerBorder}`,
-              padding: "14px 24px",
-              display: "flex",
-              alignItems: "flex-start",
-              gap: 12,
-            }}>
-            <div
-              style={{
-                width: 36,
-                height: 36,
-                borderRadius: 10,
-                background: "white",
-                border: `1.5px solid ${t.bannerBorder}`,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0,
-                boxShadow: "0 1px 4px rgba(0,0,0,.06)",
-              }}>
-              {t.bannerIcon}
-            </div>
+            className={`${t.bannerBg} border-b ${t.bannerBorder} px-6 py-4 flex items-start gap-3`}>
             <div>
               {mode === "DISTRIBUTE" ? (
-                <>
-                  <p
-                    style={{
-                      fontSize: 13,
-                      fontWeight: 700,
-                      color: "#0284c7",
-                      marginBottom: 4,
-                    }}>
-                    Chọn chi nhánh nhận hàng
-                  </p>
+                <div className="max-w-sm">
+                  <label className={`${labelBase} text-slate-600`}>
+                    Chọn chi nhánh nhận hàng{" "}
+                    <span className="text-red-500">*</span>
+                  </label>
                   <select
                     required
                     value={toBranchId}
                     onChange={(e) => setToBranchId(e.target.value)}
-                    className="dist-select"
-                    style={{
-                      width: 320,
-                      marginTop: 2,
-                      borderColor: "#bae6fd",
-                    }}>
-                    <option value="">-- Chọn chi nhánh đích đến --</option>
+                    className={inputBase}>
+                    <option value="">-- Chọn --</option>
                     {branches.map((b) => (
                       <option key={b._id} value={b._id}>
                         Chi nhánh: {b.name}
                       </option>
                     ))}
                   </select>
-                </>
+                </div>
               ) : mode === "RETURN" ? (
                 <>
-                  <p
-                    style={{
-                      fontSize: 13,
-                      fontWeight: 700,
-                      color: "#c2410c",
-                      marginBottom: 2,
-                    }}>
+                  <p className="text-sm font-bold text-[#1d5fa7] mb-1">
                     Nơi nhận: Kho Tổng
                   </p>
-                  <p
-                    style={{ fontSize: 12, color: "#9a3412", lineHeight: 1.6 }}>
+                  <p className="text-xs text-[#12427a] leading-relaxed">
                     Hàng hóa trả về sẽ được chuyển vào khu vực chờ kiểm duyệt.
                     Hàng lỗi/cận date sẽ không được phân phối lại.
                   </p>
                 </>
               ) : (
                 <>
-                  <p
-                    style={{
-                      fontSize: 13,
-                      fontWeight: 700,
-                      color: "#b91c1c",
-                      marginBottom: 2,
-                    }}>
+                  <p className="text-sm font-bold text-[#b91c1c] mb-1">
                     Lưu ý nghiệp vụ Hủy hàng
                   </p>
-                  <p
-                    style={{ fontSize: 12, color: "#991b1b", lineHeight: 1.6 }}>
+                  <p className="text-xs text-[#991b1b] leading-relaxed">
                     Phiếu xuất hủy sẽ trừ vĩnh viễn số lượng tồn kho và hạch
                     toán vào <strong>Chi phí tổn thất</strong>.
                   </p>
@@ -587,53 +499,24 @@ const DistributePage = () => {
             </div>
           </div>
 
+          {/* ── Form ── */}
           <form onSubmit={handleSubmit}>
-            <div style={{ padding: "24px" }}>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 8,
-                  marginBottom: 16,
-                }}>
-                <div
-                  style={{
-                    width: 28,
-                    height: 28,
-                    borderRadius: 8,
-                    background: "#f1f5f9",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}>
-                  <PackageX size={15} color="#64748b" />
+            <div className="p-5">
+              {/* Section Label */}
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center">
+                  <Layers size={14} className="text-slate-500" />
                 </div>
-                <span
-                  style={{
-                    fontSize: 13,
-                    fontWeight: 800,
-                    color: "#475569",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.06em",
-                  }}>
+                <span className="text-xs font-bold text-slate-500 uppercase tracking-wide">
                   Danh sách mặt hàng
                 </span>
-                <span
-                  style={{
-                    marginLeft: 4,
-                    background: "#f1f5f9",
-                    color: "#64748b",
-                    fontSize: 11,
-                    fontWeight: 700,
-                    borderRadius: 6,
-                    padding: "2px 8px",
-                  }}>
+                <span className="bg-slate-100 text-slate-500 text-[11px] font-bold rounded-md px-2 py-0.5">
                   {items.length} dòng
                 </span>
               </div>
 
-              <div
-                style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              {/* ── Item Rows ── */}
+              <div className="flex flex-col gap-3">
                 {items.map((item, index) => {
                   const searchedMedicines = medicines.filter(
                     (m) =>
@@ -680,452 +563,278 @@ const DistributePage = () => {
                   return (
                     <div
                       key={index}
-                      className="item-row"
-                      style={{ background: t.rowBg, borderColor: t.rowBorder }}>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          paddingTop: 30,
-                        }}>
-                        <span
-                          style={{
-                            width: 24,
-                            height: 24,
-                            background: "white",
-                            border: `1.5px solid ${t.rowBorder}`,
-                            borderRadius: 7,
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            fontSize: 11,
-                            fontWeight: 800,
-                            color: "#94a3b8",
-                          }}>
+                      className={`bg-white border border-slate-200 rounded-xl p-4 transition-all duration-200 ${t.rowHover}`}>
+                      {/* Row number badge & delete */}
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="w-6 h-6 bg-slate-50 border border-slate-200 rounded-md flex items-center justify-center text-[11px] font-bold text-slate-400">
                           {index + 1}
                         </span>
-                      </div>
-
-                      <div
-                        style={{
-                          flex: 1,
-                          minWidth: 220,
-                          position: "relative",
-                        }}>
-                        <label className="field-label">Thuốc / Sản phẩm</label>
-                        <div style={{ position: "relative" }}>
-                          <Search
-                            size={15}
-                            style={{
-                              position: "absolute",
-                              left: 12,
-                              top: "50%",
-                              transform: "translateY(-50%)",
-                              color: "#94a3b8",
-                              pointerEvents: "none",
-                            }}
-                          />
-                          <input
-                            type="text"
-                            required
-                            placeholder="Nhập tên hoặc mã..."
-                            value={item.medicineSearchTerm}
-                            onChange={(e) =>
-                              handleItemChange(
-                                index,
-                                "medicineSearchTerm",
-                                e.target.value,
-                              )
-                            }
-                            onFocus={() =>
-                              handleItemChange(
-                                index,
-                                "isMedicineDropdownOpen",
-                                true,
-                              )
-                            }
-                            onBlur={() =>
-                              setTimeout(
-                                () =>
-                                  handleItemChange(
-                                    index,
-                                    "isMedicineDropdownOpen",
-                                    false,
-                                  ),
-                                200,
-                              )
-                            }
-                            className="dist-input"
-                            style={{ paddingLeft: 36 }}
-                          />
-                        </div>
-                        {item.isMedicineDropdownOpen && (
-                          <ul
-                            style={{
-                              position: "absolute",
-                              zIndex: 50,
-                              width: "100%",
-                              background: "white",
-                              border: "1.5px solid #e2e8f0",
-                              borderRadius: 12,
-                              boxShadow: "0 8px 24px rgba(0,0,0,.12)",
-                              maxHeight: 220,
-                              overflowY: "auto",
-                              marginTop: 4,
-                            }}>
-                            {searchedMedicines.length > 0 ? (
-                              searchedMedicines.map((m) => (
-                                <li
-                                  key={m._id}
-                                  onMouseDown={() =>
-                                    handleSelectMedicine(index, m)
-                                  }
-                                  style={{
-                                    padding: "10px 14px",
-                                    fontSize: 13,
-                                    cursor: "pointer",
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    alignItems: "center",
-                                    borderBottom: "1px solid #f8fafc",
-                                    transition: "background .15s",
-                                  }}
-                                  onMouseEnter={(e) =>
-                                    (e.currentTarget.style.background =
-                                      "#f0f9ff")
-                                  }
-                                  onMouseLeave={(e) =>
-                                    (e.currentTarget.style.background = "white")
-                                  }>
-                                  <span
-                                    style={{
-                                      fontWeight: 700,
-                                      color: "#0f172a",
-                                    }}>
-                                    {m.name}
-                                  </span>
-                                  <span
-                                    style={{
-                                      fontFamily: "monospace",
-                                      fontSize: 11,
-                                      color: "#64748b",
-                                      background: "#f1f5f9",
-                                      border: "1px solid #e2e8f0",
-                                      borderRadius: 6,
-                                      padding: "1px 7px",
-                                    }}>
-                                    {m.code}
-                                  </span>
-                                </li>
-                              ))
-                            ) : (
-                              <li
-                                style={{
-                                  padding: "14px",
-                                  fontSize: 13,
-                                  color: "#94a3b8",
-                                  textAlign: "center",
-                                  fontStyle: "italic",
-                                }}>
-                                Không tìm thấy thuốc này
-                              </li>
-                            )}
-                          </ul>
-                        )}
-                        {item.medicineId && (
-                          <div
-                            style={{
-                              display: "flex",
-                              flexDirection: "column",
-                              gap: 4,
-                              marginTop: 6,
-                            }}>
-                            <div
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 5,
-                              }}>
-                              <span style={{ fontSize: 11, color: "#94a3b8" }}>
-                                {mode === "DISTRIBUTE"
-                                  ? "Tồn kho hợp lệ:"
-                                  : "Tổng tồn kho:"}
-                              </span>
-                              <span
-                                style={{
-                                  fontSize: 11,
-                                  fontWeight: 800,
-                                  color:
-                                    totalValidBaseQty > 0
-                                      ? "#059669"
-                                      : "#dc2626",
-                                  background:
-                                    totalValidBaseQty > 0
-                                      ? "#dcfce7"
-                                      : "#fee2e2",
-                                  border: `1px solid ${totalValidBaseQty > 0 ? "#bbf7d0" : "#fecaca"}`,
-                                  borderRadius: 6,
-                                  padding: "1px 8px",
-                                }}>
-                                {totalValidBaseQty} {baseUnit}
-                              </span>
-                            </div>
-
-                            {filteredVariants.length > 0 && (
-                              <div
-                                style={{
-                                  fontSize: 11,
-                                  color: "#64748b",
-                                  fontStyle: "italic",
-                                  marginLeft: 2,
-                                }}>
-                                <span>Quy cách: </span>
-                                <span style={{ fontWeight: 600 }}>
-                                  {(item.variantId
-                                    ? filteredVariants.find(
-                                        (v) => v._id === item.variantId,
-                                      )?.packagingSpecification
-                                    : filteredVariants[0]
-                                        ?.packagingSpecification) ||
-                                    "Đang cập nhật..."}
-                                </span>
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </div>
-
-                      <div style={{ width: 120 }}>
-                        <label className="field-label">Quy cách</label>
-                        <select
-                          required
-                          disabled={!item.medicineId}
-                          value={item.variantId}
-                          onChange={(e) =>
-                            handleItemChange(index, "variantId", e.target.value)
-                          }
-                          className="dist-select">
-                          <option value="">-- Chọn --</option>
-                          {filteredVariants.map((v) => (
-                            <option key={v._id} value={v._id}>
-                              {v.unit}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-
-                      {(mode === "RETURN" || mode === "DISPOSE") && (
-                        <>
-                          <div style={{ width: 160 }}>
-                            <label
-                              className="field-label"
-                              style={{
-                                color:
-                                  mode === "DISPOSE" ? "#b91c1c" : "#c2410c",
-                              }}>
-                              Mã Lô
-                            </label>
-                            <select
-                              required
-                              disabled={
-                                !item.medicineId || activeBatches.length === 0
-                              }
-                              value={item.batchId || ""}
-                              onChange={(e) => {
-                                const bId = e.target.value;
-                                const selectedBatch = activeBatches.find(
-                                  (b) => b._id === bId,
-                                );
-                                const newItems = [...items];
-                                newItems[index].batchId = bId;
-                                newItems[index].batchCode = selectedBatch
-                                  ? selectedBatch.batchCode
-                                  : "";
-                                setItems(newItems);
-                              }}
-                              className="dist-select"
-                              style={{
-                                borderColor:
-                                  mode === "DISPOSE" ? "#fecaca" : "#fed7aa",
-                              }}>
-                              <option value="">-- Chọn lô --</option>
-                              {activeBatches.map((b) => {
-                                const qualityLabel =
-                                  b.quality === "GOOD"
-                                    ? "An toàn"
-                                    : b.quality === "EXPIRED"
-                                      ? "Hết hạn"
-                                      : b.quality === "DAMAGED"
-                                        ? "Hư hỏng"
-                                        : b.quality;
-                                return (
-                                  <option key={b._id} value={b._id}>
-                                    {b.batchCode} (Còn {b.quantity}) —{" "}
-                                    {qualityLabel}
-                                  </option>
-                                );
-                              })}
-                            </select>
-                          </div>
-                          <div style={{ width: 160 }}>
-                            <label
-                              className="field-label"
-                              style={{
-                                color:
-                                  mode === "DISPOSE" ? "#b91c1c" : "#c2410c",
-                              }}>
-                              Lý do
-                            </label>
-                            <select
-                              value={item.reason}
-                              onChange={(e) =>
-                                handleItemChange(
-                                  index,
-                                  "reason",
-                                  e.target.value,
-                                )
-                              }
-                              className="dist-select"
-                              style={{
-                                borderColor:
-                                  mode === "DISPOSE" ? "#fecaca" : "#fed7aa",
-                              }}>
-                              {mode === "RETURN" && (
-                                <option value="OVERSTOCK">
-                                  Bán chậm / Quá tồn
-                                </option>
-                              )}
-                              <option value="EXPIRED">
-                                Cận Date / Hết hạn
-                              </option>
-                              <option value="DAMAGED">Hư hỏng / Lỗi NSX</option>
-                            </select>
-                          </div>
-                        </>
-                      )}
-
-                      <div style={{ width: 96 }}>
-                        <label className="field-label">Số lượng</label>
-                        <input
-                          type="number"
-                          min="1"
-                          required
-                          value={item.quantity}
-                          onChange={(e) =>
-                            handleItemChange(index, "quantity", e.target.value)
-                          }
-                          className="dist-input"
-                          style={{
-                            textAlign: "center",
-                            fontWeight: 800,
-                            fontSize: 15,
-                            color: "#0284c7",
-                          }}
-                        />
-                      </div>
-
-                      <div style={{ paddingTop: 28 }}>
+                        <div className="h-px flex-1 bg-slate-100" />
                         <button
                           type="button"
                           onClick={() => removeItemRow(index)}
-                          style={{
-                            background: "white",
-                            border: "1.5px solid #e2e8f0",
-                            borderRadius: 10,
-                            width: 38,
-                            height: 38,
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            cursor: "pointer",
-                            color: "#94a3b8",
-                            transition: "all .2s",
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = "#fee2e2";
-                            e.currentTarget.style.borderColor = "#fecaca";
-                            e.currentTarget.style.color = "#ef4444";
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = "white";
-                            e.currentTarget.style.borderColor = "#e2e8f0";
-                            e.currentTarget.style.color = "#94a3b8";
-                          }}>
-                          <Trash2 size={16} />
+                          className="w-7 h-7 bg-white border border-slate-200 rounded-lg flex items-center justify-center text-slate-400 hover:bg-red-50 hover:border-red-200 hover:text-red-500 transition-all duration-150">
+                          <Trash2 size={14} />
                         </button>
+                      </div>
+
+                      {/* ── ROW GRID ── */}
+                      <div className="grid grid-cols-12 gap-3">
+                        {/* 1. TÌM THUỐC */}
+                        <div
+                          className={`col-span-12 ${mode === "DISTRIBUTE" ? "md:col-span-5" : "md:col-span-4"}`}>
+                          <div className="relative">
+                            <label className={labelBase}>
+                              Tìm & Chọn Thuốc
+                            </label>
+                            <div className="relative">
+                              <Search
+                                size={13}
+                                className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+                              />
+                              <input
+                                type="text"
+                                required
+                                placeholder="Nhập tên hoặc mã..."
+                                value={item.medicineSearchTerm}
+                                onChange={(e) =>
+                                  handleItemChange(
+                                    index,
+                                    "medicineSearchTerm",
+                                    e.target.value,
+                                  )
+                                }
+                                onFocus={() =>
+                                  handleItemChange(
+                                    index,
+                                    "isMedicineDropdownOpen",
+                                    true,
+                                  )
+                                }
+                                onBlur={() =>
+                                  setTimeout(
+                                    () =>
+                                      handleItemChange(
+                                        index,
+                                        "isMedicineDropdownOpen",
+                                        false,
+                                      ),
+                                    200,
+                                  )
+                                }
+                                className={`${inputBase} pl-8`}
+                              />
+                            </div>
+
+                            {/* Dropdown Thuốc */}
+                            {item.isMedicineDropdownOpen && (
+                              <ul className="absolute z-50 w-full bg-white border border-slate-200 rounded-xl shadow-xl mt-1 max-h-52 overflow-y-auto">
+                                {searchedMedicines.length > 0 ? (
+                                  searchedMedicines.map((m) => (
+                                    <li
+                                      key={m._id}
+                                      onMouseDown={() =>
+                                        handleSelectMedicine(index, m)
+                                      }
+                                      className="px-3 py-2.5 cursor-pointer border-b border-slate-50 hover:bg-[#1d5fa7]/5 transition-colors last:border-0 flex justify-between items-center">
+                                      <span className="font-medium text-slate-800 text-[13px]">
+                                        {m.name}
+                                      </span>
+                                      <span className="font-mono text-[11px] text-slate-500 bg-slate-100 border border-slate-200 rounded px-1.5 py-0.5">
+                                        {m.code}
+                                      </span>
+                                    </li>
+                                  ))
+                                ) : (
+                                  <li className="px-3 py-3.5 text-center text-[13px] text-slate-400 italic">
+                                    Không tìm thấy thuốc
+                                  </li>
+                                )}
+                              </ul>
+                            )}
+                          </div>
+
+                          {/* Tồn kho info */}
+                          {item.medicineId && (
+                            <div className="flex flex-col gap-1.5 mt-2">
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-[11px] text-slate-500">
+                                  {mode === "DISTRIBUTE"
+                                    ? "Tồn kho hợp lệ:"
+                                    : "Tổng tồn kho:"}
+                                </span>
+                                <span
+                                  className={`text-[11px] font-bold px-2 py-0.5 rounded-md border ${
+                                    totalValidBaseQty > 0
+                                      ? "text-emerald-700 bg-emerald-50 border-emerald-200"
+                                      : "text-red-700 bg-red-50 border-red-200"
+                                  }`}>
+                                  {totalValidBaseQty} {baseUnit}
+                                </span>
+                              </div>
+                              {filteredVariants.length > 0 && (
+                                <div className="text-[11px] text-slate-500 italic ml-0.5">
+                                  Quy cách:{" "}
+                                  <span className="font-semibold text-slate-600">
+                                    {(item.variantId
+                                      ? filteredVariants.find(
+                                          (v) => v._id === item.variantId,
+                                        )?.packagingSpecification
+                                      : filteredVariants[0]
+                                          ?.packagingSpecification) || "..."}
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+
+                        {/* 2. QUY CÁCH */}
+                        <div
+                          className={`col-span-6 ${mode === "DISTRIBUTE" ? "md:col-span-4" : "md:col-span-2"}`}>
+                          <label className={labelBase}>Quy cách</label>
+                          <select
+                            required
+                            disabled={!item.medicineId}
+                            value={item.variantId}
+                            onChange={(e) =>
+                              handleItemChange(
+                                index,
+                                "variantId",
+                                e.target.value,
+                              )
+                            }
+                            className={inputBase}>
+                            <option value="">-- Chọn --</option>
+                            {filteredVariants.map((v) => (
+                              <option key={v._id} value={v._id}>
+                                {v.unit}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+
+                        {/* 3 & 4. MÃ LÔ VÀ LÝ DO (CHỈ HIỂN THỊ KHI LÀ RETURN/DISPOSE) */}
+                        {mode !== "DISTRIBUTE" && (
+                          <>
+                            <div className="col-span-6 md:col-span-2">
+                              <label
+                                className={`${labelBase} ${mode === "DISPOSE" ? "text-red-600" : "text-[#1d5fa7]"}`}>
+                                Mã Lô
+                              </label>
+                              <select
+                                required
+                                disabled={
+                                  !item.medicineId || activeBatches.length === 0
+                                }
+                                value={item.batchId || ""}
+                                onChange={(e) => {
+                                  const bId = e.target.value;
+                                  const selectedBatch = activeBatches.find(
+                                    (b) => b._id === bId,
+                                  );
+                                  const newItems = [...items];
+                                  newItems[index].batchId = bId;
+                                  newItems[index].batchCode = selectedBatch
+                                    ? selectedBatch.batchCode
+                                    : "";
+                                  setItems(newItems);
+                                }}
+                                className={inputBase}>
+                                <option value="">-- Chọn lô --</option>
+                                {activeBatches.map((b) => {
+                                  const qualityLabel =
+                                    b.quality === "GOOD"
+                                      ? "An toàn"
+                                      : b.quality === "EXPIRED"
+                                        ? "Hết hạn"
+                                        : b.quality === "DAMAGED"
+                                          ? "Hư hỏng"
+                                          : b.quality;
+                                  return (
+                                    <option key={b._id} value={b._id}>
+                                      {b.batchCode} (Tồn {b.quantity}) —{" "}
+                                      {qualityLabel}
+                                    </option>
+                                  );
+                                })}
+                              </select>
+                            </div>
+                            <div className="col-span-6 md:col-span-2">
+                              <label
+                                className={`${labelBase} ${mode === "DISPOSE" ? "text-red-600" : "text-[#1d5fa7]"}`}>
+                                Lý do
+                              </label>
+                              <select
+                                value={item.reason}
+                                onChange={(e) =>
+                                  handleItemChange(
+                                    index,
+                                    "reason",
+                                    e.target.value,
+                                  )
+                                }
+                                className={inputBase}>
+                                {mode === "RETURN" && (
+                                  <option value="OVERSTOCK">
+                                    Bán chậm / Quá tồn
+                                  </option>
+                                )}
+                                <option value="EXPIRED">
+                                  Cận Date / Hết hạn
+                                </option>
+                                <option value="DAMAGED">
+                                  Hư hỏng / Lỗi NSX
+                                </option>
+                              </select>
+                            </div>
+                          </>
+                        )}
+
+                        {/* 5. SỐ LƯỢNG */}
+                        <div
+                          className={`col-span-6 ${mode === "DISTRIBUTE" ? "md:col-span-3" : "md:col-span-2"}`}>
+                          <label className={labelBase}>Số lượng</label>
+                          <input
+                            type="number"
+                            min="1"
+                            required
+                            value={item.quantity}
+                            onChange={(e) =>
+                              handleItemChange(
+                                index,
+                                "quantity",
+                                e.target.value,
+                              )
+                            }
+                            className={`${inputBase} text-center font-extrabold text-[15px] ${t.textPrimary}`}
+                          />
+                        </div>
                       </div>
                     </div>
                   );
                 })}
               </div>
 
+              {/* Add Row Button */}
               <button
                 type="button"
                 onClick={addItemRow}
-                style={{
-                  marginTop: 12,
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 7,
-                  padding: "9px 16px",
-                  background: "transparent",
-                  border: `1.5px dashed ${t.addBtnBorder}`,
-                  borderRadius: 10,
-                  fontSize: 13,
-                  fontWeight: 700,
-                  color: t.addBtnColor,
-                  cursor: "pointer",
-                  transition: "background .2s",
-                }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.background = t.addBtnHoverBg)
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.background = "transparent")
-                }>
-                <Plus size={16} strokeWidth={2.5} /> {t.addLabel}
+                className={`mt-3 flex items-center gap-2 px-4 py-2.5 bg-transparent border border-dashed rounded-xl text-[13px] font-bold transition-colors duration-200 ${t.addBtn}`}>
+                <Plus size={15} strokeWidth={2.5} /> {t.addLabel}
               </button>
             </div>
 
-            <div
-              style={{
-                padding: "16px 24px",
-                borderTop: "1.5px solid #f1f5f9",
-                background: "#f8fafc",
-                display: "flex",
-                justifyContent: "flex-end",
-                gap: 10,
-              }}>
-              <button
-                type="button"
-                onClick={() => navigate(-1)}
-                style={{
-                  padding: "12px 20px",
-                  background: "white",
-                  border: "1.5px solid #e2e8f0",
-                  borderRadius: 12,
-                  fontSize: 13,
-                  fontWeight: 700,
-                  color: "#64748b",
-                  cursor: "pointer",
-                  transition: "background .2s",
-                }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.background = "#f1f5f9")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.background = "white")
-                }>
-                ← Quay lại
-              </button>
+            {/* ── Footer ── */}
+            <div className="px-6 py-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3 rounded-b-2xl">
               <button
                 type="submit"
-                className="submit-btn"
+                className="flex items-center gap-2 px-6 py-2.5 text-white rounded-xl text-[14px] font-bold transition-all hover:-translate-y-0.5 tracking-wide"
                 style={{
                   background: t.submitGradient,
                   boxShadow: t.submitShadow,
                 }}>
-                <Save size={18} /> {t.submitLabel}
+                <Save size={16} /> {t.submitLabel}
               </button>
             </div>
           </form>

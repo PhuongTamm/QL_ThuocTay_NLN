@@ -7,6 +7,7 @@ const categoryRoutes = require("../routes/category.route");
 const userRoutes = require("../routes/user.route");
 const reportRoutes = require("../routes/report.route");
 const customerRoutes = require("../routes/customer.route");
+const attendanceRoutes = require("../routes/attendance.route");
 const chatbotRoutes = require("../routes/chatbot.route");
 const { notFound, errorHandler } = require("../middleware/errorHandler");
 
@@ -19,6 +20,7 @@ const initRoutes = (app) => {
   app.use("/api/categories", categoryRoutes);
   app.use("/api/users", userRoutes);
   app.use("/api/customers", customerRoutes);
+  app.use("/api/attendance", attendanceRoutes);
   app.use("/api/reports", reportRoutes);
   app.use("/api/chatbot", chatbotRoutes);
 

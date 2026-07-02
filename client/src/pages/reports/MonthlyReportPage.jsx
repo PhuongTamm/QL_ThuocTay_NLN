@@ -72,9 +72,10 @@ const MonthlyReportPage = () => {
     if (selectedBranchId) {
       const b = branches.find((x) => x._id === selectedBranchId);
       if (b)
-        branchName = b.type === "warehouse"
-          ? `Kho Tổng: ${b.name}`
-          : `Chi nhánh: ${b.name}`;
+        branchName =
+          b.type === "warehouse"
+            ? `Kho Tổng: ${b.name}`
+            : `Chi nhánh: ${b.name}`;
     } else if (user?.role !== "admin" && user?.role !== "warehouse_manager") {
       branchName = "Kho Chi Nhánh Của Tôi";
     }
@@ -217,220 +218,227 @@ const MonthlyReportPage = () => {
   };
 
   const inputCls =
-    "px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-400 bg-white font-medium text-slate-700";
+    "px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#1d5fa7]/30 focus:border-[#1d5fa7] transition bg-white font-medium text-slate-700";
 
   return (
     <div className="min-h-screen p-6 bg-[#f0f4f8] font-sans">
-      <div className="flex flex-col md:flex-row md:justify-between items-start md:items-center mb-6 gap-4">
-        <div className="flex items-center gap-3">
-          <div
-            className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0"
-            style={{
-              background: "linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%)",
-            }}>
-            <FileBarChart size={22} color="white" />
-          </div>
-          <div>
-            <h1 className="text-xl font-bold text-slate-900 leading-tight">
-              Báo Cáo Xuất Nhập Tồn
-            </h1>
-            <p className="text-xs text-slate-500">
-              Chốt số liệu hàng tháng để kế toán đối soát
-            </p>
-          </div>
-        </div>
+      <style>{`
+        @keyframes fadeInPage {
+          from { opacity: 0; transform: translateY(12px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-page-in {
+          animation: fadeInPage 0.4s ease-out forwards;
+        }
+      `}</style>
 
-        <button
-          onClick={handleExportPDF}
-          disabled={isExportingPDF || filteredReports.length === 0}
-          className="flex items-center gap-2 px-5 py-2.5 bg-white text-slate-700 font-bold border border-slate-200 rounded-2xl shadow-sm hover:bg-slate-50 transition-all disabled:opacity-50">
-          {isExportingPDF ? (
-            <Loader2 size={18} className="animate-spin" />
-          ) : (
-            <Printer size={18} />
-          )}
-          In Báo Cáo
-        </button>
-      </div>
-
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 mb-6">
-        <div className="flex flex-wrap gap-4 items-end">
-          <div className="w-64">
-            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">
-              Tìm kiếm thuốc
-            </label>
-            <div className="relative">
-              <Search
-                size={16}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-              />
-              <input
-                className={`${inputCls} w-full pl-9`}
-                placeholder="Mã thuốc, tên thuốc..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
+      <div className="animate-page-in space-y-6">
+        <div className="flex flex-col md:flex-row md:justify-between items-start md:items-center gap-4">
+          <div className="flex items-center gap-3">
+            <div
+              className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 shadow-sm"
+              style={{
+                background: "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+              }}>
+              <FileBarChart size={22} color="white" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-slate-900 leading-tight">
+                Báo Cáo Xuất Nhập Tồn
+              </h1>
+              <p className="text-xs text-slate-500">
+                Chốt số liệu hàng tháng để kế toán đối soát
+              </p>
             </div>
           </div>
 
-          <div className="w-32">
-            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5 flex items-center gap-1">
-              <Calendar size={12} /> Tháng
-            </label>
-            <select
-              className={`${inputCls} w-full`}
-              value={selectedMonth}
-              onChange={(e) => setSelectedMonth(e.target.value)}>
-              {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
-                <option key={m} value={m}>
-                  Tháng {m}
-                </option>
-              ))}
-            </select>
-          </div>
+          <button
+            onClick={handleExportPDF}
+            disabled={isExportingPDF || filteredReports.length === 0}
+            className="flex items-center gap-2 px-5 py-2.5 bg-white text-slate-700 font-bold border border-slate-200 rounded-2xl shadow-sm hover:bg-slate-50 transition-all disabled:opacity-50">
+            {isExportingPDF ? (
+              <Loader2 size={18} className="animate-spin text-[#1d5fa7]" />
+            ) : (
+              <Printer size={18} className="text-slate-500" />
+            )}
+            In Báo Cáo
+          </button>
+        </div>
 
-          <div className="w-32">
-            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">
-              Năm
-            </label>
-            <select
-              className={`${inputCls} w-full`}
-              value={selectedYear}
-              onChange={(e) => setSelectedYear(e.target.value)}>
-              {[currentYear - 1, currentYear, currentYear + 1].map((y) => (
-                <option key={y} value={y}>
-                  {y}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {(user?.role === "admin" || user?.role === "warehouse_manager") && (
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4">
+          <div className="flex flex-wrap gap-4 items-end">
             <div className="w-64">
+              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">
+                Tìm kiếm thuốc
+              </label>
+              <div className="relative">
+                <Search
+                  size={16}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                />
+                <input
+                  className={`${inputCls} w-full pl-9`}
+                  placeholder="Mã thuốc, tên thuốc..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="w-32">
               <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5 flex items-center gap-1">
-                <Store size={12} /> Chọn Chi nhánh
+                <Calendar size={12} /> Tháng
               </label>
               <select
-                className={`${inputCls} w-full text-violet-700 bg-violet-50/50`}
-                value={selectedBranchId}
-                onChange={(e) => setSelectedBranchId(e.target.value)}>
-                <option value="">-- Kho của tôi (Mặc định) --</option>
-                {branches.map((b) => (
-                  <option key={b._id} value={b._id}>
-                    {b.type === "warehouse" ? "🏢 Kho Tổng: " : "🏪 CN: "} {b.name}
+                className={`${inputCls} w-full`}
+                value={selectedMonth}
+                onChange={(e) => setSelectedMonth(e.target.value)}>
+                {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
+                  <option key={m} value={m}>
+                    Tháng {m}
                   </option>
                 ))}
               </select>
             </div>
-          )}
+
+            <div className="w-32">
+              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">
+                Năm
+              </label>
+              <select
+                className={`${inputCls} w-full`}
+                value={selectedYear}
+                onChange={(e) => setSelectedYear(e.target.value)}>
+                {[currentYear - 1, currentYear, currentYear + 1].map((y) => (
+                  <option key={y} value={y}>
+                    {y}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {(user?.role === "admin" || user?.role === "warehouse_manager") && (
+              <div className="w-64">
+                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5 flex items-center gap-1">
+                  <Store size={12} /> Chọn Chi nhánh
+                </label>
+                <select
+                  className={`${inputCls} w-full font-semibold text-[#1d5fa7]`}
+                  value={selectedBranchId}
+                  onChange={(e) => setSelectedBranchId(e.target.value)}>
+                  <option value="">-- Kho của tôi (Mặc định) --</option>
+                  {branches.map((b) => (
+                    <option key={b._id} value={b._id}>
+                      {b.type === "warehouse" ? "🏢 Kho Tổng: " : "🏪 CN: "}{" "}
+                      {b.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
 
-      {/* TABLE */}
-      <div
-        id="monthly-report-table"
-        className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm border-collapse">
-            <thead>
-              <tr className="bg-slate-50 border-b border-slate-200">
-                <th className="p-4 w-12 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
-                  STT
-                </th>
-                <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wide">
-                  Mã / Tên Thuốc
-                </th>
-                <th className="p-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
-                  Đơn vị
-                </th>
-                <th className="p-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wide bg-blue-50/50">
-                  Tồn Đầu Kỳ
-                </th>
-                <th className="p-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wide bg-emerald-50/50">
-                  Nhập Trong Kỳ
-                </th>
-                <th className="p-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wide bg-orange-50/50">
-                  Xuất Trong Kỳ
-                </th>
-                <th className="p-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wide bg-sky-50">
-                  Tồn Cuối Kỳ
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              {loading ? (
+        {/* TABLE */}
+        <div
+          id="monthly-report-table"
+          className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm border-collapse">
+              <thead className="bg-slate-50 border-b border-slate-100">
                 <tr>
-                  <td colSpan="7" className="text-center py-16">
-                    <div className="flex flex-col items-center gap-3 text-slate-400">
-                      <Loader2
-                        size={32}
-                        className="animate-spin text-violet-500"
-                      />
-                      <p className="text-sm font-medium">
-                        Đang tổng hợp dữ liệu sổ cái...
-                      </p>
-                    </div>
-                  </td>
+                  <th className="p-4 w-12 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
+                    STT
+                  </th>
+                  <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wide">
+                    Mã / Tên Thuốc
+                  </th>
+                  <th className="p-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
+                    Đơn vị
+                  </th>
+                  <th className="p-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
+                    Tồn Đầu Kỳ
+                  </th>
+                  <th className="p-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
+                    Nhập Trong Kỳ
+                  </th>
+                  <th className="p-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
+                    Xuất Trong Kỳ
+                  </th>
+                  <th className="p-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
+                    Tồn Cuối Kỳ
+                  </th>
                 </tr>
-              ) : filteredReports.length === 0 ? (
-                <tr>
-                  <td colSpan="7" className="text-center py-20">
-                    <div className="flex flex-col items-center gap-3">
-                      <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center">
-                        <AlertCircle size={28} className="text-slate-300" />
-                      </div>
-                      <p className="text-base font-semibold text-slate-500">
-                        Chưa có phát sinh giao dịch trong kỳ này
-                      </p>
-                    </div>
-                  </td>
-                </tr>
-              ) : (
-                filteredReports.map((r, idx) => (
-                  <tr
-                    key={r._id}
-                    className="hover:bg-slate-50 transition-colors duration-150">
-                    <td className="p-4 text-center text-slate-400 font-medium">
-                      {idx + 1}
-                    </td>
-                    <td className="p-4">
-                      <span className="font-mono text-[11px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-lg mr-2 border border-slate-200">
-                        {r.medicineId?.code}
-                      </span>
-                      <span className="font-bold text-slate-800">
-                        {r.medicineId?.name}
-                      </span>
-                    </td>
-                    <td className="p-4 text-center text-slate-500 font-medium">
-                      {r.medicineId?.baseUnit}
-                    </td>
-
-                    {/* Số liệu (Bôi màu cho dễ nhìn) */}
-                    <td className="p-4 text-center font-bold text-blue-700 bg-blue-50/30">
-                      {r.startQuantity.toLocaleString()}
-                    </td>
-                    <td className="p-4 text-center font-bold text-emerald-600 bg-emerald-50/30">
-                      +{r.importQuantity.toLocaleString()}
-                    </td>
-                    <td className="p-4 text-center font-bold text-orange-600 bg-orange-50/30">
-                      -{r.exportQuantity.toLocaleString()}
-                    </td>
-
-                    {/* Tồn cuối kỳ */}
-                    <td className="p-4 text-center font-black text-sky-700 bg-sky-50/50 gap-2">
-                      <div className="flex items-center justify-center gap-2">
-                        <ArrowRight
-                          size={14}
-                          className="text-sky-300 opacity-50"
+              </thead>
+              <tbody className="divide-y divide-slate-50">
+                {loading ? (
+                  <tr>
+                    <td colSpan="7" className="text-center py-16">
+                      <div className="flex flex-col items-center gap-3 text-slate-400">
+                        <Loader2
+                          size={32}
+                          className="animate-spin text-[#1d5fa7]"
                         />
-                        {r.endQuantity.toLocaleString()}
+                        <p className="text-sm font-medium">
+                          Đang tổng hợp dữ liệu sổ cái...
+                        </p>
                       </div>
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : filteredReports.length === 0 ? (
+                  <tr>
+                    <td colSpan="7" className="text-center py-20">
+                      <div className="flex flex-col items-center gap-3">
+                        <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center">
+                          <AlertCircle size={28} className="text-slate-300" />
+                        </div>
+                        <p className="text-base font-semibold text-slate-500">
+                          Chưa có phát sinh giao dịch trong kỳ này
+                        </p>
+                      </div>
+                    </td>
+                  </tr>
+                ) : (
+                  filteredReports.map((r, idx) => (
+                    <tr
+                      key={r._id}
+                      className="hover:bg-slate-50 transition-colors duration-150">
+                      <td className="p-4 text-center text-slate-500 font-normal">
+                        {idx + 1}
+                      </td>
+                      <td className="p-4">
+                        <span className="font-normal text-slate-700 text-sm mr-2">
+                          {r.medicineId?.code}
+                        </span>
+                        <span className="font-normal text-slate-800 text-sm">
+                          {r.medicineId?.name}
+                        </span>
+                      </td>
+                      <td className="p-4 text-center text-slate-600 font-normal">
+                        {r.medicineId?.baseUnit}
+                      </td>
+
+                      {/* Số liệu (Chỉ giữ màu chữ, bỏ màu nền) */}
+                      <td className="p-4 font-semibold text-center text-blue-600">
+                        {r.startQuantity.toLocaleString()}
+                      </td>
+                      <td className="p-4 font-semibold text-center text-emerald-600">
+                        +{r.importQuantity.toLocaleString()}
+                      </td>
+                      <td className="p-4 font-semibold text-center text-orange-600">
+                        -{r.exportQuantity.toLocaleString()}
+                      </td>
+
+                      {/* Tồn cuối kỳ */}
+                      <td className="p-4 font-semibold text-center text-slate-800">
+                        {r.endQuantity.toLocaleString()}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

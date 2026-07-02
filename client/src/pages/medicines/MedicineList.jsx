@@ -305,382 +305,398 @@ const MedicineList = () => {
 
   /* ─── Shared input style ─── */
   const inputCls =
-    "w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 transition bg-white text-slate-800 placeholder:text-slate-400";
+    "w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#1d5fa7]/30 focus:border-[#1d5fa7] transition bg-white text-slate-800 placeholder:text-slate-400";
   const labelCls =
     "block text-xs font-700 text-slate-500 uppercase tracking-wide mb-1.5";
 
   return (
     <div
-      className="min-h-screen p-6"
-      style={{
-        background: "#f0f4f8",
-        fontFamily: "'DM Sans', system-ui, sans-serif",
-      }}>
-      {/* ── PAGE HEADER ── */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <div
-            className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0"
+      className="cat-root min-h-screen bg-gradient-to-br from-sky-50 via-blue-50
+      to-slate-50 p-6 font-sans">
+      <style>{`
+        @keyframes fadeInPage {
+          from { opacity: 0; transform: translateY(12px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-page-in {
+          animation: fadeInPage 0.4s ease-out forwards;
+        }
+      `}</style>
+      <div className="animate-page-in space-y-6">
+        {/* ── PAGE HEADER ── */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <div
+              className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0"
+              style={{
+                background: "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+              }}>
+              <Pill size={22} color="white" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-slate-900 leading-tight">
+                Danh sách Thuốc
+              </h1>
+              <p className="text-xs text-slate-500">
+                {filteredAndSortedMedicines.length} sản phẩm ·{" "}
+                {new Date().toLocaleDateString("vi-VN", {
+                  weekday: "long",
+                  day: "numeric",
+                  month: "numeric",
+                })}
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => navigate("/medicines/new")}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-bold text-white transition-all hover:-translate-y-0.5"
             style={{
-              background: "linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%)",
+              background: "linear-gradient(135deg, #1d5fa7, #2c78d6)",
+              boxShadow: "0 4px 14px rgba(29, 95, 167, 0.4)",
             }}>
-            <Pill size={22} color="white" />
-          </div>
-          <div>
-            <h1 className="text-xl font-bold text-slate-900 leading-tight">
-              Danh mục Thuốc
-            </h1>
-            <p className="text-xs text-slate-500">
-              {filteredAndSortedMedicines.length} sản phẩm ·{" "}
-              {new Date().toLocaleDateString("vi-VN", {
-                weekday: "long",
-                day: "numeric",
-                month: "numeric",
-              })}
-            </p>
+            <Plus size={18} strokeWidth={2.5} /> Thêm thuốc gốc
+          </button>
+        </div>
+
+        {/* ── SEARCH & FILTER BAR ── */}
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm mb-4 p-4">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
+            {/* Search */}
+            <div className="relative md:col-span-5">
+              <Search
+                size={16}
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
+              />
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Tìm mã thuốc, tên, hoạt chất, SKU..."
+                className={inputCls + " pl-10"}
+              />
+            </div>
+            {/* Category */}
+            <div className="relative md:col-span-3">
+              <Filter
+                size={14}
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+              />
+              <select
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                className={inputCls + " pl-9 appearance-none"}>
+                <option value="">Tất cả danh mục</option>
+                {categories.map((cat) => (
+                  <option key={cat._id} value={cat._id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {/* Rx Filter */}
+            <div className="md:col-span-2">
+              <select
+                value={filterRx}
+                onChange={(e) => setFilterRx(e.target.value)}
+                className={inputCls}>
+                <option value="all">Tất cả loại</option>
+                <option value="rx">Thuốc kê đơn (Rx)</option>
+                <option value="non-rx">Không kê đơn</option>
+              </select>
+            </div>
+            {/* Sort */}
+            <div className="relative md:col-span-2">
+              <ArrowUpDown
+                size={14}
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+              />
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className={inputCls + " pl-9 appearance-none"}>
+                <option value="newest">Mới nhất</option>
+                <option value="name_asc">Tên (A→Z)</option>
+                <option value="name_desc">Tên (Z→A)</option>
+              </select>
+            </div>
           </div>
         </div>
-        <button
-          onClick={() => navigate("/medicines/new")}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-bold text-white transition-all hover:-translate-y-0.5"
-          style={{
-            background: "linear-gradient(135deg, #0ea5e9, #06b6d4)",
-            boxShadow: "0 4px 14px rgba(14,165,233,.4)",
-          }}>
-          <Plus size={18} strokeWidth={2.5} /> Thêm thuốc gốc
-        </button>
-      </div>
 
-      {/* ── SEARCH & FILTER BAR ── */}
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm mb-4 p-4">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
-          {/* Search */}
-          <div className="relative md:col-span-5">
-            <Search
-              size={16}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
-            />
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Tìm mã thuốc, tên, hoạt chất, SKU..."
-              className={inputCls + " pl-10"}
-            />
-          </div>
-          {/* Category */}
-          <div className="relative md:col-span-3">
-            <Filter
-              size={14}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
-            />
-            <select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className={inputCls + " pl-9 appearance-none"}>
-              <option value="">Tất cả danh mục</option>
-              {categories.map((cat) => (
-                <option key={cat._id} value={cat._id}>
-                  {cat.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          {/* Rx Filter */}
-          <div className="md:col-span-2">
-            <select
-              value={filterRx}
-              onChange={(e) => setFilterRx(e.target.value)}
-              className={inputCls}>
-              <option value="all">Tất cả loại</option>
-              <option value="rx">Thuốc kê đơn (Rx)</option>
-              <option value="non-rx">Không kê đơn</option>
-            </select>
-          </div>
-          {/* Sort */}
-          <div className="relative md:col-span-2">
-            <ArrowUpDown
-              size={14}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
-            />
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className={inputCls + " pl-9 appearance-none"}>
-              <option value="newest">Mới nhất</option>
-              <option value="name_asc">Tên (A→Z)</option>
-              <option value="name_desc">Tên (Z→A)</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      {/* ── TABLE ── */}
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="bg-gradient-to-r border-b border-slate-100">
-                <th className="p-4 w-10"></th>
-                <th className="p-4 w-16 text-xs font-bold text-slate-500 uppercase tracking-wide">
-                  Ảnh
-                </th>
-                <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wide">
-                  Mã thuốc
-                </th>
-                <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wide">
-                  Tên thuốc
-                </th>
-                <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wide">
-                  Hoạt chất
-                </th>
-                <th className="p-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
-                  Danh mục
-                </th>
-                <th className="p-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
-                  Phân loại
-                </th>
-                <th className="p-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wide">
-                  Hành động
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-50">
-              {loading ? (
-                <tr>
-                  <td colSpan="8" className="text-center py-16">
-                    <div className="flex flex-col items-center gap-3 text-slate-400">
-                      <Loader2
-                        size={32}
-                        className="animate-spin text-sky-400"
-                      />
-                      <p className="text-sm font-medium">Đang tải dữ liệu...</p>
-                    </div>
-                  </td>
+        {/* ── TABLE ── */}
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-gradient-to-r border-b border-slate-100">
+                  <th className="p-4 w-10"></th>
+                  <th className="p-4 w-16 text-xs font-bold text-slate-500 uppercase tracking-wide">
+                    Ảnh
+                  </th>
+                  <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wide">
+                    Mã thuốc
+                  </th>
+                  <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wide">
+                    Tên thuốc
+                  </th>
+                  <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wide">
+                    Hoạt chất
+                  </th>
+                  <th className="p-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
+                    Danh mục
+                  </th>
+                  <th className="p-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
+                    Phân loại
+                  </th>
+                  <th className="p-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wide">
+                    Hành động
+                  </th>
                 </tr>
-              ) : filteredAndSortedMedicines.length === 0 ? (
-                <tr>
-                  <td colSpan="8" className="text-center py-20">
-                    <div className="flex flex-col items-center gap-3">
-                      <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center">
-                        <Search size={28} className="text-slate-300" />
+              </thead>
+              <tbody className="divide-y divide-slate-50">
+                {loading ? (
+                  <tr>
+                    <td colSpan="8" className="text-center py-16">
+                      <div className="flex flex-col items-center gap-3 text-slate-400">
+                        <Loader2
+                          size={32}
+                          className="animate-spin text-[#1d5fa7]"
+                        />
+                        <p className="text-sm font-medium">
+                          Đang tải dữ liệu...
+                        </p>
                       </div>
-                      <p className="text-base font-semibold text-slate-500">
-                        Không tìm thấy kết quả
-                      </p>
-                      <p className="text-sm text-slate-400">
-                        Thử thay đổi bộ lọc hoặc từ khoá tìm kiếm
-                      </p>
-                    </div>
-                  </td>
-                </tr>
-              ) : (
-                filteredAndSortedMedicines.map((med) => (
-                  <React.Fragment key={med._id}>
-                    {/* MEDICINE ROW */}
-                    <tr className="hover:bg-sky-50/40 transition-colors duration-150 group">
-                      <td
-                        className="p-4 text-center cursor-pointer"
-                        onClick={() => toggleRow(med._id)}>
-                        <button className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:bg-sky-100 hover:text-sky-600 transition-all">
-                          {expandedRows.includes(med._id) ? (
-                            <ChevronDown size={18} />
-                          ) : (
-                            <ChevronRight size={18} />
-                          )}
-                        </button>
-                      </td>
-                      <td className="p-4">
-                        {med.images && med.images.length > 0 ? (
-                          <img
-                            src={med.images[0]}
-                            alt={med.name}
-                            onClick={() => openImageViewer(med.images)}
-                            title="Bấm để xem tất cả ảnh"
-                            className="w-10 h-10 rounded-xl object-cover border border-slate-100 shadow-sm cursor-pointer hover:ring-2 hover:ring-sky-400 transition-all"
-                          />
-                        ) : (
-                          <div className="w-10 h-10 bg-gradient-to-br from-sky-50 to-cyan-50 rounded-xl border border-slate-100 flex items-center justify-center">
-                            <Package size={16} className="text-sky-300" />
-                          </div>
-                        )}
-                      </td>
-                      <td
-                        className="p-4 cursor-pointer"
-                        onClick={() => toggleRow(med._id)}>
-                        <span className="font-mono text-sm font-bold text-sky-600 bg-sky-50 px-2 py-0.5 rounded-lg">
-                          {med.code || "---"}
-                        </span>
-                      </td>
-                      <td
-                        className="p-4 cursor-pointer"
-                        onClick={() => toggleRow(med._id)}>
-                        <p className="font-semibold text-slate-800 text-sm leading-snug">
-                          {med.name}
-                        </p>
-                        {med.variants?.length > 0 && (
-                          <span className="inline-block mt-1 bg-sky-100 text-sky-700 text-[10px] px-2 py-0.5 rounded-full font-bold">
-                            {med.variants.length} quy cách
-                          </span>
-                        )}
-                      </td>
-                      <td className="p-4 max-w-[180px]">
-                        <p
-                          className="text-sm text-slate-500 truncate"
-                          title={med.ingredients}>
-                          {med.ingredients || "---"}
-                        </p>
-                      </td>
-                      <td className="p-4 text-center">
-                        {med.categoryId?.name ? (
-                          <span className="inline-flex items-center px-2.5 py-1 text-slate-700 text-[11px] rounded-full font-bold">
-                            {med.categoryId.name}
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center px-2.5 py-1 bg-slate-50 text-slate-400 text-[11px] rounded-full font-bold border border-slate-100">
-                            ---
-                          </span>
-                        )}
-                      </td>
-                      <td className="p-4 text-center">
-                        {med.isPrescription ? (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-red-50 text-red-600 text-[11px] rounded-full font-bold border border-red-100">
-                            Rx · Kê đơn
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-50 text-emerald-600 text-[11px] rounded-full font-bold border border-emerald-100">
-                            Không kê đơn
-                          </span>
-                        )}
-                      </td>
-                      <td className="p-4">
-                        <div className="flex justify-end gap-1.5">
-                          <button
-                            title="Thêm quy cách"
-                            onClick={() => handleOpenAddVariantModal(med)}
-                            className="w-8 h-8 flex items-center justify-center rounded-xl text-emerald-600 hover:bg-emerald-50 transition-all hover:scale-110">
-                            <PackagePlus size={17} />
-                          </button>
-                          <button
-                            title="Sửa thuốc gốc"
-                            onClick={() => handleOpenEditModal(med)}
-                            className="w-8 h-8 flex items-center justify-center rounded-xl text-sky-600 hover:bg-sky-50 transition-all hover:scale-110">
-                            <Edit size={17} />
-                          </button>
-                          <button
-                            title="Xóa thuốc gốc"
-                            onClick={() => handleDeleteMedicine(med._id)}
-                            className="w-8 h-8 flex items-center justify-center rounded-xl text-red-500 hover:bg-red-50 transition-all hover:scale-110">
-                            <Trash2 size={17} />
-                          </button>
+                    </td>
+                  </tr>
+                ) : filteredAndSortedMedicines.length === 0 ? (
+                  <tr>
+                    <td colSpan="8" className="text-center py-20">
+                      <div className="flex flex-col items-center gap-3">
+                        <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center">
+                          <Search size={28} className="text-slate-300" />
                         </div>
-                      </td>
-                    </tr>
-
-                    {/* VARIANT ROWS */}
-                    {expandedRows.includes(med._id) && (
-                      <tr className="bg-gradient-to-r from-sky-50/60 to-cyan-50/40">
-                        <td colSpan="8" className="px-6 py-4">
-                          <div className="pl-10">
-                            <div className="flex items-center gap-2 mb-3">
-                              <div className="w-1 h-4 rounded-full bg-gradient-to-b from-sky-400 to-cyan-400" />
-                              <h4 className="text-xs font-bold text-slate-600 uppercase tracking-wide">
-                                Danh sách quy cách / Biến thể
-                              </h4>
-                            </div>
-
-                            {med.variants && med.variants.length > 0 ? (
-                              <div className="bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden">
-                                <table className="w-full text-sm">
-                                  <thead>
-                                    <tr className="bg-slate-50 border-b border-slate-100">
-                                      <th className="px-4 py-2.5 text-left text-xs font-bold text-slate-400 uppercase tracking-wide">
-                                        Mã SKU
-                                      </th>
-                                      <th className="px-4 py-2.5 text-left text-xs font-bold text-slate-400 uppercase tracking-wide">
-                                        Tên thuốc
-                                      </th>
-                                      <th className="px-4 py-2.5 text-center text-xs font-bold text-slate-400 uppercase tracking-wide">
-                                        Đơn vị
-                                      </th>
-                                      <th className="px-4 py-2.5 text-right text-xs font-bold text-slate-400 uppercase tracking-wide">
-                                        Giá bán lẻ
-                                      </th>
-                                      <th className="px-4 py-2.5 text-right text-xs font-bold text-slate-400 uppercase tracking-wide w-24">
-                                        Thao tác
-                                      </th>
-                                    </tr>
-                                  </thead>
-                                  <tbody className="divide-y divide-slate-50">
-                                    {med.variants.map((variant) => (
-                                      <tr
-                                        key={variant._id}
-                                        className="hover:bg-sky-50/30 transition-colors">
-                                        <td className="px-4 py-3">
-                                          <span className="font-mono text-xs font-bold text-sky-600 bg-sky-50 px-2 py-0.5 rounded-lg">
-                                            {variant.sku || "N/A"}
-                                          </span>
-                                        </td>
-                                        <td className="px-4 py-3 font-semibold text-slate-700 text-sm">
-                                          {variant.name}
-                                        </td>
-                                        <td className="px-4 py-3 text-center">
-                                          <span className="bg-slate-100 text-slate-600 px-2.5 py-0.5 rounded-lg text-xs font-bold">
-                                            {variant.unit}
-                                          </span>
-                                        </td>
-                                        <td className="px-4 py-3 text-right font-bold text-red-500">
-                                          {formatCurrency(variant.currentPrice)}
-                                        </td>
-                                        <td className="px-4 py-3">
-                                          <div className="flex justify-end gap-1.5">
-                                            <button
-                                              onClick={() =>
-                                                handleOpenEditVariant(variant)
-                                              }
-                                              className="w-7 h-7 flex items-center justify-center rounded-lg text-sky-500 hover:bg-sky-50 transition-all">
-                                              <Edit size={14} />
-                                            </button>
-                                            <button
-                                              onClick={() =>
-                                                handleDeleteVariant(variant._id)
-                                              }
-                                              className="w-7 h-7 flex items-center justify-center rounded-lg text-red-400 hover:bg-red-50 transition-all">
-                                              <Trash2 size={14} />
-                                            </button>
-                                          </div>
-                                        </td>
-                                      </tr>
-                                    ))}
-                                  </tbody>
-                                </table>
-                              </div>
+                        <p className="text-base font-semibold text-slate-500">
+                          Không tìm thấy kết quả
+                        </p>
+                        <p className="text-sm text-slate-400">
+                          Thử thay đổi bộ lọc hoặc từ khoá tìm kiếm
+                        </p>
+                      </div>
+                    </td>
+                  </tr>
+                ) : (
+                  filteredAndSortedMedicines.map((med) => (
+                    <React.Fragment key={med._id}>
+                      {/* MEDICINE ROW */}
+                      <tr className="hover:bg-[#1d5fa7]/5 transition-colors duration-150 group">
+                        <td
+                          className="p-4 text-center cursor-pointer"
+                          onClick={() => toggleRow(med._id)}>
+                          <button className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:bg-[#1d5fa7]/10 hover:text-[#1d5fa7] transition-all">
+                            {expandedRows.includes(med._id) ? (
+                              <ChevronDown size={18} />
                             ) : (
-                              <div className="flex items-center gap-2.5 text-sm text-amber-700 bg-amber-50 p-3 rounded-xl border border-amber-200">
-                                <AlertCircle
-                                  size={16}
-                                  className="text-amber-500 shrink-0"
-                                />
-                                Thuốc này chưa có quy cách đóng gói. Bấm nút{" "}
-                                <PackagePlus
-                                  size={14}
-                                  className="inline text-emerald-500"
-                                />{" "}
-                                để thêm.
-                              </div>
+                              <ChevronRight size={18} />
                             )}
+                          </button>
+                        </td>
+                        <td className="p-4">
+                          {med.images && med.images.length > 0 ? (
+                            <img
+                              src={med.images[0]}
+                              alt={med.name}
+                              onClick={() => openImageViewer(med.images)}
+                              title="Bấm để xem tất cả ảnh"
+                              className="w-10 h-10 rounded-xl object-cover border border-slate-100 shadow-sm cursor-pointer hover:ring-2 hover:ring-[#1d5fa7] transition-all"
+                            />
+                          ) : (
+                            <div className="w-10 h-10 bg-gradient-to-br from-[#1d5fa7]/5 to-[#1d5fa7]/10 rounded-xl border border-slate-100 flex items-center justify-center">
+                              <Package
+                                size={16}
+                                className="text-[#1d5fa7]/50"
+                              />
+                            </div>
+                          )}
+                        </td>
+                        <td
+                          className="p-4 cursor-pointer"
+                          onClick={() => toggleRow(med._id)}>
+                          <span className="text-sm font-normal text-slate-700">
+                            {med.code || "---"}
+                          </span>
+                        </td>
+                        <td
+                          className="p-4 cursor-pointer"
+                          onClick={() => toggleRow(med._id)}>
+                          <p className="font-normal text-slate-800 text-sm leading-snug">
+                            {med.name}
+                          </p>
+                          {med.variants?.length > 0 && (
+                            <span className="block mt-1 text-slate-500 text-xs italic">
+                              {med.variants.length} quy cách
+                            </span>
+                          )}
+                        </td>
+                        <td className="p-4 max-w-[180px]">
+                          <p
+                            className="text-sm text-slate-500 text-[13px] rounded-full"
+                            title={med.ingredients}>
+                            {med.ingredients || "---"}
+                          </p>
+                        </td>
+                        <td className="p-4 text-center">
+                          {med.categoryId?.name ? (
+                            <span className="inline-flex items-center px-2.5 py-1 text-slate-500 text-[13px] rounded-full ">
+                              {med.categoryId.name}
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center px-2.5 py-1 bg-slate-50 text-slate-400 text-[11px] rounded-full font-bold border border-slate-100">
+                              ---
+                            </span>
+                          )}
+                        </td>
+                        <td className="p-4 text-center">
+                          {med.isPrescription ? (
+                            <span className="inline-flex items-center gap-1 text-red-600 text-[13px] rounded-full">
+                              Rx · Kê đơn
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 text-emerald-600 text-[13px] rounded-full">
+                              Không kê đơn
+                            </span>
+                          )}
+                        </td>
+                        <td className="p-4">
+                          <div className="flex justify-end gap-1.5">
+                            <button
+                              title="Thêm quy cách"
+                              onClick={() => handleOpenAddVariantModal(med)}
+                              className="w-8 h-8 flex items-center justify-center rounded-xl text-emerald-600 hover:bg-emerald-50 transition-all hover:scale-110">
+                              <PackagePlus size={17} />
+                            </button>
+                            <button
+                              title="Sửa thuốc gốc"
+                              onClick={() => handleOpenEditModal(med)}
+                              className="w-8 h-8 flex items-center justify-center rounded-xl text-[#1d5fa7] hover:bg-[#1d5fa7]/10 transition-all hover:scale-110">
+                              <Edit size={17} />
+                            </button>
+                            <button
+                              title="Xóa thuốc gốc"
+                              onClick={() => handleDeleteMedicine(med._id)}
+                              className="w-8 h-8 flex items-center justify-center rounded-xl text-red-500 hover:bg-red-50 transition-all hover:scale-110">
+                              <Trash2 size={17} />
+                            </button>
                           </div>
                         </td>
                       </tr>
-                    )}
-                  </React.Fragment>
-                ))
-              )}
-            </tbody>
-          </table>
+
+                      {/* VARIANT ROWS */}
+                      {expandedRows.includes(med._id) && (
+                        <tr className="bg-gradient-to-r from-[#1d5fa7]/5 to-transparent">
+                          <td colSpan="8" className="px-6 py-4">
+                            <div className="pl-10">
+                              <div className="flex items-center gap-2 mb-3">
+                                <div className="w-1 h-4 rounded-full bg-[#1d5fa7]" />
+                                <h4 className="text-xs font-bold text-slate-600 uppercase tracking-wide">
+                                  Danh sách quy cách / Biến thể
+                                </h4>
+                              </div>
+
+                              {med.variants && med.variants.length > 0 ? (
+                                <div className="bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden">
+                                  <table className="w-full text-sm">
+                                    <thead>
+                                      <tr className="bg-slate-50 border-b border-slate-100">
+                                        <th className="px-4 py-2.5 text-left text-xs font-bold text-slate-400 uppercase tracking-wide">
+                                          Mã SKU
+                                        </th>
+                                        <th className="px-4 py-2.5 text-left text-xs font-bold text-slate-400 uppercase tracking-wide">
+                                          Tên thuốc
+                                        </th>
+                                        <th className="px-4 py-2.5 text-center text-xs font-bold text-slate-400 uppercase tracking-wide">
+                                          Đơn vị
+                                        </th>
+                                        <th className="px-4 py-2.5 text-right text-xs font-bold text-slate-400 uppercase tracking-wide">
+                                          Giá bán lẻ
+                                        </th>
+                                        <th className="px-4 py-2.5 text-right text-xs font-bold text-slate-400 uppercase tracking-wide w-24">
+                                          Thao tác
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-slate-50">
+                                      {med.variants.map((variant) => (
+                                        <tr
+                                          key={variant._id}
+                                          className="hover:bg-[#1d5fa7]/5 transition-colors">
+                                          <td className="px-4 py-3">
+                                            <span className="text-sm font-normal text-slate-700">
+                                              {variant.sku || "N/A"}
+                                            </span>
+                                          </td>
+                                          <td className="px-4 py-3 font-normal text-slate-700 text-sm">
+                                            {variant.name}
+                                          </td>
+                                          <td className="px-4 py-3 text-center">
+                                            <span className="text-sm font-normal text-slate-700">
+                                              {variant.unit}
+                                            </span>
+                                          </td>
+                                          <td className="px-4 py-3 text-right text-red-500">
+                                            {formatCurrency(
+                                              variant.currentPrice,
+                                            )}
+                                          </td>
+                                          <td className="px-4 py-3">
+                                            <div className="flex justify-end gap-1.5">
+                                              <button
+                                                onClick={() =>
+                                                  handleOpenEditVariant(variant)
+                                                }
+                                                className="w-7 h-7 flex items-center justify-center rounded-lg text-[#1d5fa7] hover:bg-[#1d5fa7]/10 transition-all">
+                                                <Edit size={14} />
+                                              </button>
+                                              <button
+                                                onClick={() =>
+                                                  handleDeleteVariant(
+                                                    variant._id,
+                                                  )
+                                                }
+                                                className="w-7 h-7 flex items-center justify-center rounded-lg text-red-400 hover:bg-red-50 transition-all">
+                                                <Trash2 size={14} />
+                                              </button>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      ))}
+                                    </tbody>
+                                  </table>
+                                </div>
+                              ) : (
+                                <div className="flex items-center gap-2.5 text-sm text-amber-700 bg-amber-50 p-3 rounded-xl border border-amber-200">
+                                  <AlertCircle
+                                    size={16}
+                                    className="text-amber-500 shrink-0"
+                                  />
+                                  Thuốc này chưa có quy cách đóng gói. Bấm nút{" "}
+                                  <PackagePlus
+                                    size={14}
+                                    className="inline text-emerald-500"
+                                  />{" "}
+                                  để thêm.
+                                </div>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                    </React.Fragment>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-
       {/* ══════════════════════════════════════════
           LIGHTBOX XEM ẢNH THUỐC
       ══════════════════════════════════════════ */}
@@ -826,7 +842,7 @@ const MedicineList = () => {
                       isPrescription: e.target.checked,
                     })
                   }
-                  className="w-4 h-4 accent-sky-500 rounded"
+                  className="w-4 h-4 accent-[#1d5fa7] rounded"
                 />
                 <span className="text-sm font-semibold text-slate-700">
                   Thuốc kê đơn (Rx)
@@ -869,9 +885,9 @@ const MedicineList = () => {
                     </div>
                   </div>
                 )}
-                <label className="flex flex-col items-center justify-center gap-2 p-5 border-2 border-dashed border-sky-200 bg-sky-50/50 rounded-xl cursor-pointer hover:bg-sky-50 transition-colors">
-                  <UploadCloud size={24} className="text-sky-400" />
-                  <span className="text-sm font-semibold text-sky-600">
+                <label className="flex flex-col items-center justify-center gap-2 p-5 border-2 border-dashed border-[#1d5fa7]/30 bg-[#1d5fa7]/5 rounded-xl cursor-pointer hover:bg-[#1d5fa7]/10 transition-colors">
+                  <UploadCloud size={24} className="text-[#1d5fa7]" />
+                  <span className="text-sm font-semibold text-[#1d5fa7]">
                     Nhấp để tải thêm ảnh mới
                   </span>
                   <span className="text-xs text-slate-400">PNG, JPG, WEBP</span>
@@ -921,8 +937,8 @@ const MedicineList = () => {
                 disabled={isSubmitting}
                 className="px-5 py-2.5 rounded-xl text-white font-bold text-sm flex items-center gap-2 transition-all hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed"
                 style={{
-                  background: "linear-gradient(135deg,#0ea5e9,#06b6d4)",
-                  boxShadow: "0 4px 12px rgba(14,165,233,.35)",
+                  background: "linear-gradient(135deg,#1d5fa7,#2c78d6)",
+                  boxShadow: "0 4px 12px rgba(29, 95, 167, 0.35)",
                 }}>
                 {isSubmitting ? (
                   <Loader2 size={16} className="animate-spin" />
@@ -951,7 +967,7 @@ const MedicineList = () => {
                 </h2>
                 <p className="text-xs text-slate-400 mt-0.5">
                   Cho thuốc:{" "}
-                  <span className="font-bold text-sky-600">
+                  <span className="font-bold text-[#1d5fa7]">
                     {selectedMedicineForVariant.name}
                   </span>
                 </p>
@@ -1020,13 +1036,13 @@ const MedicineList = () => {
                         currentPrice: e.target.value,
                       })
                     }
-                    className={inputCls + " font-bold text-sky-600"}
+                    className={inputCls + " font-bold text-[#1d5fa7]"}
                   />
                 </div>
               </div>
 
               <div>
-                <label className={labelCls + " text-sky-600"}>
+                <label className={labelCls + " text-[#1d5fa7]"}>
                   Tỷ lệ quy đổi ra đơn vị cơ sở
                 </label>
                 <input
@@ -1106,7 +1122,7 @@ const MedicineList = () => {
                 </h2>
                 <p className="text-xs text-slate-400 mt-0.5">
                   Mã SKU:{" "}
-                  <span className="font-mono font-bold text-sky-600 bg-sky-50 px-1.5 py-0.5 rounded-lg">
+                  <span className="font-mono font-bold text-[#1d5fa7] bg-[#1d5fa7]/10 px-1.5 py-0.5 rounded-lg">
                     {editingVariant.sku}
                   </span>
                 </p>
@@ -1158,7 +1174,7 @@ const MedicineList = () => {
                         currentPrice: e.target.value,
                       })
                     }
-                    className={inputCls + " font-bold text-sky-600"}
+                    className={inputCls + " font-bold text-[#1d5fa7]"}
                   />
                 </div>
               </div>
@@ -1178,8 +1194,8 @@ const MedicineList = () => {
                 />
               </div>
 
-              <div className="bg-sky-50 border border-sky-100 rounded-xl p-4">
-                <label className={labelCls + " text-sky-600"}>
+              <div className="bg-[#1d5fa7]/5 border border-[#1d5fa7]/20 rounded-xl p-4">
+                <label className={labelCls + " text-[#1d5fa7]"}>
                   Tỷ lệ quy đổi ra đơn vị cơ sở{" "}
                   <span className="text-red-400">*</span>
                 </label>
@@ -1195,7 +1211,7 @@ const MedicineList = () => {
                     })
                   }
                   className={
-                    inputCls + " focus:ring-sky-400 focus:border-sky-400"
+                    inputCls + " focus:ring-[#1d5fa7]/30 focus:border-[#1d5fa7]"
                   }
                   placeholder="VD: 100"
                 />
@@ -1215,8 +1231,8 @@ const MedicineList = () => {
                 disabled={isSubmitting}
                 className="px-5 py-2.5 rounded-xl text-white font-bold text-sm flex items-center gap-2 transition-all hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed"
                 style={{
-                  background: "linear-gradient(135deg,#0ea5e9,#06b6d4)",
-                  boxShadow: "0 4px 12px rgba(14,165,233,.35)",
+                  background: "linear-gradient(135deg,#1d5fa7,#2c78d6)",
+                  boxShadow: "0 4px 12px rgba(29, 95, 167, 0.35)",
                 }}>
                 {isSubmitting ? (
                   <Loader2 size={16} className="animate-spin" />

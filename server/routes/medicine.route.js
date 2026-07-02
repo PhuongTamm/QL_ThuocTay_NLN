@@ -55,4 +55,10 @@ router.post(
   medicineController.seedMedicines,
 );
 
+router.post(
+  "/check-interactions",
+  verifyToken,
+  medicineController.checkDrugInteractions,
+);
+
 module.exports = router;

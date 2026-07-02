@@ -640,13 +640,14 @@ const InventoryPage = () => {
   }, 0);
 
   const inputCls =
-    "w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 transition bg-white text-slate-800 placeholder:text-slate-400";
+    "w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#1d5fa7]/30 focus:border-[#1d5fa7] transition bg-white text-slate-800 placeholder:text-slate-400";
 
   return (
     <div
-      className="min-h-screen p-6"
+      className="cat-root min-h-screen bg-gradient-to-br from-sky-50 via-blue-50
+      to-slate-50 p-6 font-sans"
       style={{
-        background: "#f0f4f8",
+        //background: "#f0f4f8",
         fontFamily: "'DM Sans', system-ui, sans-serif",
       }}>
       <style>{`
@@ -666,7 +667,7 @@ const InventoryPage = () => {
           <div
             className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0"
             style={{
-              background: "linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%)",
+              background: "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
             }}>
             <ClipboardList size={22} color="white" />
           </div>
@@ -698,13 +699,18 @@ const InventoryPage = () => {
             Xuất PDF
           </button>
 
+          {/* SỬA MÀU NÚT LẬP PHIẾU TẠI TRANG CHÍNH */}
           <button
             onClick={() => {
               setDisposeSearchTerm("");
               setDisposeCart([]);
               setIsDisposeModalOpen(true);
             }}
-            className="flex items-center gap-2 px-5 py-2.5 bg-red-500 text-white font-bold rounded-2xl shadow-lg hover:bg-red-600 transition-all hover:-translate-y-0.5 shadow-red-500/30">
+            className="flex items-center gap-2 px-5 py-2.5 text-white font-bold rounded-2xl transition-all hover:-translate-y-0.5"
+            style={{
+              background: "linear-gradient(135deg, #1d5fa7, #2c78d6)",
+              boxShadow: "0 4px 14px rgba(29, 95, 167, 0.4)",
+            }}>
             <FileWarning size={18} /> Lập Phiếu Xuất Hủy
           </button>
         </div>
@@ -762,7 +768,8 @@ const InventoryPage = () => {
               />
               <select
                 className={
-                  inputCls + " pl-9 appearance-none font-semibold text-sky-700"
+                  inputCls +
+                  " pl-9 appearance-none font-sm text-[#1d5fa7]"
                 }
                 value={selectedBranchId}
                 onChange={(e) => setSelectedBranchId(e.target.value)}>
@@ -821,7 +828,7 @@ const InventoryPage = () => {
                     <div className="flex flex-col items-center gap-3 text-slate-400">
                       <Loader2
                         size={32}
-                        className="animate-spin text-sky-400"
+                        className="animate-spin text-[#1d5fa7]"
                       />
                       <p className="text-sm font-medium">Đang tải dữ liệu...</p>
                     </div>
@@ -855,18 +862,18 @@ const InventoryPage = () => {
                   return (
                     <tr
                       key={inv._id}
-                      className="hover:bg-sky-50/40 transition-colors duration-150">
+                      className="hover:bg-[#1d5fa7]/5 transition-colors duration-150 group">
                       <td className="p-4 text-center text-slate-400 text-sm font-medium">
                         {idx + 1}
                       </td>
                       <td className="p-4">
-                        <span className="font-mono text-sm font-bold text-sky-600 bg-sky-50 px-2 py-0.5 rounded-lg">
+                        <span className="text-sm font-normal text-slate-700">
                           {inv.medicineId?.code}
                         </span>
                       </td>
                       <td className="p-4">
                         <div className="flex items-center gap-2">
-                          <span className="font-semibold text-slate-800">
+                          <span className="font-normal text-slate-800 text-sm leading-snug">
                             {inv.medicineId?.name}
                           </span>
                           {hasWarning && (
@@ -879,13 +886,13 @@ const InventoryPage = () => {
                         </div>
                       </td>
                       <td className="p-4 text-center">
-                        <span className="text-sm font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg">
+                        <span className="text-sm font-normal text-slate-500">
                           {inv.medicineId?.baseUnit}
                         </span>
                       </td>
                       <td className="p-4 text-center">
                         <span
-                          className={`text-lg font-bold ${isLowStock ? "text-orange-500" : "text-sky-600"}`}>
+                          className={`text-sm font-semibold ${isLowStock ? "text-orange-500" : "text-[#1d5fa7]"}`}>
                           {inv.totalQuantity.toLocaleString()}
                         </span>
                         {isLowStock && (
@@ -897,7 +904,7 @@ const InventoryPage = () => {
                       <td className="p-4 text-right no-print">
                         <button
                           onClick={() => handleOpenDetail(inv)}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-sky-600 bg-sky-50 hover:bg-sky-100 border border-sky-100 transition-all hover:scale-105">
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-[#1d5fa7] bg-[#1d5fa7]/5 hover:bg-[#1d5fa7]/10 border border-[#1d5fa7]/20 transition-all hover:scale-105">
                           <Eye size={13} /> Chi tiết (
                           {
                             inv.batches.filter((item, index, self) => {
@@ -928,12 +935,17 @@ const InventoryPage = () => {
           onClose={() => setIsDisposeModalOpen(false)}
           zIndex="z-[60]">
           <div className="bg-white rounded-2xl shadow-2xl w-[1200px] max-w-[95vw] h-[85vh] flex flex-col overflow-hidden">
-            <div className="flex justify-between items-center px-6 py-4 bg-red-600 text-white shrink-0">
+            {/* ĐÃ ĐỔI MÀU HEADER SANG CHỦ ĐẠO */}
+            <div
+              className="flex justify-between items-center px-6 py-4 text-white shrink-0"
+              style={{
+                background: "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+              }}>
               <div className="flex items-center gap-3">
-                <FileWarning size={24} />
+                <FileWarning size={24} color="white" />
                 <div>
                   <h2 className="text-lg font-bold">Lập Phiếu Xuất Hủy</h2>
-                  <p className="text-red-200 text-xs mt-0.5">
+                  <p className="text-white/80 text-xs mt-0.5">
                     Hàng hóa sẽ bị trừ vĩnh viễn khỏi kho và ghi nhận vào chi
                     phí tổn thất.
                   </p>
@@ -942,7 +954,7 @@ const InventoryPage = () => {
               <button
                 onClick={() => setIsDisposeModalOpen(false)}
                 className="w-8 h-8 flex items-center justify-center rounded-xl bg-white/20 hover:bg-white/30 transition-colors">
-                <X size={18} />
+                <X size={18} color="white" />
               </button>
             </div>
 
@@ -954,10 +966,11 @@ const InventoryPage = () => {
                       size={16}
                       className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
                     />
+                    {/* ĐỔI FOCUS MÀU TÌM KIẾM */}
                     <input
                       autoFocus
                       placeholder="Tìm mã thuốc, tên, lô thuốc cần hủy..."
-                      className="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-red-400 focus:ring-2 focus:ring-red-100 bg-slate-50 text-sm"
+                      className="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-[#1d5fa7] focus:ring-2 focus:ring-[#1d5fa7]/30 bg-slate-50 text-sm"
                       value={disposeSearchTerm}
                       onChange={(e) => setDisposeSearchTerm(e.target.value)}
                     />
@@ -976,7 +989,7 @@ const InventoryPage = () => {
                     return (
                       <div
                         key={idx}
-                        className={`p-4 rounded-xl border ${isErrorBatch ? "bg-orange-50 border-orange-200" : "bg-white border-slate-200 hover:border-sky-300"} transition shadow-sm flex flex-col gap-2`}>
+                        className={`p-4 rounded-xl border ${isErrorBatch ? "bg-orange-50 border-orange-200" : "bg-white border-slate-200 hover:border-[#1d5fa7]/50"} transition shadow-sm flex flex-col gap-2`}>
                         <div className="flex justify-between items-start">
                           <div>
                             <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-600 mr-2">
@@ -1014,6 +1027,7 @@ const InventoryPage = () => {
                               {item.medicine.baseUnit}
                             </p>
                           </div>
+                          {/* ĐỔI MÀU NÚT THÊM */}
                           <button
                             onClick={() =>
                               handleAddToDisposeCart(
@@ -1022,7 +1036,7 @@ const InventoryPage = () => {
                                 item.batch,
                               )
                             }
-                            className="bg-slate-900 text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-slate-700 transition flex items-center gap-1 shadow-md">
+                            className="bg-[#1d5fa7] text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-[#12427a] transition flex items-center gap-1 shadow-md">
                             <Plus size={14} /> Thêm vào phiếu
                           </button>
                         </div>
@@ -1192,18 +1206,26 @@ const InventoryPage = () => {
                 </div>
 
                 <div className="p-4 border-t border-slate-200 bg-white shrink-0 flex flex-col gap-3">
-                  <div className="flex justify-between items-center bg-red-50 border border-red-100 p-3 rounded-xl">
-                    <span className="text-sm font-bold text-red-800">
+                  {/* ĐỔI NỀN TỔNG TIỀN CHO HÀI HÒA HƠN */}
+                  <div className="flex justify-between items-center bg-slate-50 border border-slate-200 p-3 rounded-xl">
+                    <span className="text-sm font-bold text-slate-700">
                       Tổng giá trị tổn thất ước tính:
                     </span>
-                    <span className="text-xl font-black text-red-600">
+                    <span className="text-xl font-black text-red-500">
                       {totalDisposalLossValue.toLocaleString()} đ
                     </span>
                   </div>
+
+                  {/* ĐỔI NÚT CHỐT XUẤT HỦY SANG XANH CHỦ ĐẠO */}
                   <button
                     onClick={handleSubmitDisposal}
                     disabled={isSubmittingDispose || disposeCart.length === 0}
-                    className="w-full bg-red-600 text-white px-6 py-3 rounded-xl font-bold flex justify-center items-center gap-2 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-red-600/20 transition-all active:scale-95">
+                    className="w-full text-white px-6 py-3 rounded-xl font-bold flex justify-center items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg transition-all active:scale-95 hover:-translate-y-0.5"
+                    style={{
+                      background:
+                        "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+                      boxShadow: "0 4px 14px rgba(29, 95, 167, 0.3)",
+                    }}>
                     {isSubmittingDispose ? (
                       <Loader2 size={18} className="animate-spin" />
                     ) : (
@@ -1227,11 +1249,11 @@ const InventoryPage = () => {
             <div
               className="flex justify-between items-center px-6 py-4 text-white"
               style={{
-                background: "linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%)",
+                background: "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
               }}>
               <div>
                 <h2 className="text-lg font-bold">Danh sách Lô hàng tồn kho</h2>
-                <p className="text-sky-100 text-xs mt-0.5">
+                <p className="text-white/80 text-xs mt-0.5">
                   Thuốc:{" "}
                   <span className="font-bold text-white">
                     {selectedInventory.medicineId?.name}
@@ -1296,10 +1318,10 @@ const InventoryPage = () => {
                         return (
                           <tr
                             key={index}
-                            className={`transition-colors ${isOutOfStock ? "opacity-60 bg-slate-50/50" : "hover:bg-sky-50/30"}`}>
+                            className={`transition-colors ${isOutOfStock ? "opacity-60 bg-slate-50/50" : "hover:bg-[#1d5fa7]/5"}`}>
                             <td className="py-3 px-4">
                               <span
-                                className={`font-mono text-xs font-bold px-2 py-0.5 rounded-lg ${isOutOfStock ? "text-slate-400 bg-slate-100" : "text-sky-600 bg-sky-50"}`}>
+                                className={`text-sm font-normal ${isOutOfStock ? "text-slate-400" : "text-slate-700"}`}>
                                 {batch.batchCode}
                               </span>
                             </td>
@@ -1318,7 +1340,7 @@ const InventoryPage = () => {
                             </td>
                             <td className="py-3 px-4 text-center">
                               <span
-                                className={`font-bold text-base ${isOutOfStock ? "text-slate-400" : "text-sky-600"}`}>
+                                className={`font-bold text-base ${isOutOfStock ? "text-slate-400" : "text-[#1d5fa7]"}`}>
                                 {batch.quantity}
                               </span>
                               <span className="text-slate-400 text-xs ml-1">
@@ -1353,7 +1375,7 @@ const InventoryPage = () => {
                                     batch.quality,
                                   )
                                 }
-                                className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-bold border transition-all hover:scale-105 ${isOutOfStock ? "text-slate-400 border-slate-200 bg-slate-50 hover:bg-slate-100" : "text-sky-600 border-sky-100 bg-white hover:bg-sky-50"}`}>
+                                className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-bold border transition-all hover:scale-105 ${isOutOfStock ? "text-slate-400 border-slate-200 bg-slate-50 hover:bg-slate-100" : "text-[#1d5fa7] border-[#1d5fa7]/20 bg-white hover:bg-[#1d5fa7]/5"}`}>
                                 <History size={12} /> Lịch sử
                               </button>
                             </td>
@@ -1379,13 +1401,13 @@ const InventoryPage = () => {
             <div
               className="flex justify-between items-center px-6 py-4 text-white"
               style={{
-                background: "linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%)",
+                background: "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
               }}>
               <div className="flex items-center gap-3">
                 <History size={20} color="white" />
                 <div>
                   <p className="font-bold text-sm">Lịch sử nhập lô hàng</p>
-                  <p className="text-sky-100 text-xs mt-0.5">
+                  <p className="text-white/80 text-xs mt-0.5">
                     Mã lô:{" "}
                     <span className="font-mono font-bold text-white bg-white/20 px-2 py-0.5 rounded-lg">
                       {selectedBatchCode}
@@ -1402,7 +1424,7 @@ const InventoryPage = () => {
             <div className="p-5 overflow-y-auto scrollbar-thin flex-1 bg-slate-50/50">
               {loadingHistory ? (
                 <div className="flex flex-col items-center justify-center py-16 gap-3 text-slate-400">
-                  <Loader2 size={32} className="animate-spin text-sky-400" />
+                  <Loader2 size={32} className="animate-spin text-[#1d5fa7]" />
                   <p className="text-sm font-medium">Đang tra cứu dữ liệu...</p>
                 </div>
               ) : batchHistory.length === 0 ? (
@@ -1419,10 +1441,10 @@ const InventoryPage = () => {
                   {batchHistory.map((hist, idx) => (
                     <div
                       key={idx}
-                      className="bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden hover:border-sky-200 transition-colors">
+                      className="bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden hover:border-[#1d5fa7]/30 transition-colors">
                       <div className="flex justify-between items-center px-5 py-3 border-b border-slate-50 bg-slate-50/70">
                         <div className="flex items-center gap-3">
-                          <div className="w-1 h-8 rounded-full bg-gradient-to-b from-sky-400 to-cyan-400 shrink-0" />
+                          <div className="w-1 h-8 rounded-full bg-[#1d5fa7] shrink-0" />
                           <div>
                             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-0.5">
                               Thời gian ghi nhận
@@ -1439,7 +1461,7 @@ const InventoryPage = () => {
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-0.5">
                             Mã phiếu
                           </p>
-                          <span className="font-mono text-xs font-bold text-sky-600 bg-sky-50 px-2 py-0.5 rounded-lg border border-sky-100">
+                          <span className="text-sm font-normal text-slate-700">
                             {hist.transactionCode}
                           </span>
                         </div>
@@ -1465,7 +1487,7 @@ const InventoryPage = () => {
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-1">
                             SL x Đơn vị nhập
                           </p>
-                          <p className="font-bold text-lg text-sky-600 leading-tight">
+                          <p className="font-bold text-lg text-[#1d5fa7] leading-tight">
                             {hist.quantity}{" "}
                             <span className="text-xs font-bold text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded-lg">
                               {hist.unit}

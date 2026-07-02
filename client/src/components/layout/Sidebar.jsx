@@ -19,7 +19,6 @@ const Sidebar = () => {
   const location = useLocation();
   const { user, logout } = useAuth();
 
-  // Định nghĩa mảng menu có kèm phân quyền (roles)
   const menuItems = [
     {
       path: "/",
@@ -34,7 +33,6 @@ const Sidebar = () => {
       roles: ["branch_manager", "pharmacist"],
     },
 
-    // Quản lý Dữ liệu
     {
       path: "/categories",
       icon: <Tags size={20} />,
@@ -48,7 +46,6 @@ const Sidebar = () => {
       roles: ["admin", "warehouse_manager"],
     },
 
-    // Quản lý Kho bãi
     {
       path: "/inventory",
       icon: <ClipboardList size={20} />,
@@ -80,7 +77,6 @@ const Sidebar = () => {
       roles: ["admin", "warehouse_manager", "branch_manager", "pharmacist"],
     },
 
-    // Hệ thống
     {
       path: "/organization",
       icon: <Store size={20} />,
@@ -95,57 +91,142 @@ const Sidebar = () => {
     },
   ];
 
-  // LỌC MENU: Chỉ giữ lại những item mà role của user nằm trong mảng roles của item đó
   const visibleMenu = menuItems.filter((item) => {
-    if (!user || !user.role) return false;
+    if (!user?.role) return false;
     return item.roles.includes(user.role);
   });
 
-  return (
-    <div className="min-h-screen w-64 bg-gray-900 text-white flex flex-col overflow-y-auto">
-      <div className="p-6 text-2xl font-bold text-[#0ea5e9]">PharmaApp</div>
+  const getRoleName = (role) => {
+    switch (role) {
+      case "admin":
+        return "Quản trị viên";
+      case "warehouse_manager":
+        return "Quản lý kho";
+      case "branch_manager":
+        return "Quản lý chi nhánh";
+      default:
+        return "Dược sĩ";
+    }
+  };
 
-      <div className="px-6 pb-4 border-b border-gray-800 mb-4">
-        <p className="font-bold text-gray-200">{user?.fullName}</p>
-        <p className="text-xs text-[#0ea5e9] uppercase tracking-wider">
-          {user?.role === "admin"
-            ? "Quản trị viên"
-            : user?.role === "warehouse_manager"
-              ? "Quản lý kho"
-              : user?.role === "branch_manager"
-                ? "Quản lý chi nhánh"
-                : "Dược sĩ"}
-        </p>
+  return (
+    <aside className="min-h-screen w-64 bg-gradient-to-b from-sky-200 to-sky-100 text-slate-700 flex flex-col shadow-xl overflow-y-auto">
+      {/* Logo */}
+      <div className="p-6 border-b border-white/50">
+        <h1
+          className="
+            text-3xl
+            font-extrabold
+            bg-gradient-to-r
+            from-sky-600
+            to-teal-500
+            bg-clip-text
+            text-transparent
+            drop-shadow-sm
+          ">
+          PharmaSys
+        </h1>
       </div>
 
-      <nav className="flex-1 px-4 space-y-1">
-        {/* Render danh sách menu ĐÃ ĐƯỢC LỌC */}
-        {visibleMenu.map((item) => (
-          <Link
-            key={item.path}
-            to={item.path}
-            className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-              location.pathname === item.path
-                ? "bg-[#0ea5e9] text-white"
-                : "text-gray-400 hover:bg-gray-800 hover:text-white"
-            }`}>
-            {item.icon}
-            <span className="font-medium text-sm">{item.label}</span>
-          </Link>
-        ))}
+      {/* KHU VỰC THÔNG TIN TÀI KHOẢN */}
+      <Link
+        to="/profile"
+        className="flex flex-col items-center py-6 border-b border-white/50 hover:bg-white/30 transition-colors cursor-pointer group"
+        title="Xem thông tin cá nhân">
+        <div className="w-16 h-16 rounded-full flex items-center justify-center text-sky-600 text-xl font-bold mb-3 shadow-lg shadow-black/5 overflow-hidden border-[3px] border-white bg-white/80 group-hover:scale-105 transition-transform duration-300">
+          {/* HIỂN THỊ ẢNH ĐẠI DIỆN */}
+          {user?.avatar ? (
+            <img
+              src={user.avatar}
+              alt="Avatar"
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <span>{user?.fullName?.charAt(0)?.toUpperCase() || "U"}</span>
+          )}
+        </div>
+        <p className="text-slate-800 font-bold text-center px-4">
+          {user?.fullName}
+        </p>
+        <p className="text-xs text-teal-700 uppercase tracking-wider mt-1 font-bold">
+          {getRoleName(user?.role)}
+        </p>
+      </Link>
+
+      {/* Menu */}
+      <nav className="flex-1 p-4 space-y-2">
+        {visibleMenu.map((item) => {
+          const isActive = location.pathname === item.path;
+
+          return (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`
+                flex items-center gap-3
+                px-4 py-3
+                rounded-xl
+                transition-all duration-300
+                group
+                ${
+                  isActive
+                    ? `
+                      bg-white/70
+                      backdrop-blur-md
+                      shadow-sm
+                      text-sky-700
+                      border border-white
+                      font-bold
+                    `
+                    : `
+                      text-slate-600
+                      hover:bg-white/50
+                      hover:text-sky-700
+                      hover:translate-x-1
+                    `
+                }
+              `}>
+              <span
+                className={`
+                  transition-transform duration-300
+                  ${!isActive && "group-hover:scale-110"}
+                `}>
+                {item.icon}
+              </span>
+
+              <span
+                className={`text-sm ${isActive ? "font-bold" : "font-semibold"}`}>
+                {item.label}
+              </span>
+            </Link>
+          );
+        })}
       </nav>
 
-      <div className="p-4 border-t border-gray-800">
+      {/* Logout */}
+      <div className="p-4 border-t border-white/50">
         <button
           onClick={() => {
-            if (window.confirm("Đăng xuất?")) logout();
+            if (window.confirm("Bạn có chắc chắn muốn đăng xuất?")) {
+              logout();
+            }
           }}
-          className="flex items-center gap-3 text-red-400 hover:bg-gray-800 hover:text-red-300 w-full px-4 py-3 rounded-lg transition-colors">
+          className="
+            flex items-center gap-3
+            w-full
+            px-4 py-3
+            rounded-xl
+            text-slate-600
+            hover:bg-rose-50
+            hover:text-rose-600
+            transition-all duration-300
+            font-semibold
+          ">
           <LogOut size={20} />
-          <span className="font-medium">Đăng xuất</span>
+          <span className="text-sm">Đăng xuất</span>
         </button>
       </div>
-    </div>
+    </aside>
   );
 };
 

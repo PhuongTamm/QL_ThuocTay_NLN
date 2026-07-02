@@ -19,6 +19,8 @@ const userSchema = new mongoose.Schema(
       trim: true,
     },
     phone: { type: String },
+    avatar: { type: String, default: "" }, // THÊM TRƯỜNG NÀY ĐỂ LƯU LINK ẢNH
+    faceDescriptor: { type: [Number], default: [] }, // Mảng 128 số đặc trưng khuôn mặt
   },
   { timestamps: true },
 );

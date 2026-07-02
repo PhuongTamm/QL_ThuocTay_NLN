@@ -21,13 +21,16 @@ import PendingImportPage from "./pages/warehouse/PendingImportPage";
 // POS Bán Hàng
 import POSPage from "./pages/pos/POSPage";
 
+import FaceCheckIn from "./pages/attendance/FaceCheckIn";
+
 // Hệ thống & Báo cáo
 import BranchUserManagement from "./pages/admin/BranchUserManagement"; // Trang gộp 2 Tabs
-import ReportPage from "./pages/reports/ReportPage";
+//import ReportPage from "./pages/reports/ReportPage";
 
 // (Giữ lại các file cũ nếu bạn cần tham khảo thêm, nhưng trên menu sẽ không gọi đến)
 import TransactionHistoryPage from "./pages/transactions/TransactionHistoryPage";
 import MonthlyReportPage from "./pages/reports/MonthlyReportPage";
+import ProfilePage from "./pages/profile/ProfilePage";
 
 // Layout bọc các trang cần đăng nhập
 const MainLayout = ({ children }) => (
@@ -79,6 +82,7 @@ function App() {
         <Routes>
           {/* --- PUBLIC ROUTE --- */}
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/check-in" element={<FaceCheckIn />} />
 
           {/* --- PRIVATE ROUTES (CÓ SIDEBAR) --- */}
           {/* DASHBOARD: Admin, Quản lý kho, Quản lý chi nhánh */}
@@ -98,8 +102,7 @@ function App() {
           <Route
             path="/pos"
             element={
-              <PrivateRoute
-                allowedRoles={["branch_manager", "pharmacist"]}>
+              <PrivateRoute allowedRoles={["branch_manager", "pharmacist"]}>
                 <MainLayout>
                   <POSPage />
                 </MainLayout>
@@ -161,7 +164,8 @@ function App() {
           <Route
             path="/distribute"
             element={
-              <PrivateRoute allowedRoles={["admin", "warehouse_manager", "branch_manager"]}>
+              <PrivateRoute
+                allowedRoles={["admin", "warehouse_manager", "branch_manager"]}>
                 <MainLayout>
                   <DistributePage />
                 </MainLayout>
@@ -171,7 +175,8 @@ function App() {
           <Route
             path="/monthly-reports"
             element={
-              <PrivateRoute allowedRoles={["admin", "warehouse_manager", "branch_manager"]}>
+              <PrivateRoute
+                allowedRoles={["admin", "warehouse_manager", "branch_manager"]}>
                 <MainLayout>
                   <MonthlyReportPage />
                 </MainLayout>
@@ -184,9 +189,31 @@ function App() {
             path="/pending-imports"
             element={
               <PrivateRoute
-                allowedRoles={["admin", "branch_manager", "pharmacist", "warehouse_manager"]}>
+                allowedRoles={[
+                  "admin",
+                  "branch_manager",
+                  "pharmacist",
+                  "warehouse_manager",
+                ]}>
                 <MainLayout>
                   <PendingImportPage />
+                </MainLayout>
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute
+                allowedRoles={[
+                  "admin",
+                  "warehouse_manager",
+                  "branch_manager",
+                  "pharmacist",
+                ]}>
+                <MainLayout>
+                  <ProfilePage />
                 </MainLayout>
               </PrivateRoute>
             }

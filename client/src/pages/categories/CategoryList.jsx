@@ -220,25 +220,44 @@ const CategoryList = () => {
         .row-anim:nth-child(5)  { animation-delay: .20s }
         .row-anim:nth-child(n+6){ animation-delay: .24s }
 
-        .focus-ring:focus { outline: none; box-shadow: 0 0 0 3px rgba(99,102,241,.25); border-color: #0ea5e9; }
-
+        .focus-ring:focus {
+          outline: none;
+          border-color: #60a5fa;
+          box-shadow: 0 0 0 4px rgba(96,165,250,.18);
+        }
         .cat-btn-primary {
-          background: linear-gradient(135deg, #0ea5e9 0%, #0ea5e9 100%);
-          color: white; border: none;
+          background: linear-gradient(
+            135deg,
+            #1d5fa7 0%,
+            #1d5fa7 50%,
+            #1d5fa7 100%
+          );
+          color: white;
+          border: none;
           transition: all .2s;
         }
-        .cat-btn-primary:hover { opacity: .9; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(99,102,241,.4); }
-        .cat-btn-primary:active { transform: translateY(0); }
+
+        .cat-btn-primary:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 8px 25px rgba(59,130,246,.35);
+        }
 
         .cat-btn-warning {
-          background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
-          color: white; border: none;
-          transition: all .2s;
+          background: linear-gradient(
+            135deg,
+            #1d5fa7 0%,
+            #1d5fa7 100%
+          );
+          color: white;
         }
-        .cat-btn-warning:hover { opacity: .9; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(245,158,11,.35); }
+
+        .cat-btn-warning:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 8px 25px rgba(59,130,246,.3);
+        }
 
         .table-row { transition: background .15s; }
-        .table-row:hover { background: #ebf9ff; }
+        .table-row:hover { background: #f0f9ff; }
 
         .badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 999px; font-size: .75rem; font-weight: 600; }
       `}</style>
@@ -251,263 +270,293 @@ const CategoryList = () => {
         onCancel={() => setConfirmDelete(null)}
       />
 
-      <div
-        className="cat-root min-h-screen"
-        style={{
-          background:
-            "linear-gradient(135deg, #f0f4f8 0%, #f0f4f8 60%, #f0f4f8 100%)",
-        }}>
-        <div className="max-w-6xl mx-auto px-4 py-8">
-          {/* Header */}
-          <div className="mb-8 flex items-center gap-4">
-            <div
-              className="w-12 h-12 rounded-2xl flex items-center justify-center"
-              style={{
-                background: "linear-gradient(135deg, #0ea5e9, #0ea5e9)",
-              }}>
-              <Tag size={22} color="white" />
-            </div>
-            <div>
-              <h1 className="brand-font text-2xl font-bold text-gray-900">
-                Quản lý Danh mục
-              </h1>
-              <p className="text-sm text-gray-400 mt-0.5">
-                Thêm, chỉnh sửa và tổ chức danh mục sản phẩm
-              </p>
-            </div>
-          </div>
-
-          {/* Form Card */}
-          <div
-            className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6"
-            >
-            <div className="flex items-center gap-2 mb-5">
-              <div
-                className={`w-7 h-7 rounded-lg flex items-center justify-center ${editingId ? "bg-amber-100" : "bg-[#0ea5e9]"}`}>
-                {editingId ? (
-                  <Edit size={14} className="text-amber-600" />
-                ) : (
-                  <Plus size={14} className="text-white" />
-                )}
+      <div className="cat-root min-h-screen bg-gradient-to-br from-sky-50 via-blue-50 to-slate-50">
+        <style>{`
+        @keyframes fadeInPage {
+          from { opacity: 0; transform: translateY(12px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-page-in {
+          animation: fadeInPage 0.4s ease-out forwards;
+        }
+      `}</style>
+        <div className="animate-page-in space-y-6">
+          <div className="px-6 py-6">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div
+                  className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+                  }}>
+                  <Tag size={22} color="white" />
+                </div>
+                <div>
+                  <h1 className="text-xl font-bold text-slate-900 leading-tight">
+                    Quản lý Danh mục
+                  </h1>
+                  <p className="text-xs text-slate-500">
+                    {categories.length} danh mục ·{" "}
+                    {new Date().toLocaleDateString("vi-VN", {
+                      weekday: "long",
+                      day: "numeric",
+                      month: "numeric",
+                    })}
+                  </p>
+                </div>
               </div>
-              <h2 className="text-sm font-semibold text-gray-700">
-                {editingId ? "Chỉnh sửa danh mục" : "Thêm danh mục mới"}
-              </h2>
             </div>
 
-            <form
-              onSubmit={handleSubmit}
-              className="flex flex-wrap gap-4 items-end">
-              <div className="flex flex-col gap-1.5 flex-1 min-w-[160px]">
-                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                  Tên danh mục *
-                </label>
-                <input
-                  type="text"
-                  className="focus-ring border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm text-gray-800 bg-gray-50 transition-all"
-                  value={formData.name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
-                  required
-                  placeholder="Ví dụ: Thuốc kháng sinh"
-                />
-              </div>
-              <div className="flex flex-col gap-1.5 flex-[2] min-w-[220px]">
-                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                  Mô tả
-                </label>
-                <input
-                  type="text"
-                  className="focus-ring border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm text-gray-800 bg-gray-50 transition-all"
-                  value={formData.description}
-                  onChange={(e) =>
-                    setFormData({ ...formData, description: e.target.value })
-                  }
-                  placeholder="Nhập mô tả danh mục..."
-                />
-              </div>
-              <div className="flex gap-2">
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className={`cat-btn-${editingId ? "warning" : "primary"} px-5 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed`}>
-                  {submitting ? (
-                    <Loader2 size={15} className="animate-spin" />
-                  ) : editingId ? (
-                    <Edit size={15} />
+            {/* Form Card */}
+            <div className="bg-white rounded-2xl shadow-sm border border-sky-100 p-6 mb-6">
+              <div className="flex items-center gap-2 mb-5">
+                <div
+                  className={`w-7 h-7 rounded-lg flex items-center justify-center ${editingId ? "bg-amber-100" : "bg-linear-to-b from-[#1d5fa7] via-[#1d5fa7] to-[#1d5fa7]"}`}>
+                  {editingId ? (
+                    <Edit size={14} className="text-amber-600" />
                   ) : (
-                    <Plus size={15} />
+                    <Plus size={14} className="text-white" />
                   )}
-                  {editingId ? "Cập nhật" : "Thêm mới"}
-                </button>
-                {editingId && (
+                </div>
+                <h2 className="text-sm font-semibold text-gray-700">
+                  {editingId ? "Chỉnh sửa danh mục" : "Thêm danh mục mới"}
+                </h2>
+              </div>
+
+              <form
+                onSubmit={handleSubmit}
+                className="flex flex-wrap gap-4 items-end">
+                <div className="flex flex-col gap-1.5 flex-1 min-w-[160px]">
+                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                    Tên danh mục *
+                  </label>
+                  <input
+                    type="text"
+                    // className="focus-ring border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm text-gray-800 transition-all"
+                    className="w-full px-3 py-2.5 text-sm border
+                    // border-slate-200 rounded-xl outline-none focus:ring-2
+                    // focus:ring-sky-200 focus:border-sky-400 transition bg-white
+                    // text-slate-800 placeholder:text-slate-400"
+                    value={formData.name}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
+                    required
+                    placeholder="Ví dụ: Thuốc kháng sinh"
+                  />
+                </div>
+                <div className="flex flex-col gap-1.5 flex-[2] min-w-[220px]">
+                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                    Mô tả
+                  </label>
+                  <input
+                    type="text"
+                    // className="focus-ring border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm text-gray-800 transition-all"
+                    className="w-full px-3 py-2.5 text-sm border
+                    // border-slate-200 rounded-xl outline-none focus:ring-2
+                    // focus:ring-sky-200 focus:border-sky-400 transition bg-white
+                    // text-slate-800 placeholder:text-slate-400"
+                    value={formData.description}
+                    onChange={(e) =>
+                      setFormData({ ...formData, description: e.target.value })
+                    }
+                    placeholder="Nhập mô tả danh mục..."
+                  />
+                </div>
+                <div className="flex gap-2">
                   <button
-                    type="button"
-                    onClick={cancelEdit}
-                    className="px-4 py-2.5 rounded-xl border border-gray-200 text-gray-500 text-sm font-medium hover:bg-gray-50 transition-colors flex items-center gap-1.5">
-                    <X size={14} /> Hủy
+                    type="submit"
+                    disabled={submitting}
+                    className={`cat-btn-${editingId ? "warning" : "primary"} px-5 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed`}>
+                    {submitting ? (
+                      <Loader2 size={15} className="animate-spin" />
+                    ) : editingId ? (
+                      <Edit size={15} />
+                    ) : (
+                      <Plus size={15} />
+                    )}
+                    {editingId ? "Cập nhật" : "Thêm mới"}
+                  </button>
+                  {editingId && (
+                    <button
+                      type="button"
+                      onClick={cancelEdit}
+                      className="px-4 py-2.5 rounded-xl border border-gray-200 text-gray-500 text-sm font-medium hover:bg-gray-50 transition-colors flex items-center gap-1.5">
+                      <X size={14} /> Hủy
+                    </button>
+                  )}
+                </div>
+              </form>
+            </div>
+
+            {/* Search & Stats Bar */}
+            <div className="bg-white rounded-2xl shadow-sm border border-sky-100 px-5 py-4 mb-4 flex flex-wrap gap-3 items-center justify-between">
+              <div className="relative flex-1 min-w-[220px] max-w-4.5xl">
+                <Search
+                  size={16}
+                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
+                />
+                <input
+                  type="text"
+                  placeholder="Tìm theo tên hoặc mô tả..."
+                  //className="focus-ring w-full border border-gray-200 rounded-xl pl-9 pr-9 py-2.5 text-smtext-gray-700"
+
+                  className="w-full pl-9 py-2.5 text-sm border
+                    // border-slate-200 rounded-xl outline-none focus:ring-2
+                    // focus:ring-sky-200 focus:border-sky-400 transition bg-white
+                    // text-slate-800 placeholder:text-slate-400"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                {searchTerm && (
+                  <button
+                    onClick={() => setSearchTerm("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors">
+                    <X size={15} />
                   </button>
                 )}
               </div>
-            </form>
-          </div>
-
-          {/* Search & Stats Bar */}
-          <div
-            className="bg-white rounded-2xl shadow-sm border border-gray-100 px-5 py-4 mb-4 flex flex-wrap gap-3 items-center justify-between"
-            >
-            <div className="relative flex-1 min-w-[220px] max-w-4.5xl">
-              <Search
-                size={16}
-                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
-              />
-              <input
-                type="text"
-                placeholder="Tìm theo tên hoặc mô tả..."
-                className="focus-ring w-full border border-gray-200 rounded-xl pl-9 pr-9 py-2.5 text-sm bg-gray-50 text-gray-700"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              {searchTerm && (
-                <button
-                  onClick={() => setSearchTerm("")}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors">
-                  <X size={15} />
-                </button>
-              )}
-            </div>
-            <div className="flex items-center gap-2">
-              <span
-                className="badge"
-                style={{ background: "#0ea5e9", color: "#fff" }}>
-                {filteredCategories.length} / {categories.length} danh mục
-              </span>
-              {searchTerm && (
+              <div className="flex items-center gap-2">
                 <span
                   className="badge"
-                  style={{ background: "#fef3c7", color: "#92400e" }}>
-                  Đang lọc
+                  style={{
+                    background:
+                      "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+                    color: "#fff",
+                  }}>
+                  {filteredCategories.length} / {categories.length} danh mục
                 </span>
-              )}
-            </div>
-          </div>
-
-          {/* Table Card */}
-          <div
-            className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
-            >
-            {loading ? (
-              <div className="flex flex-col items-center justify-center py-20 gap-3 text-gray-400">
-                <Loader2 size={32} className="animate-spin text-indigo-400" />
-                <span className="text-sm">Đang tải dữ liệu...</span>
+                {searchTerm && (
+                  <span
+                    className="badge"
+                    style={{ background: "#fef3c7", color: "#92400e" }}>
+                    Đang lọc
+                  </span>
+                )}
               </div>
-            ) : (
-              <table className="w-full text-left">
-                <thead>
-                  <tr
+            </div>
+
+            {/* Table Card */}
+            <div className="bg-white rounded-2xl shadow-sm border border-sky-100 overflow-hidden">
+              {loading ? (
+                <div className="flex flex-col items-center justify-center py-20 gap-3 text-gray-400">
+                  <Loader2 size={32} className="animate-spin text-indigo-400" />
+                  <span className="text-sm">Đang tải dữ liệu...</span>
+                </div>
+              ) : (
+                <table className="w-full text-left">
+                  <thead
                     style={{
-                      background: "linear-gradient(90deg, #fff 0%, #fff 100%)",
+                      background: "linear-gradient(90deg,#f8fbff,#eef5ff)",
                     }}>
-                    <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider border-b border-gray-100">
-                      Tên danh mục
-                    </th>
-                    <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider border-b border-gray-100">
-                      Mô tả
-                    </th>
-                    <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider border-b border-gray-100 text-center w-28">
-                      Thao tác
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredCategories.length > 0 ? (
-                    filteredCategories.map((cat, idx) => (
-                      <tr
-                        key={cat._id}
-                        className="table-row row-anim border-b border-gray-50 last:border-0">
-                        <td className="px-6 py-4">
-                          <div className="flex items-center gap-3">
-                            <div
-                              className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-                              style={{
-                                background: `hsl(${(idx * 47 + 200) % 360}, 70%, 93%)`,
-                              }}>
-                              <Tag
-                                size={13}
+                    <tr
+                      style={{
+                        background:
+                          "linear-gradient(90deg, #fff 0%, #fff 100%)",
+                      }}>
+                      <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider border-b border-gray-100">
+                        Tên danh mục
+                      </th>
+                      <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider border-b border-gray-100">
+                        Mô tả
+                      </th>
+                      <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider border-b border-gray-100 text-center w-28">
+                        Thao tác
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredCategories.length > 0 ? (
+                      filteredCategories.map((cat, idx) => (
+                        <tr
+                          key={cat._id}
+                          className="table-row row-anim border-b border-gray-50 last:border-0">
+                          <td className="px-6 py-4">
+                            <div className="flex items-center gap-3">
+                              <div
+                                className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
                                 style={{
-                                  color: `hsl(${(idx * 47 + 200) % 360}, 65%, 40%)`,
-                                }}
-                              />
-                            </div>
-                            <span className="text-sm font-semibold text-gray-800">
-                              {cat.name}
-                            </span>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4">
-                          <span className="text-sm text-gray-500">
-                            {cat.description || (
-                              <span className="italic text-gray-300">
-                                Chưa có mô tả
+                                  background: `hsl(${(idx * 47 + 200) % 360}, 70%, 93%)`,
+                                }}>
+                                <Tag
+                                  size={13}
+                                  style={{
+                                    color: `hsl(${(idx * 47 + 200) % 360}, 65%, 40%)`,
+                                  }}
+                                />
+                              </div>
+                              <span className="text-sm font-semibold text-gray-800">
+                                {cat.name}
                               </span>
-                            )}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="flex justify-center gap-2">
-                            <button
-                              onClick={() => handleEdit(cat)}
-                              title="Chỉnh sửa"
-                              className="w-8 h-8 rounded-lg flex items-center justify-center text-indigo-500 hover:bg-indigo-50 hover:text-indigo-700 transition-all">
-                              <Edit size={15} />
-                            </button>
-                            <button
-                              onClick={() =>
-                                setConfirmDelete({
-                                  id: cat._id,
-                                  name: cat.name,
-                                })
-                              }
-                              title="Xóa"
-                              className="w-8 h-8 rounded-lg flex items-center justify-center text-red-400 hover:bg-red-50 hover:text-red-600 transition-all">
-                              <Trash2 size={15} />
-                            </button>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4">
+                            <span className="text-sm text-gray-500">
+                              {cat.description || (
+                                <span className="italic text-gray-300">
+                                  Chưa có mô tả
+                                </span>
+                              )}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="flex justify-center gap-2">
+                              <button
+                                onClick={() => handleEdit(cat)}
+                                title="Chỉnh sửa"
+                                className="w-8 h-8 rounded-lg flex items-center justify-center text-blue-600
+hover:bg-sky-50 hover:text-blue-700 transition-all">
+                                <Edit size={15} />
+                              </button>
+                              <button
+                                onClick={() =>
+                                  setConfirmDelete({
+                                    id: cat._id,
+                                    name: cat.name,
+                                  })
+                                }
+                                title="Xóa"
+                                className="w-8 h-8 rounded-lg flex items-center justify-center text-red-400 hover:bg-red-50 hover:text-red-600 transition-all">
+                                <Trash2 size={15} />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="3" className="py-20 text-center">
+                          <div className="flex flex-col items-center gap-3 text-gray-400">
+                            <FolderOpen size={40} className="text-gray-200" />
+                            <div>
+                              {searchTerm ? (
+                                <>
+                                  <p className="text-sm font-medium text-gray-500">
+                                    Không tìm thấy kết quả
+                                  </p>
+                                  <p className="text-xs mt-1">
+                                    Không có danh mục nào phù hợp với{" "}
+                                    <strong className="text-[#1d5fa7]">
+                                      "{searchTerm}"
+                                    </strong>
+                                  </p>
+                                </>
+                              ) : (
+                                <p className="text-sm">
+                                  Chưa có danh mục nào. Hãy thêm mới!
+                                </p>
+                              )}
+                            </div>
                           </div>
                         </td>
                       </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan="3" className="py-20 text-center">
-                        <div className="flex flex-col items-center gap-3 text-gray-400">
-                          <FolderOpen size={40} className="text-gray-200" />
-                          <div>
-                            {searchTerm ? (
-                              <>
-                                <p className="text-sm font-medium text-gray-500">
-                                  Không tìm thấy kết quả
-                                </p>
-                                <p className="text-xs mt-1">
-                                  Không có danh mục nào phù hợp với{" "}
-                                  <strong className="text-indigo-400">
-                                    "{searchTerm}"
-                                  </strong>
-                                </p>
-                              </>
-                            ) : (
-                              <p className="text-sm">
-                                Chưa có danh mục nào. Hãy thêm mới!
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            )}
+                    )}
+                  </tbody>
+                </table>
+              )}
+            </div>
           </div>
         </div>
       </div>

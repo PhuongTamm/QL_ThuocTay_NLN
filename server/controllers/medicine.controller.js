@@ -4,6 +4,39 @@ const Category = require("../models/Category");
 const fs = require("fs");
 const path = require("path");
 
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+exports.checkDrugInteractions = async (req, res) => {
+  try {
+    const { items } = req.body; // Mảng chứa tên thuốc và hoạt chất
+    if (!items || items.length < 2) {
+      return res.json({ success: true, warning: null }); // Dưới 2 thuốc thì không cần check
+    }
+
+    const prompt = `
+      Bạn là một Dược sĩ lâm sàng. Tôi có danh sách các thuốc và hoạt chất sau trong đơn thuốc:
+      ${items.map((i) => `- ${i.name} (Hoạt chất: ${i.ingredients || "Không rõ"})`).join("\n")}
+      
+      Hãy kiểm tra xem có bất kỳ CẶP HOẠT CHẤT nào tương tác xấu, chống chỉ định, hoặc làm giảm tác dụng của nhau không.
+      Nếu KHÔNG CÓ tương tác đáng lo ngại, hãy trả về chữ "SAFE".
+      Nếu CÓ tương tác, hãy trả về một đoạn cảnh báo ngắn gọn (dưới 50 từ) giải thích lý do để dược sĩ lưu ý. KHÔNG dùng định dạng markdown.
+    `;
+
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const result = await model.generateContent(prompt);
+    const responseText = result.response.text().trim();
+
+    if (responseText === "SAFE" || responseText.includes("SAFE")) {
+      return res.json({ success: true, warning: null });
+    } else {
+      return res.json({ success: true, warning: responseText });
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 const generateNamePrefix = (str) => {
   if (!str) return "MED";
   return str
@@ -84,14 +117,6 @@ exports.getAllMedicines = async (req, res) => {
 // 2. Tạo thuốc gốc (Chưa có giá, chưa có quy cách)
 exports.createMedicine = async (req, res) => {
   try {
-    // const {
-    //   name,
-    //   categoryId,
-    //   isPrescription,
-    //   manufacturer,
-    //   ingredients,
-    //   description,
-    // } = req.body;
     const {
       name,
       categoryId,

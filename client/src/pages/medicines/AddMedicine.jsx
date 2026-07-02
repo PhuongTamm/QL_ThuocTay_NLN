@@ -7,7 +7,9 @@ import {
   Loader2,
   Pill,
   Package,
-  Tag,
+  Image as ImageIcon,
+  Info,
+  Layers,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
@@ -123,94 +125,64 @@ const AddMedicine = () => {
     }
   };
 
-  /* ── shared styles ── */
+  /* ── Định dạng Style dùng chung ── */
   const inputCls =
-    "w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 transition bg-white text-slate-800 placeholder:text-slate-400";
+    "w-full px-3 py-2.5 text-sm border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-[#1d5fa7]/20 focus:border-[#1d5fa7] transition-all bg-slate-50 hover:bg-white text-slate-800 placeholder:text-slate-400";
   const labelCls =
-    "block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1.5";
+    "block text-[11px] font-bold text-slate-600 mb-1.5 uppercase tracking-wide";
 
-  /* ── Section header ── */
-  const SectionHeader = ({ icon: Icon, title, color = "sky" }) => {
-    const colors = {
-      sky: {
-        bg: "bg-sky-50",
-        text: "text-sky-600",
-        border: "border-sky-100",
-        iconBg: "bg-sky-100",
-      },
-      emerald: {
-        bg: "bg-emerald-50",
-        text: "text-emerald-600",
-        border: "border-emerald-100",
-        iconBg: "bg-emerald-100",
-      },
-      violet: {
-        bg: "bg-violet-50",
-        text: "text-violet-600",
-        border: "border-violet-100",
-        iconBg: "bg-violet-100",
-      },
-    };
-    const c = colors[color];
-    return (
-      <div
-        className={`flex items-center gap-2.5 px-4 py-3 rounded-xl border ${c.bg} ${c.border} mb-4`}>
-        <div
-          className={`w-7 h-7 rounded-lg flex items-center justify-center ${c.iconBg}`}>
-          <Icon size={15} className={c.text} />
-        </div>
-        <span className={`text-sm font-bold ${c.text}`}>{title}</span>
+  /* ── Component Tiêu đề Từng Phần (Cập nhật giống trang Nhập hàng) ── */
+  const SectionHeaderBadge = ({ icon: Icon, title }) => (
+    <div className="flex items-center gap-2 mb-4">
+      <div className="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center shrink-0">
+        <Icon size={14} className="text-slate-600" />
       </div>
-    );
-  };
+      <span className="text-xs font-bold text-slate-600 uppercase tracking-wide">
+        {title}
+      </span>
+    </div>
+  );
 
   return (
-    <div
-      className="min-h-screen p-6"
-      style={{
-        background: "#f0f4f8",
-        fontFamily: "'DM Sans', system-ui, sans-serif",
-      }}>
-      <div className="max-w-5xl mx-auto">
+    <div className="cat-root min-h-screen bg-slate-50/80 p-6 font-sans">
+      <style>{`
+        @keyframes fadeInPage {
+          from { opacity: 0; transform: translateY(15px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-page-in {
+          animation: fadeInPage 0.4s ease-out forwards;
+        }
+      `}</style>
+
+      <div className=" animate-page-in space-y-5">
         {/* ── PAGE HEADER ── */}
-        <div className="flex items-center gap-3 mb-6">
+        <div className="flex items-center gap-4 mb-6">
           <button
+            type="button"
             onClick={() => navigate(-1)}
-            className="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-slate-200 text-slate-500 hover:text-sky-600 hover:border-sky-300 hover:bg-sky-50 transition-all shadow-sm">
+            className="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-slate-200 text-slate-500 hover:text-[#1d5fa7] hover:border-[#1d5fa7]/40 hover:bg-[#1d5fa7]/5 transition-all shadow-sm">
             <ArrowLeft size={18} />
           </button>
-          <div className="flex items-center gap-3">
-            <div
-              className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0"
-              style={{
-                background: "linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%)",
-              }}>
-              <Pill size={22} color="white" />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-slate-900 leading-tight">
-                Thêm Thuốc Mới
-              </h1>
-              <p className="text-xs text-slate-500">
-                Nhập thông tin thuốc gốc và quy cách ban đầu
-              </p>
-            </div>
+          <div>
+            <h1 className="text-xl font-bold text-slate-900 tracking-tight">
+              Thêm Thuốc Mới
+            </h1>
+            <p className="text-xs text-slate-500 mt-1">
+              Khởi tạo hồ sơ thuốc gốc và thiết lập quy cách bán ban đầu
+            </p>
           </div>
         </div>
 
-        <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-2 gap-5">
-            {/* ══ CỘT TRÁI: THÔNG TIN CƠ BẢN ══ */}
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 space-y-4">
-              <SectionHeader
-                icon={Pill}
-                title="Thông tin cơ bản & Hình ảnh"
-                color="sky"
-              />
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* ════ KHỐI 1: THÔNG TIN CƠ BẢN ════ */}
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+            <SectionHeaderBadge icon={Layers} title="Thông tin thuốc gốc" />
 
-              <div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="md:col-span-2">
                 <label className={labelCls}>
-                  Tên thuốc (Gốc) <span className="text-red-400">*</span>
+                  Tên thuốc (Gốc) <span className="text-red-500">*</span>
                 </label>
                 <input
                   name="name"
@@ -224,13 +196,13 @@ const AddMedicine = () => {
 
               <div>
                 <label className={labelCls}>
-                  Danh mục thuốc <span className="text-red-400">*</span>
+                  Danh mục thuốc <span className="text-red-500">*</span>
                 </label>
                 <select
                   name="categoryId"
                   onChange={handleChange}
                   required
-                  className={inputCls + " appearance-none"}>
+                  className={inputCls + " appearance-none cursor-pointer"}>
                   <option value="">-- Chọn danh mục --</option>
                   {categories.map((cat) => (
                     <option key={cat._id} value={cat._id}>
@@ -240,112 +212,60 @@ const AddMedicine = () => {
                 </select>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className={labelCls}>Hoạt chất</label>
-                  <input
-                    name="ingredients"
-                    onChange={handleChange}
-                    className={inputCls}
-                    placeholder="VD: Paracetamol"
-                  />
-                </div>
-                <div>
-                  <label className={labelCls}>Nhà sản xuất</label>
-                  <input
-                    name="manufacturer"
-                    onChange={handleChange}
-                    className={inputCls}
-                    placeholder="VD: DHG Pharma"
-                  />
-                </div>
-              </div>
-
               <div>
-                <label className={labelCls}>
-                  Đơn vị cơ sở lưu kho (Nhỏ nhất)
-                </label>
-                <select
-                  name="baseUnit"
-                  onChange={handleChange}
-                  className={inputCls + " appearance-none"}>
-                  <option value="Viên">Viên</option>
-                  <option value="Gói">Gói</option>
-                  <option value="Chai">Chai</option>
-                  <option value="Tuýp">Tuýp</option>
-                  <option value="Lọ">Lọ</option>
-                  <option value="Ống">Ống</option>
-                </select>
-              </div>
-
-              {/* Upload ảnh */}
-              <div>
-                <label className={labelCls}>Ảnh sản phẩm</label>
-                <label className="flex flex-col items-center justify-center gap-2 p-5 border-2 border-dashed border-sky-200 bg-sky-50/50 rounded-xl cursor-pointer hover:bg-sky-50 transition-colors">
-                  <UploadCloud size={26} className="text-sky-400" />
-                  <span className="text-sm font-semibold text-sky-600">
-                    Nhấp để tải ảnh lên
-                  </span>
-                  <span className="text-xs text-slate-400">
-                    Hỗ trợ JPG, PNG · Tối đa 10 ảnh
-                  </span>
-                  <input
-                    type="file"
-                    multiple
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="hidden"
-                  />
-                </label>
-                {imagePreviews.length > 0 && (
-                  <div className="flex gap-2.5 mt-3 flex-wrap">
-                    {imagePreviews.map((src, idx) => (
-                      <div
-                        key={idx}
-                        className="relative w-16 h-16 rounded-xl overflow-visible shrink-0">
-                        <img
-                          src={src}
-                          alt="preview"
-                          className="w-full h-full object-cover rounded-xl border border-slate-100 shadow-sm"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => removeImage(idx)}
-                          className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center shadow hover:bg-red-600 transition">
-                          <X size={11} />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Checkbox kê đơn */}
-              <label className="flex items-center gap-2.5 cursor-pointer select-none w-fit pt-1">
+                <label className={labelCls}>Nhà sản xuất</label>
                 <input
-                  type="checkbox"
-                  name="isPrescription"
+                  name="manufacturer"
                   onChange={handleChange}
-                  className="w-4 h-4 accent-sky-500 rounded"
+                  className={inputCls}
+                  placeholder="VD: DHG Pharma"
                 />
-                <span className="text-sm font-semibold text-slate-700">
-                  Thuốc kê đơn (Rx)
-                </span>
-              </label>
+              </div>
+
+              <div className="md:col-span-2">
+                <label className={labelCls}>Hoạt chất chính</label>
+                <input
+                  name="ingredients"
+                  onChange={handleChange}
+                  className={inputCls}
+                  placeholder="VD: Paracetamol, Ibuprofen..."
+                />
+              </div>
+
+              <div className="md:col-span-2 bg-slate-50 border border-slate-100 rounded-xl p-4 flex items-center justify-between">
+                <div>
+                  <h4 className="font-bold text-slate-700 text-sm">
+                    Thuốc Kê Đơn (Rx)
+                  </h4>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Đánh dấu nếu thuốc này yêu cầu phải có đơn của bác sĩ.
+                  </p>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="isPrescription"
+                    onChange={handleChange}
+                    className="sr-only peer"
+                  />
+                  <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1d5fa7]"></div>
+                </label>
+              </div>
             </div>
+          </div>
 
-            {/* ══ CỘT PHẢI: QUY CÁCH & GIÁ ══ */}
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 space-y-4">
-              <SectionHeader
-                icon={Package}
-                title="Quy cách & Giá bán ban đầu"
-                color="sky"
-              />
+          {/* ════ KHỐI 2: ĐƠN VỊ VÀ QUY CÁCH ════ */}
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+            <SectionHeaderBadge
+              icon={Package}
+              title="Thiết lập Quy cách & Giá bán"
+            />
 
-              <div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="md:col-span-2">
                 <label className={labelCls}>
-                  Tên hiển thị (Quy cách){" "}
-                  <span className="text-red-400">*</span>
+                  Tên hiển thị (Theo quy cách){" "}
+                  <span className="text-red-500">*</span>
                 </label>
                 <input
                   name="variantName"
@@ -353,111 +273,193 @@ const AddMedicine = () => {
                   onChange={handleChange}
                   required
                   className={inputCls}
-                  placeholder="VD: Paracetamol (Hộp)"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className={labelCls}>Đơn vị bán</label>
-                  <select
-                    name="unitName"
-                    onChange={handleChange}
-                    className={inputCls + " appearance-none"}>
-                    <option value="Hộp">Hộp</option>
-                    <option value="Vỉ">Vỉ</option>
-                    <option value="Gói">Gói</option>
-                    <option value="Viên">Viên</option>
-                    <option value="Lọ">Lọ</option>
-                    <option value="Chai">Chai</option>
-                    <option value="Tuýp">Tuýp</option>
-                    <option value="Ống">Ống</option>
-                  </select>
-                </div>
-                <div>
-                  <label className={labelCls}>
-                    Giá bán lẻ (VNĐ) <span className="text-red-400">*</span>
-                  </label>
-                  <input
-                    type="number"
-                    min="0"
-                    name="sellPrice"
-                    onChange={handleChange}
-                    required
-                    className={
-                      inputCls + " font-bold text-sky-600 focus:ring-sky-400"
-                    }
-                    placeholder="0"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className={labelCls}>Mô tả quy cách đóng gói</label>
-                <input
-                  name="packagingSpecification"
-                  onChange={handleChange}
-                  className={inputCls}
-                  placeholder="VD: Hộp 12 gói x 10g"
+                  placeholder="VD: Paracetamol 500mg (Hộp 10 vỉ)"
                 />
               </div>
 
               <div>
                 <label className={labelCls}>
-                  Mô tả chi tiết tác dụng / cách dùng
+                  Đơn vị bán <span className="text-red-500">*</span>
+                </label>
+                <select
+                  name="unitName"
+                  onChange={handleChange}
+                  className={inputCls + " appearance-none cursor-pointer"}>
+                  <option value="Hộp">Hộp</option>
+                  <option value="Vỉ">Vỉ</option>
+                  <option value="Gói">Gói</option>
+                  <option value="Viên">Viên</option>
+                  <option value="Lọ">Lọ</option>
+                  <option value="Chai">Chai</option>
+                  <option value="Tuýp">Tuýp</option>
+                  <option value="Ống">Ống</option>
+                </select>
+              </div>
+
+              <div>
+                <label className={labelCls}>
+                  Giá bán lẻ (VNĐ) <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  name="sellPrice"
+                  onChange={handleChange}
+                  required
+                  className={
+                    inputCls + " font-bold text-[#1d5fa7] tracking-wide"
+                  }
+                  placeholder="0"
+                />
+              </div>
+
+              {/* Tỷ lệ quy đổi Box */}
+              <div className="md:col-span-2 bg-[#1d5fa7]/5 border border-[#1d5fa7]/20 rounded-xl p-4">
+                <div className="flex items-start gap-2 mb-3">
+                  <Info size={16} className="text-[#1d5fa7] shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="font-bold text-[#1d5fa7] text-xs uppercase tracking-wide">
+                      Hệ số quy đổi lưu kho
+                    </h4>
+                    <p className="text-xs text-slate-600 mt-1">
+                      Để hệ thống quản lý tồn kho chính xác, vui lòng xác định
+                      đơn vị nhỏ nhất và số lượng chứa trong 1 đơn vị bán. (Ví
+                      dụ: Bán 1 <strong>Hộp</strong> chứa 100{" "}
+                      <strong>Viên</strong> → Tỷ lệ quy đổi là{" "}
+                      <strong>100</strong>).
+                    </p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className={labelCls}>Đơn vị cơ sở (Nhỏ nhất)</label>
+                    <select
+                      name="baseUnit"
+                      onChange={handleChange}
+                      className={
+                        inputCls + " bg-white appearance-none cursor-pointer"
+                      }>
+                      <option value="Viên">Viên</option>
+                      <option value="Gói">Gói</option>
+                      <option value="Chai">Chai</option>
+                      <option value="Tuýp">Tuýp</option>
+                      <option value="Lọ">Lọ</option>
+                      <option value="Ống">Ống</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className={labelCls}>
+                      Tỷ lệ quy đổi <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      min="1"
+                      name="conversionRate"
+                      value={data.conversionRate}
+                      onChange={handleChange}
+                      required
+                      className={inputCls + " bg-white font-bold"}
+                      placeholder="VD: 100"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="md:col-span-2">
+                <label className={labelCls}>Mô tả quy cách đóng gói</label>
+                <input
+                  name="packagingSpecification"
+                  onChange={handleChange}
+                  className={inputCls}
+                  placeholder="VD: Hộp 10 vỉ x 10 viên"
+                />
+              </div>
+
+              <div className="md:col-span-2">
+                <label className={labelCls}>
+                  Mô tả chi tiết tác dụng / Cách dùng
                 </label>
                 <textarea
                   name="description"
                   onChange={handleChange}
-                  rows="4"
+                  rows="3"
                   className={inputCls + " resize-none leading-relaxed"}
                   placeholder="Mô tả công dụng, liều dùng, chống chỉ định..."
                 />
               </div>
-
-              {/* Tỷ lệ quy đổi */}
-              <div className="bg-sky-50 border border-sky-100 rounded-xl p-4">
-                <label className={labelCls + " text-sky-600"}>
-                  Tỷ lệ quy đổi ra đơn vị cơ sở{" "}
-                  <span className="text-red-400">*</span>
-                </label>
-                <input
-                  type="number"
-                  min="1"
-                  name="conversionRate"
-                  value={data.conversionRate}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-3 py-2.5 text-sm border border-sky-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 transition bg-white text-slate-800"
-                  placeholder="VD: 1 Hộp = 100 Viên → Nhập 100"
-                />
-                <p className="text-xs text-sky-500 mt-1.5 flex items-center gap-1">
-                  Hệ thống sẽ lấy (Số lượng × tỷ lệ) để lưu vào kho.
-                </p>
-              </div>
             </div>
           </div>
 
-          {/* ── SUBMIT FOOTER ── */}
-          <div className="mt-5 bg-white rounded-2xl border border-slate-100 shadow-sm px-6 py-4 flex justify-between items-center">
-            <p className="text-sm text-slate-400">
-              Các trường có dấu{" "}
-              <span className="text-red-400 font-bold">*</span> là bắt buộc
+          {/* ════ KHỐI 3: HÌNH ẢNH ════ */}
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+            <SectionHeaderBadge icon={ImageIcon} title="Hình ảnh sản phẩm" />
+
+            <label className="flex flex-col items-center justify-center gap-2 p-6 border-2 border-dashed border-[#1d5fa7]/30 bg-[#1d5fa7]/5 rounded-xl cursor-pointer hover:bg-[#1d5fa7]/10 transition-colors group">
+              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+                <UploadCloud size={24} className="text-[#1d5fa7]" />
+              </div>
+              <div className="text-center">
+                <span className="text-sm font-bold text-[#1d5fa7] block mb-0.5">
+                  Nhấp để tải ảnh lên
+                </span>
+                <span className="text-xs text-slate-500">
+                  Hỗ trợ JPG, PNG, WEBP · Tối đa 10 ảnh
+                </span>
+              </div>
+              <input
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={handleImageChange}
+                className="hidden"
+              />
+            </label>
+
+            {imagePreviews.length > 0 && (
+              <div className="flex gap-3 mt-4 flex-wrap">
+                {imagePreviews.map((src, idx) => (
+                  <div
+                    key={idx}
+                    className="relative w-20 h-20 rounded-xl overflow-visible shrink-0 group">
+                    <img
+                      src={src}
+                      alt="preview"
+                      className="w-full h-full object-cover rounded-xl border border-slate-200 shadow-sm"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeImage(idx)}
+                      className="absolute -top-1.5 -right-1.5 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center shadow-md hover:bg-red-600 transition-transform scale-0 group-hover:scale-100">
+                      <X size={12} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* ── FOOTER ACTIONS ── */}
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex flex-col md:flex-row justify-between items-center gap-4 sticky bottom-6 z-10">
+            <p className="text-sm text-slate-500 font-medium">
+              Kiểm tra kỹ các trường có dấu{" "}
+              <span className="text-red-500 font-bold">*</span> trước khi lưu.
             </p>
-            <div className="flex gap-3">
+            <div className="flex w-full md:w-auto gap-2.5">
               <button
                 type="button"
                 onClick={() => navigate(-1)}
-                className="px-5 py-2.5 rounded-xl bg-slate-100 text-slate-700 font-semibold text-sm hover:bg-slate-200 transition-colors">
-                Hủy
+                className="flex-1 md:flex-none px-5 py-2.5 rounded-xl bg-slate-100 text-slate-700 font-bold text-sm hover:bg-slate-200 transition-colors">
+                Hủy bỏ
               </button>
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="px-6 py-2.5 rounded-xl text-white font-bold text-sm flex items-center gap-2 transition-all hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"
+                className="flex-1 md:flex-none px-6 py-2.5 rounded-xl text-white font-bold text-sm flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"
                 style={{
-                  background: "linear-gradient(135deg,#0ea5e9,#06b6d4)",
-                  boxShadow: "0 4px 14px rgba(14,165,233,.4)",
+                  background:
+                    "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+                  boxShadow: "0 4px 14px rgba(29, 95, 167, 0.35)",
                 }}>
                 {isSubmitting ? (
                   <>
@@ -465,7 +467,7 @@ const AddMedicine = () => {
                   </>
                 ) : (
                   <>
-                    <Save size={16} /> Lưu thông tin thuốc
+                    <Save size={16} /> Hoàn tất
                   </>
                 )}
               </button>
