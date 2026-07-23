@@ -1,4 +1,3 @@
-// services/vector.service.js
 const { QdrantClient } = require("@qdrant/js-client-rest");
 const { pipeline } = require("@xenova/transformers");
 const crypto = require("crypto");
@@ -9,7 +8,7 @@ const qdrant = new QdrantClient({
   apiKey: process.env.QDRANT_API_KEY,
 });
 
-const COLLECTION_NAME = "pharmacy_knowledge";
+const COLLECTION_NAME = "luan_van";
 let extractor;
 
 const initModel = async () => {

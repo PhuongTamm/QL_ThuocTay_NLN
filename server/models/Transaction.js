@@ -59,6 +59,8 @@ const transactionSchema = new mongoose.Schema(
         // - Xuất chi nhánh: Giá vốn (ImportPrice)
         // - Bán lẻ: Giá bán ra
         price: { type: Number },
+
+        costPrice: { type: Number }, // Giá vốn (ImportPrice) để tính lãi lỗ khi bán ra
         reason: { type: String, enum: ["OVERSTOCK", "EXPIRED", "DAMAGED"] }, //lý do hủy
       },
     ],

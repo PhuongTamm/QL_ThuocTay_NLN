@@ -31,16 +31,16 @@ import BranchUserManagement from "./pages/admin/BranchUserManagement"; // Trang 
 import TransactionHistoryPage from "./pages/transactions/TransactionHistoryPage";
 import MonthlyReportPage from "./pages/reports/MonthlyReportPage";
 import ProfilePage from "./pages/profile/ProfilePage";
+import PriceManagement from "./pages/priceManagement/PriceManagement";
+import ProfitAnalysis from "./pages/reports/ProfitAnalysis";
 
 // Layout bọc các trang cần đăng nhập
 const MainLayout = ({ children }) => (
   // Thêm class 'relative' vào thẻ div tổng để đảm bảo Chatbot (dùng position: fixed/absolute) neo đúng vị trí
   <div className="flex h-screen overflow-hidden relative">
     <Sidebar />
-    <div className="flex-1 bg-gray-50 h-full overflow-y-auto">
-      {children}
-    </div>
-    
+    <div className="flex-1 bg-gray-50 h-full overflow-y-auto">{children}</div>
+
     {/* Chèn Chatbot vào đây */}
     <AIChatbot />
   </div>
@@ -192,7 +192,6 @@ function App() {
                 allowedRoles={[
                   "admin",
                   "branch_manager",
-                  "pharmacist",
                   "warehouse_manager",
                 ]}>
                 <MainLayout>
@@ -252,12 +251,24 @@ function App() {
               </PrivateRoute>
             }
           />
+
           <Route
-            path="/pending-imports"
+            path="/price-management"
             element={
               <PrivateRoute>
                 <MainLayout>
-                  <PendingImportPage />
+                  <PriceManagement />
+                </MainLayout>
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/profit-analysis"
+            element={
+              <PrivateRoute>
+                <MainLayout>
+                  <ProfitAnalysis />
                 </MainLayout>
               </PrivateRoute>
             }

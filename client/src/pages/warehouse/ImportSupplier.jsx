@@ -46,6 +46,10 @@ const ImportSupplier = () => {
   const todayString = new Date().toLocaleDateString("vi-VN");
   const todayISOString = new Date().toISOString().split("T")[0];
 
+  // Tìm ID của Kho Tổng để lọc tồn kho
+  const warehouseBranch = branches.find((b) => b.type === "warehouse");
+  const warehouseId = warehouseBranch?._id;
+
   // ─── TẢI DỮ LIỆU TỪ BACKEND KHI KHỞI CHẠY ──────────────────────────────
   useEffect(() => {
     const loadInitialData = async () => {
@@ -344,10 +348,47 @@ const ImportSupplier = () => {
       }
     }
 
+    // try {
+    //   const payload = {
+    //     supplierName: supplierName.trim(),
+    //     details: items.map((item) => ({
+    //       variantId: item.variantId,
+    //       batchCode:
+    //         item.batchSelection === "NEW"
+    //           ? item.batchCode.trim().toUpperCase()
+    //           : item.batchSelection,
+    //       manufacturingDate: item.manufacturingDate,
+    //       expiryDate: item.expiryDate,
+    //       quantity: Number(item.quantity),
+    //       price: Number(item.price),
+    //     })),
+    //   };
+
+    //   const res = await api.post("/transactions/import-supplier", payload);
+
+    //   if (res.data?.success || res.success) {
+    //     const wantToPrint = window.confirm(
+    //       "Nhập hàng thành công! Bạn có muốn in PHIẾU NHẬP KHO không?",
+    //     );
+    //     if (wantToPrint && (res.data?.transaction || res.transaction)) {
+    //       await generatePDF(res.data?.transaction || res.transaction);
+    //     }
+    //     setItems([]);
+    //     setSupplierName("");
+    //     navigate("/inventory");
+    //   } else {
+    //     alert(res.data?.message || "Có lỗi xảy ra khi nhập hàng.");
+    //   }
+    // } catch (error) {
+    //   console.error("Lỗi gửi dữ liệu nhập kho:", error);
+    //   alert(error.response?.data?.message || "Lỗi kết nối máy chủ.");
+    // }
+
     try {
+      // SỬA TỪ 'details' THÀNH 'items' Ở ĐÂY ĐỂ ĐỒNG BỘ VỚI BACKEND
       const payload = {
         supplierName: supplierName.trim(),
-        details: items.map((item) => ({
+        items: items.map((item) => ({
           variantId: item.variantId,
           batchCode:
             item.batchSelection === "NEW"
@@ -356,7 +397,7 @@ const ImportSupplier = () => {
           manufacturingDate: item.manufacturingDate,
           expiryDate: item.expiryDate,
           quantity: Number(item.quantity),
-          price: Number(item.price),
+          price: Number(parseFloat(item.price).toFixed(2)), // Đồng bộ format giá như bản cũ
         })),
       };
 
@@ -382,11 +423,12 @@ const ImportSupplier = () => {
   };
 
   const inputBase =
-    "w-full border border-slate-200 rounded-lg px-2.5 py-2 text-xs font-medium text-slate-800 bg-white outline-none transition focus:border-[#1d5fa7] focus:ring-2 focus:ring-[#1d5fa7]/20 disabled:bg-slate-50 disabled:text-slate-500 read-only:bg-slate-50 read-only:text-slate-500 read-only:font-bold";
+    "w-full border border-slate-200 rounded-lg px-2.5 py-2 text-xs font-medium text-slate-800 bg-white outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 disabled:bg-slate-50 disabled:text-slate-500 read-only:bg-slate-50 read-only:text-slate-500 read-only:font-bold";
 
   return (
     <div
-      className="flex flex-col h-[calc(100vh-40px)] bg-slate-50 p-4 overflow-hidden"
+      className="flex flex-col h-[calc(100vh-10px)] bg-gradient-to-br from-sky-50 via-blue-50
+      to-slate-50 p-6 font-sans"
       style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
       <style>{`
         /* HIỆU ỨNG FLOAT BAY LÊN (FADE UP) CHO TOÀN BỘ TRANG */
@@ -412,13 +454,13 @@ const ImportSupplier = () => {
         .scrollbar-thin::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
       `}</style>
 
-      {/* HEADER GIỮ NGUYÊN GIAO DIỆN CŨ */}
+      {/* HEADER */}
       <div className="flex items-center gap-3 mb-4 shrink-0 animate-float-up">
         <div
           className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 text-white"
           style={{
-            background: "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
-            boxShadow: "0 4px 14px rgba(29, 95, 167, 0.3)",
+            background: "linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)",
+            boxShadow: "0 4px 14px rgba(14, 165, 233, 0.3)",
           }}>
           <PackageCheck size={20} />
         </div>
@@ -427,7 +469,7 @@ const ImportSupplier = () => {
             Nhập Hàng Từ Nhà Cung Cấp
           </h1>
           <p className="text-xs text-slate-500 mt-0.5">
-            Tạo phiếu nhập kho mới từ nhà cung cấp
+            Tạo phiếu nhập kho mới vào Kho Tổng
           </p>
         </div>
       </div>
@@ -438,7 +480,11 @@ const ImportSupplier = () => {
         <div className="lg:col-span-4 flex flex-col bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden h-full">
           <div className="p-4 border-b border-slate-100 bg-slate-50/50 shrink-0">
             <h2 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-3 flex items-center gap-1.5">
-              <Pill size={16} className="text-[#1d5fa7]" /> Tìm & Chọn Thuốc
+              <Pill
+                size={16}
+                className="text-sm font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1.5"
+              />{" "}
+              Tìm & Chọn Thuốc
             </h2>
 
             {/* Thanh tìm kiếm nâng cao */}
@@ -450,7 +496,7 @@ const ImportSupplier = () => {
               <input
                 type="text"
                 placeholder="Tìm theo tên thuốc, mã, hoạt chất..."
-                className="w-full pl-10 pr-4 py-2.5 bg-white text-sm outline-none transition-all placeholder:text-slate-400 font-medium text-slate-800 border border-slate-200 rounded-xl focus:border-[#1d5fa7] focus:ring-2 focus:ring-[#1d5fa7]/20"
+                className="w-full pl-10 pr-4 py-2.5 bg-white text-sm outline-none transition-all placeholder:text-slate-400 font-medium text-slate-800 border border-slate-200 rounded-xl focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -459,7 +505,7 @@ const ImportSupplier = () => {
             {/* Bộ lọc đa tiêu chí */}
             <div className="grid grid-cols-2 gap-2">
               <select
-                className="w-full text-xs p-2.5 border border-slate-200 rounded-xl bg-white outline-none font-medium text-slate-600 focus:border-[#1d5fa7]"
+                className="w-full text-xs p-2.5 border border-slate-200 rounded-xl bg-white outline-none font-medium text-slate-600 focus:border-sky-500"
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}>
                 <option value="">Tất cả danh mục</option>
@@ -470,7 +516,7 @@ const ImportSupplier = () => {
                 ))}
               </select>
               <select
-                className="w-full text-xs p-2.5 border border-slate-200 rounded-xl bg-white outline-none font-medium text-slate-600 focus:border-[#1d5fa7]"
+                className="w-full text-xs p-2.5 border border-slate-200 rounded-xl bg-white outline-none font-medium text-slate-600 focus:border-sky-500"
                 value={filterRx}
                 onChange={(e) => setFilterRx(e.target.value)}>
                 <option value="ALL">Tất cả phân loại</option>
@@ -496,7 +542,7 @@ const ImportSupplier = () => {
                 return (
                   <div
                     key={med._id}
-                    className="bg-white border border-slate-100 rounded-xl p-3 shadow-sm hover:border-[#1d5fa7] hover:shadow-md transition-all duration-200 flex flex-col">
+                    className="bg-white border border-slate-100 rounded-xl p-3 shadow-sm hover:border-sky-500 hover:shadow-md transition-all duration-200 flex flex-col">
                     {/* Phần top: Click mở Modal chi tiết */}
                     <div
                       className="flex justify-between items-start mb-2 cursor-pointer group"
@@ -512,52 +558,77 @@ const ImportSupplier = () => {
                             </span>
                           )}
                         </div>
-                        <h3 className="font-bold text-slate-800 text-sm truncate group-hover:text-[#1d5fa7] transition-colors">
+                        <h3 className="font-bold text-slate-800 text-sm truncate group-hover:text-sky-600 transition-colors">
                           {med.name}
                         </h3>
                         <p
                           className="text-xs text-slate-400 truncate mt-0.5"
                           title={med.ingredients}>
-                          HC: {med.ingredients || "---"}
+                          Hoạt chất: {med.ingredients || "---"}
                         </p>
                       </div>
                       <div
-                        className="shrink-0 p-1.5 bg-slate-50 group-hover:bg-blue-50 text-slate-400 group-hover:text-[#1d5fa7] rounded-lg transition-colors"
+                        className="shrink-0 p-1.5 bg-slate-50 group-hover:bg-sky-50 text-slate-400 group-hover:text-sky-600 rounded-lg transition-colors"
                         title="Xem chi tiết">
                         <Info size={16} />
                       </div>
                     </div>
 
-                    {/* Danh sách quy cách (Biến thể) inline để bấm thêm nhanh */}
+                    {/* Danh sách quy cách (Biến thể) - Đã cập nhật hiển thị Tồn kho Kho tổng */}
                     <div className="mt-1 pt-2 border-t border-slate-100 space-y-1.5">
                       {medVariants.length === 0 ? (
                         <p className="text-[11px] text-amber-500 italic">
                           Chưa cấu hình đơn vị bán.
                         </p>
                       ) : (
-                        medVariants.map((variant) => (
-                          <div
-                            key={variant._id}
-                            className="flex justify-between items-center bg-slate-50 p-2 rounded-lg border border-slate-100 hover:border-blue-200 transition-colors">
-                            <div className="min-w-0 flex-1 pr-2">
-                              <span className="text-xs font-semibold text-slate-700 block line-clamp-1">
-                                {variant.name}
-                              </span>
-                              <span className="text-[10px] text-slate-500">
-                                ĐV: {variant.unit}
-                              </span>
+                        medVariants.map((variant) => {
+                          // Tự động tìm kho tổng để lọc số lượng tồn
+                          const medInv = inventories.find(
+                            (inv) =>
+                              (inv.medicineId === med._id ||
+                                inv.medicineId?._id === med._id) &&
+                              (!inv.branchId ||
+                                inv.branchId === warehouseId ||
+                                inv.branchId?._id === warehouseId),
+                          );
+                          const totalBaseQty = medInv
+                            ? medInv.totalQuantity
+                            : 0;
+                          const variantQty = Math.floor(
+                            totalBaseQty / (variant.conversionRate || 1),
+                          );
+
+                          return (
+                            <div
+                              key={variant._id}
+                              className="flex justify-between items-center bg-slate-50 p-2 rounded-lg border border-slate-100 hover:border-sky-200 transition-colors">
+                              <div className="min-w-0 flex-1 pr-2">
+                                <span className="text-xs font-semibold text-slate-700 block line-clamp-1">
+                                  {variant.name}
+                                </span>
+                                <span className="text-[10px] text-slate-500 font-medium">
+                                  ĐV: {variant.unit}{" "}
+                                  <span className="mx-1 text-slate-300">|</span>{" "}
+                                  Tồn:{" "}
+                                  <span
+                                    className={`font-bold ${variantQty === 0 ? "text-red-500" : "text-sky-600"}`}>
+                                    {" "}
+                                    {variantQty}
+                                  </span>
+                                </span>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation(); // Ngăn chặn sự kiện click mở modal
+                                  handleSelectVariantToImport(med, variant);
+                                }}
+                                className="shrink-0 flex items-center gap-1 text-[11px] font-bold bg-sky-50 text-sky-600 px-2.5 py-1.5 rounded-md hover:bg-sky-600 hover:text-white transition-colors border border-sky-100 hover:border-sky-600">
+                                <Plus size={12} strokeWidth={3} /> Chọn
+                              </button>
                             </div>
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation(); // Ngăn chặn sự kiện click mở modal
-                                handleSelectVariantToImport(med, variant);
-                              }}
-                              className="shrink-0 flex items-center gap-1 text-[11px] font-bold bg-blue-50 text-[#1d5fa7] px-2.5 py-1.5 rounded-md hover:bg-[#1d5fa7] hover:text-white transition-colors border border-blue-100 hover:border-[#1d5fa7]">
-                              <Plus size={12} strokeWidth={3} /> Chọn
-                            </button>
-                          </div>
-                        ))
+                          );
+                        })
                       )}
                     </div>
                   </div>
@@ -612,7 +683,7 @@ const ImportSupplier = () => {
                 <input
                   type="text"
                   placeholder="VD: Dược Hậu Giang, Pymepharco..."
-                  className="w-full px-3 py-2 text-sm outline-none border border-slate-200 rounded-xl focus:border-[#1d5fa7] focus:ring-2 focus:ring-[#1d5fa7]/20 transition-all font-semibold text-slate-800"
+                  className="w-full px-3 py-2 text-sm outline-none border border-slate-200 rounded-xl focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 transition-all font-semibold text-slate-800"
                   value={supplierName}
                   onChange={(e) => setSupplierName(e.target.value)}
                   required
@@ -624,7 +695,7 @@ const ImportSupplier = () => {
           {/* Dải tiêu đề của Bảng chi tiết mặt hàng */}
           <div className="px-4 py-3 border-b border-slate-100 bg-white flex justify-between items-center shrink-0">
             <div className="flex items-center gap-2">
-              <Layers size={16} className="text-[#1d5fa7]" />
+              <Layers size={16} className="text-sky-600" />
               <span className="text-sm font-bold text-slate-700">
                 Chi tiết nhập hàng ({items.length})
               </span>
@@ -654,24 +725,44 @@ const ImportSupplier = () => {
             ) : (
               <div className="w-full flex flex-col gap-3">
                 {items.map((item, index) => {
+                  // Chỉ lấy lượng lô tồn tại Kho Tổng cho dropdown chọn lô
                   const medInventory = inventories.find(
                     (inv) =>
-                      inv.medicineId === item.medicineId ||
-                      inv.medicineId?._id === item.medicineId,
+                      (inv.medicineId === item.medicineId ||
+                        inv.medicineId?._id === item.medicineId) &&
+                      (!inv.branchId ||
+                        inv.branchId === warehouseId ||
+                        inv.branchId?._id === warehouseId),
                   );
-                  const availableBatches = medInventory
+                  {/* const availableBatches = medInventory
                     ? Array.from(
                         new Map(
                           medInventory.batches.map((b) => [b.batchCode, b]),
                         ).values(),
                       )
-                    : [];
+                    : []; */}
+
+                    let availableBatches = [];
+                    if (medInventory && medInventory.batches) {
+                      const batchMap = new Map();
+                      medInventory.batches.forEach((b) => {
+                        if (batchMap.has(b.batchCode)) {
+                          // Nếu đã tồn tại mã lô này trong Map, cộng dồn số lượng
+                          batchMap.get(b.batchCode).quantity += b.quantity;
+                        } else {
+                          // Nếu chưa có, thêm mới (sao chép ra object mới để không ảnh hưởng dữ liệu gốc)
+                          batchMap.set(b.batchCode, { ...b });
+                        }
+                      });
+                      availableBatches = Array.from(batchMap.values());
+                    }
+                    
                   const isExistingBatch = item.batchSelection !== "NEW";
 
                   return (
                     <div
                       key={`${item.variantId}-${index}`}
-                      className="bg-white border border-slate-200 rounded-xl p-3 shadow-sm hover:border-[#1d5fa7]/30 transition-colors">
+                      className="bg-white border border-slate-200 rounded-xl p-3 shadow-sm hover:border-sky-300 transition-colors">
                       <div className="flex justify-between items-start mb-3 border-b border-slate-100 pb-2">
                         <div>
                           <p className="font-bold text-slate-800 text-sm">
@@ -692,7 +783,7 @@ const ImportSupplier = () => {
 
                       {/* Sử dụng Responsive Grid linh hoạt */}
                       <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3">
-                        {/* Chọn Lô */}
+                        {/* Chọn Lô - Hiển thị kèm lượng tồn quy đổi */}
                         <div>
                           <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">
                             Loại Lô
@@ -708,11 +799,17 @@ const ImportSupplier = () => {
                             }
                             className={inputBase}>
                             <option value="NEW">➕ Tạo Lô Mới</option>
-                            {availableBatches.map((b) => (
-                              <option key={b.batchCode} value={b.batchCode}>
-                                Lô Cũ: {b.batchCode}
-                              </option>
-                            ))}
+                            {availableBatches.map((b) => {
+                              const batchVariantQty = Math.floor(
+                                b.quantity / (item.conversionRate || 1),
+                              );
+                              return (
+                                <option key={b.batchCode} value={b.batchCode}>
+                                  Lô: {b.batchCode} - Tồn: {batchVariantQty}{" "}
+                                  {item.unit}
+                                </option>
+                              );
+                            })}
                           </select>
                         </div>
 
@@ -791,7 +888,7 @@ const ImportSupplier = () => {
                             type="number"
                             min="1"
                             required
-                            className={`${inputBase} text-center font-extrabold text-[#1d5fa7] text-sm`}
+                            className={`${inputBase} text-center font-extrabold text-sky-600 text-sm`}
                             value={item.quantity}
                             onChange={(e) =>
                               handleItemChange(
@@ -856,11 +953,11 @@ const ImportSupplier = () => {
               style={{
                 background:
                   items.length > 0
-                    ? "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)"
+                    ? "linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)"
                     : "#94a3b8",
                 boxShadow:
                   items.length > 0
-                    ? "0 4px 14px rgba(29, 95, 167, 0.4)"
+                    ? "0 4px 14px rgba(14, 165, 233, 0.3)"
                     : "none",
               }}>
               <Save size={18} />
@@ -881,7 +978,7 @@ const ImportSupplier = () => {
             {/* Modal Header */}
             <div className="p-4 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#1d5fa7] flex items-center justify-center font-bold text-sm">
+                <div className="w-8 h-8 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center font-bold text-sm">
                   <Pill size={16} />
                 </div>
                 <div>

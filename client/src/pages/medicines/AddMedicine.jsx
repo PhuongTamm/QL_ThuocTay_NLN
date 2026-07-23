@@ -127,7 +127,7 @@ const AddMedicine = () => {
 
   /* ── Định dạng Style dùng chung ── */
   const inputCls =
-    "w-full px-3 py-2.5 text-sm border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-[#1d5fa7]/20 focus:border-[#1d5fa7] transition-all bg-slate-50 hover:bg-white text-slate-800 placeholder:text-slate-400";
+    "w-full px-3 py-2.5 text-sm border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-[#0ea5e9]/20 focus:border-[#0ea5e9] transition-all bg-slate-50 hover:bg-white text-slate-800 placeholder:text-slate-400";
   const labelCls =
     "block text-[11px] font-bold text-slate-600 mb-1.5 uppercase tracking-wide";
 
@@ -144,7 +144,9 @@ const AddMedicine = () => {
   );
 
   return (
-    <div className="cat-root min-h-screen bg-slate-50/80 p-6 font-sans">
+    <div
+      className="cat-root min-h-screen bg-gradient-to-br from-sky-50 via-blue-50
+      to-slate-50 p-6 font-sans">
       <style>{`
         @keyframes fadeInPage {
           from { opacity: 0; transform: translateY(15px); }
@@ -161,7 +163,7 @@ const AddMedicine = () => {
           <button
             type="button"
             onClick={() => navigate(-1)}
-            className="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-slate-200 text-slate-500 hover:text-[#1d5fa7] hover:border-[#1d5fa7]/40 hover:bg-[#1d5fa7]/5 transition-all shadow-sm">
+            className="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-slate-200 text-slate-500 hover:text-[#0ea5e9] hover:border-[#0ea5e9]/40 hover:bg-[#0ea5e9]/5 transition-all shadow-sm">
             <ArrowLeft size={18} />
           </button>
           <div>
@@ -248,7 +250,7 @@ const AddMedicine = () => {
                     onChange={handleChange}
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1d5fa7]"></div>
+                  <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#0ea5e9]"></div>
                 </label>
               </div>
             </div>
@@ -307,18 +309,18 @@ const AddMedicine = () => {
                   onChange={handleChange}
                   required
                   className={
-                    inputCls + " font-bold text-[#1d5fa7] tracking-wide"
+                    inputCls + " font-bold text-[#0ea5e9] tracking-wide"
                   }
                   placeholder="0"
                 />
               </div>
 
               {/* Tỷ lệ quy đổi Box */}
-              <div className="md:col-span-2 bg-[#1d5fa7]/5 border border-[#1d5fa7]/20 rounded-xl p-4">
+              <div className="md:col-span-2 bg-[#0ea5e9]/5 border border-[#0ea5e9]/20 rounded-xl p-4">
                 <div className="flex items-start gap-2 mb-3">
-                  <Info size={16} className="text-[#1d5fa7] shrink-0 mt-0.5" />
+                  <Info size={16} className="text-[#0ea5e9] shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-bold text-[#1d5fa7] text-xs uppercase tracking-wide">
+                    <h4 className="font-bold text-[#0ea5e9] text-xs uppercase tracking-wide">
                       Hệ số quy đổi lưu kho
                     </h4>
                     <p className="text-xs text-slate-600 mt-1">
@@ -395,12 +397,12 @@ const AddMedicine = () => {
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
             <SectionHeaderBadge icon={ImageIcon} title="Hình ảnh sản phẩm" />
 
-            <label className="flex flex-col items-center justify-center gap-2 p-6 border-2 border-dashed border-[#1d5fa7]/30 bg-[#1d5fa7]/5 rounded-xl cursor-pointer hover:bg-[#1d5fa7]/10 transition-colors group">
+            <label className="flex flex-col items-center justify-center gap-2 p-6 border-2 border-dashed border-[#0ea5e9]/30 bg-[#0ea5e9]/5 rounded-xl cursor-pointer hover:bg-[#0ea5e9]/10 transition-colors group">
               <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-                <UploadCloud size={24} className="text-[#1d5fa7]" />
+                <UploadCloud size={24} className="text-[#0ea5e9]" />
               </div>
               <div className="text-center">
-                <span className="text-sm font-bold text-[#1d5fa7] block mb-0.5">
+                <span className="text-sm font-bold text-[#0ea5e9] block mb-0.5">
                   Nhấp để tải ảnh lên
                 </span>
                 <span className="text-xs text-slate-500">
@@ -458,8 +460,8 @@ const AddMedicine = () => {
                 className="flex-1 md:flex-none px-6 py-2.5 rounded-xl text-white font-bold text-sm flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"
                 style={{
                   background:
-                    "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
-                  boxShadow: "0 4px 14px rgba(29, 95, 167, 0.35)",
+                    "linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)",
+                  boxShadow: "0 4px 14px rgba(14, 165, 233, 0.35)",
                 }}>
                 {isSubmitting ? (
                   <>

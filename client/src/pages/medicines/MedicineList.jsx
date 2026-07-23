@@ -66,6 +66,24 @@ const MedicineList = () => {
   const [viewingImages, setViewingImages] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  const [editingVariantMed, setEditingVariantMed] = useState(null); // Lưu trữ thuốc gốc khi đang sửa biến thể
+
+  // ---> THÊM HÀM TÍNH TOÁN NÀY <---
+  // Hàm tự động tính giá gợi ý dựa trên MAC và Category Markup
+  const getSuggestedPrice = (med, convRate) => {
+    if (!med) return 0;
+    const mac = med.mac || 0; // Lấy giá vốn bình quân (MAC)
+    let markup = 0;
+    if (med.categoryId) {
+      const catId = med.categoryId._id || med.categoryId;
+      const category = categories.find((c) => c._id === catId);
+      if (category && category.markupPercentage) {
+        markup = category.markupPercentage; // Lấy tỷ lệ lợi nhuận
+      }
+    }
+    return mac * Number(convRate || 1) * (1 + markup);
+  };
+
   const openImageViewer = (images) => {
     if (!images || images.length === 0) return;
     setViewingImages(images);
@@ -215,7 +233,7 @@ const MedicineList = () => {
         conversionRate: Number(newVariant.conversionRate),
       };
       const response = await api.post("/medicines/variants", payload);
-      if (response.data.success) {
+      if (response.success) {
         window.alert("Thêm quy cách thành công!");
         setIsAddVariantModalOpen(false);
       } else {
@@ -230,15 +248,16 @@ const MedicineList = () => {
       fetchData();
     } catch (error) {
       alert(
-        error.response?.data?.message || "Đã xảy ra lỗi khi thêm quy cách!",
+        error.data?.message || "Đã xảy ra lỗi khi thêm quy cách!",
       );
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleOpenEditVariant = (variant) => {
+  const handleOpenEditVariant = (variant, med) => {
     setEditingVariant({ ...variant });
+    setEditingVariantMed(med); // Lưu trữ thuốc gốc liên quan
     setIsEditVariantModalOpen(true);
   };
 
@@ -305,7 +324,7 @@ const MedicineList = () => {
 
   /* ─── Shared input style ─── */
   const inputCls =
-    "w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#1d5fa7]/30 focus:border-[#1d5fa7] transition bg-white text-slate-800 placeholder:text-slate-400";
+    "w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#0ea5e9]/30 focus:border-[#0ea5e9] transition bg-white text-slate-800 placeholder:text-slate-400";
   const labelCls =
     "block text-xs font-700 text-slate-500 uppercase tracking-wide mb-1.5";
 
@@ -329,7 +348,7 @@ const MedicineList = () => {
             <div
               className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0"
               style={{
-                background: "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+                background: "linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)",
               }}>
               <Pill size={22} color="white" />
             </div>
@@ -351,7 +370,7 @@ const MedicineList = () => {
             onClick={() => navigate("/medicines/new")}
             className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-bold text-white transition-all hover:-translate-y-0.5"
             style={{
-              background: "linear-gradient(135deg, #1d5fa7, #2c78d6)",
+              background: "linear-gradient(135deg, #0ea5e9, #0369a1)",
               boxShadow: "0 4px 14px rgba(29, 95, 167, 0.4)",
             }}>
             <Plus size={18} strokeWidth={2.5} /> Thêm thuốc gốc
@@ -459,7 +478,7 @@ const MedicineList = () => {
                       <div className="flex flex-col items-center gap-3 text-slate-400">
                         <Loader2
                           size={32}
-                          className="animate-spin text-[#1d5fa7]"
+                          className="animate-spin text-[#0ea5e9]"
                         />
                         <p className="text-sm font-medium">
                           Đang tải dữ liệu...
@@ -487,11 +506,11 @@ const MedicineList = () => {
                   filteredAndSortedMedicines.map((med) => (
                     <React.Fragment key={med._id}>
                       {/* MEDICINE ROW */}
-                      <tr className="hover:bg-[#1d5fa7]/5 transition-colors duration-150 group">
+                      <tr className="hover:bg-[#0ea5e9]/5 transition-colors duration-150 group">
                         <td
                           className="p-4 text-center cursor-pointer"
                           onClick={() => toggleRow(med._id)}>
-                          <button className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:bg-[#1d5fa7]/10 hover:text-[#1d5fa7] transition-all">
+                          <button className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:bg-[#0ea5e9]/10 hover:text-[#0ea5e9] transition-all">
                             {expandedRows.includes(med._id) ? (
                               <ChevronDown size={18} />
                             ) : (
@@ -506,13 +525,13 @@ const MedicineList = () => {
                               alt={med.name}
                               onClick={() => openImageViewer(med.images)}
                               title="Bấm để xem tất cả ảnh"
-                              className="w-10 h-10 rounded-xl object-cover border border-slate-100 shadow-sm cursor-pointer hover:ring-2 hover:ring-[#1d5fa7] transition-all"
+                              className="w-10 h-10 rounded-xl object-cover border border-slate-100 shadow-sm cursor-pointer hover:ring-2 hover:ring-[#0ea5e9] transition-all"
                             />
                           ) : (
-                            <div className="w-10 h-10 bg-gradient-to-br from-[#1d5fa7]/5 to-[#1d5fa7]/10 rounded-xl border border-slate-100 flex items-center justify-center">
+                            <div className="w-10 h-10 bg-gradient-to-br from-[#0ea5e9]/5 to-[#0ea5e9]/10 rounded-xl border border-slate-100 flex items-center justify-center">
                               <Package
                                 size={16}
-                                className="text-[#1d5fa7]/50"
+                                className="text-[#0ea5e9]/50"
                               />
                             </div>
                           )}
@@ -576,7 +595,7 @@ const MedicineList = () => {
                             <button
                               title="Sửa thuốc gốc"
                               onClick={() => handleOpenEditModal(med)}
-                              className="w-8 h-8 flex items-center justify-center rounded-xl text-[#1d5fa7] hover:bg-[#1d5fa7]/10 transition-all hover:scale-110">
+                              className="w-8 h-8 flex items-center justify-center rounded-xl text-[#0ea5e9] hover:bg-[#0ea5e9]/10 transition-all hover:scale-110">
                               <Edit size={17} />
                             </button>
                             <button
@@ -591,11 +610,11 @@ const MedicineList = () => {
 
                       {/* VARIANT ROWS */}
                       {expandedRows.includes(med._id) && (
-                        <tr className="bg-gradient-to-r from-[#1d5fa7]/5 to-transparent">
+                        <tr className="bg-gradient-to-r from-[#0ea5e9]/5 to-transparent">
                           <td colSpan="8" className="px-6 py-4">
                             <div className="pl-10">
                               <div className="flex items-center gap-2 mb-3">
-                                <div className="w-1 h-4 rounded-full bg-[#1d5fa7]" />
+                                <div className="w-1 h-4 rounded-full bg-[#0ea5e9]" />
                                 <h4 className="text-xs font-bold text-slate-600 uppercase tracking-wide">
                                   Danh sách quy cách / Biến thể
                                 </h4>
@@ -627,7 +646,7 @@ const MedicineList = () => {
                                       {med.variants.map((variant) => (
                                         <tr
                                           key={variant._id}
-                                          className="hover:bg-[#1d5fa7]/5 transition-colors">
+                                          className="hover:bg-[#0ea5e9]/5 transition-colors">
                                           <td className="px-4 py-3">
                                             <span className="text-sm font-normal text-slate-700">
                                               {variant.sku || "N/A"}
@@ -650,9 +669,12 @@ const MedicineList = () => {
                                             <div className="flex justify-end gap-1.5">
                                               <button
                                                 onClick={() =>
-                                                  handleOpenEditVariant(variant)
+                                                  handleOpenEditVariant(
+                                                    variant,
+                                                    med,
+                                                  )
                                                 }
-                                                className="w-7 h-7 flex items-center justify-center rounded-lg text-[#1d5fa7] hover:bg-[#1d5fa7]/10 transition-all">
+                                                className="w-7 h-7 flex items-center justify-center rounded-lg text-[#0ea5e9] hover:bg-[#0ea5e9]/10 transition-all">
                                                 <Edit size={14} />
                                               </button>
                                               <button
@@ -842,7 +864,7 @@ const MedicineList = () => {
                       isPrescription: e.target.checked,
                     })
                   }
-                  className="w-4 h-4 accent-[#1d5fa7] rounded"
+                  className="w-4 h-4 accent-[#0ea5e9] rounded"
                 />
                 <span className="text-sm font-semibold text-slate-700">
                   Thuốc kê đơn (Rx)
@@ -885,9 +907,9 @@ const MedicineList = () => {
                     </div>
                   </div>
                 )}
-                <label className="flex flex-col items-center justify-center gap-2 p-5 border-2 border-dashed border-[#1d5fa7]/30 bg-[#1d5fa7]/5 rounded-xl cursor-pointer hover:bg-[#1d5fa7]/10 transition-colors">
-                  <UploadCloud size={24} className="text-[#1d5fa7]" />
-                  <span className="text-sm font-semibold text-[#1d5fa7]">
+                <label className="flex flex-col items-center justify-center gap-2 p-5 border-2 border-dashed border-[#0ea5e9]/30 bg-[#0ea5e9]/5 rounded-xl cursor-pointer hover:bg-[#0ea5e9]/10 transition-colors">
+                  <UploadCloud size={24} className="text-[#0ea5e9]" />
+                  <span className="text-sm font-semibold text-[#0ea5e9]">
                     Nhấp để tải thêm ảnh mới
                   </span>
                   <span className="text-xs text-slate-400">PNG, JPG, WEBP</span>
@@ -937,8 +959,8 @@ const MedicineList = () => {
                 disabled={isSubmitting}
                 className="px-5 py-2.5 rounded-xl text-white font-bold text-sm flex items-center gap-2 transition-all hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed"
                 style={{
-                  background: "linear-gradient(135deg,#1d5fa7,#2c78d6)",
-                  boxShadow: "0 4px 12px rgba(29, 95, 167, 0.35)",
+                  background: "linear-gradient(135deg,#0ea5e9,#0369a1)",
+                  boxShadow: "0 4px 12px rgba(14, 165, 233, 0.35)",
                 }}>
                 {isSubmitting ? (
                   <Loader2 size={16} className="animate-spin" />
@@ -967,7 +989,7 @@ const MedicineList = () => {
                 </h2>
                 <p className="text-xs text-slate-400 mt-0.5">
                   Cho thuốc:{" "}
-                  <span className="font-bold text-[#1d5fa7]">
+                  <span className="font-bold text-[#0ea5e9]">
                     {selectedMedicineForVariant.name}
                   </span>
                 </p>
@@ -1036,13 +1058,48 @@ const MedicineList = () => {
                         currentPrice: e.target.value,
                       })
                     }
-                    className={inputCls + " font-bold text-[#1d5fa7]"}
+                    className={inputCls + " font-bold text-[#0ea5e9]"}
                   />
+
+                  {getSuggestedPrice(
+                    selectedMedicineForVariant,
+                    newVariant.conversionRate,
+                  ) > 0 && (
+                    <div className="mt-2 flex items-center justify-between bg-emerald-50 border border-emerald-100 p-2 rounded-lg text-[11px] text-emerald-700">
+                      <span>
+                        Gợi ý:{" "}
+                        <b>
+                          {formatCurrency(
+                            getSuggestedPrice(
+                              selectedMedicineForVariant,
+                              newVariant.conversionRate,
+                            ),
+                          )}
+                        </b>
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setNewVariant({
+                            ...newVariant,
+                            currentPrice: Math.round(
+                              getSuggestedPrice(
+                                selectedMedicineForVariant,
+                                newVariant.conversionRate,
+                              ),
+                            ),
+                          })
+                        }
+                        className="font-bold underline hover:text-emerald-900">
+                        Áp dụng
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
 
               <div>
-                <label className={labelCls + " text-[#1d5fa7]"}>
+                <label className={labelCls + " text-[#0ea5e9]"}>
                   Tỷ lệ quy đổi ra đơn vị cơ sở
                 </label>
                 <input
@@ -1122,7 +1179,7 @@ const MedicineList = () => {
                 </h2>
                 <p className="text-xs text-slate-400 mt-0.5">
                   Mã SKU:{" "}
-                  <span className="font-mono font-bold text-[#1d5fa7] bg-[#1d5fa7]/10 px-1.5 py-0.5 rounded-lg">
+                  <span className="font-mono font-bold text-[#0ea5e9] bg-[#0ea5e9]/10 px-1.5 py-0.5 rounded-lg">
                     {editingVariant.sku}
                   </span>
                 </p>
@@ -1174,8 +1231,43 @@ const MedicineList = () => {
                         currentPrice: e.target.value,
                       })
                     }
-                    className={inputCls + " font-bold text-[#1d5fa7]"}
+                    className={inputCls + " font-bold text-[#0ea5e9]"}
                   />
+
+                  {getSuggestedPrice(
+                    editingVariantMed,
+                    editingVariant.conversionRate,
+                  ) > 0 && (
+                    <div className="mt-2 flex items-center justify-between bg-emerald-50 border border-emerald-100 p-2 rounded-lg text-[11px] text-emerald-700">
+                      <span>
+                        Gợi ý:{" "}
+                        <b>
+                          {formatCurrency(
+                            getSuggestedPrice(
+                              editingVariantMed,
+                              editingVariant.conversionRate,
+                            ),
+                          )}
+                        </b>
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setEditingVariant({
+                            ...editingVariant,
+                            currentPrice: Math.round(
+                              getSuggestedPrice(
+                                editingVariantMed,
+                                editingVariant.conversionRate,
+                              ),
+                            ),
+                          })
+                        }
+                        className="font-bold underline hover:text-emerald-900">
+                        Áp dụng
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -1194,8 +1286,8 @@ const MedicineList = () => {
                 />
               </div>
 
-              <div className="bg-[#1d5fa7]/5 border border-[#1d5fa7]/20 rounded-xl p-4">
-                <label className={labelCls + " text-[#1d5fa7]"}>
+              <div className="bg-[#0ea5e9]/5 border border-[#0ea5e9]/20 rounded-xl p-4">
+                <label className={labelCls + " text-[#0ea5e9]"}>
                   Tỷ lệ quy đổi ra đơn vị cơ sở{" "}
                   <span className="text-red-400">*</span>
                 </label>
@@ -1211,7 +1303,7 @@ const MedicineList = () => {
                     })
                   }
                   className={
-                    inputCls + " focus:ring-[#1d5fa7]/30 focus:border-[#1d5fa7]"
+                    inputCls + " focus:ring-[#0ea5e9]/30 focus:border-[#0ea5e9]"
                   }
                   placeholder="VD: 100"
                 />
@@ -1231,8 +1323,8 @@ const MedicineList = () => {
                 disabled={isSubmitting}
                 className="px-5 py-2.5 rounded-xl text-white font-bold text-sm flex items-center gap-2 transition-all hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed"
                 style={{
-                  background: "linear-gradient(135deg,#1d5fa7,#2c78d6)",
-                  boxShadow: "0 4px 12px rgba(29, 95, 167, 0.35)",
+                  background: "linear-gradient(135deg,#0ea5e9,#0369a1)",
+                  boxShadow: "0 4px 12px rgba(14, 165, 233, 0.35)",
                 }}>
                 {isSubmitting ? (
                   <Loader2 size={16} className="animate-spin" />

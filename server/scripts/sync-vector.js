@@ -17,13 +17,14 @@ const objectIdToUUID = (id) => {
 
 // 1. Text cho Medicine (Đã ghép thêm Variant)
 const generateMedicineText = (med, variants) => {
-  let text = `Thuốc: ${med.name}. Mã: ${med.code}. Hoạt chất: ${med.ingredients || "Không rõ"}. Mô tả: ${med.description || "Không có"}. NSX: ${med.manufacturer || "Không rõ"}. Loại: ${med.isPrescription ? "Kê đơn" : "Không kê đơn"}. `;
+  const categoryName = med.categoryId?.name || "Chưa phân loại";
+  let text = `Thuốc: ${med.name}. Mã: ${med.code}. Danh mục: ${categoryName}. Hoạt chất: ${med.ingredients || "Không rõ"}. Mô tả: ${med.description || "Không có"}. NSX: ${med.manufacturer || "Không rõ"}. Loại: ${med.isPrescription ? "Kê đơn" : "Không kê đơn"}. `;
 
   if (variants && variants.length > 0) {
     const variantStr = variants
       .map((v) => `${v.name} (${v.packagingSpecification || v.unit})`)
       .join(", ");
-    text += `Quy cách đóng gói hiện có: ${variantStr}.`;
+    text += `Quy cách đóng gói: ${variantStr}.`;
   }
   return text;
 };
@@ -42,7 +43,7 @@ const generateBranchText = (branch) => {
 
 const syncAllData = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI);
+    await mongoose.connect("mongodb://127.0.0.1:27017/pharmacy_db");
     await vectorService.initQdrant();
 
     console.log("🚀 BẮT ĐẦU ĐỒNG BỘ DỮ LIỆU LÊN VECTOR DATABASE...\n");
@@ -76,7 +77,7 @@ const syncAllData = async () => {
     // ==============================================
     // SYNC 3: MEDICINE + VARIANTS (THUỐC)
     // ==============================================
-    const medicines = await Medicine.find().lean();
+    const medicines = await Medicine.find().populate("categoryId").lean();
     console.log(
       `💊 Đang đồng bộ ${medicines.length} Thuốc gốc (kèm quy cách)...`,
     );

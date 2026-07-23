@@ -9,6 +9,8 @@ import {
   Tag,
   Trash2,
   X,
+  TrendingUp,
+  Save,
 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import {
@@ -62,6 +64,15 @@ const useToast = () => {
   return { toasts, addToast, removeToast };
 };
 
+// ─── Modal Overlay ────────────────────────────────────────────────────────────
+const ModalOverlay = ({ children, onClose }) => (
+  <div
+    className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+    onClick={onClose}>
+    <div onClick={(e) => e.stopPropagation()}>{children}</div>
+  </div>
+);
+
 // ─── Confirm Dialog ───────────────────────────────────────────────────────────
 const ConfirmDialog = ({ open, onConfirm, onCancel, categoryName }) => {
   if (!open) return null;
@@ -102,12 +113,21 @@ const ConfirmDialog = ({ open, onConfirm, onCancel, categoryName }) => {
 
 const CategoryList = () => {
   const [categories, setCategories] = useState([]);
-  const [formData, setFormData] = useState({ name: "", description: "" });
+
+  // State quản lý Modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Form Data
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    markupPercentage: 20,
+  });
   const [editingId, setEditingId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [confirmDelete, setConfirmDelete] = useState(null); // { id, name }
+  const [confirmDelete, setConfirmDelete] = useState(null);
   const { toasts, addToast, removeToast } = useToast();
 
   useEffect(() => {
@@ -127,27 +147,53 @@ const CategoryList = () => {
     }
   };
 
+  const handleOpenAddModal = () => {
+    setEditingId(null);
+    setFormData({ name: "", description: "", markupPercentage: 20 });
+    setIsModalOpen(true);
+  };
+
+  const handleEdit = (category) => {
+    setEditingId(category._id);
+    setFormData({
+      name: category.name,
+      description: category.description || "",
+      markupPercentage:
+        category.markupPercentage !== undefined
+          ? category.markupPercentage * 100
+          : 20,
+    });
+    setIsModalOpen(true);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
     try {
+      // Chuyển đổi % về số thập phân để gửi xuống DB (20 -> 0.2)
+      const payload = {
+        ...formData,
+        markupPercentage: Number(formData.markupPercentage) / 100,
+      };
+
       if (editingId) {
-        const result = await updateCategory(editingId, formData);
+        const result = await updateCategory(editingId, payload);
         if (result.data.success) {
           addToast("Cập nhật danh mục thành công!");
         } else {
           addToast(result.data.message || "Cập nhật thất bại!", "error");
         }
       } else {
-        const result = await createCategory(formData);
+        const result = await createCategory(payload);
         if (result.data.success) {
           addToast("Thêm danh mục thành công!");
         } else {
           addToast(result.data.message || "Thêm thất bại!", "error");
         }
       }
-      setFormData({ name: "", description: "" });
+      setFormData({ name: "", description: "", markupPercentage: 20 });
       setEditingId(null);
+      setIsModalOpen(false); // Đóng modal khi thành công
       loadCategories();
     } catch (error) {
       addToast("Lỗi xử lý. Vui lòng thử lại!", "error");
@@ -155,12 +201,6 @@ const CategoryList = () => {
     } finally {
       setSubmitting(false);
     }
-  };
-
-  const handleEdit = (category) => {
-    setEditingId(category._id);
-    setFormData({ name: category.name, description: category.description });
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleDelete = async () => {
@@ -190,16 +230,10 @@ const CategoryList = () => {
     );
   });
 
-  const cancelEdit = () => {
-    setEditingId(null);
-    setFormData({ name: "", description: "" });
-  };
-
   return (
     <>
       <style>{`
         .cat-root * { font-family: 'DM Sans', sans-serif; }
-        .cat-root .brand-font { font-family: 'Sora', sans-serif; }
         
         @keyframes slideIn {
           from { opacity: 0; transform: translateX(20px); }
@@ -209,51 +243,16 @@ const CategoryList = () => {
           from { opacity: 0; transform: scale(.9); }
           to   { opacity: 1; transform: scale(1); }
         }
-        @keyframes fadeUp {
+        @keyframes modalIn {
+          from { transform: translateY(14px) scale(.97); opacity: 0; }
+          to   { transform: none; opacity: 1; }
+        }
+        @keyframes fadeInPage {
           from { opacity: 0; transform: translateY(12px); }
-          to   { opacity: 1; transform: translateY(0); }
+          to { opacity: 1; transform: translateY(0); }
         }
-        .row-anim:nth-child(1)  { animation-delay: .04s }
-        .row-anim:nth-child(2)  { animation-delay: .08s }
-        .row-anim:nth-child(3)  { animation-delay: .12s }
-        .row-anim:nth-child(4)  { animation-delay: .16s }
-        .row-anim:nth-child(5)  { animation-delay: .20s }
-        .row-anim:nth-child(n+6){ animation-delay: .24s }
-
-        .focus-ring:focus {
-          outline: none;
-          border-color: #60a5fa;
-          box-shadow: 0 0 0 4px rgba(96,165,250,.18);
-        }
-        .cat-btn-primary {
-          background: linear-gradient(
-            135deg,
-            #1d5fa7 0%,
-            #1d5fa7 50%,
-            #1d5fa7 100%
-          );
-          color: white;
-          border: none;
-          transition: all .2s;
-        }
-
-        .cat-btn-primary:hover {
-          transform: translateY(-1px);
-          box-shadow: 0 8px 25px rgba(59,130,246,.35);
-        }
-
-        .cat-btn-warning {
-          background: linear-gradient(
-            135deg,
-            #1d5fa7 0%,
-            #1d5fa7 100%
-          );
-          color: white;
-        }
-
-        .cat-btn-warning:hover {
-          transform: translateY(-1px);
-          box-shadow: 0 8px 25px rgba(59,130,246,.3);
+        .animate-page-in {
+          animation: fadeInPage 0.4s ease-out forwards;
         }
 
         .table-row { transition: background .15s; }
@@ -263,6 +262,7 @@ const CategoryList = () => {
       `}</style>
 
       <Toast toasts={toasts} removeToast={removeToast} />
+
       <ConfirmDialog
         open={!!confirmDelete}
         categoryName={confirmDelete?.name}
@@ -270,26 +270,128 @@ const CategoryList = () => {
         onCancel={() => setConfirmDelete(null)}
       />
 
+      {/* ─── Modal Thêm/Sửa Danh Mục ─── */}
+      {isModalOpen && (
+        <ModalOverlay onClose={() => setIsModalOpen(false)}>
+          <div
+            className="bg-white rounded-2xl shadow-2xl w-[500px] max-h-[88vh] flex flex-col overflow-hidden"
+            style={{ animation: "modalIn .22s ease" }}>
+            <div className="flex justify-between items-center px-6 py-4 border-b border-slate-100">
+              <div>
+                <h2 className="text-lg font-bold text-slate-900">
+                  {editingId ? "Cập nhật Danh mục" : "Thêm Danh mục Mới"}
+                </h2>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  Điền các thông tin cơ bản cho danh mục thuốc
+                </p>
+              </div>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="w-8 h-8 flex items-center justify-center rounded-xl bg-slate-100 text-slate-500 hover:bg-red-50 hover:text-red-500 transition-all">
+                <X size={18} />
+              </button>
+            </div>
+
+            <form
+              id="categoryForm"
+              onSubmit={handleSubmit}
+              className="p-6 overflow-y-auto space-y-4 flex-1">
+              <div>
+                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">
+                  Tên danh mục <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={formData.name}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
+                  className="w-full px-3 py-2.5 text-sm border border-slate-200 bg-white text-slate-800 placeholder:text-slate-400 rounded-xl outline-none focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 transition-all"
+                  placeholder="VD: Thuốc kháng sinh, Thực phẩm chức năng..."
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">
+                  Tỷ lệ lợi nhuận kỳ vọng (%){" "}
+                  <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  step="0.1"
+                  required
+                  value={formData.markupPercentage}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      markupPercentage: e.target.value,
+                    })
+                  }
+                  className="w-full px-3 py-2.5 text-sm border border-slate-200 bg-white text-slate-800 font-bold placeholder:text-slate-400 rounded-xl outline-none focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 transition-all"
+                  placeholder="VD: 20"
+                />
+                <p className="text-[11px] text-slate-400 mt-1">
+                  Mức lợi nhuận này sẽ được dùng để tự động tính giá bán gợi ý.
+                </p>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">
+                  Mô tả (Không bắt buộc)
+                </label>
+                <textarea
+                  rows="3"
+                  value={formData.description}
+                  onChange={(e) =>
+                    setFormData({ ...formData, description: e.target.value })
+                  }
+                  className="w-full px-3 py-2.5 text-sm border border-slate-200 bg-white text-slate-800 placeholder:text-slate-400 rounded-xl outline-none focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 transition-all resize-none"
+                  placeholder="Nhập mô tả chi tiết cho nhóm thuốc này..."
+                />
+              </div>
+            </form>
+
+            <div className="flex justify-end gap-2.5 px-6 py-4 border-t border-slate-100 bg-slate-50/50 rounded-b-2xl">
+              <button
+                type="button"
+                onClick={() => setIsModalOpen(false)}
+                className="px-5 py-2.5 rounded-xl bg-slate-100 text-slate-700 font-semibold text-sm hover:bg-slate-200 transition-colors">
+                Hủy
+              </button>
+              <button
+                form="categoryForm"
+                type="submit"
+                disabled={submitting}
+                className="px-5 py-2.5 rounded-xl text-white font-bold text-sm flex items-center gap-2 transition-all hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed"
+                style={{
+                  background: "linear-gradient(135deg,#0ea5e9,#0369a1)",
+                  boxShadow: "0 4px 12px rgba(14, 165, 233, 0.35)",
+                }}>
+                {submitting ? (
+                  <Loader2 size={16} className="animate-spin" />
+                ) : (
+                  <Save size={16} />
+                )}
+                {editingId ? "Cập nhật" : "Thêm mới"}
+              </button>
+            </div>
+          </div>
+        </ModalOverlay>
+      )}
+
       <div className="cat-root min-h-screen bg-gradient-to-br from-sky-50 via-blue-50 to-slate-50">
-        <style>{`
-        @keyframes fadeInPage {
-          from { opacity: 0; transform: translateY(12px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-page-in {
-          animation: fadeInPage 0.4s ease-out forwards;
-        }
-      `}</style>
         <div className="animate-page-in space-y-6">
           <div className="px-6 py-6">
-            {/* Header */}
+            {/* Header: Đã thay thế inline form bằng Nút mở Modal */}
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
                 <div
                   className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0"
                   style={{
                     background:
-                      "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+                      "linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)",
                   }}>
                   <Tag size={22} color="white" />
                 </div>
@@ -307,88 +409,15 @@ const CategoryList = () => {
                   </p>
                 </div>
               </div>
-            </div>
-
-            {/* Form Card */}
-            <div className="bg-white rounded-2xl shadow-sm border border-sky-100 p-6 mb-6">
-              <div className="flex items-center gap-2 mb-5">
-                <div
-                  className={`w-7 h-7 rounded-lg flex items-center justify-center ${editingId ? "bg-amber-100" : "bg-linear-to-b from-[#1d5fa7] via-[#1d5fa7] to-[#1d5fa7]"}`}>
-                  {editingId ? (
-                    <Edit size={14} className="text-amber-600" />
-                  ) : (
-                    <Plus size={14} className="text-white" />
-                  )}
-                </div>
-                <h2 className="text-sm font-semibold text-gray-700">
-                  {editingId ? "Chỉnh sửa danh mục" : "Thêm danh mục mới"}
-                </h2>
-              </div>
-
-              <form
-                onSubmit={handleSubmit}
-                className="flex flex-wrap gap-4 items-end">
-                <div className="flex flex-col gap-1.5 flex-1 min-w-[160px]">
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                    Tên danh mục *
-                  </label>
-                  <input
-                    type="text"
-                    // className="focus-ring border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm text-gray-800 transition-all"
-                    className="w-full px-3 py-2.5 text-sm border
-                    // border-slate-200 rounded-xl outline-none focus:ring-2
-                    // focus:ring-sky-200 focus:border-sky-400 transition bg-white
-                    // text-slate-800 placeholder:text-slate-400"
-                    value={formData.name}
-                    onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
-                    }
-                    required
-                    placeholder="Ví dụ: Thuốc kháng sinh"
-                  />
-                </div>
-                <div className="flex flex-col gap-1.5 flex-[2] min-w-[220px]">
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                    Mô tả
-                  </label>
-                  <input
-                    type="text"
-                    // className="focus-ring border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm text-gray-800 transition-all"
-                    className="w-full px-3 py-2.5 text-sm border
-                    // border-slate-200 rounded-xl outline-none focus:ring-2
-                    // focus:ring-sky-200 focus:border-sky-400 transition bg-white
-                    // text-slate-800 placeholder:text-slate-400"
-                    value={formData.description}
-                    onChange={(e) =>
-                      setFormData({ ...formData, description: e.target.value })
-                    }
-                    placeholder="Nhập mô tả danh mục..."
-                  />
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    type="submit"
-                    disabled={submitting}
-                    className={`cat-btn-${editingId ? "warning" : "primary"} px-5 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed`}>
-                    {submitting ? (
-                      <Loader2 size={15} className="animate-spin" />
-                    ) : editingId ? (
-                      <Edit size={15} />
-                    ) : (
-                      <Plus size={15} />
-                    )}
-                    {editingId ? "Cập nhật" : "Thêm mới"}
-                  </button>
-                  {editingId && (
-                    <button
-                      type="button"
-                      onClick={cancelEdit}
-                      className="px-4 py-2.5 rounded-xl border border-gray-200 text-gray-500 text-sm font-medium hover:bg-gray-50 transition-colors flex items-center gap-1.5">
-                      <X size={14} /> Hủy
-                    </button>
-                  )}
-                </div>
-              </form>
+              <button
+                onClick={handleOpenAddModal}
+                className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-bold text-white transition-all hover:-translate-y-0.5"
+                style={{
+                  background: "linear-gradient(135deg, #0ea5e9, #0369a1)",
+                  boxShadow: "0 4px 14px rgba(14, 165, 233, 0.4)",
+                }}>
+                <Plus size={18} strokeWidth={2.5} /> Thêm danh mục
+              </button>
             </div>
 
             {/* Search & Stats Bar */}
@@ -401,12 +430,7 @@ const CategoryList = () => {
                 <input
                   type="text"
                   placeholder="Tìm theo tên hoặc mô tả..."
-                  //className="focus-ring w-full border border-gray-200 rounded-xl pl-9 pr-9 py-2.5 text-smtext-gray-700"
-
-                  className="w-full pl-9 py-2.5 text-sm border
-                    // border-slate-200 rounded-xl outline-none focus:ring-2
-                    // focus:ring-sky-200 focus:border-sky-400 transition bg-white
-                    // text-slate-800 placeholder:text-slate-400"
+                  className="w-full pl-9 py-2.5 text-sm border bg-white text-slate-800 placeholder:text-slate-400 rounded-xl outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -423,7 +447,7 @@ const CategoryList = () => {
                   className="badge"
                   style={{
                     background:
-                      "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+                      "linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)",
                     color: "#fff",
                   }}>
                   {filteredCategories.length} / {categories.length} danh mục
@@ -442,7 +466,7 @@ const CategoryList = () => {
             <div className="bg-white rounded-2xl shadow-sm border border-sky-100 overflow-hidden">
               {loading ? (
                 <div className="flex flex-col items-center justify-center py-20 gap-3 text-gray-400">
-                  <Loader2 size={32} className="animate-spin text-indigo-400" />
+                  <Loader2 size={32} className="animate-spin text-sky-400" />
                   <span className="text-sm">Đang tải dữ liệu...</span>
                 </div>
               ) : (
@@ -459,6 +483,9 @@ const CategoryList = () => {
                       <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider border-b border-gray-100">
                         Tên danh mục
                       </th>
+                      <th className="px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider border-b border-gray-100 w-36">
+                        Tỷ lệ Lợi Nhuận
+                      </th>
                       <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider border-b border-gray-100">
                         Mô tả
                       </th>
@@ -472,7 +499,7 @@ const CategoryList = () => {
                       filteredCategories.map((cat, idx) => (
                         <tr
                           key={cat._id}
-                          className="table-row row-anim border-b border-gray-50 last:border-0">
+                          className="table-row row-anim border-b border-gray-50 last:border-0 hover:bg-[#0ea5e9]/5">
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-3">
                               <div
@@ -492,6 +519,15 @@ const CategoryList = () => {
                               </span>
                             </div>
                           </td>
+                          <td className="px-6 py-4 text-center">
+                            <span className="inline-flex items-center justify-center px-3 py-1 bg-emerald-50 text-emerald-600 font-bold text-xs rounded-full border border-emerald-100">
+                              <TrendingUp size={13} className="mr-1" />
+                              {cat.markupPercentage !== undefined
+                                ? cat.markupPercentage * 100
+                                : 20}
+                              %
+                            </span>
+                          </td>
                           <td className="px-6 py-4">
                             <span className="text-sm text-gray-500">
                               {cat.description || (
@@ -506,8 +542,7 @@ const CategoryList = () => {
                               <button
                                 onClick={() => handleEdit(cat)}
                                 title="Chỉnh sửa"
-                                className="w-8 h-8 rounded-lg flex items-center justify-center text-blue-600
-hover:bg-sky-50 hover:text-blue-700 transition-all">
+                                className="w-8 h-8 rounded-lg flex items-center justify-center text-blue-600 hover:bg-sky-50 hover:text-blue-700 transition-all">
                                 <Edit size={15} />
                               </button>
                               <button
@@ -527,7 +562,7 @@ hover:bg-sky-50 hover:text-blue-700 transition-all">
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="3" className="py-20 text-center">
+                        <td colSpan="4" className="py-20 text-center">
                           <div className="flex flex-col items-center gap-3 text-gray-400">
                             <FolderOpen size={40} className="text-gray-200" />
                             <div>
@@ -538,7 +573,7 @@ hover:bg-sky-50 hover:text-blue-700 transition-all">
                                   </p>
                                   <p className="text-xs mt-1">
                                     Không có danh mục nào phù hợp với{" "}
-                                    <strong className="text-[#1d5fa7]">
+                                    <strong className="text-[#0ea5e9]">
                                       "{searchTerm}"
                                     </strong>
                                   </p>

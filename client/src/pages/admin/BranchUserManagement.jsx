@@ -191,7 +191,7 @@ const BranchUserManagement = () => {
 
   /* ── shared styles ── */
   const inputCls =
-    "w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#1d5fa7]/30 focus:border-[#1d5fa7] transition bg-white text-slate-800 placeholder:text-slate-400";
+    "w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#0ea5e9]/30 focus:border-[#0ea5e9] transition bg-white text-slate-800 placeholder:text-slate-400";
   const labelCls =
     "block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1.5";
 
@@ -228,7 +228,7 @@ const BranchUserManagement = () => {
             <div
               className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0"
               style={{
-                background: "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+                background: "linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)",
                 boxShadow: "0 4px 14px rgba(29, 95, 167, 0.3)",
               }}>
               <Building2 size={22} color="white" />
@@ -258,7 +258,7 @@ const BranchUserManagement = () => {
             }
             className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-bold text-white transition-all hover:-translate-y-0.5"
             style={{
-              background: "linear-gradient(135deg, #1d5fa7, #2c78d6)",
+              background: "linear-gradient(135deg, #0ea5e9, #0369a1)",
               boxShadow: "0 4px 14px rgba(29, 95, 167, 0.4)",
             }}>
             <Plus size={18} strokeWidth={2.5} />
@@ -277,7 +277,7 @@ const BranchUserManagement = () => {
             }`}
             style={
               activeTab === "branches"
-                ? { background: "linear-gradient(135deg, #1d5fa7, #2c78d6)" }
+                ? { background: "linear-gradient(135deg, #0ea5e9, #0369a1)" }
                 : {}
             }>
             <Store size={16} /> Danh sách Chi nhánh / Kho
@@ -291,7 +291,7 @@ const BranchUserManagement = () => {
             }`}
             style={
               activeTab === "users"
-                ? { background: "linear-gradient(135deg, #1d5fa7, #2c78d6)" }
+                ? { background: "linear-gradient(135deg, #0ea5e9, #0369a1)" }
                 : {}
             }>
             <Users size={16} /> Danh sách Nhân sự
@@ -302,7 +302,7 @@ const BranchUserManagement = () => {
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20 gap-3 text-slate-400">
-              <Loader2 size={32} className="animate-spin text-[#1d5fa7]" />
+              <Loader2 size={32} className="animate-spin text-[#0ea5e9]" />
               <p className="text-sm font-medium">Đang tải dữ liệu...</p>
             </div>
           ) : activeTab === "branches" ? (
@@ -345,18 +345,18 @@ const BranchUserManagement = () => {
                   branches.map((b) => (
                     <tr
                       key={b._id}
-                      className="hover:bg-[#1d5fa7]/5 transition-colors duration-150">
+                      className="hover:bg-[#0ea5e9]/5 transition-colors duration-150">
                       <td className="p-4">
                         <div className="flex items-center gap-2.5">
                           <div
-                            className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 border border-slate-100 shadow-sm ${b.type === "warehouse" ? "bg-violet-50" : "bg-[#1d5fa7]/10"}`}>
+                            className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 border border-slate-100 shadow-sm ${b.type === "warehouse" ? "bg-violet-50" : "bg-[#0ea5e9]/10"}`}>
                             {b.type === "warehouse" ? (
                               <Building2
                                 size={15}
                                 className="text-violet-500"
                               />
                             ) : (
-                              <Store size={15} className="text-[#1d5fa7]" />
+                              <Store size={15} className="text-[#0ea5e9]" />
                             )}
                           </div>
                           <span className="font-normal text-slate-800">
@@ -393,7 +393,7 @@ const BranchUserManagement = () => {
                         <div className="flex justify-end gap-1.5">
                           <button
                             onClick={() => handleOpenBranchModal(b)}
-                            className="w-8 h-8 flex items-center justify-center rounded-xl text-[#1d5fa7] hover:bg-[#1d5fa7]/10 transition-all hover:scale-110">
+                            className="w-8 h-8 flex items-center justify-center rounded-xl text-[#0ea5e9] hover:bg-[#0ea5e9]/10 transition-all hover:scale-110">
                             <Edit size={16} />
                           </button>
                           {b.type !== "warehouse" && (
@@ -450,11 +450,11 @@ const BranchUserManagement = () => {
                   users.map((u) => (
                     <tr
                       key={u._id}
-                      className="hover:bg-[#1d5fa7]/5 transition-colors duration-150">
+                      className="hover:bg-[#0ea5e9]/5 transition-colors duration-150">
                       <td className="p-4">
                         <div className="flex items-center gap-2.5">
-                          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#1d5fa7]/5 to-[#1d5fa7]/10 border border-slate-100 flex items-center justify-center shrink-0">
-                            <span className="text-[#1d5fa7] font-bold text-xs">
+                          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#0ea5e9]/5 to-[#0ea5e9]/10 border border-slate-100 flex items-center justify-center shrink-0">
+                            <span className="text-[#0ea5e9] font-bold text-xs">
                               {u.fullName?.charAt(0)?.toUpperCase() || "?"}
                             </span>
                           </div>
@@ -490,7 +490,7 @@ const BranchUserManagement = () => {
                           <button
                             onClick={() => handleOpenUserModal(u)}
                             title="Chỉnh sửa"
-                            className="w-8 h-8 flex items-center justify-center rounded-xl text-[#1d5fa7] hover:bg-[#1d5fa7]/10 transition-all hover:scale-110">
+                            className="w-8 h-8 flex items-center justify-center rounded-xl text-[#0ea5e9] hover:bg-[#0ea5e9]/10 transition-all hover:scale-110">
                             <Edit size={16} />
                           </button>
                           <button
@@ -526,7 +526,7 @@ const BranchUserManagement = () => {
             <div
               className="flex justify-between items-center px-6 py-4 text-white shrink-0"
               style={{
-                background: "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+                background: "linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)",
               }}>
               <div className="flex items-center gap-2">
                 <Store size={18} color="white" />
@@ -597,8 +597,8 @@ const BranchUserManagement = () => {
                   type="submit"
                   className="px-5 py-2.5 rounded-xl text-white font-bold text-sm flex items-center gap-2 transition-all hover:-translate-y-0.5"
                   style={{
-                    background: "linear-gradient(135deg, #1d5fa7, #2c78d6)",
-                    boxShadow: "0 4px 12px rgba(29, 95, 167, 0.35)",
+                    background: "linear-gradient(135deg, #0ea5e9, #0369a1)",
+                    boxShadow: "0 4px 12px rgba(14, 165, 233, 0.35)",
                   }}>
                   <Save size={15} /> Lưu thông tin
                 </button>
@@ -624,7 +624,7 @@ const BranchUserManagement = () => {
             <div
               className="flex justify-between items-center px-6 py-4 text-white shrink-0"
               style={{
-                background: "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+                background: "linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)",
               }}>
               <div className="flex items-center gap-2">
                 <Users size={18} color="white" />
@@ -769,8 +769,8 @@ const BranchUserManagement = () => {
                   type="submit"
                   className="px-5 py-2.5 rounded-xl text-white font-bold text-sm flex items-center gap-2 transition-all hover:-translate-y-0.5"
                   style={{
-                    background: "linear-gradient(135deg, #1d5fa7, #2c78d6)",
-                    boxShadow: "0 4px 12px rgba(29, 95, 167, 0.35)",
+                    background: "linear-gradient(135deg, #0ea5e9, #0369a1)",
+                    boxShadow: "0 4px 12px rgba(14, 165, 233, 0.35)",
                   }}>
                   <Save size={15} /> Lưu thông tin
                 </button>

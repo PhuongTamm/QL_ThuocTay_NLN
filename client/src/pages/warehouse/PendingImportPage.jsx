@@ -85,7 +85,7 @@ const PendingImportPage = () => {
 
   return (
     <div
-      className="cat-root min-h-screen bg-gradient-to-br from-sky-50 via-blue-50 p-6"
+      className="cat-root min-h-screen bg-gradient-to-br from-sky-50 via-blue-50 p-6 font-sans"
       style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
       <style>{`
         @keyframes fadeInPage {
@@ -106,7 +106,7 @@ const PendingImportPage = () => {
           <div
             className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 text-white"
             style={{
-              background: "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+              background: "linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)",
               boxShadow: "0 4px 14px rgba(29, 95, 167, 0.3)",
             }}>
             <Download size={22} />
@@ -291,7 +291,7 @@ const PendingImportPage = () => {
                     className="flex items-center gap-2 px-6 py-2.5 text-white rounded-xl text-sm font-bold transition-all hover:-translate-y-0.5"
                     style={{
                       background:
-                        "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+                        "linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)",
                       boxShadow: "0 4px 14px rgba(29, 95, 167, 0.4)",
                     }}>
                     <CheckCircle size={18} />

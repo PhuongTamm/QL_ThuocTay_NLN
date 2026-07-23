@@ -22,13 +22,16 @@ const medicineSchema = new mongoose.Schema(
 
     images: [{ type: String }],
     baseUnit: { type: String, required: true, default: "Viên" },
+
+    // MAC: Giá vốn bình quân gia quyền tính trên 1 Đơn Vị Cơ Sở
+    mac: { type: Number, default: 0 },
   },
   { timestamps: true },
 );
 
 // Hàm tạo nội dung văn bản hoàn chỉnh để AI đọc hiểu dễ dàng
-const generateTextForEmbedding = (doc) => {
-  return `Thuốc: ${doc.name}. Mã: ${doc.code}. Hoạt chất/Thành phần: ${doc.ingredients || 'Không rõ'}. Mô tả công dụng: ${doc.description || 'Không có mô tả'}. Nhà sản xuất: ${doc.manufacturer || 'Không rõ'}. Thuốc này là loại ${doc.isPrescription ? 'Kê đơn' : 'Không kê đơn'}.`;
+const generateTextForEmbedding = (doc, categoryName) => {
+  return `Thuốc: ${doc.name}. Mã: ${doc.code}. Danh mục: ${categoryName}. Hoạt chất/Thành phần: ${doc.ingredients || 'Không rõ'}. Mô tả công dụng: ${doc.description || 'Không có mô tả'}. Nhà sản xuất: ${doc.manufacturer || 'Không rõ'}. Thuốc này là loại ${doc.isPrescription ? 'Kê đơn' : 'Không kê đơn'}.`;
 };
 
 // Chuyển MongoDB ObjectId thành UUID (Qdrant yêu cầu ID là UUID hoặc số nguyên)
@@ -39,14 +42,23 @@ const objectIdToUUID = (id) => {
 
 // Hook SAU KHI LƯU (Thêm mới hoặc Cập nhật)
 medicineSchema.post("save", async function (doc) {
-  const textToEmbed = generateTextForEmbedding(doc);
-  const qdrantId = objectIdToUUID(doc._id);
-  
-  await vectorService.upsertDocument(qdrantId, {
-    type: "medicine",
-    mongoId: doc._id.toString(),
-    name: doc.name,
-  }, textToEmbed);
+  try {
+    const Category = mongoose.model("Category");
+    const categoryInfo = await Category.findById(doc.categoryId).lean();
+    const categoryName = categoryInfo ? categoryInfo.name : "Chưa phân loại";
+
+    const textToEmbed = generateTextForEmbedding(doc, categoryName);
+    const qdrantId = objectIdToUUID(doc._id);
+    
+    await vectorService.upsertDocument(
+      qdrantId,
+      { type: "medicine", mongoId: doc._id.toString(), name: doc.name },
+      textToEmbed
+    );
+    console.log(`✅ Đã đồng bộ thuốc ${doc.name} (Danh mục: ${categoryName}) lên Qdrant.`);
+  } catch (error) {
+    console.error("❌ Lỗi đồng bộ Qdrant:", error);
+  }
 });
 
 // Hook SAU KHI XÓA

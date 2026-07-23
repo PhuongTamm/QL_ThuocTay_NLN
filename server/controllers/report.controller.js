@@ -2,6 +2,7 @@ const Transaction = require("../models/Transaction");
 const Medicine = require("../models/Medicine");
 const Branch = require("../models/Branch");
 const Inventory = require("../models/Inventory");
+const MedicineVariant = require("../models/MedicineVariant");
 const mongoose = require("mongoose");
 
 // --- HELPER: Phân quyền xem dữ liệu ---
@@ -261,6 +262,139 @@ exports.getTopMedicines = async (req, res) => {
     ]);
 
     res.status(200).json({ success: true, data: topMedicines });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// API: PHÂN TÍCH HIỆU QUẢ KINH DOANH THEO TỪNG LOẠI THUỐC
+exports.getProfitAnalytics = async (req, res) => {
+  try {
+    const { fromDate, toDate, branchId } = req.query;
+    let targetBranchId = null;
+
+    if (req.user.role === "admin" || req.user.role === "warehouse_manager") {
+      targetBranchId = branchId ? new mongoose.Types.ObjectId(branchId) : null;
+    } else {
+      targetBranchId = new mongoose.Types.ObjectId(req.user.branchId);
+    }
+
+    // Lọc thời gian
+    const matchQuery = { status: "COMPLETED" };
+    if (targetBranchId) matchQuery.fromBranch = targetBranchId;
+    if (fromDate || toDate) {
+      matchQuery.createdAt = {};
+      if (fromDate)
+        matchQuery.createdAt.$gte = new Date(
+          new Date(fromDate).setHours(0, 0, 0, 0),
+        );
+      if (toDate)
+        matchQuery.createdAt.$lte = new Date(
+          new Date(toDate).setHours(23, 59, 59, 999),
+        );
+    }
+
+    // 1. TÍNH DOANH THU & GIÁ VỐN (TỪ HÓA ĐƠN BÁN LẺ)
+    const salesData = await Transaction.aggregate([
+      { $match: { ...matchQuery, type: "SALE_AT_BRANCH" } },
+      { $unwind: "$details" },
+      {
+        $group: {
+          _id: "$details.variantId",
+          totalQuantitySold: { $sum: "$details.quantity" },
+          totalRevenue: {
+            $sum: { $multiply: ["$details.quantity", "$details.price"] },
+          },
+          totalCost: {
+            $sum: {
+              $multiply: [
+                "$details.quantity",
+                { $ifNull: ["$details.costPrice", 0] },
+              ],
+            },
+          },
+        },
+      },
+    ]);
+
+    // 2. TÍNH CHI PHÍ HAO HỤT (TỪ PHIẾU HỦY HÀNG)
+    const disposalData = await Transaction.aggregate([
+      { $match: { ...matchQuery, type: "DISPOSAL" } },
+      { $unwind: "$details" },
+      {
+        $group: {
+          _id: "$details.variantId",
+          totalDisposalQty: { $sum: "$details.quantity" },
+          totalDisposalLoss: {
+            $sum: { $multiply: ["$details.quantity", "$details.price"] },
+          }, // price trong phiếu hủy chính là importPrice * conversionRate
+        },
+      },
+    ]);
+
+    // 3. MAP VỚI THÔNG TIN THUỐC & TỔNG HỢP (KẾT HỢP CÁCH 2 & 3)
+    const allVariantIds = [
+      ...new Set([...salesData, ...disposalData].map((d) => d._id.toString())),
+    ];
+    const variantsInfo = await MedicineVariant.find({
+      _id: { $in: allVariantIds },
+    })
+      .populate("medicineId", "name code categoryId")
+      .lean();
+
+    let totalSystemRevenue = 0;
+    let totalSystemCost = 0;
+    let totalSystemDisposalLoss = 0;
+
+    const reportDetails = variantsInfo.map((variant) => {
+      const sale = salesData.find(
+        (s) => s._id.toString() === variant._id.toString(),
+      ) || { totalQuantitySold: 0, totalRevenue: 0, totalCost: 0 };
+      const disposal = disposalData.find(
+        (d) => d._id.toString() === variant._id.toString(),
+      ) || { totalDisposalQty: 0, totalDisposalLoss: 0 };
+
+      const grossProfit = sale.totalRevenue - sale.totalCost; // CÁCH 2
+      const netProfit = grossProfit - disposal.totalDisposalLoss; // CÁCH 3
+
+      // Cộng dồn cho toàn hệ thống
+      totalSystemRevenue += sale.totalRevenue;
+      totalSystemCost += sale.totalCost;
+      totalSystemDisposalLoss += disposal.totalDisposalLoss;
+
+      return {
+        variantId: variant._id,
+        sku: variant.sku,
+        medicineName: variant.medicineId?.name || "Không rõ",
+        categoryId: variant.medicineId?.categoryId,
+        unit: variant.unit,
+        soldQty: sale.totalQuantitySold,
+        disposalQty: disposal.totalDisposalQty,
+        revenue: sale.totalRevenue,
+        cogs: sale.totalCost, // Cost of Goods Sold
+        grossProfit: grossProfit,
+        disposalLoss: disposal.totalDisposalLoss,
+        netProfit: netProfit,
+        margin:
+          sale.totalRevenue > 0 ? (grossProfit / sale.totalRevenue) * 100 : 0,
+      };
+    });
+
+    // Sắp xếp Lợi nhuận thuần giảm dần
+    reportDetails.sort((a, b) => b.netProfit - a.netProfit);
+
+    res.status(200).json({
+      success: true,
+      summary: {
+        totalRevenue: totalSystemRevenue,
+        totalCost: totalSystemCost,
+        grossProfit: totalSystemRevenue - totalSystemCost,
+        totalDisposalLoss: totalSystemDisposalLoss,
+        netProfit:
+          totalSystemRevenue - totalSystemCost - totalSystemDisposalLoss,
+      },
+      details: reportDetails,
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

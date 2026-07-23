@@ -55,7 +55,7 @@ const getTransactionLabel = (type) => {
     case "SALE_AT_BRANCH":
       return { text: "Bán lẻ", cls: "bg-emerald-50 text-emerald-700" };
     case "IMPORT_SUPPLIER":
-      return { text: "Nhập NCC", cls: "bg-[#1d5fa7]/10 text-[#1d5fa7]" };
+      return { text: "Nhập NCC", cls: "bg-[#0ea5e9]/10 text-[#0ea5e9]" };
     case "EXPORT_TO_BRANCH":
       return { text: "Xuất kho", cls: "bg-violet-50 text-violet-700" };
     case "RETURN_TO_WAREHOUSE":
@@ -67,7 +67,7 @@ const getTransactionLabel = (type) => {
   }
 };
 
-const PIE_COLORS = ["#1d5fa7", "#10b981", "#f59e0b", "#f97316", "#8b5cf6"];
+const PIE_COLORS = ["#0ea5e9", "#10b981", "#f59e0b", "#f97316", "#8b5cf6"];
 
 /* ─────────────────────────────────────────
    DASHBOARD
@@ -185,7 +185,7 @@ const Dashboard = () => {
           <p className="text-slate-500 text-sm font-medium mb-1">
             {new Date(label).toLocaleDateString("vi-VN")}
           </p>
-          <p className="font-black text-[#1d5fa7] text-base">
+          <p className="font-black text-[#0ea5e9] text-base">
             {formatCurrency(payload[0].value)}
           </p>
           <p className="text-xs text-slate-500 mt-0.5">
@@ -205,7 +205,7 @@ const Dashboard = () => {
           <p className="text-slate-800 text-xs font-bold mb-1 line-clamp-2">
             {data.name}
           </p>
-          <p className="font-black text-[#1d5fa7] text-sm">
+          <p className="font-black text-[#0ea5e9] text-sm">
             {formatCurrency(data.totalRevenue)}
           </p>
           <p className="text-xs text-slate-500">
@@ -222,7 +222,7 @@ const Dashboard = () => {
       onClick={() => handlePresetChange(id)}
       className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${
         datePreset === id
-          ? "bg-[#1d5fa7] text-white shadow-md shadow-[#1d5fa7]/30"
+          ? "bg-[#0ea5e9] text-white shadow-md shadow-[#0ea5e9]/30"
           : "text-slate-500 hover:bg-slate-100"
       }`}>
       {label}
@@ -294,7 +294,7 @@ const Dashboard = () => {
         {/* ── LOADING ── */}
         {loading && !stats ? (
           <div className="flex flex-col items-center justify-center h-64 gap-4">
-            <Loader2 className="animate-spin text-[#1d5fa7]" size={40} />
+            <Loader2 className="animate-spin text-[#0ea5e9]" size={40} />
             <p className="text-slate-400 font-medium animate-pulse text-sm">
               Đang đồng bộ dữ liệu...
             </p>
@@ -311,8 +311,8 @@ const Dashboard = () => {
                 title="Doanh thu bán hàng"
                 value={formatCurrency(stats?.totalRevenue || 0)}
                 icon={DollarSign}
-                gradient="bg-[#1d5fa7]"
-                iconBg="bg-gradient-to-br from-[#1d5fa7] to-[#2c78d6]"
+                gradient="bg-[#0ea5e9]"
+                iconBg="bg-gradient-to-br from-[#0ea5e9] to-[#0369a1]"
               />
               <StatCard
                 title="Đơn bán hàng"
@@ -371,12 +371,12 @@ const Dashboard = () => {
                             y2="1">
                             <stop
                               offset="5%"
-                              stopColor="#1d5fa7"
+                              stopColor="#0ea5e9"
                               stopOpacity={0.35}
                             />
                             <stop
                               offset="95%"
-                              stopColor="#1d5fa7"
+                              stopColor="#0ea5e9"
                               stopOpacity={0}
                             />
                           </linearGradient>
@@ -523,7 +523,7 @@ const Dashboard = () => {
                         return (
                           <tr
                             key={trx._id}
-                            className="hover:bg-[#1d5fa7]/5 transition-colors">
+                            className="hover:bg-[#0ea5e9]/5 transition-colors">
                             <td className="px-4 py-3 text-sm text-black font-normal">
                               {trx.code || trx._id.slice(-6).toUpperCase()}
                             </td>

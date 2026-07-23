@@ -62,10 +62,15 @@ const TransactionHistoryPage = () => {
   // Logic lọc dữ liệu tổng hợp
   const filteredData = transactions.filter((tx) => {
     // 1. Lọc theo từ khóa (Mã phiếu, tên NCC)
+    console.log(tx);
     const matchSearch =
       tx.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (tx.supplierName &&
-        tx.supplierName.toLowerCase().includes(searchTerm.toLowerCase()));
+        tx.supplierName.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (tx.customerName &&
+        tx.customerName.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (tx.customerPhone &&
+        tx.customerPhone.toLowerCase().includes(searchTerm.toLowerCase()));
 
     // 2. Lọc theo loại phiếu
     const matchType = filterType === "ALL" || tx.type === filterType;
@@ -215,7 +220,7 @@ const TransactionHistoryPage = () => {
       <h3 style="font-size: 16px; margin-bottom: 10px; text-transform: uppercase; font-weight: bold;">BẢNG KÊ CHI TIẾT</h3>
       <table style="width: 100%; border-collapse: collapse; font-size: 12px; text-align: left;">
         <thead>
-          <tr style="background-color: #f1f5f9;">
+          <tr style="background-color: #f1f5f9; page-break-inside: avoid;">
             <th style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: center; width: 5%;">STT</th>
             <th style="padding: 10px 8px; border: 1px solid #94a3b8; width: 15%;">Mã Phiếu / Ngày</th>
             <th style="padding: 10px 8px; border: 1px solid #94a3b8; width: 18%;">${reportType === "IMPORT_EXPORT" ? "Loại / Đối tác" : "Khách hàng"}</th>
@@ -283,7 +288,7 @@ const TransactionHistoryPage = () => {
           : "---";
 
         html += `
-          <tr>
+          <tr style="page-break-inside: avoid;">
             ${txMetaCols}
             <td style="padding: 10px 8px; border: 1px solid #94a3b8; vertical-align: top;">
               <strong style="color: #1e293b;">${item.variantId?.name || "Thuốc không tồn tại"}</strong><br/>
@@ -306,7 +311,7 @@ const TransactionHistoryPage = () => {
           reportType === "REVENUE"
             ? `
         <tfoot>
-          <tr style="background-color: #f8fafc;">
+          <tr style="background-color: #f8fafc; page-break-inside: avoid;">
             <td colspan="6" style="padding: 12px 8px; border: 1px solid #94a3b8; text-align: right; font-weight: bold; font-size: 14px;">TỔNG DOANH THU BÁN LẺ:</td>
             <td style="padding: 12px 8px; border: 1px solid #94a3b8; text-align: right; font-weight: bold; font-size: 16px; color: #dc2626;">${totalRevenueAmount.toLocaleString()}đ</td>
           </tr>
@@ -329,6 +334,7 @@ const TransactionHistoryPage = () => {
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 2, useCORS: true },
       jsPDF: { unit: "mm", format: "a4", orientation: "landscape" }, // In khổ ngang để bảng rộng rãi
+      pagebreak: { mode: "css", avoid: "tr" },
     };
 
     html2pdf()
@@ -343,7 +349,7 @@ const TransactionHistoryPage = () => {
       case "IMPORT_SUPPLIER":
         return (
           <span className="inline-flex items-center gap-1 text-slate-500 text-sm">
-           Nhập từ NCC
+            Nhập từ NCC
           </span>
         );
       case "EXPORT_TO_BRANCH":
@@ -400,11 +406,11 @@ const TransactionHistoryPage = () => {
   };
 
   const inputCls =
-    "w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#1d5fa7]/30 focus:border-[#1d5fa7] transition bg-white text-slate-800 placeholder:text-slate-400";
+    "w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#0ea5e9]/30 focus:border-[#0ea5e9] transition bg-white text-slate-800 placeholder:text-slate-400";
 
   return (
     <div
-      className="cat-root min-h-screen bg-gradient-to-br from-[#1d5fa7]/5 via-blue-50/50 to-slate-50 p-6"
+      className="cat-root min-h-screen bg-gradient-to-br from-sky-50 via-blue-50 p-6"
       style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
       <style>{`
         @keyframes fadeInPage {
@@ -432,7 +438,7 @@ const TransactionHistoryPage = () => {
             <div
               className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0"
               style={{
-                background: "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+                background: "linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)",
                 boxShadow: "0 4px 14px rgba(29, 95, 167, 0.3)",
               }}>
               <FileText size={22} color="white" />
@@ -527,7 +533,7 @@ const TransactionHistoryPage = () => {
               <select
                 className={
                   inputCls +
-                  " pl-9 appearance-none text-[#1d5fa7] bg-[#1d5fa7]/5"
+                  " pl-9 appearance-none text-[#0ea5e9] bg-[#0ea5e9]/5"
                 }
                 value={datePreset}
                 onChange={(e) => setDatePreset(e.target.value)}>
@@ -595,7 +601,7 @@ const TransactionHistoryPage = () => {
                       <div className="flex flex-col items-center gap-3 text-slate-400">
                         <Loader2
                           size={32}
-                          className="animate-spin text-[#1d5fa7]"
+                          className="animate-spin text-[#0ea5e9]"
                         />
                         <p className="text-sm font-medium">
                           Đang tải dữ liệu...
@@ -620,7 +626,7 @@ const TransactionHistoryPage = () => {
                   filteredData.map((tx) => (
                     <tr
                       key={tx._id}
-                      className="hover:bg-[#1d5fa7]/5 transition-colors duration-150">
+                      className="hover:bg-[#0ea5e9]/5 transition-colors duration-150">
                       <td className="p-4">
                         <span className="text-sm font-normal text-slate-700">
                           {tx.code}
@@ -656,7 +662,7 @@ const TransactionHistoryPage = () => {
                       <td className="p-4 text-right whitespace-nowrap">
                         <button
                           onClick={() => handleOpenDetail(tx)}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-[#1d5fa7] bg-[#1d5fa7]/5 hover:bg-[#1d5fa7]/10 border border-[#1d5fa7]/20 transition-all hover:scale-105 whitespace-nowrap">
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-[#1d5fa7] bg-[#1d5fa7]/5 hover:bg-[#1d5fa7]/10 border border-[#0ea5e9]/20 transition-all hover:scale-105 whitespace-nowrap">
                           <Eye size={13} /> Xem phiếu
                         </button>
                       </td>
@@ -684,7 +690,7 @@ const TransactionHistoryPage = () => {
             <div
               className="flex justify-between items-center px-6 py-5 shrink-0"
               style={{
-                background: "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+                background: "linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)",
               }}>
               <div>
                 <div className="flex items-center gap-3 mb-2">

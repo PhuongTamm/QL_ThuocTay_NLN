@@ -11,13 +11,10 @@ import {
   History,
   Loader2,
   Package,
-  Calendar,
   CheckCircle2,
   Clock,
-  HelpCircle,
   Trash2,
   Plus,
-  Minus,
   FileWarning,
   Printer,
 } from "lucide-react";
@@ -350,7 +347,7 @@ const InventoryPage = () => {
       }
 
       html += `
-        <tr>
+        <tr style="page-break-inside: avoid;">
           <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: center; vertical-align: top;">${idx + 1}</td>
           <td style="padding: 10px 8px; border: 1px solid #94a3b8; vertical-align: top; font-family: monospace;"><strong>${inv.medicineId?.code || ""}</strong></td>
           <td style="padding: 10px 8px; border: 1px solid #94a3b8; vertical-align: top;">${inv.medicineId?.name || ""}</td>
@@ -372,6 +369,7 @@ const InventoryPage = () => {
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 2, useCORS: true },
       jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
+      pagebreak: { mode: "css", avoid: "tr" },
     };
 
     html2pdf()
@@ -383,7 +381,7 @@ const InventoryPage = () => {
       });
   };
 
-  /* ─── LOGIC IN PHIẾU XUẤT HỦY (MỚI THÊM) ─── */
+  /* ─── LOGIC IN PHIẾU XUẤT HỦY ─── */
   const generateDisposalPDF = async (transaction) => {
     let branchName = user?.branchId
       ? branches.find((x) => x._id === user.branchId)?.name
@@ -406,7 +404,6 @@ const InventoryPage = () => {
     let htmlRows = "";
 
     transaction.details.forEach((item, idx) => {
-      // Tìm thông tin biến thể từ dữ liệu disposeCart hiện tại hoặc fallback
       const cartItem = disposeCart.find((c) => c.variantId === item.variantId);
       const name = cartItem?.medicine?.name || "Sản phẩm không rõ";
       const unit =
@@ -611,7 +608,6 @@ const InventoryPage = () => {
 
       const res = await api.post("/transactions/dispose", payload);
       if (res.data.success) {
-        // ĐÃ CẬP NHẬT: Hỏi và In PDF
         const wantToPrint = window.confirm(
           "Chốt phiếu xuất hủy thành công! Chi phí tổn thất đã được ghi nhận. Bạn có muốn in PHIẾU XUẤT HỦY không?",
         );
@@ -640,18 +636,24 @@ const InventoryPage = () => {
   }, 0);
 
   const inputCls =
-    "w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#1d5fa7]/30 focus:border-[#1d5fa7] transition bg-white text-slate-800 placeholder:text-slate-400";
+    "w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#0ea5e9]/30 focus:border-[#0ea5e9] transition bg-white text-slate-800 placeholder:text-slate-400";
 
   return (
     <div
       className="cat-root min-h-screen bg-gradient-to-br from-sky-50 via-blue-50
       to-slate-50 p-6 font-sans"
       style={{
-        //background: "#f0f4f8",
         fontFamily: "'DM Sans', system-ui, sans-serif",
       }}>
       <style>{`
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInPage {
+          from { opacity: 0; transform: translateY(12px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-page-in {
+          animation: fadeInPage 0.4s ease-out forwards;
+        }
+         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes modalIn { from { transform: translateY(14px) scale(.97); opacity: 0; } to { transform: none; opacity: 1; } }
         .scrollbar-thin::-webkit-scrollbar { width: 5px; height: 5px; }
         .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
@@ -660,273 +662,301 @@ const InventoryPage = () => {
           .no-print { display: none !important; }
         }
       `}</style>
-
-      {/* ── PAGE HEADER ── */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <div
-            className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0"
-            style={{
-              background: "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
-            }}>
-            <ClipboardList size={22} color="white" />
+      <div className="animate-page-in space-y-6">
+        {/* ── PAGE HEADER ── */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <div
+              className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0"
+              style={{
+                background: "linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)",
+              }}>
+              <ClipboardList size={22} color="white" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-slate-900 leading-tight">
+                Quản lý Tồn Kho
+              </h1>
+              <p className="text-xs text-slate-500">
+                {processedData.length} mặt hàng ·{" "}
+                {new Date().toLocaleDateString("vi-VN", {
+                  weekday: "long",
+                  day: "numeric",
+                  month: "numeric",
+                })}
+              </p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-xl font-bold text-slate-900 leading-tight">
-              Quản lý Tồn Kho
-            </h1>
-            <p className="text-xs text-slate-500">
-              {processedData.length} mặt hàng ·{" "}
-              {new Date().toLocaleDateString("vi-VN", {
-                weekday: "long",
-                day: "numeric",
-                month: "numeric",
-              })}
-            </p>
+
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleExportPDF}
+              disabled={isExportingPDF || processedData.length === 0}
+              className="flex items-center gap-2 px-5 py-2.5 bg-white text-slate-700 font-bold border border-slate-200 rounded-2xl shadow-sm hover:bg-slate-50 transition-all disabled:opacity-50">
+              {isExportingPDF ? (
+                <Loader2 size={18} className="animate-spin" />
+              ) : (
+                <Printer size={18} />
+              )}
+              Xuất PDF
+            </button>
+
+            {/* SỬA QUYỀN LẬP PHIẾU XUẤT HỦY TẠI ĐÂY */}
+            <button
+              onClick={() => {
+                if (
+                  user?.role !== "admin" &&
+                  user?.role !== "warehouse_manager"
+                ) {
+                  alert("Bạn không có quyền thực hiện hành động này");
+                  return;
+                }
+                setDisposeSearchTerm("");
+                setDisposeCart([]);
+                setIsDisposeModalOpen(true);
+              }}
+              className="flex items-center gap-2 px-5 py-2.5 text-white font-bold rounded-2xl transition-all hover:-translate-y-0.5"
+              style={{
+                background: "linear-gradient(135deg, #0ea5e9, #0369a1)",
+                boxShadow: "0 4px 14px rgba(14, 165, 233, 0.4)",
+              }}>
+              <FileWarning size={18} /> Lập Phiếu Xuất Hủy
+            </button>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          <button
-            onClick={handleExportPDF}
-            disabled={isExportingPDF || processedData.length === 0}
-            className="flex items-center gap-2 px-5 py-2.5 bg-white text-slate-700 font-bold border border-slate-200 rounded-2xl shadow-sm hover:bg-slate-50 transition-all disabled:opacity-50">
-            {isExportingPDF ? (
-              <Loader2 size={18} className="animate-spin" />
-            ) : (
-              <Printer size={18} />
-            )}
-            Xuất PDF
-          </button>
-
-          {/* SỬA MÀU NÚT LẬP PHIẾU TẠI TRANG CHÍNH */}
-          <button
-            onClick={() => {
-              setDisposeSearchTerm("");
-              setDisposeCart([]);
-              setIsDisposeModalOpen(true);
-            }}
-            className="flex items-center gap-2 px-5 py-2.5 text-white font-bold rounded-2xl transition-all hover:-translate-y-0.5"
-            style={{
-              background: "linear-gradient(135deg, #1d5fa7, #2c78d6)",
-              boxShadow: "0 4px 14px rgba(29, 95, 167, 0.4)",
-            }}>
-            <FileWarning size={18} /> Lập Phiếu Xuất Hủy
-          </button>
-        </div>
-      </div>
-
-      {/* ── FILTER BAR ── */}
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 mb-4">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
-          <div className="relative md:col-span-4">
-            <Search
-              size={16}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
-            />
-            <input
-              className={inputCls + " pl-10"}
-              placeholder="Tìm mã thuốc, tên thuốc..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-          <div className="relative md:col-span-3">
-            <Filter
-              size={14}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
-            />
-            <select
-              className={inputCls + " pl-9 appearance-none"}
-              value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}>
-              <option value="all">Tất cả trạng thái</option>
-              <option value="low_stock">📦 Sắp/Đã hết hàng (&lt; 20)</option>
-              <option value="expiring_soon">⚠️ Hạn ngắn (&lt; 3 tháng)</option>
-              <option value="expired">🚨 Đã hết hạn</option>
-            </select>
-          </div>
-          <div className="relative md:col-span-2">
-            <ArrowUpDown
-              size={14}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
-            />
-            <select
-              className={inputCls + " pl-9 appearance-none"}
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}>
-              <option value="qty_desc">Tồn kho giảm dần</option>
-              <option value="qty_asc">Tồn kho tăng dần</option>
-              <option value="name_asc">Tên thuốc (A-Z)</option>
-            </select>
-          </div>
-          {(user?.role === "admin" || user?.role === "warehouse_manager") && (
+        {/* ── FILTER BAR ── */}
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
+            <div className="relative md:col-span-4">
+              <Search
+                size={16}
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+              />
+              <input
+                className={inputCls + " pl-10"}
+                placeholder="Tìm mã thuốc, tên thuốc..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
             <div className="relative md:col-span-3">
-              <Store
+              <Filter
                 size={14}
                 className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
               />
               <select
-                className={
-                  inputCls +
-                  " pl-9 appearance-none font-sm text-[#1d5fa7]"
-                }
-                value={selectedBranchId}
-                onChange={(e) => setSelectedBranchId(e.target.value)}>
-                <option value="">-- Kho của tôi (Mặc định) --</option>
-                {branches.map((b) => (
-                  <option key={b._id} value={b._id}>
-                    {b.type === "warehouse" ? "🏢 Kho Tổng: " : "🏪 CN: "}{" "}
-                    {b.name}
-                  </option>
-                ))}
+                className={inputCls + " pl-9 appearance-none"}
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}>
+                <option value="all">Tất cả trạng thái</option>
+                <option value="low_stock">📦 Sắp/Đã hết hàng (&lt; 20)</option>
+                <option value="expiring_soon">
+                  ⚠️ Hạn ngắn (&lt; 3 tháng)
+                </option>
+                <option value="expired">🚨 Đã hết hạn</option>
               </select>
             </div>
-          )}
+            <div className="relative md:col-span-2">
+              <ArrowUpDown
+                size={14}
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+              />
+              <select
+                className={inputCls + " pl-9 appearance-none"}
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}>
+                <option value="qty_desc">Tồn kho giảm dần</option>
+                <option value="qty_asc">Tồn kho tăng dần</option>
+                <option value="name_asc">Tên thuốc (A-Z)</option>
+              </select>
+            </div>
+            {(user?.role === "admin" || user?.role === "warehouse_manager") && (
+              <div className="relative md:col-span-3">
+                <Store
+                  size={14}
+                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+                />
+                <select
+                  className={
+                    inputCls + " pl-9 appearance-none font-sm text-[#0ea5e9]"
+                  }
+                  value={selectedBranchId}
+                  onChange={(e) => setSelectedBranchId(e.target.value)}>
+                  <option value="">-- Kho của tôi (Mặc định) --</option>
+                  {branches.map((b) => (
+                    <option key={b._id} value={b._id}>
+                      {b.type === "warehouse" ? "🏢 Kho Tổng: " : "🏪 CN: "}{" "}
+                      {b.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
 
-      {/* ── INVENTORY TABLE ── */}
-      <div
-        id="inventory-table-print"
-        className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-        <div className="hidden print:block p-6 border-b border-slate-200 mb-4 text-center">
-          <h1 className="text-2xl font-bold uppercase mb-2">
-            Báo Cáo Tồn Kho Hiện Tại
-          </h1>
-          <p>Ngày trích xuất: {new Date().toLocaleDateString("vi-VN")}</p>
-        </div>
+        {/* ── INVENTORY TABLE ── */}
+        <div
+          id="inventory-table-print"
+          className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+          <div className="hidden print:block p-6 border-b border-slate-200 mb-4 text-center">
+            <h1 className="text-2xl font-bold uppercase mb-2">
+              Báo Cáo Tồn Kho Hiện Tại
+            </h1>
+            <p>Ngày trích xuất: {new Date().toLocaleDateString("vi-VN")}</p>
+          </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm border-collapse">
-            <thead>
-              <tr className="bg-gradient-to-r border-b border-slate-100">
-                <th className="p-4 w-14 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
-                  STT
-                </th>
-                <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wide">
-                  Mã Thuốc
-                </th>
-                <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wide">
-                  Tên Thuốc
-                </th>
-                <th className="p-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
-                  Đơn vị
-                </th>
-                <th className="p-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
-                  Tổng Tồn Kho
-                </th>
-                <th className="p-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wide no-print">
-                  Thao tác
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-50">
-              {loading ? (
-                <tr>
-                  <td colSpan="6" className="text-center py-16">
-                    <div className="flex flex-col items-center gap-3 text-slate-400">
-                      <Loader2
-                        size={32}
-                        className="animate-spin text-[#1d5fa7]"
-                      />
-                      <p className="text-sm font-medium">Đang tải dữ liệu...</p>
-                    </div>
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm border-collapse">
+              <thead>
+                <tr className="bg-gradient-to-r border-b border-slate-100">
+                  <th className="p-4 w-14 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
+                    STT
+                  </th>
+                  <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wide">
+                    Mã Thuốc
+                  </th>
+                  <th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wide">
+                    Tên Thuốc
+                  </th>
+                  <th className="p-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
+                    Đơn vị
+                  </th>
+                  <th className="p-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
+                    Tổng Tồn Kho
+                  </th>
+                  <th className="p-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wide no-print">
+                    Thao tác
+                  </th>
                 </tr>
-              ) : processedData.length === 0 ? (
-                <tr>
-                  <td colSpan="6" className="text-center py-20">
-                    <div className="flex flex-col items-center gap-3">
-                      <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center">
-                        <Package size={28} className="text-slate-300" />
+              </thead>
+              <tbody className="divide-y divide-slate-50">
+                {loading ? (
+                  <tr>
+                    <td colSpan="6" className="text-center py-16">
+                      <div className="flex flex-col items-center gap-3 text-slate-400">
+                        <Loader2
+                          size={32}
+                          className="animate-spin text-[#0ea5e9]"
+                        />
+                        <p className="text-sm font-medium">
+                          Đang tải dữ liệu...
+                        </p>
                       </div>
-                      <p className="text-base font-semibold text-slate-500">
-                        Không có dữ liệu tồn kho
-                      </p>
-                    </div>
-                  </td>
-                </tr>
-              ) : (
-                processedData.map((inv, idx) => {
-                  const activeBatches = inv.batches.filter(
-                    (b) => b.quantity > 0,
-                  );
-                  const hasWarning = activeBatches.some(
-                    (b) =>
-                      new Date(b.expiryDate) <=
-                      new Date(new Date().setMonth(new Date().getMonth() + 3)),
-                  );
-                  const isLowStock = inv.totalQuantity < 20;
+                    </td>
+                  </tr>
+                ) : processedData.length === 0 ? (
+                  <tr>
+                    <td colSpan="6" className="text-center py-20">
+                      <div className="flex flex-col items-center gap-3">
+                        <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center">
+                          <Package size={28} className="text-slate-300" />
+                        </div>
+                        <p className="text-base font-semibold text-slate-500">
+                          Không có dữ liệu tồn kho
+                        </p>
+                      </div>
+                    </td>
+                  </tr>
+                ) : (
+                  processedData.map((inv, idx) => {
+                    const activeBatches = inv.batches.filter(
+                      (b) => b.quantity > 0,
+                    );
+                    const hasWarning = activeBatches.some(
+                      (b) =>
+                        new Date(b.expiryDate) <=
+                        new Date(
+                          new Date().setMonth(new Date().getMonth() + 3),
+                        ),
+                    );
+                    const isLowStock = inv.totalQuantity < 20;
 
-                  return (
-                    <tr
-                      key={inv._id}
-                      className="hover:bg-[#1d5fa7]/5 transition-colors duration-150 group">
-                      <td className="p-4 text-center text-slate-400 text-sm font-medium">
-                        {idx + 1}
-                      </td>
-                      <td className="p-4">
-                        <span className="text-sm font-normal text-slate-700">
-                          {inv.medicineId?.code}
-                        </span>
-                      </td>
-                      <td className="p-4">
-                        <div className="flex items-center gap-2">
-                          <span className="font-normal text-slate-800 text-sm leading-snug">
-                            {inv.medicineId?.name}
+                    return (
+                      <tr
+                        key={inv._id}
+                        className="hover:bg-[#0ea5e9]/5 transition-colors duration-150 group">
+                        <td className="p-4 text-center text-slate-400 text-sm font-medium">
+                          {idx + 1}
+                        </td>
+                        <td className="p-4">
+                          <span className="text-sm font-normal text-slate-700">
+                            {inv.medicineId?.code}
                           </span>
-                          {hasWarning && (
-                            <span
-                              title="Có lô sắp hết hạn"
-                              className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-red-50 text-red-500 text-[10px] font-bold rounded-full border border-red-100">
-                              <AlertTriangle size={9} /> Hạn
+                        </td>
+                        <td className="p-4">
+                          <div className="flex items-center gap-2">
+                            <span className="font-normal text-slate-800 text-sm leading-snug">
+                              {inv.medicineId?.name}
+                            </span>
+                            {hasWarning && (
+                              <span
+                                title="Có lô sắp hết hạn"
+                                className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-red-50 text-red-500 text-[10px] font-bold rounded-full border border-red-100">
+                                <AlertTriangle size={9} /> Hạn
+                              </span>
+                            )}
+                          </div>
+                        </td>
+                        <td className="p-4 text-center">
+                          <span className="text-sm font-normal text-slate-500">
+                            {inv.medicineId?.baseUnit}
+                          </span>
+                        </td>
+                        <td className="p-4 text-center">
+                          {/* SỬA LẠI PHẦN HIỂN THỊ SỐ LƯỢNG TỒN (ĐÃ HẾT/SẮP HẾT) TẠI ĐÂY */}
+                          {inv.totalQuantity === 0 ? (
+                            <div className="flex flex-col items-center">
+                              <span className="text-sm font-bold text-red-500">
+                                {inv.totalQuantity.toLocaleString()}
+                              </span>
+                              <p className="text-[10px] text-red-500 font-bold mt-0.5 no-print">
+                                Đã hết
+                              </p>
+                            </div>
+                          ) : inv.totalQuantity > 0 &&
+                            inv.totalQuantity < 20 ? (
+                            <div className="flex flex-col items-center">
+                              <span className="text-sm font-bold text-orange-500">
+                                {inv.totalQuantity.toLocaleString()}
+                              </span>
+                              <p className="text-[10px] text-orange-500 font-bold mt-0.5 no-print">
+                                Sắp hết
+                              </p>
+                            </div>
+                          ) : (
+                            <span className="text-sm font-semibold text-[#1d5fa7]">
+                              {inv.totalQuantity.toLocaleString()}
                             </span>
                           )}
-                        </div>
-                      </td>
-                      <td className="p-4 text-center">
-                        <span className="text-sm font-normal text-slate-500">
-                          {inv.medicineId?.baseUnit}
-                        </span>
-                      </td>
-                      <td className="p-4 text-center">
-                        <span
-                          className={`text-sm font-semibold ${isLowStock ? "text-orange-500" : "text-[#1d5fa7]"}`}>
-                          {inv.totalQuantity.toLocaleString()}
-                        </span>
-                        {isLowStock && (
-                          <p className="text-[10px] text-orange-400 font-medium mt-0.5 no-print">
-                            Sắp hết
-                          </p>
-                        )}
-                      </td>
-                      <td className="p-4 text-right no-print">
-                        <button
-                          onClick={() => handleOpenDetail(inv)}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-[#1d5fa7] bg-[#1d5fa7]/5 hover:bg-[#1d5fa7]/10 border border-[#1d5fa7]/20 transition-all hover:scale-105">
-                          <Eye size={13} /> Chi tiết (
-                          {
-                            inv.batches.filter((item, index, self) => {
-                              return (
-                                self.findIndex(
-                                  (x) => x.batchCode === item.batchCode,
-                                ) === index
-                              );
-                            }).length
-                          }{" "}
-                          lô)
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </table>
+                        </td>
+                        <td className="p-4 text-right no-print">
+                          <button
+                            onClick={() => handleOpenDetail(inv)}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-[#1d5fa7] bg-[#1d5fa7]/5 hover:bg-[#1d5fa7]/10 border border-[#1d5fa7]/20 transition-all hover:scale-105">
+                            <Eye size={13} /> Chi tiết (
+                            {
+                              inv.batches.filter((item, index, self) => {
+                                return (
+                                  self.findIndex(
+                                    (x) => x.batchCode === item.batchCode,
+                                  ) === index
+                                );
+                              }).length
+                            }{" "}
+                            lô)
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-
       {/* ══════════════════════════════════════════
           MODAL: TẠO PHIẾU XUẤT HỦY (DISPOSAL)
       ══════════════════════════════════════════ */}
@@ -935,11 +965,10 @@ const InventoryPage = () => {
           onClose={() => setIsDisposeModalOpen(false)}
           zIndex="z-[60]">
           <div className="bg-white rounded-2xl shadow-2xl w-[1200px] max-w-[95vw] h-[85vh] flex flex-col overflow-hidden">
-            {/* ĐÃ ĐỔI MÀU HEADER SANG CHỦ ĐẠO */}
             <div
               className="flex justify-between items-center px-6 py-4 text-white shrink-0"
               style={{
-                background: "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+                background: "linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)",
               }}>
               <div className="flex items-center gap-3">
                 <FileWarning size={24} color="white" />
@@ -966,11 +995,10 @@ const InventoryPage = () => {
                       size={16}
                       className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
                     />
-                    {/* ĐỔI FOCUS MÀU TÌM KIẾM */}
                     <input
                       autoFocus
                       placeholder="Tìm mã thuốc, tên, lô thuốc cần hủy..."
-                      className="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-[#1d5fa7] focus:ring-2 focus:ring-[#1d5fa7]/30 bg-slate-50 text-sm"
+                      className="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-[#0ea5e9] focus:ring-2 focus:ring-[#0ea5e9]/30 bg-slate-50 text-sm"
                       value={disposeSearchTerm}
                       onChange={(e) => setDisposeSearchTerm(e.target.value)}
                     />
@@ -989,7 +1017,7 @@ const InventoryPage = () => {
                     return (
                       <div
                         key={idx}
-                        className={`p-4 rounded-xl border ${isErrorBatch ? "bg-orange-50 border-orange-200" : "bg-white border-slate-200 hover:border-[#1d5fa7]/50"} transition shadow-sm flex flex-col gap-2`}>
+                        className={`p-4 rounded-xl border ${isErrorBatch ? "bg-orange-50 border-orange-200" : "bg-white border-slate-200 hover:border-[#0ea5e9]/50"} transition shadow-sm flex flex-col gap-2`}>
                         <div className="flex justify-between items-start">
                           <div>
                             <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-600 mr-2">
@@ -1027,7 +1055,6 @@ const InventoryPage = () => {
                               {item.medicine.baseUnit}
                             </p>
                           </div>
-                          {/* ĐỔI MÀU NÚT THÊM */}
                           <button
                             onClick={() =>
                               handleAddToDisposeCart(
@@ -1036,7 +1063,7 @@ const InventoryPage = () => {
                                 item.batch,
                               )
                             }
-                            className="bg-[#1d5fa7] text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-[#12427a] transition flex items-center gap-1 shadow-md">
+                            className="bg-[#0ea5e9] text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-[#0369a1] transition flex items-center gap-1 shadow-md">
                             <Plus size={14} /> Thêm vào phiếu
                           </button>
                         </div>
@@ -1206,7 +1233,6 @@ const InventoryPage = () => {
                 </div>
 
                 <div className="p-4 border-t border-slate-200 bg-white shrink-0 flex flex-col gap-3">
-                  {/* ĐỔI NỀN TỔNG TIỀN CHO HÀI HÒA HƠN */}
                   <div className="flex justify-between items-center bg-slate-50 border border-slate-200 p-3 rounded-xl">
                     <span className="text-sm font-bold text-slate-700">
                       Tổng giá trị tổn thất ước tính:
@@ -1216,15 +1242,14 @@ const InventoryPage = () => {
                     </span>
                   </div>
 
-                  {/* ĐỔI NÚT CHỐT XUẤT HỦY SANG XANH CHỦ ĐẠO */}
                   <button
                     onClick={handleSubmitDisposal}
                     disabled={isSubmittingDispose || disposeCart.length === 0}
                     className="w-full text-white px-6 py-3 rounded-xl font-bold flex justify-center items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg transition-all active:scale-95 hover:-translate-y-0.5"
                     style={{
                       background:
-                        "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
-                      boxShadow: "0 4px 14px rgba(29, 95, 167, 0.3)",
+                        "linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)",
+                      boxShadow: "0 4px 14px rgba(14, 165, 233, 0.3)",
                     }}>
                     {isSubmittingDispose ? (
                       <Loader2 size={18} className="animate-spin" />
@@ -1249,7 +1274,7 @@ const InventoryPage = () => {
             <div
               className="flex justify-between items-center px-6 py-4 text-white"
               style={{
-                background: "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+                background: "linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)",
               }}>
               <div>
                 <h2 className="text-lg font-bold">Danh sách Lô hàng tồn kho</h2>
@@ -1318,7 +1343,7 @@ const InventoryPage = () => {
                         return (
                           <tr
                             key={index}
-                            className={`transition-colors ${isOutOfStock ? "opacity-60 bg-slate-50/50" : "hover:bg-[#1d5fa7]/5"}`}>
+                            className={`transition-colors ${isOutOfStock ? "opacity-60 bg-slate-50/50" : "hover:bg-[#0ea5e9]/5"}`}>
                             <td className="py-3 px-4">
                               <span
                                 className={`text-sm font-normal ${isOutOfStock ? "text-slate-400" : "text-slate-700"}`}>
@@ -1340,7 +1365,7 @@ const InventoryPage = () => {
                             </td>
                             <td className="py-3 px-4 text-center">
                               <span
-                                className={`font-bold text-base ${isOutOfStock ? "text-slate-400" : "text-[#1d5fa7]"}`}>
+                                className={`font-bold text-base ${isOutOfStock ? "text-slate-400" : "text-[#0ea5e9]"}`}>
                                 {batch.quantity}
                               </span>
                               <span className="text-slate-400 text-xs ml-1">
@@ -1375,7 +1400,7 @@ const InventoryPage = () => {
                                     batch.quality,
                                   )
                                 }
-                                className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-bold border transition-all hover:scale-105 ${isOutOfStock ? "text-slate-400 border-slate-200 bg-slate-50 hover:bg-slate-100" : "text-[#1d5fa7] border-[#1d5fa7]/20 bg-white hover:bg-[#1d5fa7]/5"}`}>
+                                className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-bold border transition-all hover:scale-105 ${isOutOfStock ? "text-slate-400 border-slate-200 bg-slate-50 hover:bg-slate-100" : "text-[#0ea5e9] border-[#0ea5e9]/20 bg-white hover:bg-[#0ea5e9]/5"}`}>
                                 <History size={12} /> Lịch sử
                               </button>
                             </td>
@@ -1401,7 +1426,7 @@ const InventoryPage = () => {
             <div
               className="flex justify-between items-center px-6 py-4 text-white"
               style={{
-                background: "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+                background: "linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)",
               }}>
               <div className="flex items-center gap-3">
                 <History size={20} color="white" />
@@ -1424,7 +1449,7 @@ const InventoryPage = () => {
             <div className="p-5 overflow-y-auto scrollbar-thin flex-1 bg-slate-50/50">
               {loadingHistory ? (
                 <div className="flex flex-col items-center justify-center py-16 gap-3 text-slate-400">
-                  <Loader2 size={32} className="animate-spin text-[#1d5fa7]" />
+                  <Loader2 size={32} className="animate-spin text-[#0ea5e9]" />
                   <p className="text-sm font-medium">Đang tra cứu dữ liệu...</p>
                 </div>
               ) : batchHistory.length === 0 ? (
@@ -1441,10 +1466,10 @@ const InventoryPage = () => {
                   {batchHistory.map((hist, idx) => (
                     <div
                       key={idx}
-                      className="bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden hover:border-[#1d5fa7]/30 transition-colors">
+                      className="bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden hover:border-[#0ea5e9]/30 transition-colors">
                       <div className="flex justify-between items-center px-5 py-3 border-b border-slate-50 bg-slate-50/70">
                         <div className="flex items-center gap-3">
-                          <div className="w-1 h-8 rounded-full bg-[#1d5fa7] shrink-0" />
+                          <div className="w-1 h-8 rounded-full bg-[#0ea5e9] shrink-0" />
                           <div>
                             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-0.5">
                               Thời gian ghi nhận
@@ -1469,7 +1494,7 @@ const InventoryPage = () => {
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 px-5 py-4">
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-1">
-                            Nguồn cung cấp
+                            Nhà cung cấp
                           </p>
                           <p className="font-semibold text-slate-800 text-sm">
                             {hist.source || "---"}
@@ -1487,7 +1512,7 @@ const InventoryPage = () => {
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-1">
                             SL x Đơn vị nhập
                           </p>
-                          <p className="font-bold text-lg text-[#1d5fa7] leading-tight">
+                          <p className="font-bold text-lg text-[#0ea5e9] leading-tight">
                             {hist.quantity}{" "}
                             <span className="text-xs font-bold text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded-lg">
                               {hist.unit}
@@ -1506,7 +1531,7 @@ const InventoryPage = () => {
                           <p className="text-xs text-slate-500">
                             {hist.unitPrice.toLocaleString()}đ / {hist.unit}
                           </p>
-                          <p className="font-bold text-red-500 text-lg leading-tight">
+                          <p className="font-bold text-[#0ea5e9] text-lg leading-tight">
                             {hist.totalValue.toLocaleString()}đ
                           </p>
                         </div>

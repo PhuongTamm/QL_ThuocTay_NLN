@@ -119,13 +119,13 @@ const FaceCheckIn = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50/50 flex flex-col items-center justify-center p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-sky-50 via-sky-100 to-sky-200 flex flex-col items-center justify-center p-6 relative overflow-hidden">
       {/* Background Decor */}
-      <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-[#1d5fa7]/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-[#1d5fa7]/10 rounded-full blur-3xl" />
+      <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-sky-400/20 rounded-full blur-3xl" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-sky-400/20 rounded-full blur-3xl" />
 
-      <div className="max-w-xl w-full bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-blue-100 overflow-hidden relative z-10 p-8 flex flex-col items-center text-center">
-        <div className="mx-auto w-16 h-16 bg-gradient-to-br from-[#1d5fa7] to-[#2c78d6] rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-[#1d5fa7]/30">
+      <div className="max-w-xl w-full bg-white/95 backdrop-blur-sm rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-sky-100 overflow-hidden relative z-10 p-8 flex flex-col items-center text-center">
+        <div className="mx-auto w-16 h-16 bg-gradient-to-br from-sky-500 to-blue-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-sky-500/30">
           <ScanFace size={36} className="text-white" strokeWidth={2} />
         </div>
         <h2 className="text-2xl font-extrabold text-slate-800 tracking-tight">
@@ -136,9 +136,9 @@ const FaceCheckIn = () => {
         </p>
 
         {/* Khung Camera */}
-        <div className="relative w-72 h-72 rounded-full overflow-hidden border-4 border-blue-100 shadow-inner bg-slate-100 mb-8 flex items-center justify-center">
+        <div className="relative w-72 h-72 rounded-full overflow-hidden border-4 border-sky-200 shadow-inner bg-slate-100 mb-8 flex items-center justify-center">
           {!isModelLoaded ? (
-            <div className="flex flex-col items-center gap-2 text-[#1d5fa7]">
+            <div className="flex flex-col items-center gap-2 text-sky-600">
               <Loader2 className="animate-spin" size={32} />
               <span className="text-sm font-bold">Đang khởi động AI...</span>
             </div>
@@ -156,7 +156,7 @@ const FaceCheckIn = () => {
                 className="object-cover w-full h-full transform scale-x-[-1]" // Lật gương
               />
               {/* Hiệu ứng tia quét */}
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#1d5fa7]/30 to-transparent w-full h-1/2 animate-[scan_2s_ease-in-out_infinite]" />
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-sky-500/40 to-transparent w-full h-1/2 animate-[scan_2s_ease-in-out_infinite]" />
             </>
           )}
         </div>
@@ -180,7 +180,7 @@ const FaceCheckIn = () => {
         <button
           onClick={handleCheckIn}
           disabled={!isModelLoaded || isProcessing}
-          className="w-full bg-gradient-to-r from-[#1d5fa7] to-[#2c78d6] text-white py-4 rounded-xl font-bold text-lg hover:shadow-lg hover:shadow-[#1d5fa7]/30 flex justify-center items-center gap-2 active:scale-[0.98] disabled:opacity-70 disabled:pointer-events-none transition-all">
+          className="w-full bg-gradient-to-r from-sky-500 to-blue-600 text-white py-4 rounded-xl font-bold text-lg hover:shadow-lg hover:shadow-sky-500/30 flex justify-center items-center gap-2 active:scale-[0.98] disabled:opacity-70 disabled:pointer-events-none transition-all">
           {isProcessing ? (
             <Loader2 className="animate-spin" size={24} />
           ) : (

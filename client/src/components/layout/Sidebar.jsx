@@ -1,7 +1,9 @@
 import {
+  Activity,
   ArrowRightLeft,
   BarChart,
   ClipboardList,
+  DollarSign,
   Download,
   History,
   LayoutDashboard,
@@ -32,7 +34,6 @@ const Sidebar = () => {
       label: "POS Bán hàng",
       roles: ["branch_manager", "pharmacist"],
     },
-
     {
       path: "/categories",
       icon: <Tags size={20} />,
@@ -45,7 +46,6 @@ const Sidebar = () => {
       label: "Danh sách Thuốc",
       roles: ["admin", "warehouse_manager"],
     },
-
     {
       path: "/inventory",
       icon: <ClipboardList size={20} />,
@@ -76,7 +76,6 @@ const Sidebar = () => {
       label: "Lịch sử nhập xuất",
       roles: ["admin", "warehouse_manager", "branch_manager", "pharmacist"],
     },
-
     {
       path: "/organization",
       icon: <Store size={20} />,
@@ -87,6 +86,18 @@ const Sidebar = () => {
       path: "/monthly-reports",
       icon: <BarChart size={20} />,
       label: "Báo cáo tồn kho",
+      roles: ["admin", "branch_manager", "warehouse_manager"],
+    },
+    {
+      path: "/price-management",
+      icon: <DollarSign size={20} />,
+      label: "Quản lý Giá bán",
+      roles: ["admin", "warehouse_manager"],
+    },
+    {
+      path: "/profit-analysis",
+      icon: <Activity size={20} />,
+      label: "Hiệu quả Kinh doanh",
       roles: ["admin", "branch_manager", "warehouse_manager"],
     },
   ];
@@ -110,20 +121,10 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="min-h-screen w-64 bg-gradient-to-b from-sky-200 to-sky-100 text-slate-700 flex flex-col shadow-xl overflow-y-auto">
+    <aside className="min-h-screen w-64 bg-gradient-to-b from-[#1068ec] to-[#51b2db] text-white flex flex-col shadow-xl overflow-y-auto">
       {/* Logo */}
-      <div className="p-6 border-b border-white/50">
-        <h1
-          className="
-            text-3xl
-            font-extrabold
-            bg-gradient-to-r
-            from-sky-600
-            to-teal-500
-            bg-clip-text
-            text-transparent
-            drop-shadow-sm
-          ">
+      <div className="p-6 border-b border-white/20">
+        <h1 className="text-3xl font-extrabold text-white drop-shadow-sm tracking-wide">
           PharmaSys
         </h1>
       </div>
@@ -131,9 +132,9 @@ const Sidebar = () => {
       {/* KHU VỰC THÔNG TIN TÀI KHOẢN */}
       <Link
         to="/profile"
-        className="flex flex-col items-center py-6 border-b border-white/50 hover:bg-white/30 transition-colors cursor-pointer group"
+        className="flex flex-col items-center py-6 border-b border-white/20 hover:bg-white/10 transition-colors cursor-pointer group"
         title="Xem thông tin cá nhân">
-        <div className="w-16 h-16 rounded-full flex items-center justify-center text-sky-600 text-xl font-bold mb-3 shadow-lg shadow-black/5 overflow-hidden border-[3px] border-white bg-white/80 group-hover:scale-105 transition-transform duration-300">
+        <div className="w-16 h-16 rounded-full flex items-center justify-center text-[#0ea5e9] text-xl font-bold mb-3 shadow-lg shadow-black/10 overflow-hidden border-[3px] border-white bg-white group-hover:scale-105 transition-transform duration-300">
           {/* HIỂN THỊ ẢNH ĐẠI DIỆN */}
           {user?.avatar ? (
             <img
@@ -145,10 +146,10 @@ const Sidebar = () => {
             <span>{user?.fullName?.charAt(0)?.toUpperCase() || "U"}</span>
           )}
         </div>
-        <p className="text-slate-800 font-bold text-center px-4">
+        <p className="text-white font-bold text-center px-4">
           {user?.fullName}
         </p>
-        <p className="text-xs text-teal-700 uppercase tracking-wider mt-1 font-bold">
+        <p className="text-xs text-sky-100 uppercase tracking-wider mt-1 font-bold">
           {getRoleName(user?.role)}
         </p>
       </Link>
@@ -171,17 +172,17 @@ const Sidebar = () => {
                 ${
                   isActive
                     ? `
-                      bg-white/70
+                      bg-white/90
                       backdrop-blur-md
                       shadow-sm
-                      text-sky-700
-                      border border-white
+                      text-[#0369a1]
+                      border border-white/50
                       font-bold
                     `
                     : `
-                      text-slate-600
-                      hover:bg-white/50
-                      hover:text-sky-700
+                      text-sky-50
+                      hover:bg-white/20
+                      hover:text-white
                       hover:translate-x-1
                     `
                 }
@@ -204,7 +205,7 @@ const Sidebar = () => {
       </nav>
 
       {/* Logout */}
-      <div className="p-4 border-t border-white/50">
+      <div className="p-4 border-t border-white/20">
         <button
           onClick={() => {
             if (window.confirm("Bạn có chắc chắn muốn đăng xuất?")) {
@@ -216,9 +217,9 @@ const Sidebar = () => {
             w-full
             px-4 py-3
             rounded-xl
-            text-slate-600
-            hover:bg-rose-50
-            hover:text-rose-600
+            text-sky-50
+            hover:bg-white/20
+            hover:text-rose-200
             transition-all duration-300
             font-semibold
           ">

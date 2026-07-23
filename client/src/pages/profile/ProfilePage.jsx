@@ -176,8 +176,8 @@ const ProfilePage = () => {
       onClick={() => handlePresetChange(id)}
       className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${
         datePreset === id
-          ? "bg-[#1d5fa7] text-white shadow-md shadow-blue-200"
-          : "text-slate-500 hover:bg-slate-100"
+          ? "bg-sky-500 text-white shadow-md shadow-sky-200"
+          : "text-slate-500 hover:bg-sky-50 hover:text-sky-700"
       }`}>
       {label}
     </button>
@@ -186,7 +186,7 @@ const ProfilePage = () => {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-[#f0f4f8] p-6 font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-sky-50 via-sky-100/50 to-white p-6 font-sans">
       <style>{`
         @keyframes fadeInPage {
           from { opacity: 0; transform: translateY(12px); }
@@ -203,9 +203,9 @@ const ProfilePage = () => {
         <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center mb-6 gap-4">
           <div className="flex items-center gap-3">
             <div
-              className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0"
+              className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 shadow-lg shadow-sky-200/50"
               style={{
-                background: "linear-gradient(135deg, #1d5fa7 0%, #154a85 100%)",
+                background: "linear-gradient(135deg, #0284c7 0%, #0369a1 100%)",
               }}>
               <User size={22} color="white" />
             </div>
@@ -220,16 +220,16 @@ const ProfilePage = () => {
           </div>
 
           {/* Bộ lọc đưa lên cùng hàng với Header */}
-          <div className="flex flex-wrap items-center gap-1.5 bg-white border border-slate-200 rounded-xl p-1.5 shadow-sm w-fit">
+          <div className="flex flex-wrap items-center gap-1.5 bg-white border border-sky-100 rounded-xl p-1.5 shadow-sm w-fit">
             <PresetBtn id="TODAY" label="Hôm nay" />
             <PresetBtn id="LAST_7_DAYS" label="7 Ngày" />
             <PresetBtn id="THIS_MONTH" label="Tháng này" />
             <div className="w-px h-6 bg-slate-200 mx-1" />
             <div className="flex items-center gap-2 px-2">
-              <Calendar size={15} className="text-slate-400 shrink-0" />
+              <Calendar size={15} className="text-sky-500 shrink-0" />
               <input
                 type="date"
-                className="border-none outline-none text-sm text-slate-700 bg-transparent font-medium cursor-pointer"
+                className="border-none outline-none text-sm text-slate-700 bg-transparent font-medium cursor-pointer focus:text-sky-700"
                 value={customRange.startDate}
                 onChange={(e) => {
                   setDatePreset("CUSTOM");
@@ -239,7 +239,7 @@ const ProfilePage = () => {
               <span className="text-slate-300">–</span>
               <input
                 type="date"
-                className="border-none outline-none text-sm text-slate-700 bg-transparent font-medium cursor-pointer"
+                className="border-none outline-none text-sm text-slate-700 bg-transparent font-medium cursor-pointer focus:text-sky-700"
                 value={customRange.endDate}
                 onChange={(e) => {
                   setDatePreset("CUSTOM");
@@ -254,8 +254,8 @@ const ProfilePage = () => {
         <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 items-start">
           {/* CỘT TRÁI (1/4): AVATAR + INFO + ACTION */}
           <div className="xl:col-span-1 space-y-6">
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex flex-col items-center text-center">
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-50 to-blue-100 border-4 border-white shadow-lg flex items-center justify-center relative mb-4 overflow-hidden group">
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-sky-100 flex flex-col items-center text-center">
+              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-sky-50 to-sky-200 border-4 border-white shadow-lg flex items-center justify-center relative mb-4 overflow-hidden group">
                 {avatarPreview ? (
                   <img
                     src={avatarPreview}
@@ -263,7 +263,7 @@ const ProfilePage = () => {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <span className="text-3xl font-black text-[#1d5fa7] uppercase">
+                  <span className="text-3xl font-black text-sky-600 uppercase">
                     {user.fullName?.charAt(0) || "?"}
                   </span>
                 )}
@@ -288,7 +288,7 @@ const ProfilePage = () => {
                 <button
                   onClick={handleUploadAvatar}
                   disabled={isUploading}
-                  className="mb-4 px-4 py-2 bg-[#1d5fa7] text-white text-xs font-bold rounded-full shadow-md hover:bg-[#154a85] flex items-center gap-1.5 transition-all">
+                  className="mb-4 px-4 py-2 bg-sky-600 text-white text-xs font-bold rounded-full shadow-md hover:bg-sky-700 flex items-center gap-1.5 transition-all">
                   {isUploading ? (
                     <Loader2 size={14} className="animate-spin" />
                   ) : (
@@ -301,23 +301,23 @@ const ProfilePage = () => {
               <h2 className="text-lg font-bold text-slate-800">
                 {user.fullName}
               </h2>
-              <span className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-800 text-[11px] font-bold rounded-full border border-blue-100">
+              <span className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 bg-sky-50 text-sky-800 text-[11px] font-bold rounded-full border border-sky-100">
                 <ShieldCheck size={12} /> {translateRole(user.role)}
               </span>
 
               <div className="w-full mt-6 space-y-3 text-left">
-                <div className="flex items-center gap-3 text-sm text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-100">
-                  <Mail size={16} className="text-[#1d5fa7] shrink-0" />
+                <div className="flex items-center gap-3 text-sm text-slate-600 bg-slate-50 p-3 rounded-xl border border-sky-50 hover:border-sky-100 transition-colors">
+                  <Mail size={16} className="text-sky-500 shrink-0" />
                   <span className="truncate font-medium">{user.email}</span>
                 </div>
-                <div className="flex items-center gap-3 text-sm text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-100">
-                  <Phone size={16} className="text-[#1d5fa7] shrink-0" />
+                <div className="flex items-center gap-3 text-sm text-slate-600 bg-slate-50 p-3 rounded-xl border border-sky-50 hover:border-sky-100 transition-colors">
+                  <Phone size={16} className="text-sky-500 shrink-0" />
                   <span className="font-medium">
                     {user.phone || "Chưa cập nhật SĐT"}
                   </span>
                 </div>
-                <div className="flex items-center gap-3 text-sm text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-100">
-                  <Building2 size={16} className="text-[#1d5fa7] shrink-0" />
+                <div className="flex items-center gap-3 text-sm text-slate-600 bg-slate-50 p-3 rounded-xl border border-sky-50 hover:border-sky-100 transition-colors">
+                  <Building2 size={16} className="text-sky-500 shrink-0" />
                   <span className="truncate font-medium">
                     {user.role === "admin"
                       ? "Toàn hệ thống"
@@ -327,23 +327,22 @@ const ProfilePage = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-sky-100">
               <h3 className="font-bold text-slate-800 text-sm mb-4 uppercase tracking-wide flex items-center gap-2">
-                <ScanFace size={16} className="text-[#1d5fa7]" /> Tiện ích Face
-                ID
+                <ScanFace size={16} className="text-sky-600" /> Tiện ích Face ID
               </h3>
 
               <div className="space-y-3">
                 <button
                   onClick={() => navigate("/check-in")}
-                  className="w-full py-3 px-4 bg-gradient-to-r from-[#1d5fa7] to-[#1a5596] hover:shadow-lg hover:shadow-[#1d5fa7]/30 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-95">
+                  className="w-full py-3 px-4 bg-gradient-to-r bg-sky-600 hover:shadow-lg hover:shadow-sky-500/30 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-95">
                   Đến máy Chấm công <ArrowRight size={16} />
                 </button>
 
                 <button
                   onClick={() => setShowFaceModal(true)}
-                  className="w-full py-3 px-4 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-95">
-                  <Camera size={16} className="text-slate-400" /> Cập nhật khuôn
+                  className="w-full py-3 px-4 bg-white border border-sky-200 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 text-slate-600 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-95">
+                  <Camera size={16} className="text-sky-400" /> Cập nhật khuôn
                   mặt
                 </button>
               </div>
@@ -352,9 +351,9 @@ const ProfilePage = () => {
 
           {/* CỘT PHẢI (3/4): LỊCH SỬ CHẤM CÔNG */}
           <div className="xl:col-span-3 space-y-6">
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-              <div className="p-5 border-b border-slate-100 flex items-center gap-2 bg-slate-50/50">
-                <CalendarDays size={18} className="text-slate-500" />
+            <div className="bg-white rounded-2xl border border-sky-100 shadow-sm overflow-hidden">
+              <div className="p-5 border-b border-sky-100 flex items-center gap-2 bg-sky-50/50">
+                <CalendarDays size={18} className="text-sky-600" />
                 <h3 className="font-bold text-slate-700">
                   Chi tiết quét Face ID
                 </h3>
@@ -363,7 +362,7 @@ const ProfilePage = () => {
               <div className="overflow-x-auto max-h-[600px] overflow-y-auto scrollbar-thin">
                 <table className="w-full text-left border-collapse">
                   <thead className="sticky top-0 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] z-10">
-                    <tr className="border-b border-slate-100 text-[11px] uppercase tracking-wider text-slate-500 font-bold bg-slate-50">
+                    <tr className="border-b border-sky-100 text-[11px] uppercase tracking-wider text-slate-500 font-bold bg-sky-50">
                       <th className="p-4 w-1/3">Ngày làm việc</th>
                       <th className="p-4 text-center w-1/3">Giờ quét camera</th>
                       <th className="p-4 text-center w-1/3">
@@ -377,7 +376,7 @@ const ProfilePage = () => {
                         <td colSpan="3" className="py-16 text-center">
                           <Loader2
                             size={28}
-                            className="animate-spin text-[#1d5fa7] mx-auto"
+                            className="animate-spin text-sky-600 mx-auto"
                           />
                         </td>
                       </tr>
@@ -388,7 +387,7 @@ const ProfilePage = () => {
                           className="py-20 text-center text-slate-400">
                           <FileText
                             size={40}
-                            className="mx-auto mb-3 opacity-20"
+                            className="mx-auto mb-3 opacity-20 text-sky-300"
                           />
                           <p className="font-medium">
                             Không có dữ liệu trong khoảng thời gian này.
@@ -399,23 +398,23 @@ const ProfilePage = () => {
                       flattenedHistory.map((item) => (
                         <tr
                           key={item.id}
-                          className="hover:bg-blue-50/40 transition-colors">
-                          <td className="p-4 text-slate-700 pl-6">
+                          className="hover:bg-sky-50/40 transition-colors">
+                          <td className="p-4 text-slate-700 pl-6 font-medium">
                             {item.date.split("-").reverse().join("/")}
                           </td>
                           <td className="p-4 text-center">
-                            <span className="text-slate-800 text-[15px]">
+                            <span className="text-slate-800 font-bold text-[15px]">
                               {formatTime(item.time)}
                             </span>
                           </td>
                           <td className="p-4 text-center">
                             {item.type === "IN" ? (
-                              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-700 font-bold text-[11px] uppercase tracking-wide rounded-lg border border-emerald-100">
+                              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-700 font-bold text-[11px] uppercase tracking-wide rounded-lg border border-emerald-200">
                                 <ArrowRight size={14} className="rotate-45" />{" "}
                                 Giờ Vào ca
                               </span>
                             ) : (
-                              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-700 font-bold text-[11px] uppercase tracking-wide rounded-lg border border-amber-100">
+                              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-700 font-bold text-[11px] uppercase tracking-wide rounded-lg border border-amber-200">
                                 <ArrowRight size={14} className="-rotate-45" />{" "}
                                 Giờ Ra ca
                               </span>

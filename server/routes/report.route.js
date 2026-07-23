@@ -27,4 +27,11 @@ router.get(
   reportController.getTopMedicines,
 );
 
+router.get(
+  "/profit-analytics",
+  verifyToken,
+  checkRole(["admin", "warehouse_manager", "branch_manager"]),
+  reportController.getProfitAnalytics,
+);
+
 module.exports = router;

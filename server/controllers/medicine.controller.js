@@ -101,7 +101,7 @@ exports.getAllMedicines = async (req, res) => {
   try {
     // SỬA TẠI ĐÂY: Thêm .populate("categoryId") và .sort({ createdAt: -1 })
     const medicines = await Medicine.find()
-      .populate("categoryId", "name") // Lấy thêm tên danh mục để hiển thị và lọc
+      .populate("categoryId", "name markupPercentage") // Lấy thêm tên danh mục để hiển thị và lọc
       .sort({ createdAt: -1 }) // Mặc định sắp xếp thuốc mới nhất lên đầu
       .lean();
 
@@ -465,6 +465,104 @@ exports.seedMedicines = async (req, res) => {
     });
   } catch (error) {
     console.error("Lỗi Seed data:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// ===================================================================
+// 1. API CẬP NHẬT ĐỒNG LOẠT GIÁ BÁN CHO TOÀN BỘ THUỐC TRONG DANH MỤC
+// ===================================================================
+exports.bulkUpdatePriceByCategory = async (req, res) => {
+  try {
+    const { categoryId } = req.params;
+    const userId = req.user.id;
+
+    // 1. Lấy thông tin Danh mục để lấy markupPercentage
+    const category = await Category.findById(categoryId);
+    if (!category) {
+      return res.status(404).json({ success: false, message: "Không tìm thấy danh mục!" });
+    }
+
+    // 2. Tìm tất cả các loại thuốc gốc thuộc danh mục này
+    const medicines = await Medicine.find({ categoryId: category._id });
+    if (medicines.length === 0) {
+      return res.status(400).json({ success: false, message: "Danh mục này chưa có thuốc nào!" });
+    }
+
+    let updatedVariantCount = 0;
+
+    // 3. Vòng lặp quét qua từng loại thuốc
+    for (const med of medicines) {
+      // Bỏ qua các thuốc chưa có giá vốn bình quân (MAC = 0)
+      if (!med.mac || med.mac <= 0) continue; 
+
+      // Tìm tất cả các biến thể (Hộp, Vỉ, Viên...) của thuốc này
+      const variants = await MedicineVariant.find({ medicineId: med._id });
+      
+      for (const variant of variants) {
+        // TÍNH TOÁN GIÁ GỢI Ý MỚI NHẤT
+        const newSuggestedPrice = Math.round(
+          (med.mac * variant.conversionRate) * (1 + category.markupPercentage)
+        );
+
+        // NẾU GIÁ CÓ THAY ĐỔI -> TIẾN HÀNH CẬP NHẬT VÀ LƯU LỊCH SỬ
+        if (newSuggestedPrice !== variant.currentPrice) {
+          variant.currentPrice = newSuggestedPrice;
+          
+          // Đẩy bản ghi mới vào mảng priceHistory
+          variant.priceHistory.push({
+            price: newSuggestedPrice,
+            updatedBy: userId,
+            effectiveDate: new Date()
+          });
+
+          await variant.save();
+          updatedVariantCount++;
+        }
+      }
+    }
+
+    res.status(200).json({ 
+      success: true, 
+      message: `Cập nhật thành công! Đã áp dụng giá mới cho ${updatedVariantCount} quy cách đóng gói thuộc danh mục ${category.name}.` 
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// ===================================================================
+// 2. API XEM LỊCH SỬ CẬP NHẬT GIÁ CỦA 1 QUY CÁCH CỤ THỂ
+// ===================================================================
+exports.getVariantPriceHistory = async (req, res) => {
+  try {
+    const { variantId } = req.params;
+
+    // Lấy thông tin biến thể và populate tên người cập nhật từ bảng User
+    const variant = await MedicineVariant.findById(variantId)
+      .populate("priceHistory.updatedBy", "fullName")
+      .select("name sku currentPrice unit priceHistory");
+
+    if (!variant) {
+      return res.status(404).json({ success: false, message: "Không tìm thấy quy cách này!" });
+    }
+
+    // Sắp xếp lịch sử từ mới nhất đến cũ nhất
+    const historySorted = variant.priceHistory.sort(
+      (a, b) => new Date(b.effectiveDate) - new Date(a.effectiveDate)
+    );
+
+    res.status(200).json({ 
+      success: true, 
+      data: {
+        sku: variant.sku,
+        name: variant.name,
+        unit: variant.unit,
+        currentPrice: variant.currentPrice,
+        history: historySorted
+      }
+    });
+  } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };

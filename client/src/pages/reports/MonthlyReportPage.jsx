@@ -183,7 +183,7 @@ const MonthlyReportPage = () => {
       }
 
       html += `
-        <tr>
+        <tr style="page-break-inside: avoid;">
           <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: center; vertical-align: top;">${idx + 1}</td>
           <td style="padding: 10px 8px; border: 1px solid #94a3b8; font-family: monospace; vertical-align: top;"><strong>${r.medicineId?.code || ""}</strong></td>
           <td style="padding: 10px 8px; border: 1px solid #94a3b8; vertical-align: top;">${r.medicineId?.name || ""}</td>
@@ -208,6 +208,7 @@ const MonthlyReportPage = () => {
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 2, useCORS: true },
       jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
+      pagebreak: { mode: "css", avoid: "tr" },
     };
 
     html2pdf()
@@ -218,7 +219,7 @@ const MonthlyReportPage = () => {
   };
 
   const inputCls =
-    "px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#1d5fa7]/30 focus:border-[#1d5fa7] transition bg-white font-medium text-slate-700";
+    "px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#0ea5e9]/30 focus:border-[#0ea5e9] transition bg-white font-medium text-slate-700";
 
   return (
     <div className="min-h-screen p-6 bg-[#f0f4f8] font-sans">
@@ -238,7 +239,7 @@ const MonthlyReportPage = () => {
             <div
               className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 shadow-sm"
               style={{
-                background: "linear-gradient(135deg, #1d5fa7 0%, #2c78d6 100%)",
+                background: "linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)",
               }}>
               <FileBarChart size={22} color="white" />
             </div>
@@ -257,7 +258,7 @@ const MonthlyReportPage = () => {
             disabled={isExportingPDF || filteredReports.length === 0}
             className="flex items-center gap-2 px-5 py-2.5 bg-white text-slate-700 font-bold border border-slate-200 rounded-2xl shadow-sm hover:bg-slate-50 transition-all disabled:opacity-50">
             {isExportingPDF ? (
-              <Loader2 size={18} className="animate-spin text-[#1d5fa7]" />
+              <Loader2 size={18} className="animate-spin text-[#0ea5e9]" />
             ) : (
               <Printer size={18} className="text-slate-500" />
             )}
@@ -323,7 +324,7 @@ const MonthlyReportPage = () => {
                   <Store size={12} /> Chọn Chi nhánh
                 </label>
                 <select
-                  className={`${inputCls} w-full font-semibold text-[#1d5fa7]`}
+                  className={`${inputCls} w-full font-semibold text-[#0ea5e9]`}
                   value={selectedBranchId}
                   onChange={(e) => setSelectedBranchId(e.target.value)}>
                   <option value="">-- Kho của tôi (Mặc định) --</option>
@@ -377,7 +378,7 @@ const MonthlyReportPage = () => {
                       <div className="flex flex-col items-center gap-3 text-slate-400">
                         <Loader2
                           size={32}
-                          className="animate-spin text-[#1d5fa7]"
+                          className="animate-spin text-[#0ea5e9]"
                         />
                         <p className="text-sm font-medium">
                           Đang tổng hợp dữ liệu sổ cái...

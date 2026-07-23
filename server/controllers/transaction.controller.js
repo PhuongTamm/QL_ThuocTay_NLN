@@ -1,5 +1,6 @@
 const Transaction = require("../models/Transaction");
 const Inventory = require("../models/Inventory");
+const Medicine = require("../models/Medicine");
 const MonthlyInventory = require("../models/MonthlyInventory");
 const MedicineVariant = require("../models/MedicineVariant");
 const Customer = require("../models/Customer");
@@ -99,6 +100,26 @@ exports.importFromSupplier = async (req, res) => {
         medicineId: medicineId,
       });
 
+      // ====================================================================
+      // TÍNH TOÁN GIÁ VỐN BÌNH QUÂN GIA QUYỀN (MAC)
+      // Công thức: [(Tồn cũ * Giá vốn cũ) + (Nhập mới * Giá nhập mới)] / (Tồn cũ + Nhập mới)
+      // ====================================================================
+      const medicine = await Medicine.findById(medicineId);
+      if (medicine) {
+        const oldTotalQty = inventory ? inventory.totalQuantity : 0;
+        const oldMac = medicine.mac || 0;
+
+        // Tính MAC mới
+        const newMac =
+          (oldTotalQty * oldMac + baseQuantity * baseImportPrice) /
+          (oldTotalQty + baseQuantity);
+
+        // Cập nhật MAC vào Medicine
+        medicine.mac = newMac;
+        await medicine.save();
+      }
+      // =========================================================================
+
       if (!inventory) {
         inventory = new Inventory({
           branchId: currentBranchId,
@@ -184,6 +205,68 @@ exports.createDistributionRequest = async (req, res) => {
     const fromBranchId = req.user.branchId;
     const details = [];
 
+    // =======================================================================
+    // BƯỚC 1: TIỀN KIỂM TRA (PRE-VALIDATION & AGGREGATION)
+    // Gom tất cả các món hàng cùng một loại thuốc để tính TỔNG yêu cầu
+    // =======================================================================
+    const requiredQuantities = {};
+    const today = new Date();
+
+    for (const item of items) {
+      const variant = await MedicineVariant.findById(item.variantId);
+      if (!variant) {
+        return res.status(400).json({
+          success: false,
+          message: "Lỗi: Không tìm thấy quy cách sản phẩm.",
+        });
+      }
+
+      const medId = variant.medicineId.toString();
+      const baseQty = Number(item.quantity) * variant.conversionRate;
+
+      if (!requiredQuantities[medId]) {
+        requiredQuantities[medId] = { qty: 0, name: variant.name };
+      }
+      requiredQuantities[medId].qty += baseQty;
+    }
+
+    // Kiểm tra xem tổng tồn kho hợp lệ có đáp ứng được tổng yêu cầu không
+    for (const medId in requiredQuantities) {
+      const reqInfo = requiredQuantities[medId];
+      const sourceInv = await Inventory.findOne({
+        branchId: fromBranchId,
+        medicineId: medId,
+      });
+
+      if (!sourceInv) {
+        return res.status(400).json({
+          success: false,
+          message: `Không tìm thấy tồn kho cho thuốc ${reqInfo.name}!`,
+        });
+      }
+
+      const validBatches = sourceInv.batches.filter(
+        (b) =>
+          b.quantity > 0 &&
+          b.quality === "GOOD" &&
+          new Date(b.expiryDate) > today,
+      );
+      const totalValidAvailable = validBatches.reduce(
+        (sum, b) => sum + b.quantity,
+        0,
+      );
+
+      if (totalValidAvailable < reqInfo.qty) {
+        return res.status(400).json({
+          success: false,
+          message: `Kho tổng không đủ thuốc ĐỦ ĐIỀU KIỆN (chưa hết hạn/không lỗi) cho ${reqInfo.name}. (Tổng yêu cầu: ${reqInfo.qty}, Tồn hợp lệ: ${totalValidAvailable})`,
+        });
+      }
+    }
+
+    // =======================================================================
+    // BƯỚC 2: TIẾN HÀNH TRỪ KHO (EXECUTION) - Đã đảm bảo 100% qua vòng test
+    // =======================================================================
     for (const item of items) {
       const variant = await MedicineVariant.findById(item.variantId);
       const medicineId = variant.medicineId;
@@ -195,42 +278,32 @@ exports.createDistributionRequest = async (req, res) => {
         medicineId: medicineId,
       });
 
-      if (!sourceInv) throw new Error("Không tìm thấy tồn kho!");
-
-      // ĐÃ THÊM RÀNG BUỘC: Kho tổng chỉ được phép xuất những Lô có trạng thái GOOD và chưa hết hạn
-      const today = new Date();
       let validBatches = sourceInv.batches.filter(
-        (b) => b.quantity > 0 && b.quality === "GOOD" && new Date(b.expiryDate) > today
+        (b) =>
+          b.quantity > 0 &&
+          b.quality === "GOOD" &&
+          new Date(b.expiryDate) > today,
       );
 
-      // Tính tổng tồn hợp lệ để check
-      let totalValidAvailable = validBatches.reduce((sum, b) => sum + b.quantity, 0);
-      if (totalValidAvailable < baseQtyToDeduct) {
-        return res.status(400).json({
-          success: false,
-          message: `Kho tổng không đủ thuốc ĐỦ ĐIỀU KIỆN (chưa hết hạn/không lỗi) cho ${variant.name}. (Yêu cầu: ${baseQtyToDeduct}, Tồn hợp lệ: ${totalValidAvailable})`,
-        });
-      }
-
       // Sắp xếp FEFO (Ưu tiên lô cận Date xuất trước)
-      validBatches.sort((a, b) => new Date(a.expiryDate) - new Date(b.expiryDate));
-      
+      validBatches.sort(
+        (a, b) => new Date(a.expiryDate) - new Date(b.expiryDate),
+      );
+
       let remainQty = baseQtyToDeduct;
 
-      // =======================================================================
       // THUẬT TOÁN 2-PASS: TRÁNH CHIA LẺ HỘP KHI XUẤT KHO
-      // =======================================================================
-      
+
       // PASS 1: Cố gắng lấy "Chẵn hộp" (Bội số của tỷ lệ quy đổi) từ các lô
       let remainFull = Math.floor(remainQty / convRate) * convRate;
-      
+
       for (let i = 0; i < validBatches.length; i++) {
         if (remainFull <= 0) break;
         let batch = validBatches[i];
 
         // Tìm số lượng chẵn tối đa có thể lấy từ lô này
         let maxMultiple = Math.floor(batch.quantity / convRate) * convRate;
-        
+
         if (maxMultiple > 0) {
           let takeFull = Math.min(maxMultiple, remainFull);
           if (takeFull > 0) {
@@ -263,7 +336,9 @@ exports.createDistributionRequest = async (req, res) => {
 
             // Nếu lô này đã được lấy ở Pass 1, ta cộng gộp vào detail cũ để tránh tách 2 dòng trùng nhau
             const existingDetail = details.find(
-              (d) => d.batchCode === batch.batchCode && d.variantId.toString() === item.variantId.toString()
+              (d) =>
+                d.batchCode === batch.batchCode &&
+                d.variantId.toString() === item.variantId.toString(),
             );
 
             if (existingDetail) {
@@ -284,7 +359,12 @@ exports.createDistributionRequest = async (req, res) => {
 
       sourceInv.totalQuantity -= baseQtyToDeduct;
       await sourceInv.save();
-      await updateMonthlyReport(fromBranchId, medicineId, baseQtyToDeduct, "EXPORT");
+      await updateMonthlyReport(
+        fromBranchId,
+        medicineId,
+        baseQtyToDeduct,
+        "EXPORT",
+      );
     }
 
     const trans = await Transaction.create({
@@ -351,7 +431,7 @@ exports.confirmImport = async (req, res) => {
         branchId: currentBranchId,
         medicineId: medicineId,
       });
-      
+
       if (!inventory) {
         inventory = new Inventory({
           branchId: currentBranchId,
@@ -369,21 +449,20 @@ exports.confirmImport = async (req, res) => {
 
       // ĐÃ FIX: KIỂM TRA LÔ ĐÃ TỒN TẠI CHƯA (Trùng Mã lô, Trùng Chất lượng và Trùng Giá vốn)
       const existingBatchIndex = inventory.batches.findIndex(
-        (b) => 
-          b.batchCode === item.batchCode && 
+        (b) =>
+          b.batchCode === item.batchCode &&
           b.quality === batchQuality &&
-          Math.abs(b.importPrice - baseImportPrice) < 0.01 // Dùng Math.abs để tránh lỗi sai số thập phân trong JS
+          Math.abs(b.importPrice - baseImportPrice) < 0.01, // Dùng Math.abs để tránh lỗi sai số thập phân trong JS
       );
 
       if (existingBatchIndex > -1) {
         // NẾU ĐÃ CÓ LÔ NÀY -> CỘNG DỒN SỐ LƯỢNG
         inventory.batches[existingBatchIndex].quantity += baseQuantity;
-        
+
         if (!inventory.batches[existingBatchIndex].initialQuantity) {
           inventory.batches[existingBatchIndex].initialQuantity = 0;
         }
         inventory.batches[existingBatchIndex].initialQuantity += baseQuantity;
-        
       } else {
         // NẾU CHƯA CÓ LÔ NÀY -> THÊM LÔ MỚI
         inventory.batches.push({
@@ -408,7 +487,7 @@ exports.confirmImport = async (req, res) => {
         "IMPORT",
       );
     }
-    
+
     trans.status = "COMPLETED";
     await trans.save();
     return res
@@ -457,47 +536,7 @@ exports.sellAtBranch = async (req, res) => {
         branchId,
         medicineId: variant.medicineId,
       });
-      // if (!inventory) throw new Error("Kho không có thuốc này!");
 
-      // // 1. LỌC CÁC LÔ HỢP LỆ (Còn hàng, Không lỗi, Chưa hết hạn)
-      // const today = new Date();
-      // // 1. TRÍCH XUẤT RA MẢNG THUẦN & LỌC HÀNG HỢP LỆ
-      // // Lấy các lô còn hàng (> 0) và tình trạng tốt
-      // const validBatches = inventory.batches.filter(
-      //   (b) => b.quantity > 0 && b.quality === "GOOD",
-      // );
-
-      // // 2. SẮP XẾP FEFO TRÊN MẢNG THUẦN
-      // validBatches.sort(
-      //   (a, b) =>
-      //     new Date(a.expiryDate).getTime() - new Date(b.expiryDate).getTime(),
-      // );
-
-      // let remainingBaseQtyToDeduct = baseQtyToDeduct;
-
-      // // 3. THUẬT TOÁN TRỪ LÔ (Chạy trên mảng đã lọc và sort chuẩn)
-      // for (let batch of validBatches) {
-      //   if (remainingBaseQtyToDeduct <= 0) break;
-
-      //   const deductAmount = Math.min(batch.quantity, remainingBaseQtyToDeduct);
-
-      //   // Trừ kho (Bản chất validBatches vẫn giữ reference đến inventory.batches nên save() vẫn ăn)
-      //   batch.quantity -= deductAmount;
-      //   remainingBaseQtyToDeduct -= deductAmount;
-      //   inventory.totalQuantity -= deductAmount;
-
-      //   // GHI VÀO LỊCH SỬ GIAO DỊCH CHÍNH XÁC MÃ LÔ NÀY
-      //   const variantQtyDeducted = deductAmount / variant.conversionRate;
-
-      //   transactionDetails.push({
-      //     variantId: item.variantId,
-      //     batchCode: batch.batchCode,
-      //     manufacturingDate: batch.manufacturingDate,
-      //     expiryDate: batch.expiryDate,
-      //     quantity: variantQtyDeducted,
-      //     price: item.price,
-      //   });
-      // }
       if (!inventory) {
         throw new Error(`Kho không có thuốc có ID: ${variant.medicineId}`);
       }
@@ -538,21 +577,27 @@ exports.sellAtBranch = async (req, res) => {
 
         // Trừ kho (Bản chất validBatches là tham chiếu đến inventory.batches nên save() vẫn hoạt động đúng)
         batch.quantity -= deductAmount;
+
         remainingBaseQtyToDeduct -= deductAmount;
         inventory.totalQuantity -= deductAmount; // Vẫn phải trừ tổng kho gốc
 
         // Ghi vào hóa đơn
         const variantQtyDeducted = deductAmount / variant.conversionRate;
+
+        // TÍNH GIÁ VỐN CỦA QUY CÁCH NÀY DỰA TRÊN LÔ ĐANG XUẤT (FEFO)
+        const costPriceOfVariant = batch.importPrice * variant.conversionRate;
+
         transactionDetails.push({
           variantId: item.variantId,
           batchCode: batch.batchCode,
           manufacturingDate: batch.manufacturingDate,
           expiryDate: batch.expiryDate,
           quantity: variantQtyDeducted,
-          price: item.price,
+          price: item.price, // Giá bán lẻ (Doanh thu)
+          costPrice: costPriceOfVariant, // Giá vốn thực tế lô đó (Chi phí), Ghi nhận giá vốn để tính lãi lỗ
         });
       }
-      
+
       if (remainingBaseQtyToDeduct > 0) {
         throw new Error(`Lỗi trừ kho: Các lô hiện tại không đủ để xuất!`);
       }
@@ -603,12 +648,17 @@ exports.sellAtBranch = async (req, res) => {
 exports.getBatchImportHistory = async (req, res) => {
   try {
     // 1. Nhận thêm batchQuality từ giao diện
-    const { branchId, medicineId, batchCode, importPrice, batchQuality } = req.query;
+    const { branchId, medicineId, batchCode, importPrice, batchQuality } =
+      req.query;
 
     const transactions = await Transaction.find({
       toBranch: branchId,
       status: "COMPLETED",
-      $or: [{ type: "IMPORT_SUPPLIER" }, { type: "EXPORT_TO_BRANCH" }, { type: "RETURN_TO_WAREHOUSE" }],
+      $or: [
+        { type: "IMPORT_SUPPLIER" },
+        { type: "EXPORT_TO_BRANCH" },
+        { type: "RETURN_TO_WAREHOUSE" },
+      ],
     })
       .populate("details.variantId")
       .populate("fromBranch", "name")
@@ -624,8 +674,12 @@ exports.getBatchImportHistory = async (req, res) => {
           detail.variantId.medicineId.toString() === medicineId
         ) {
           // Tính giá vốn cơ sở
-          const basePriceOfTransaction = detail.price / detail.variantId.conversionRate;
-          if (importPrice && Math.abs(basePriceOfTransaction - Number(importPrice)) > 0.01) {
+          const basePriceOfTransaction =
+            detail.price / detail.variantId.conversionRate;
+          if (
+            importPrice &&
+            Math.abs(basePriceOfTransaction - Number(importPrice)) > 0.01
+          ) {
             return;
           }
 
@@ -633,10 +687,10 @@ exports.getBatchImportHistory = async (req, res) => {
           // BƯỚC LỌC QUAN TRỌNG: PHÂN BIỆT LỊCH SỬ THEO QUALITY (TRẠNG THÁI)
           // ==============================================================
           let txQuality = "GOOD"; // Mặc định Nhập NCC và Luân chuyển là hàng An toàn (GOOD)
-          
+
           // Nếu là phiếu trả hàng, trạng thái của lô sẽ tương ứng với lý do trả (DAMAGED, EXPIRED, OVERSTOCK)
           if (trans.type === "RETURN_TO_WAREHOUSE" && detail.reason) {
-            txQuality = detail.reason; 
+            txQuality = detail.reason;
           }
 
           // Nếu chất lượng của giao dịch này KHÔNG KHỚP với chất lượng lô đang bấm xem -> Bỏ qua
@@ -783,13 +837,11 @@ exports.returnToWarehouse = async (req, res) => {
       totalValue: totalValue,
     });
 
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "Tạo phiếu trả hàng về Kho tổng thành công!",
-        transaction: trans,
-      });
+    res.status(200).json({
+      success: true,
+      message: "Tạo phiếu trả hàng về Kho tổng thành công!",
+      transaction: trans,
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

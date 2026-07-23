@@ -2,7 +2,7 @@ const Category = require("../models/Category");
 
 exports.createCategory = async (req, res) => {
   try {
-    const { name, description } = req.body;
+    const { name, description, markupPercentage } = req.body;
 
     // Kiểm tra trùng tên
     const exists = await Category.findOne({ name });
@@ -11,7 +11,7 @@ exports.createCategory = async (req, res) => {
         .status(400)
         .json({ success: false, message: "Danh mục này đã tồn tại" });
 
-    const newCategory = await Category.create({ name, description });
+    const newCategory = await Category.create({ name, description, markupPercentage });
 
     res.status(201).json({ success: true, data: newCategory });
   } catch (error) {
@@ -31,11 +31,11 @@ exports.getAllCategories = async (req, res) => {
 exports.updateCategory = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, description } = req.body;
+    const { name, description, markupPercentage } = req.body;
 
     const updatedCategory = await Category.findByIdAndUpdate(
       id,
-      { name, description },
+      { name, description, markupPercentage },
       { new: true }, // Trả về document sau khi cập nhật
     );
 

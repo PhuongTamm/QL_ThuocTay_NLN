@@ -256,32 +256,6 @@ exports.chatWithBot = async (req, res) => {
     const { message, history } = req.body;
     const branchId = req.user.branchId || null;
 
-    // const fullName = user ? user.fullName : "bạn";
-    // const userRoleText = roleTitles[user.role] || "Nhân viên hệ thống";
-
-    // const model = genAI.getGenerativeModel({
-    //   model: "gemini-2.5-flash",
-    //   tools: tools,
-    //   systemInstruction: `Bạn là trợ lý AI nội bộ của Hệ thống Quản lý Nhà thuốc.
-    //   NGƯỜI ĐANG CHAT VỚI BẠN LÀ: "${fullName}"
-    //   CHỨC VỤ CỦA HỌ LÀ: "${userRoleText}"
-
-    //   QUY TẮC GIAO TIẾP VÀ PHÂN QUYỀN:
-    //   1. Xưng hô phù hợp với chức vụ của họ (Ví dụ: Chào sếp, Chào anh/chị Dược sĩ).
-    //   2. Nếu họ là Admin/Giám đốc, hãy chủ động cung cấp thông tin mang tính tổng quát hệ thống hoặc hỏi họ muốn xem của chi nhánh nào.
-    //   3. Nếu họ là Dược sĩ/Quản lý chi nhánh mà cố tình yêu cầu tra cứu thông tin của "chi nhánh khác" hoặc "toàn hệ thống", hãy từ chối lịch sự và nói rằng hệ thống phân quyền chỉ cho phép họ xem dữ liệu của nhánh mình làm việc.
-    //   4. Tự động đọc lại lịch sử chat để lấy tên thuốc hoặc tên chi nhánh nếu câu hỏi hiện tại bị khuyết thiếu chủ ngữ.
-    //   KỸ NĂNG NGỮ CẢNH (RẤT QUAN TRỌNG):
-    //   - Nếu người dùng đặt câu hỏi thiếu chủ ngữ hoặc tên thuốc (Ví dụ: "Hoạt chất của nó là gì?", "Còn tồn kho bao nhiêu?", "NSX nào?"), bạn BẮT BUỘC PHẢI tự động đọc lại lịch sử trò chuyện trước đó để trích xuất tên thuốc và tự động truyền vào tham số 'medicineName' của các hàm tra cứu.
-    //   - Định dạng tiền tệ luôn là VNĐ (Ví dụ: 150.000đ).
-
-    //   NGUYÊN TẮC AN TOÀN Y TẾ:
-    //   - TUYỆT ĐỐI KHÔNG kê đơn, không đưa ra lời khuyên chẩn đoán bệnh tật. Chỉ cung cấp thông tin có sẵn trong Database hệ thống.
-    //   - Khi người dùng dùng các từ như "thuốc đó", "thuốc này", "nó", BẮT BUỘC phải tìm trong câu trả lời gần nhất của bạn. Nếu câu trả lời gần nhất là chi tiết hóa đơn/phiếu xuất nhập, hãy TỰ ĐỘNG LẤY TÊN THUỐC đầu tiên trong phần "Chi tiết" để gọi hàm.
-    //   - Nếu không tìm thấy tên thuốc nào trong lịch sử, hãy trả lời rằng bạn không thể xác định được loại thuốc nào và yêu cầu họ cung cấp tên thuốc cụ thể.
-    //   `,
-    // });
-
     const user = await User.findById(req.user.id);
     const fullName = user ? user.fullName : "bạn";
     const userRoleText = roleTitles[user.role] || "Nhân viên hệ thống";
@@ -301,8 +275,6 @@ exports.chatWithBot = async (req, res) => {
       ragContext +=
         "========================================================\n";
     }
-
-    console.log(searchResults);
 
     // =========================================================
     // SUPER PROMPT: SYSTEM INSTRUCTION TỐI ƯU NHẤT
@@ -331,6 +303,7 @@ exports.chatWithBot = async (req, res) => {
       - TỰ ĐỘNG ĐIỀN CHỦ NGỮ: Nếu người dùng hỏi cộc lốc (VD: "Hoạt chất của nó là gì?", "Còn tồn kho bao nhiêu?", "Của NSX nào?"), bạn BẮT BUỘC PHẢI tự động đọc lịch sử trò chuyện trước đó để trích xuất tên thuốc và truyền vào tham số 'medicineName' của các hàm.
       - TRÍCH XUẤT TỪ HÓA ĐƠN: Nếu lịch sử gần nhất là một hóa đơn/phiếu xuất nhập và người dùng hỏi "Thuốc đó/Nó hạn dùng bao lâu?", tự động lấy TÊN THUỐC đầu tiên trong phần "Chi tiết" của hóa đơn đó để tra cứu.
       - Định dạng tiền tệ BẮT BUỘC luôn là VNĐ (Ví dụ: 150.000đ). Nếu không tìm thấy chủ ngữ trong lịch sử, hãy lịch sự yêu cầu họ cung cấp tên thuốc.
+      - TỰ ĐỘNG SỬA LỖI CHÍNH TẢ: Khi người dùng tra cứu tên thuốc (ví dụ: 'paladol', 'augmetin'), bạn BẮT BUỘC phải đối chiếu với [DỮ LIỆU THAM KHẢO TỪ HỆ THỐNG] để tìm ra tên thuốc ghi đúng chính tả nhất (Ví dụ: 'Panadol', 'Augmentin') TRƯỚC KHI truyền tên thuốc đó vào tham số 'medicineName' của các Tools. Nếu tên thuốc sai lệch quá nhiều và không có trong dữ liệu tham khảo, hãy hỏi lại người dùng để xác nhận.
 
       PHẦN 4: AN TOÀN Y TẾ & ĐẠO ĐỨC (CRITICAL)
       - TUYỆT ĐỐI KHÔNG kê đơn chữa bệnh, KHÔNG đưa ra lời khuyên chẩn đoán (Ví dụ: Không trả lời "Tôi bị đau đầu thì uống gì?").
@@ -373,22 +346,6 @@ exports.chatWithBot = async (req, res) => {
       result.response.text() ||
       "Xin lỗi sếp, hệ thống không tìm thấy thông tin này.";
     res.status(200).json({ success: true, text: finalReply });
-    // let result = await chat.sendMessage(message);
-    // let call = result.response.functionCalls();
-
-    // if (call && call.length > 0) {
-    //   const functionCall = call[0];
-    //   const functionName = functionCall.name;
-    //   const functionArgs = functionCall.args;
-
-    //   const apiResponse = await functionsMap[functionName](functionArgs, user);
-
-    //   result = await chat.sendMessage([
-    //     { functionResponse: { name: functionName, response: apiResponse } },
-    //   ]);
-    // }
-
-    // res.status(200).json({ success: true, text: result.response.text() });
   } catch (error) {
     console.error("Lỗi Chatbot:", error);
     res.status(500).json({
