@@ -192,30 +192,32 @@ const ProfitAnalysis = () => {
     });
 
     const printDiv = document.createElement("div");
-    printDiv.style.fontFamily = "Arial, sans-serif";
+    printDiv.style.fontFamily = "'Times New Roman', Times, serif"; // Đổi sang Times New Roman
     printDiv.style.color = "#000000";
     printDiv.style.backgroundColor = "#ffffff";
     printDiv.style.padding = "20px";
 
     let html = `
-      <div style="text-align: center; margin-bottom: 30px;">
-        <h2 style="margin: 0; font-size: 24px; text-transform: uppercase; font-weight: bold;">BÁO CÁO HIỆU QUẢ KINH DOANH (P&L)</h2>
+      <div style="display: flex; justify-content: space-between; margin-bottom: 25px;">
+        <div>
+          <h3 style="margin: 0; font-size: 16px; font-weight: bold; text-transform: uppercase;">HỆ THỐNG PHARMASYS </h3>
+          <p style="margin: 5px 0; font-size: 14px;">Đơn vị báo cáo: <strong>${branchName}</strong></p>
+          <p style="margin: 5px 0; font-size: 14px;">Giai đoạn: <strong>${periodText}</strong></p>
+        </div>
+        <div style="text-align: right;">
+          <p style="margin: 5px 0; font-size: 14px; font-style: italic;">Ngày lập: ${exportTime}</p>
+        </div>
       </div>
 
-      <div style="margin-bottom: 25px; font-size: 14px; line-height: 1.6;">
-        <p style="margin: 0;">Kho / Vị trí: <strong>${branchName}</strong></p>
-        <p style="margin: 0;">Giai đoạn báo cáo: <strong>${periodText}</strong></p>
-        <p style="margin: 0;">Ngày xuất báo cáo: <strong>${exportTime}</strong></p>
-        <p style="margin: 0;">Người lập phiếu: <strong>${creatorName}</strong></p>
-      </div>
+      <h2 style="text-align: center; font-size: 22px; font-weight: bold; margin-bottom: 25px;">BÁO CÁO LỢI NHUẬN TỔNG HỢP</h2>
 
       <div style="margin-bottom: 30px; font-size: 14px; line-height: 1.8;">
         <h3 style="font-size: 16px; margin-bottom: 12px; text-transform: uppercase; font-weight: bold; border-bottom: 1px solid #000; display: inline-block; padding-bottom: 4px;">THỐNG KÊ TỔNG QUAN</h3>
         <p style="margin: 0;">Tổng số mặt hàng kinh doanh: <strong>${filteredDetails.length} loại</strong></p>
-        <p style="margin: 0;">Tổng doanh thu bán ra: <strong style="color: #0369a1;">+ ${formatCurrency(data.summary.totalRevenue)}</strong></p>
-        <p style="margin: 0;">Tổng lợi nhuận gộp: <strong style="color: #059669;">+ ${formatCurrency(data.summary.grossProfit)}</strong></p>
-        <p style="margin: 0;">Tổng phí hủy / hao hụt: <strong style="color: #ea580c;">- ${formatCurrency(data.summary.totalDisposalLoss)}</strong></p>
-        <p style="margin: 0;">Tổng lợi nhuận thuần (Net): <strong style="color: #0ea5e9;">${formatCurrency(data.summary.netProfit)}</strong></p>
+        <p style="margin: 0;">Tổng doanh thu bán ra: <strong style="color: #000;">+ ${Math.round(data.summary.totalRevenue).toLocaleString()} VNĐ</strong></p>
+        <p style="margin: 0;">Tổng lợi nhuận gộp: <strong style="color: #000;">+ ${Math.round(data.summary.grossProfit).toLocaleString()} VNĐ</strong></p>
+        <p style="margin: 0;">Tổng phí hủy / hao hụt: <strong style="color: #000;">- ${Math.round(data.summary.totalDisposalLoss).toLocaleString()} VNĐ</strong></p>
+        <p style="margin: 0;">Tổng lợi nhuận thuần (Net): <strong style="color: #000;">${Math.round(data.summary.netProfit).toLocaleString()} VNĐ</strong></p>
       </div>
 
       <h3 style="font-size: 16px; margin-bottom: 10px; text-transform: uppercase; font-weight: bold;">BẢNG KÊ CHI TIẾT LỢI NHUẬN</h3>
@@ -244,22 +246,37 @@ const ProfitAnalysis = () => {
             <strong style="color: #0f172a; font-size: 13px;">${row.medicineName}</strong><br/>
             <span style="font-size: 11px; color: #64748b;">Mã: ${row.sku} | ĐVT: ${row.unit}</span>
           </td>
-          <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: center; font-weight: bold; color: #1d4ed8; vertical-align: top;">
-            ${row.soldQty} <span style="font-size: 10px; font-weight: normal; color: #64748b;">${row.unit}</span>
+          <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: center; font-weight: bold; color: #000; vertical-align: top;">
+            ${row.soldQty} <span style="font-size: 10px; font-weight: normal; color: #000;">${row.unit}</span>
           </td>
           <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: right; vertical-align: top;">${row.revenue.toLocaleString()}đ</td>
-          <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: right; color: #64748b; vertical-align: top;">${row.cogs.toLocaleString()}đ</td>
-          <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: right; font-weight: bold; color: #059669; vertical-align: top;">${row.grossProfit.toLocaleString()}đ</td>
-          <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: right; color: #e11d48; vertical-align: top;">${row.disposalLoss > 0 ? "-" + row.disposalLoss.toLocaleString() + "đ" : "-"}</td>
-          <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: right; font-weight: bold; color: #0369a1; vertical-align: top;">${row.netProfit.toLocaleString()}đ</td>
+          <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: right; color: #000; vertical-align: top;">${row.cogs.toLocaleString()}đ</td>
+          <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: right; color: #000; vertical-align: top;">${row.grossProfit.toLocaleString()}đ</td>
+          <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: right; color: #000; vertical-align: top;">${row.disposalLoss > 0 ? "-" + row.disposalLoss.toLocaleString() + "đ" : "-"}</td>
+          <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: right; color: #000; vertical-align: top;">${row.netProfit.toLocaleString()}đ</td>
           <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: center; vertical-align: top;">
-            <span style="font-weight: bold; color: ${row.margin > 30 ? "#047857" : row.margin > 10 ? "#b45309" : "#be123c"}">${row.margin.toFixed(1)}%</span>
+            <span style="font-weight: bold; color: #000;">${row.margin.toFixed(1)}%</span>
           </td>
         </tr>
       `;
     });
 
-    html += `</tbody></table>`;
+    html += `</tbody></table>
+      <div style="display: flex; justify-content: space-between; margin-top: 40px; text-align: center; font-size: 14px; page-break-inside: avoid;">
+        <div style="width: 33.33%;">
+          <strong style="display: block; margin-bottom: 80px;">Người lập phiếu</strong>
+          <span>${creatorName}</span>
+        </div>
+        <div style="width: 33.33%;">
+          <strong style="display: block; margin-bottom: 80px;">Kế toán trưởng</strong>
+          <span>(Ký, ghi rõ họ tên)</span>
+        </div>
+        <div style="width: 33.33%;">
+          <strong style="display: block; margin-bottom: 80px;">Giám đốc</strong>
+          <span>(Ký, ghi rõ họ tên)</span>
+        </div>
+      </div>
+    `;
     printDiv.innerHTML = html;
 
     const opt = {
@@ -291,7 +308,7 @@ const ProfitAnalysis = () => {
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
       `}</style>
 
-      <div className="animate-page-in space-y-6 max-w-7xl mx-auto">
+      <div className="animate-page-in space-y-6 ">
         {/* ── HEADER ── */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-2">
           <div>
@@ -307,7 +324,7 @@ const ProfitAnalysis = () => {
           <button
             onClick={handleExportPDF}
             disabled={isExportingPDF || filteredDetails.length === 0}
-            className="flex items-center gap-2 px-5 py-2.5 bg-[#0ea5e9] text-white font-bold rounded-xl shadow-md shadow-[#0ea5e9]/30 hover:bg-[#0369a1] hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:transform-none">
+            className="flex items-center gap-2 px-5 py-2.5 bg-white text-slate-700 font-bold border border-slate-200 rounded-2xl shadow-sm hover:bg-slate-50 transition-all disabled:opacity-50">
             {isExportingPDF ? (
               <Loader2 size={18} className="animate-spin" />
             ) : (

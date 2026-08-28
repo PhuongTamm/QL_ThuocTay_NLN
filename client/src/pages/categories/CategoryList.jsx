@@ -90,7 +90,7 @@ const ConfirmDialog = ({ open, onConfirm, onCancel, categoryName }) => {
           Xác nhận xóa
         </h3>
         <p className="text-sm text-gray-500 text-center mb-6">
-          Bạn có chắc muốn xóa danh mục{" "}
+          Bạn có chắc muốn xóa nhóm thuốc{" "}
           <strong className="text-gray-700">"{categoryName}"</strong>? Hành động
           này không thể hoàn tác.
         </p>
@@ -140,8 +140,8 @@ const CategoryList = () => {
       const { data } = await fetchCategories();
       setCategories(data.data || data);
     } catch (error) {
-      console.error("Lỗi khi tải danh mục", error);
-      addToast("Không thể tải danh mục. Vui lòng thử lại!", "error");
+      console.error("Lỗi khi tải nhóm thuốc", error);
+      addToast("Không thể tải nhóm thuốc. Vui lòng thử lại!", "error");
     } finally {
       setLoading(false);
     }
@@ -179,14 +179,14 @@ const CategoryList = () => {
       if (editingId) {
         const result = await updateCategory(editingId, payload);
         if (result.data.success) {
-          addToast("Cập nhật danh mục thành công!");
+          addToast("Cập nhật nhóm thuốc thành công!");
         } else {
           addToast(result.data.message || "Cập nhật thất bại!", "error");
         }
       } else {
         const result = await createCategory(payload);
         if (result.data.success) {
-          addToast("Thêm danh mục thành công!");
+          addToast("Thêm nhóm thuốc thành công!");
         } else {
           addToast(result.data.message || "Thêm thất bại!", "error");
         }
@@ -208,13 +208,13 @@ const CategoryList = () => {
     try {
       const result = await deleteCategory(confirmDelete.id);
       if (result.data.success) {
-        addToast("Xóa danh mục thành công!");
+        addToast("Xóa nhóm thuốc thành công!");
       } else {
-        addToast(result.data.message || "Lỗi khi xóa danh mục!", "error");
+        addToast(result.data.message || "Lỗi khi xóa nhóm thuốc!", "error");
       }
       loadCategories();
     } catch (error) {
-      addToast("Lỗi khi xóa danh mục!", "error");
+      addToast("Lỗi khi xóa nhóm thuốc!", "error");
       console.error(error);
     } finally {
       setConfirmDelete(null);
@@ -279,10 +279,10 @@ const CategoryList = () => {
             <div className="flex justify-between items-center px-6 py-4 border-b border-slate-100">
               <div>
                 <h2 className="text-lg font-bold text-slate-900">
-                  {editingId ? "Cập nhật Danh mục" : "Thêm Danh mục Mới"}
+                  {editingId ? "Cập nhật Nhóm thuốc" : "Thêm Nhóm thuốc Mới"}
                 </h2>
                 <p className="text-xs text-slate-400 mt-0.5">
-                  Điền các thông tin cơ bản cho danh mục thuốc
+                  Điền các thông tin cơ bản cho nhóm thuốc
                 </p>
               </div>
               <button
@@ -298,7 +298,7 @@ const CategoryList = () => {
               className="p-6 overflow-y-auto space-y-4 flex-1">
               <div>
                 <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">
-                  Tên danh mục <span className="text-red-500">*</span>
+                  Tên nhóm thuốc <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -397,10 +397,10 @@ const CategoryList = () => {
                 </div>
                 <div>
                   <h1 className="text-xl font-bold text-slate-900 leading-tight">
-                    Quản lý Danh mục
+                    Quản lý Nhóm thuốc
                   </h1>
                   <p className="text-xs text-slate-500">
-                    {categories.length} danh mục ·{" "}
+                    {categories.length} nhóm thuốc ·{" "}
                     {new Date().toLocaleDateString("vi-VN", {
                       weekday: "long",
                       day: "numeric",
@@ -416,7 +416,7 @@ const CategoryList = () => {
                   background: "linear-gradient(135deg, #0ea5e9, #0369a1)",
                   boxShadow: "0 4px 14px rgba(14, 165, 233, 0.4)",
                 }}>
-                <Plus size={18} strokeWidth={2.5} /> Thêm danh mục
+                <Plus size={18} strokeWidth={2.5} /> Thêm nhóm thuốc
               </button>
             </div>
 
@@ -450,7 +450,7 @@ const CategoryList = () => {
                       "linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)",
                     color: "#fff",
                   }}>
-                  {filteredCategories.length} / {categories.length} danh mục
+                  {filteredCategories.length} / {categories.length} nhóm thuốc
                 </span>
                 {searchTerm && (
                   <span
@@ -481,7 +481,7 @@ const CategoryList = () => {
                           "linear-gradient(90deg, #fff 0%, #fff 100%)",
                       }}>
                       <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider border-b border-gray-100">
-                        Tên danh mục
+                        Tên nhóm thuốc
                       </th>
                       <th className="px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider border-b border-gray-100 w-36">
                         Tỷ lệ Lợi Nhuận
@@ -572,7 +572,7 @@ const CategoryList = () => {
                                     Không tìm thấy kết quả
                                   </p>
                                   <p className="text-xs mt-1">
-                                    Không có danh mục nào phù hợp với{" "}
+                                    Không có nhóm thuốc nào phù hợp với{" "}
                                     <strong className="text-[#0ea5e9]">
                                       "{searchTerm}"
                                     </strong>
@@ -580,7 +580,7 @@ const CategoryList = () => {
                                 </>
                               ) : (
                                 <p className="text-sm">
-                                  Chưa có danh mục nào. Hãy thêm mới!
+                                  Chưa có nhóm thuốc nào. Hãy thêm mới!
                                 </p>
                               )}
                             </div>

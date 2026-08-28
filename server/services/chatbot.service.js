@@ -6,39 +6,36 @@ const Branch = require("../models/Branch");
 const Category = require("../models/Category");
 const Customer = require("../models/Customer");
 
+// SỬA LẠI HÀM HELPER TRONG chatbot.service.js
 const resolveTargetBranch = async (user, requestedBranchName) => {
-  // 1. Dược sĩ / QL Chi nhánh -> Ép cứng trả về đúng nhánh của họ, KHÔNG cho phép xem nhánh khác
-  if (user.role === "pharmacist" || user.role === "branch_manager") {
-    return user.branchId;
-  }
-
-  // 2. Admin / QL Kho tổng -> Nếu có hỏi đích danh tên 1 chi nhánh nào đó
-  if (
-    requestedBranchName &&
-    (user.role === "admin" || user.role === "warehouse_manager")
-  ) {
+  // 1. Nếu người dùng có nhắc đích danh tên một chi nhánh (VD: "ở chi nhánh 2")
+  if (requestedBranchName) {
     const branch = await Branch.findOne({
       name: { $regex: new RegExp(requestedBranchName, "i") },
     });
-    if (branch) return branch._id;
-    return "NOT_FOUND"; // Cờ báo lỗi không tìm thấy nhánh
+
+    if (!branch) return "NOT_FOUND"; // Không tìm thấy tên nhánh này
+
+    // 🔴 CHẶN QUYỀN TẠI ĐÂY: Nếu là Dược sĩ / QLCN mà dám hỏi nhánh khác -> Báo lỗi ngay
+    if (user.role === "pharmacist" || user.role === "branch_manager") {
+      if (branch._id.toString() !== user.branchId.toString()) {
+        return "ACCESS_DENIED";
+      }
+      return user.branchId; // Hỏi đúng nhánh của mình thì cho qua
+    }
+
+    // Nếu là Admin / QL Kho tổng -> Cho phép xem nhánh bất kỳ
+    if (user.role === "admin" || user.role === "warehouse_manager") {
+      return branch._id;
+    }
   }
 
+  // 2. Nếu người dùng hỏi chung chung (Không nhắc tên chi nhánh)
   if (user.role === "pharmacist" || user.role === "branch_manager") {
-    return user.branchId;
-  }
-  if (
-    requestedBranchName &&
-    (user.role === "admin" || user.role === "warehouse_manager")
-  ) {
-    const branch = await Branch.findOne({
-      name: { $regex: new RegExp(requestedBranchName, "i") },
-    });
-    if (branch) return branch._id;
-    return "NOT_FOUND";
+    return user.branchId; // Tự động lấy nhánh của họ
   }
 
-  // 3. Admin không chỉ định nhánh -> null (sẽ truy xuất toàn hệ thống hoặc Kho tổng)
+  // Admin hỏi chung chung -> trả về null (Để các hàm query toàn hệ thống)
   return null;
 };
 
@@ -86,6 +83,11 @@ const chatbotService = {
         return {
           message: `Không tìm thấy chi nhánh nào tên là ${branchName}.`,
         };
+      if (targetBranchId === "ACCESS_DENIED") {
+        return {
+          message: `LỖI PHÂN QUYỀN: Bạn chỉ được phép xem tồn kho tại chi nhánh của mình. Hãy từ chối trả lời câu hỏi này một cách lịch sự.`,
+        };
+      }
 
       const medicine = await Medicine.findOne({
         name: { $regex: new RegExp(medicineName, "i") },
@@ -121,7 +123,7 @@ const chatbotService = {
       return { error: error.message };
     }
   },
-  
+
   // 3. Kiểm tra thuốc sắp hết hạn
   getExpiringMedicines: async ({ days = 90 }, user) => {
     try {
@@ -205,7 +207,11 @@ const chatbotService = {
       const targetBranchId = await resolveTargetBranch(user, branchName);
       if (targetBranchId === "NOT_FOUND")
         return { message: `Không tìm thấy chi nhánh ${branchName}.` };
-
+      if (targetBranchId === "ACCESS_DENIED") {
+        return {
+          message: `LỖI PHÂN QUYỀN: Bạn chỉ được phép xem tồn kho tại chi nhánh của mình. Hãy từ chối trả lời câu hỏi này một cách lịch sự.`,
+        };
+      }
       const startOfDay = new Date();
       startOfDay.setHours(0, 0, 0, 0);
       const endOfDay = new Date();
@@ -285,12 +291,17 @@ const chatbotService = {
   },
 
   // 7. Cảnh báo thuốc sắp hết hàng (Low Stock)
-  getLowStockMedicines: async ({ threshold = 50, branchName }, user) => {
+  getLowStockMedicines: async ({ threshold = 20, branchName }, user) => {
     try {
       const targetBranchId = await resolveTargetBranch(user, branchName);
       if (targetBranchId === "NOT_FOUND")
         return { message: `Không tìm thấy chi nhánh ${branchName}.` };
 
+      if (targetBranchId === "ACCESS_DENIED") {
+        return {
+          message: `LỖI PHÂN QUYỀN: Bạn chỉ được phép xem tồn kho tại chi nhánh của mình. Hãy từ chối trả lời câu hỏi này một cách lịch sự.`,
+        };
+      }
       // Tìm trong kho có thuốc nào số lượng > 0 nhưng nhỏ hơn threshold (tính theo đơn vị cơ sở: viên, ống...)
       const query = { totalQuantity: { $lt: threshold, $gt: 0 } };
       if (targetBranchId) query.branchId = targetBranchId;
@@ -319,36 +330,117 @@ const chatbotService = {
   },
 
   // 8. Tìm thuốc theo Danh mục (VD: Có thuốc kháng sinh nào không?)
-  getMedicinesByCategory: async ({ categoryName }) => {
+  getMedicinesByCategory: async ({ categoryName, branchName }, user) => {
     try {
+      // 1. Phân quyền và xác định chi nhánh (Dùng hàm resolveTargetBranch đã fix ở trên)
+      const targetBranchId = await resolveTargetBranch(user, branchName);
+      if (targetBranchId === "NOT_FOUND") {
+        return {
+          message: `Không tìm thấy chi nhánh nào tên là ${branchName}.`,
+        };
+      }
+      if (targetBranchId === "ACCESS_DENIED") {
+        return {
+          message: `LỖI PHÂN QUYỀN: Bạn chỉ được phép tra cứu thuốc tại chi nhánh của mình.`,
+        };
+      }
+
+      // 2. Tìm danh mục gốc
       const category = await Category.findOne({
         name: { $regex: new RegExp(categoryName, "i") },
       });
-      if (!category)
+      if (!category) {
         return {
           message: `Không tìm thấy danh mục thuốc nào mang tên "${categoryName}".`,
         };
+      }
 
-      const medicines = await Medicine.find({ categoryId: category._id })
-        .select("name isPrescription")
-        .limit(10);
+      // 3. Tìm TẤT CẢ các ID thuốc thuộc danh mục này trong hệ thống
+      const medicinesInCategory = await Medicine.find({
+        categoryId: category._id,
+      }).select("_id name isPrescription");
 
-      if (medicines.length === 0)
+      if (medicinesInCategory.length === 0) {
         return {
-          message: `Hiện chưa có thuốc nào thuộc danh mục ${category.name}.`,
+          message: `Hiện hệ thống chưa có loại thuốc nào thuộc danh mục ${category.name}.`,
         };
+      }
+
+      const medicineIds = medicinesInCategory.map((m) => m._id);
+
+      // 4. KIỂM TRA TỒN KHO THỰC TẾ
+      let availableMedicines = [];
+      const locationName = targetBranchId
+        ? branchName || "chi nhánh của bạn"
+        : "toàn hệ thống";
+
+      if (targetBranchId) {
+        // Lọc trong bảng Inventory: chỉ lấy những thuốc thuộc danh mục và có số lượng > 0
+        const inventories = await Inventory.find({
+          branchId: targetBranchId,
+          medicineId: { $in: medicineIds },
+          totalQuantity: { $gt: 0 },
+        }).populate("medicineId", "name isPrescription baseUnit");
+
+        availableMedicines = inventories.map((inv) => ({
+          name: inv.medicineId.name,
+          type: inv.medicineId.isPrescription ? "Kê đơn" : "Không kê đơn",
+          stock: `${inv.totalQuantity} ${inv.medicineId.baseUnit}`,
+        }));
+      } else {
+        // Nếu Admin hỏi chung chung toàn hệ thống (targetBranchId = null) -> Báo liệt kê danh sách tổng
+        availableMedicines = medicinesInCategory.map((m) => ({
+          name: m.name,
+          type: m.isPrescription ? "Kê đơn" : "Không kê đơn",
+        }));
+      }
+
+      if (availableMedicines.length === 0) {
+        return {
+          message: `Hiện tại ${locationName} đã hết hàng (hoặc chưa nhập) các loại thuốc thuộc danh mục ${category.name}.`,
+        };
+      }
 
       return {
         category: category.name,
-        medicines: medicines.map((m) => ({
-          name: m.name,
-          type: m.isPrescription ? "Kê đơn" : "Không kê đơn",
-        })),
+        location: locationName,
+        // Giới hạn trả về Top 15 để AI không bị quá tải token nếu danh mục quá lớn
+        medicines: availableMedicines.slice(0, 15),
       };
     } catch (error) {
       return { error: error.message };
     }
   },
+  // getMedicinesByCategory: async ({ categoryName }) => {
+  //   try {
+  //     const category = await Category.findOne({
+  //       name: { $regex: new RegExp(categoryName, "i") },
+  //     });
+  //     if (!category)
+  //       return {
+  //         message: `Không tìm thấy danh mục thuốc nào mang tên "${categoryName}".`,
+  //       };
+
+  //     const medicines = await Medicine.find({ categoryId: category._id })
+  //       .select("name isPrescription")
+  //       .limit(10);
+
+  //     if (medicines.length === 0)
+  //       return {
+  //         message: `Hiện chưa có thuốc nào thuộc danh mục ${category.name}.`,
+  //       };
+
+  //     return {
+  //       category: category.name,
+  //       medicines: medicines.map((m) => ({
+  //         name: m.name,
+  //         type: m.isPrescription ? "Kê đơn" : "Không kê đơn",
+  //       })),
+  //     };
+  //   } catch (error) {
+  //     return { error: error.message };
+  //   }
+  // },
 
   // 9. Tra cứu thông tin Khách hàng (Điểm tích lũy, Lịch sử mua)
   getCustomerInfo: async ({ phone }) => {
@@ -402,6 +494,7 @@ const chatbotService = {
           };
         }
       }
+      // Kiểm tra quyền (Chỉ Admin hoặc nhân viên thuộc chi nhánh đó mới được xem)
 
       return {
         code: transaction.code,
@@ -507,7 +600,11 @@ const chatbotService = {
       const targetBranchId = await resolveTargetBranch(user, branchName);
       if (targetBranchId === "NOT_FOUND")
         return { message: `Không tìm thấy chi nhánh ${branchName}.` };
-
+      if (targetBranchId === "ACCESS_DENIED") {
+        return {
+          message: `LỖI PHÂN QUYỀN: Bạn chỉ được phép xem tồn kho tại chi nhánh của mình. Hãy từ chối trả lời câu hỏi này một cách lịch sự.`,
+        };
+      }
       const query = { type: transactionType, status: "COMPLETED" };
 
       // Xử lý nhánh liên quan
@@ -555,6 +652,11 @@ const chatbotService = {
       const targetBranchId = await resolveTargetBranch(user, branchName);
       if (targetBranchId === "NOT_FOUND") {
         return { message: `Không tìm thấy chi nhánh ${branchName}.` };
+      }
+      if (targetBranchId === "ACCESS_DENIED") {
+        return {
+          message: `LỖI PHÂN QUYỀN: Bạn chỉ được phép xem tồn kho tại chi nhánh của mình. Hãy từ chối trả lời câu hỏi này một cách lịch sự.`,
+        };
       }
 
       // 2. Tìm thuốc gốc

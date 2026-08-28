@@ -105,29 +105,31 @@ const MonthlyReportPage = () => {
 
     // 3. TẠO HTML BÁO CÁO SẠCH ĐỂ XUẤT PDF
     const printDiv = document.createElement("div");
-    printDiv.style.fontFamily = "Arial, sans-serif";
+    printDiv.style.fontFamily = "'Times New Roman', Times, serif"; // Đổi sang Times New Roman
     printDiv.style.color = "#000000";
     printDiv.style.backgroundColor = "#ffffff";
     printDiv.style.padding = "20px";
 
     let html = `
-      <div style="text-align: center; margin-bottom: 30px;">
-        <h2 style="margin: 0; font-size: 24px; text-transform: uppercase; font-weight: bold;">BÁO CÁO XUẤT NHẬP TỒN KHO - THÁNG ${selectedMonth}/${selectedYear}</h2>
+      <div style="display: flex; justify-content: space-between; margin-bottom: 25px;">
+        <div>
+          <h3 style="margin: 0; font-size: 16px; font-weight: bold; text-transform: uppercase;">HỆ THỐNG PHARMASYS</h3>
+          <p style="margin: 5px 0; font-size: 14px;">Đơn vị báo cáo: <strong>${branchName}</strong></p>
+        </div>
+        <div style="text-align: right;">
+          <p style="margin: 5px 0; font-size: 14px; font-style: italic;">Ngày lập: ${exportTime}</p>
+        </div>
       </div>
 
-      <div style="margin-bottom: 25px; font-size: 14px; line-height: 1.6;">
-        <p style="margin: 0;">Kho / Vị trí: <strong>${branchName}</strong></p>
-        <p style="margin: 0;">Ngày xuất báo cáo: <strong>${exportTime}</strong></p>
-        <p style="margin: 0;">Người lập phiếu: <strong>${creatorName}</strong></p>
-      </div>
+      <h2 style="text-align: center; font-size: 22px; font-weight: bold; margin-bottom: 25px;">BÁO CÁO XUẤT NHẬP TỒN KHO - THÁNG ${selectedMonth}/${selectedYear}</h2>
 
       <div style="margin-bottom: 30px; font-size: 14px; line-height: 1.8;">
         <h3 style="font-size: 16px; margin-bottom: 12px; text-transform: uppercase; font-weight: bold; border-bottom: 1px solid #000; display: inline-block; padding-bottom: 4px;">THỐNG KÊ TỔNG QUAN</h3>
         <p style="margin: 0;">Tổng số loại thuốc phát sinh giao dịch: <strong>${filteredReports.length} loại</strong></p>
-        <p style="margin: 0;">Tổng tồn đầu kỳ: <strong style="color: #1d4ed8;">${totalStart.toLocaleString()}</strong> (Đơn vị cơ sở)</p>
-        <p style="margin: 0;">Tổng nhập trong kỳ: <strong style="color: #059669;">+ ${totalImport.toLocaleString()}</strong> (Đơn vị cơ sở)</p>
-        <p style="margin: 0;">Tổng xuất trong kỳ: <strong style="color: #ea580c;">- ${totalExport.toLocaleString()}</strong> (Đơn vị cơ sở)</p>
-        <p style="margin: 0;">Tổng tồn cuối kỳ: <strong style="color: #0369a1;">${totalEnd.toLocaleString()}</strong> (Đơn vị cơ sở)</p>
+        <p style="margin: 0;">Tổng tồn đầu kỳ: <strong style="color: #000;">${totalStart.toLocaleString()}</strong> (Đơn vị cơ sở)</p>
+        <p style="margin: 0;">Tổng nhập trong kỳ: <strong style="color: #000;">+ ${totalImport.toLocaleString()}</strong> (Đơn vị cơ sở)</p>
+        <p style="margin: 0;">Tổng xuất trong kỳ: <strong style="color: #000;">- ${totalExport.toLocaleString()}</strong> (Đơn vị cơ sở)</p>
+        <p style="margin: 0;">Tổng tồn cuối kỳ: <strong style="color: #000;">${totalEnd.toLocaleString()}</strong> (Đơn vị cơ sở)</p>
       </div>
 
       <h3 style="font-size: 16px; margin-bottom: 10px; text-transform: uppercase; font-weight: bold;">BẢNG KÊ CHI TIẾT</h3>
@@ -167,7 +169,7 @@ const MonthlyReportPage = () => {
 
             // Xử lý hiển thị Số lượng (Nếu = 0 thì bôi xám, nếu > 0 thì bôi đỏ)
             const isOutOfStock = b.quantity === 0;
-            const qtyColor = isOutOfStock ? "#94a3b8" : "#ef4444";
+            const qtyColor = isOutOfStock ? "#94a3b8" : "#000";
 
             // Hiển thị Số hiện tại / Số gốc
             const stockDisplay = `<span style="color: ${qtyColor}; font-weight: bold;">${b.quantity}</span> <span style="color: #94a3b8; font-size: 11px;">/ ${b.initialQuantity || b.quantity}</span>`;
@@ -188,18 +190,33 @@ const MonthlyReportPage = () => {
           <td style="padding: 10px 8px; border: 1px solid #94a3b8; font-family: monospace; vertical-align: top;"><strong>${r.medicineId?.code || ""}</strong></td>
           <td style="padding: 10px 8px; border: 1px solid #94a3b8; vertical-align: top;">${r.medicineId?.name || ""}</td>
           <td style="padding: 10px 8px; border: 1px solid #94a3b8; vertical-align: top;">${batchHtml}</td>
-          <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: center; font-weight: bold; color: #1d4ed8; vertical-align: top;">${r.startQuantity.toLocaleString()}</td>
-          <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: center; font-weight: bold; color: #059669; vertical-align: top;">+${r.importQuantity.toLocaleString()}</td>
-          <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: center; font-weight: bold; color: #ea580c; vertical-align: top;">-${r.exportQuantity.toLocaleString()}</td>
-          <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: center; font-weight: bold; color: #0369a1; vertical-align: top;">
-            <span style="font-size: 16px;">${r.endQuantity.toLocaleString()}</span><br/>
-            <span style="font-size: 10px; font-weight: normal; color: #64748b;">${r.medicineId?.baseUnit || ""}</span>
+          <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: center; color: #000; vertical-align: top;">${r.startQuantity.toLocaleString()}</td>
+          <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: center; color: #000; vertical-align: top;">+${r.importQuantity.toLocaleString()}</td>
+          <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: center; color: #000; vertical-align: top;">-${r.exportQuantity.toLocaleString()}</td>
+          <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: center; font-weight: bold; color: #000; vertical-align: top;">
+            <span style="font-size: 14px;">${r.endQuantity.toLocaleString()}</span><br/>
+            <span style="font-size: 10px; font-weight: normal; color: #000;">${r.medicineId?.baseUnit || ""}</span>
           </td>
         </tr>
       `;
     });
 
-    html += `</tbody></table>`;
+    html += `</tbody></table>
+      <div style="display: flex; justify-content: space-between; margin-top: 40px; text-align: center; font-size: 14px; page-break-inside: avoid;">
+        <div style="width: 33.33%;">
+          <strong style="display: block; margin-bottom: 80px;">Người lập phiếu</strong>
+          <span>${creatorName}</span>
+        </div>
+        <div style="width: 33.33%;">
+          <strong style="display: block; margin-bottom: 80px;">Kế toán / Quản lý</strong>
+          <span>(Ký, ghi rõ họ tên)</span>
+        </div>
+        <div style="width: 33.33%;">
+          <strong style="display: block; margin-bottom: 80px;">Giám đốc</strong>
+          <span>(Ký, ghi rõ họ tên)</span>
+        </div>
+      </div>
+    `;
     printDiv.innerHTML = html;
 
     const opt = {

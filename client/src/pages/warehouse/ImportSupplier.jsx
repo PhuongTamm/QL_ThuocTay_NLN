@@ -106,12 +106,12 @@ const ImportSupplier = () => {
       (item) => item.variantId === variant._id && item.batchSelection === "NEW",
     );
 
-    if (isExist) {
-      alert(
-        `Sản phẩm ${variant.name} đang có dòng chờ điền thông tin lô mới trong phiếu nhập.`,
-      );
-      return;
-    }
+    // if (isExist) {
+    //   alert(
+    //     `Sản phẩm ${variant.name} đang có dòng chờ điền thông tin lô mới trong phiếu nhập.`,
+    //   );
+    //   return;
+    // }
 
     const newItem = {
       medicineId: medicine._id,
@@ -348,42 +348,6 @@ const ImportSupplier = () => {
       }
     }
 
-    // try {
-    //   const payload = {
-    //     supplierName: supplierName.trim(),
-    //     details: items.map((item) => ({
-    //       variantId: item.variantId,
-    //       batchCode:
-    //         item.batchSelection === "NEW"
-    //           ? item.batchCode.trim().toUpperCase()
-    //           : item.batchSelection,
-    //       manufacturingDate: item.manufacturingDate,
-    //       expiryDate: item.expiryDate,
-    //       quantity: Number(item.quantity),
-    //       price: Number(item.price),
-    //     })),
-    //   };
-
-    //   const res = await api.post("/transactions/import-supplier", payload);
-
-    //   if (res.data?.success || res.success) {
-    //     const wantToPrint = window.confirm(
-    //       "Nhập hàng thành công! Bạn có muốn in PHIẾU NHẬP KHO không?",
-    //     );
-    //     if (wantToPrint && (res.data?.transaction || res.transaction)) {
-    //       await generatePDF(res.data?.transaction || res.transaction);
-    //     }
-    //     setItems([]);
-    //     setSupplierName("");
-    //     navigate("/inventory");
-    //   } else {
-    //     alert(res.data?.message || "Có lỗi xảy ra khi nhập hàng.");
-    //   }
-    // } catch (error) {
-    //   console.error("Lỗi gửi dữ liệu nhập kho:", error);
-    //   alert(error.response?.data?.message || "Lỗi kết nối máy chủ.");
-    // }
-
     try {
       // SỬA TỪ 'details' THÀNH 'items' Ở ĐÂY ĐỂ ĐỒNG BỘ VỚI BACKEND
       const payload = {
@@ -607,7 +571,10 @@ const ImportSupplier = () => {
                                   {variant.name}
                                 </span>
                                 <span className="text-[10px] text-slate-500 font-medium">
-                                  ĐV: {variant.unit}{" "}
+                                  ĐV: {variant.unit} (
+                                  {variant.packagingSpecification ||
+                                    "Chưa cập nhật"}
+                                  ){" "}
                                   <span className="mx-1 text-slate-300">|</span>{" "}
                                   Tồn:{" "}
                                   <span
@@ -734,29 +701,22 @@ const ImportSupplier = () => {
                         inv.branchId === warehouseId ||
                         inv.branchId?._id === warehouseId),
                   );
-                  {/* const availableBatches = medInventory
-                    ? Array.from(
-                        new Map(
-                          medInventory.batches.map((b) => [b.batchCode, b]),
-                        ).values(),
-                      )
-                    : []; */}
 
-                    let availableBatches = [];
-                    if (medInventory && medInventory.batches) {
-                      const batchMap = new Map();
-                      medInventory.batches.forEach((b) => {
-                        if (batchMap.has(b.batchCode)) {
-                          // Nếu đã tồn tại mã lô này trong Map, cộng dồn số lượng
-                          batchMap.get(b.batchCode).quantity += b.quantity;
-                        } else {
-                          // Nếu chưa có, thêm mới (sao chép ra object mới để không ảnh hưởng dữ liệu gốc)
-                          batchMap.set(b.batchCode, { ...b });
-                        }
-                      });
-                      availableBatches = Array.from(batchMap.values());
-                    }
-                    
+                  let availableBatches = [];
+                  if (medInventory && medInventory.batches) {
+                    const batchMap = new Map();
+                    medInventory.batches.forEach((b) => {
+                      if (batchMap.has(b.batchCode)) {
+                        // Nếu đã tồn tại mã lô này trong Map, cộng dồn số lượng
+                        batchMap.get(b.batchCode).quantity += b.quantity;
+                      } else {
+                        // Nếu chưa có, thêm mới (sao chép ra object mới để không ảnh hưởng dữ liệu gốc)
+                        batchMap.set(b.batchCode, { ...b });
+                      }
+                    });
+                    availableBatches = Array.from(batchMap.values());
+                  }
+
                   const isExistingBatch = item.batchSelection !== "NEW";
 
                   return (
@@ -908,7 +868,7 @@ const ImportSupplier = () => {
                           <input
                             type="number"
                             min="0"
-                            step="500"
+                            step="1"
                             required
                             placeholder="Nhập giá"
                             className={`${inputBase} text-right font-extrabold text-rose-600 text-sm focus:border-rose-400 focus:ring-rose-100`}
@@ -1026,6 +986,14 @@ const ImportSupplier = () => {
                         Thuốc Không Kê Đơn
                       </span>
                     )}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wide">
+                    Đơn vị cơ sở gốc
+                  </p>
+                  <p className="font-bold text-slate-700 mt-0.5">
+                    {selectedMedicine.baseUnit || "Viên"}
                   </p>
                 </div>
                 <div>

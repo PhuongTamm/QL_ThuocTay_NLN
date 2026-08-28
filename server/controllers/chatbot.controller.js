@@ -114,21 +114,6 @@ const tools = [
         },
       },
       {
-        name: "getMedicinesByCategory",
-        description:
-          "Tìm danh sách các loại thuốc dựa trên tên danh mục (Ví dụ: Kháng sinh, Giảm đau, Vitamin).",
-        parameters: {
-          type: "OBJECT",
-          properties: {
-            categoryName: {
-              type: "STRING",
-              description: "Tên danh mục cần tìm",
-            },
-          },
-          required: ["categoryName"],
-        },
-      },
-      {
         name: "getCustomerInfo",
         description:
           "Tra cứu thông tin khách hàng, số điểm tích lũy và tổng chi tiêu dựa trên số điện thoại.",
@@ -221,6 +206,26 @@ const tools = [
             },
           },
           required: ["medicineName"],
+        },
+      },
+      {
+        name: "getMedicinesByCategory",
+        description:
+          "Tìm danh sách các loại thuốc CÓ SẴN TRONG KHO dựa trên tên danh mục (Ví dụ: Kháng sinh, Giảm đau) tại một chi nhánh cụ thể.",
+        parameters: {
+          type: "OBJECT",
+          properties: {
+            categoryName: {
+              type: "STRING",
+              description: "Tên danh mục cần tìm",
+            },
+            branchName: {
+              type: "STRING",
+              description:
+                "Tên chi nhánh cần xem (Tùy chọn, hệ thống sẽ tự động dùng chi nhánh của người hỏi nếu có)",
+            },
+          },
+          required: ["categoryName"],
         },
       },
     ],

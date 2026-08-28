@@ -62,7 +62,6 @@ const TransactionHistoryPage = () => {
   // Logic lọc dữ liệu tổng hợp
   const filteredData = transactions.filter((tx) => {
     // 1. Lọc theo từ khóa (Mã phiếu, tên NCC)
-    console.log(tx);
     const matchSearch =
       tx.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (tx.supplierName &&
@@ -113,7 +112,7 @@ const TransactionHistoryPage = () => {
     setIsModalOpen(true);
   };
 
-  /* ─── LOGIC XUẤT PDF CÁC LOẠI BÁO CÁO ─── */
+  /* ─── LOGIC XUẤT PDF CÁC LOẠI BÁO CÁO (ĐÃ ĐƯỢC CHỈNH SỬA) ─── */
   const handleExportPDF = (reportType) => {
     setExportingType(reportType);
 
@@ -183,51 +182,50 @@ const TransactionHistoryPage = () => {
       }
     });
 
-    // 4. XÂY DỰNG GIAO DIỆN HTML
+    // 4. XÂY DỰNG GIAO DIỆN HTML (BẢNG KHÔNG DÙNG ROWSPAN, MÀU ĐEN TOÀN BỘ)
     const printDiv = document.createElement("div");
-    printDiv.style.fontFamily = "Arial, sans-serif";
+    printDiv.style.fontFamily = "'Times New Roman', Times, serif"; // Đổi sang Times New Roman
     printDiv.style.color = "#000000";
     printDiv.style.backgroundColor = "#ffffff";
     printDiv.style.padding = "20px";
 
     let html = `
-      <div style="text-align: center; margin-bottom: 30px;">
-        <h2 style="margin: 0; font-size: 24px; text-transform: uppercase; font-weight: bold;">${title}</h2>
+      <div style="display: flex; justify-content: space-between; margin-bottom: 25px;">
+        <div>
+          <h3 style="margin: 0; font-size: 16px; font-weight: bold; text-transform: uppercase;">HỆ THỐNG PHARMASYS </h3>
+          <p style="margin: 5px 0; font-size: 14px;">Đơn vị báo cáo: <strong>${branchName}</strong></p>
+          <p style="margin: 5px 0; font-size: 14px;">Giai đoạn: <strong>${periodText}</strong></p>
+        </div>
+        <div style="text-align: right;">
+          <p style="margin: 5px 0; font-size: 14px; font-style: italic;">Ngày lập: ${exportTime}</p>
+        </div>
       </div>
 
-      <div style="margin-bottom: 25px; font-size: 14px; line-height: 1.6;">
-        <p style="margin: 0;">Kho / Vị trí: <strong>${branchName}</strong></p>
-        <p style="margin: 0;">Giai đoạn báo cáo: <strong>${periodText}</strong></p>
-        <p style="margin: 0;">Ngày xuất báo cáo: <strong>${exportTime}</strong></p>
-        <p style="margin: 0;">Người lập phiếu: <strong>${creatorName}</strong></p>
-      </div>
+      <h2 style="text-align: center; font-size: 22px; font-weight: bold; margin-bottom: 25px; text-transform: uppercase;">${title}</h2>
 
-      <div style="margin-bottom: 30px; font-size: 14px; line-height: 1.8;">
+      <div style="margin-bottom: 30px; font-size: 14px; line-height: 1.8; color: #000;">
         <h3 style="font-size: 16px; margin-bottom: 12px; text-transform: uppercase; font-weight: bold; border-bottom: 1px solid #000; display: inline-block; padding-bottom: 4px;">THỐNG KÊ TỔNG QUAN</h3>
         <p style="margin: 0;">Tổng số giao dịch phát sinh: <strong>${targetData.length} phiếu</strong></p>
         ${
           reportType === "IMPORT_EXPORT"
             ? `
-          <p style="margin: 0;">Tổng chi phí nhập hàng (từ NCC): <strong style="color: #059669;">+ ${totalImportCost.toLocaleString()} VNĐ</strong></p>
-          <p style="margin: 0;">Tổng chi phí tổn thất (Hủy hàng): <strong style="color: #ea580c;">- ${totalDisposalCost.toLocaleString()} VNĐ</strong></p>
+          <p style="margin: 0;">Tổng chi phí nhập hàng (từ NCC): <strong>+ ${totalImportCost.toLocaleString()} VNĐ</strong></p>
+          <p style="margin: 0;">Tổng chi phí tổn thất (Hủy hàng): <strong>- ${totalDisposalCost.toLocaleString()} VNĐ</strong></p>
         `
             : `
-          <p style="margin: 0;">Tổng doanh thu bán lẻ: <strong style="color: #0284c7;">+ ${totalRevenueAmount.toLocaleString()} VNĐ</strong></p>
+          <p style="margin: 0;">Tổng doanh thu bán lẻ: <strong>+ ${totalRevenueAmount.toLocaleString()} VNĐ</strong></p>
         `
         }
       </div>
 
-      <h3 style="font-size: 16px; margin-bottom: 10px; text-transform: uppercase; font-weight: bold;">BẢNG KÊ CHI TIẾT</h3>
-      <table style="width: 100%; border-collapse: collapse; font-size: 12px; text-align: left;">
+      <h3 style="font-size: 16px; margin-bottom: 10px; text-transform: uppercase; font-weight: bold; color: #000;">BẢNG KÊ CHI TIẾT</h3>
+      <table style="width: 100%; border-collapse: collapse; font-size: 12px; text-align: left; color: #000;">
         <thead>
-          <tr style="background-color: #f1f5f9; page-break-inside: avoid;">
-            <th style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: center; width: 5%;">STT</th>
-            <th style="padding: 10px 8px; border: 1px solid #94a3b8; width: 15%;">Mã Phiếu / Ngày</th>
-            <th style="padding: 10px 8px; border: 1px solid #94a3b8; width: 18%;">${reportType === "IMPORT_EXPORT" ? "Loại / Đối tác" : "Khách hàng"}</th>
-            <th style="padding: 10px 8px; border: 1px solid #94a3b8; width: 32%;">Chi tiết hàng hóa (Mã - Tên - Lô - HSD)</th>
-            <th style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: center; width: 8%;">SL</th>
-            <th style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: right; width: 10%;">Đơn giá</th>
-            <th style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: right; width: 12%;">Thành tiền</th>
+          <tr style="background-color: #f1f5f9; page-break-inside: avoid; color: #000;">
+            <th style="padding: 10px 8px; border: 1px solid #000; text-align: center; width: 4%;">STT</th>
+            <th style="padding: 10px 8px; border: 1px solid #000; width: 16%;">Mã Phiếu / Ngày</th>
+            <th style="padding: 10px 8px; border: 1px solid #000; width: 20%;">${reportType === "IMPORT_EXPORT" ? "Loại / Đối tác" : "Khách hàng"}</th>
+            <th style="padding: 10px 8px; border: 1px solid #000; width: 60%;">Chi tiết hàng hóa (Sản phẩm - Lô - HSD - SL - Đơn giá - Thành tiền)</th>
           </tr>
         </thead>
         <tbody>
@@ -256,70 +254,89 @@ const TransactionHistoryPage = () => {
         )
           partnerName = `${tx.fromBranch?.name || "Kho Tổng"} -> ${tx.toBranch?.name || "Kho Tổng"}`;
 
-        partnerInfo = `<strong>${txTypeLabel}</strong><br/><span style="color: #64748b; font-size: 11px;">${partnerName}</span>`;
+        partnerInfo = `<strong>${txTypeLabel}</strong><br/><span>${partnerName}</span>`;
       } else {
-        partnerInfo = `<strong>${tx.customerName || "Khách vãng lai"}</strong><br/><span style="color: #64748b; font-size: 11px;">${tx.customerPhone || "---"}</span>`;
+        partnerInfo = `<strong>${tx.customerName || "Khách vãng lai"}</strong><br/><span>${tx.customerPhone || "---"}</span>`;
       }
 
-      // Xử lý Cột Hàng hóa (Rowspan để gộp chung 1 phiếu)
+      // Xây dựng bảng chi tiết con bên trong cột "Chi tiết hàng hóa"
+      let detailsHtml = `<table style="width: 100%; border-collapse: collapse; border: none;"><tbody>`;
+
       tx.details.forEach((item, idx) => {
         const itemTotal = (item.quantity || 0) * (item.price || 0);
-
-        const isFirstItem = idx === 0;
-        const rowSpanStr =
-          isFirstItem && tx.details.length > 1
-            ? `rowspan="${tx.details.length}"`
-            : "";
-
-        let txMetaCols = "";
-        if (isFirstItem) {
-          txMetaCols = `
-            <td ${rowSpanStr} style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: center; vertical-align: top;">${stt++}</td>
-            <td ${rowSpanStr} style="padding: 10px 8px; border: 1px solid #94a3b8; vertical-align: top;">
-              <strong>${tx.code}</strong><br/>
-              <span style="font-size: 11px; color: #64748b;">${txDate}</span>
-            </td>
-            <td ${rowSpanStr} style="padding: 10px 8px; border: 1px solid #94a3b8; vertical-align: top;">${partnerInfo}</td>
-          `;
-        }
-
         const expiry = item.expiryDate
           ? new Date(item.expiryDate).toLocaleDateString("vi-VN")
           : "---";
 
-        html += `
-          <tr style="page-break-inside: avoid;">
-            ${txMetaCols}
-            <td style="padding: 10px 8px; border: 1px solid #94a3b8; vertical-align: top;">
-              <strong style="color: #1e293b;">${item.variantId?.name || "Thuốc không tồn tại"}</strong><br/>
-              <span style="font-size: 11px; color: #64748b;">Mã: ${item.variantId?.sku || "---"} | Lô: ${item.batchCode || "---"} | HSD: ${expiry}</span>
+        // Tạo đường kẻ đứt phân tách giữa các mặt hàng trong cùng 1 phiếu
+        const isLast = idx === tx.details.length - 1;
+        const borderStyle = isLast ? "" : "border-bottom: 1px dashed #000;";
+
+        detailsHtml += `
+          <tr>
+            <td style="padding: 10px 8px 10px 0; border: none; ${borderStyle} width: 45%; vertical-align: top;">
+              <strong>${item.variantId?.name || "Thuốc không tồn tại"}</strong><br/>
+              <span style="font-size: 11px;">Mã: ${item.variantId?.sku || "---"} | Lô: ${item.batchCode || "---"} | HSD: ${expiry}</span>
             </td>
-            <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: center; vertical-align: top;">
-              <span style="font-weight: bold; color: #0369a1;">${item.quantity}</span> <span style="font-size: 10px; color: #64748b;">${item.variantId?.unit || ""}</span>
+            <td style="padding: 10px 8px; border: none; ${borderStyle} width: 15%; text-align: center; vertical-align: top;">
+              <strong>${item.quantity}</strong> <span style="font-size: 10px;">${item.variantId?.unit || ""}</span>
             </td>
-            <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: right; vertical-align: top;">${(item.price || 0).toLocaleString()}đ</td>
-            <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: right; vertical-align: top; font-weight: bold; color: ${reportType === "REVENUE" ? "#059669" : "#0f172a"};">${itemTotal.toLocaleString()}đ</td>
+            <td style="padding: 10px 8px; border: none; ${borderStyle} width: 15%; text-align: right; vertical-align: top;">
+              ${(item.price || 0).toLocaleString()}đ
+            </td>
+            <td style="padding: 10px 0 10px 8px; border: none; ${borderStyle} width: 25%; text-align: right; vertical-align: top; font-weight: bold;">
+              ${itemTotal.toLocaleString()}đ
+            </td>
           </tr>
         `;
       });
+      detailsHtml += `</tbody></table>`;
+
+      // Render dòng chính của giao dịch (Chống rớt trang bằng page-break-inside: avoid)
+      html += `
+        <tr style="page-break-inside: avoid; color: #000;">
+          <td style="padding: 10px 8px; border: 1px solid #000; text-align: center; vertical-align: top;">${stt++}</td>
+          <td style="padding: 10px 8px; border: 1px solid #000; vertical-align: top;">
+            <strong>${tx.code}</strong><br/>
+            <span>${txDate}</span>
+          </td>
+          <td style="padding: 10px 8px; border: 1px solid #000; vertical-align: top;">${partnerInfo}</td>
+          <td style="padding: 0 8px; border: 1px solid #000; vertical-align: top;">${detailsHtml}</td>
+        </tr>
+      `;
     });
 
-    // Nếu là Báo cáo doanh thu thì thêm dòng Tổng cuối bảng
+    // Nếu là Báo cáo doanh thu thì thêm dòng Tổng ở Footer
     html += `
         </tbody>
         ${
           reportType === "REVENUE"
             ? `
         <tfoot>
-          <tr style="background-color: #f8fafc; page-break-inside: avoid;">
-            <td colspan="6" style="padding: 12px 8px; border: 1px solid #94a3b8; text-align: right; font-weight: bold; font-size: 14px;">TỔNG DOANH THU BÁN LẺ:</td>
-            <td style="padding: 12px 8px; border: 1px solid #94a3b8; text-align: right; font-weight: bold; font-size: 16px; color: #dc2626;">${totalRevenueAmount.toLocaleString()}đ</td>
+          <tr style="page-break-inside: avoid; color: #000;">
+            <td colspan="3" style="padding: 12px 8px; border: 1px solid #000; text-align: right; font-weight: bold; font-size: 14px;">TỔNG DOANH THU BÁN LẺ:</td>
+            <td style="padding: 12px 8px; border: 1px solid #000; text-align: right; font-weight: bold; font-size: 16px;">${totalRevenueAmount.toLocaleString()}đ</td>
           </tr>
         </tfoot>
         `
             : ""
         }
       </table>
+
+      <div style="display: flex; justify-content: space-between; margin-top: 40px; text-align: center; font-size: 14px; page-break-inside: avoid;">
+        <div style="width: 33.33%;">
+          <strong style="display: block; margin-bottom: 80px;">Người lập phiếu</strong>
+          <span>${creatorName}</span>
+        </div>
+        <div style="width: 33.33%;">
+          <strong style="display: block; margin-bottom: 80px;">Kế toán / Quản lý</strong>
+          <span>(Ký, ghi rõ họ tên)</span>
+        </div>
+        <div style="width: 33.33%;">
+          <strong style="display: block; margin-bottom: 80px;">Giám đốc</strong>
+          <span>(Ký, ghi rõ họ tên)</span>
+        </div>
+      </div>
     `;
 
     printDiv.innerHTML = html;
@@ -333,7 +350,7 @@ const TransactionHistoryPage = () => {
       filename: `${fileNamePrefix}_${new Date().toLocaleDateString("vi-VN").replace(/\//g, "-")}.pdf`,
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 2, useCORS: true },
-      jsPDF: { unit: "mm", format: "a4", orientation: "landscape" }, // In khổ ngang để bảng rộng rãi
+      jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
       pagebreak: { mode: "css", avoid: "tr" },
     };
 
@@ -676,7 +693,7 @@ const TransactionHistoryPage = () => {
       </div>
 
       {/* ══════════════════════════════════════════
-          MODAL: XEM CHI TIẾT PHIẾU (GIỮ NGUYÊN)
+          MODAL: XEM CHI TIẾT PHIẾU
       ══════════════════════════════════════════ */}
       {isModalOpen && selectedTx && (
         <div
@@ -712,6 +729,15 @@ const TransactionHistoryPage = () => {
                     Tạo bởi:{" "}
                     <span className="font-bold text-white">
                       {selectedTx.createdBy?.fullName || "Hệ thống"}
+                    </span>
+                  </span>
+                  <span className="opacity-50">·</span>
+                  <span className="flex items-center gap-1">
+                    <Store size={13} />
+                    <span className="font-bold text-white">
+                      {selectedTx.type === "IMPORT_SUPPLIER"
+                        ? selectedTx.toBranch?.name || "Kho Tổng"
+                        : selectedTx.fromBranch?.name || "Kho Tổng"}
                     </span>
                   </span>
                   <span className="opacity-50">·</span>

@@ -300,13 +300,27 @@ const POSPageInner = () => {
     setCustomerInfo({ _id: c._id, phone: c.phone, name: c.name });
     setShowCustomerDropdown(false);
   };
-
-  // BƯỚC 2: THAY THẾ HÀM handleUpdateQuantity CŨ
+  
+  // BƯỚC 2: THAY THẾ HÀM handleUpdateQuantity
   const handleUpdateQuantity = (inv, activeVariant, newQuantity) => {
     if (newQuantity < 1) return false;
     const medId = inv.medicineId._id;
 
-    // Tính tổng số lượng (theo đơn vị cơ sở) của các quy cách KHÁC của cùng thuốc này đang có trong giỏ
+    // KIỂM TRA TỒN KHO CHẴN CHO ĐƠN VỊ ĐANG CHỌN (Chống gộp lẻ)
+    const validVariantQty = getValidVariantQuantity(
+      inv,
+      activeVariant.conversionRate,
+    );
+
+    if (newQuantity > validVariantQty) {
+      toast(
+        `Chỉ còn tối đa ${validVariantQty} ${activeVariant.unit} nguyên vẹn.`,
+        "warning",
+      );
+      return false;
+    }
+
+    // KIỂM TRA TỔNG TỒN KHO QUY ĐỔI (Dành cho trường hợp mua kết hợp Hộp + Viên)
     const existingBaseQtyInCart = cart
       .filter(
         (item) =>
@@ -316,19 +330,17 @@ const POSPageInner = () => {
 
     const neededBaseQty =
       existingBaseQtyInCart + newQuantity * activeVariant.conversionRate;
+    const totalValidBaseQty = getValidBaseQuantity(inv); // Hàm tính tổng viên hiện có
 
-    // Tính số lượng tồn kho THỰC TẾ HỢP LỆ
-    const validQty = getValidBaseQuantity(inv);
-
-    // Ràng buộc: Chặn nếu vượt quá Tồn kho hợp lệ
-    if (neededBaseQty > validQty) {
+    if (neededBaseQty > totalValidBaseQty) {
       toast(
-        `Không đủ hàng hợp lệ! Chỉ còn ${validQty} ${inv.medicineId.baseUnit} (Đã loại trừ hàng cận/lỗi).`,
+        `Không đủ hàng! Tổng số lượng quy đổi vượt quá tổng tồn kho thực tế (${totalValidBaseQty} ${inv.medicineId.baseUnit}).`,
         "warning",
       );
       return false;
     }
 
+    // CẬP NHẬT VÀO GIỎ HÀNG NẾU QUA HẾT CÁC BÀI KIỂM TRA
     const existingItemIndex = cart.findIndex(
       (item) => item.variantId === activeVariant._id,
     );
@@ -393,6 +405,23 @@ const POSPageInner = () => {
         new Date(b.expiryDate) > today
       ) {
         return sum + b.quantity;
+      }
+      return sum;
+    }, 0);
+  };
+
+  // Tính số lượng nguyên vẹn (Không cộng dồn các viên lẻ khác lô)
+  const getValidVariantQuantity = (inv, conversionRate) => {
+    if (!inv || !inv.batches) return 0;
+    const today = new Date();
+    return inv.batches.reduce((sum, b) => {
+      // Chỉ tính các lô hợp lệ
+      if (
+        b.quantity > 0 &&
+        b.quality === "GOOD" &&
+        new Date(b.expiryDate) > today
+      ) {
+        return sum + Math.floor(b.quantity / conversionRate); // Tính số chẵn của TỪNG lô rồi mới cộng lại
       }
       return sum;
     }, 0);
@@ -1856,7 +1885,7 @@ const POSPageInner = () => {
                         fontSize: 14,
                         textTransform: "uppercase",
                       }}>
-                      Nhà Thuốc Của Bạn
+                      PharmaSys
                     </p>
                     <p style={{ fontSize: 10, color: "#6b7280" }}>
                       Đ/c: {receiptData.branchName}
@@ -2269,7 +2298,7 @@ const POSPageInner = () => {
                       fontSize: 16,
                       textTransform: "uppercase",
                     }}>
-                    Nhà Thuốc Của Bạn
+                    PharmaSys
                   </p>
                   <p style={{ fontSize: 11 }}>Đ/c: {receiptData.branchName}</p>
                   {/* SỬA LẠI THÀNH SĐT ĐỘNG CỦA CHI NHÁNH */}
@@ -2390,7 +2419,7 @@ const POSPageInner = () => {
       />
     </div>
   );
-};;;;
+};;;;;;
 
 const POSPage = () => (
   <ToastProvider>

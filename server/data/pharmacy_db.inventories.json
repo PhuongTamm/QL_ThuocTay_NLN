@@ -1,0 +1,1775 @@
+[{
+  "_id": {
+    "$oid": "69d8bd6c6138917ab3c04870"
+  },
+  "branchId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03608"
+  },
+  "totalQuantity": 0,
+  "batches": [
+    {
+      "batchCode": "LO_AUSMUCO_001",
+      "expiryDate": {
+        "$date": "2028-04-04T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-04T00:00:00.000Z"
+      },
+      "quantity": 0,
+      "initialQuantity": 2000,
+      "importPrice": 2000,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69d8bd6c6138917ab3c04871"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-04-10T09:05:48.397Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-02T12:28:14.332Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8bd6c6138917ab3c0487a"
+  },
+  "branchId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03759"
+  },
+  "totalQuantity": 88000,
+  "batches": [
+    {
+      "batchCode": "LO_OMEGA3_001",
+      "expiryDate": {
+        "$date": "2028-04-03T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-03T00:00:00.000Z"
+      },
+      "quantity": 88000,
+      "initialQuantity": 100000,
+      "importPrice": 1000,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69d8bd6c6138917ab3c0487b"
+      }
+    },
+    {
+      "batchCode": "LO_OMEGA3_002",
+      "expiryDate": {
+        "$date": "2027-04-09T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-09T00:00:00.000Z"
+      },
+      "quantity": 0,
+      "initialQuantity": 24000,
+      "importPrice": 1025,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69d8bf566138917ab3c04e2a"
+      }
+    },
+    {
+      "batchCode": "LO_OMEGA3_002",
+      "expiryDate": {
+        "$date": "2027-04-09T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-09T00:00:00.000Z"
+      },
+      "quantity": 0,
+      "initialQuantity": 4000,
+      "importPrice": 1012.5,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69d8c0e56138917ab3c05111"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-04-10T09:05:48.410Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T09:28:04.969Z"
+  },
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "69d8bd6c6138917ab3c04884"
+  },
+  "branchId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03621"
+  },
+  "totalQuantity": 7940,
+  "batches": [
+    {
+      "batchCode": "LO_BISOLVON_001",
+      "expiryDate": {
+        "$date": "2027-04-05T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-05T00:00:00.000Z"
+      },
+      "quantity": 6410,
+      "initialQuantity": 9300,
+      "importPrice": 1666.6666666666667,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69d8bd6c6138917ab3c04885"
+      }
+    },
+    {
+      "batchCode": "LO_BISOLVON_002",
+      "expiryDate": {
+        "$date": "2027-04-18T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-18T00:00:00.000Z"
+      },
+      "quantity": 600,
+      "initialQuantity": 600,
+      "importPrice": 1333.3333333333333,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69e4fe7faa10e61ceb130c17"
+      }
+    },
+    {
+      "batchCode": "LO_BISOLVON_001",
+      "expiryDate": {
+        "$date": "2027-04-05T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-05T00:00:00.000Z"
+      },
+      "quantity": 930,
+      "initialQuantity": 930,
+      "importPrice": 1500,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69e4fe7faa10e61ceb130c20"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-04-10T09:05:48.421Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-19T17:00:39.805Z"
+  },
+  "__v": 4
+},
+{
+  "_id": {
+    "$oid": "69d8bd6c6138917ab3c0488e"
+  },
+  "branchId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c0374e"
+  },
+  "totalQuantity": 7000,
+  "batches": [
+    {
+      "batchCode": "LO_CYSTINE_001",
+      "expiryDate": {
+        "$date": "2027-04-09T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-09T00:00:00.000Z"
+      },
+      "quantity": 7000,
+      "initialQuantity": 7000,
+      "importPrice": 4750,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69d8bd6c6138917ab3c0488f"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-04-10T09:05:48.430Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T09:05:48.430Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8bed06138917ab3c04c27"
+  },
+  "branchId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c0378d"
+  },
+  "totalQuantity": 17500,
+  "batches": [
+    {
+      "batchCode": "LO_CEPHALEXIN_001",
+      "expiryDate": {
+        "$date": "2028-04-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-08T00:00:00.000Z"
+      },
+      "quantity": 17500,
+      "initialQuantity": 25000,
+      "importPrice": 1250,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69d8bed06138917ab3c04c28"
+      }
+    },
+    {
+      "batchCode": "LO_CEPHALEXIN_001",
+      "expiryDate": {
+        "$date": "2028-04-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-10T09:35:13.457Z"
+      },
+      "quantity": 0,
+      "initialQuantity": 200,
+      "importPrice": 1250,
+      "quality": "DAMAGED",
+      "_id": {
+        "$oid": "69d8c91909a478a9b46424cb"
+      }
+    },
+    {
+      "batchCode": "LO_CEPHALEXIN_001",
+      "expiryDate": {
+        "$date": "2028-04-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-10T10:45:16.248Z"
+      },
+      "quantity": 0,
+      "initialQuantity": 100,
+      "importPrice": 1250,
+      "quality": "EXPIRED",
+      "_id": {
+        "$oid": "69e4847d33421733957b5c57"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-04-10T09:11:44.423Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-19T07:31:06.662Z"
+  },
+  "__v": 3
+},
+{
+  "_id": {
+    "$oid": "69d8bed06138917ab3c04c31"
+  },
+  "branchId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03701"
+  },
+  "totalQuantity": 1969,
+  "batches": [
+    {
+      "batchCode": "LO_ORALEGIC_001",
+      "expiryDate": {
+        "$date": "2027-02-03T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-02-03T00:00:00.000Z"
+      },
+      "quantity": 0,
+      "initialQuantity": 4501,
+      "importPrice": 7500,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69d8bed06138917ab3c04c32"
+      }
+    },
+    {
+      "batchCode": "LO_ORALEGIC_001",
+      "expiryDate": {
+        "$date": "2027-02-03T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-02-03T00:00:00.000Z"
+      },
+      "quantity": 0,
+      "initialQuantity": 50,
+      "importPrice": 7000,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "6a4e45442c9fb085ea22e66f"
+      }
+    },
+    {
+      "batchCode": "LO_ORALEGIC_002",
+      "expiryDate": {
+        "$date": "2027-07-07T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-07T00:00:00.000Z"
+      },
+      "quantity": 1969,
+      "initialQuantity": 2000,
+      "importPrice": 8000,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "6a4e45442c9fb085ea22e678"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-04-10T09:11:44.437Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-08T14:27:12.003Z"
+  },
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "69d8bed06138917ab3c04c3b"
+  },
+  "branchId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c0370c"
+  },
+  "totalQuantity": 10200,
+  "batches": [
+    {
+      "batchCode": "LO_DESLORNINE",
+      "expiryDate": {
+        "$date": "2028-03-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-03-08T00:00:00.000Z"
+      },
+      "quantity": 10200,
+      "initialQuantity": 12000,
+      "importPrice": 2666.6666666666665,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69d8bed06138917ab3c04c3c"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-04-10T09:11:44.447Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T09:28:05.020Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8bed06138917ab3c04c45"
+  },
+  "branchId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036e0"
+  },
+  "totalQuantity": 40000,
+  "batches": [
+    {
+      "batchCode": "LO_TICONET",
+      "expiryDate": {
+        "$date": "2027-03-05T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-03-05T00:00:00.000Z"
+      },
+      "quantity": 35000,
+      "initialQuantity": 35000,
+      "importPrice": 4500,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69d8bed06138917ab3c04c46"
+      }
+    },
+    {
+      "batchCode": "LO_TICONET_002",
+      "expiryDate": {
+        "$date": "2027-04-17T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-17T00:00:00.000Z"
+      },
+      "quantity": 5000,
+      "initialQuantity": 5000,
+      "importPrice": 4600,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69e3354170871c811c522962"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-04-10T09:11:44.458Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-18T07:39:45.303Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "69d8c0e56138917ab3c05118"
+  },
+  "branchId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036f6"
+  },
+  "totalQuantity": 5700,
+  "batches": [
+    {
+      "batchCode": "LO_XOANGNHATNHAT_001",
+      "expiryDate": {
+        "$date": "2027-04-01T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-01T00:00:00.000Z"
+      },
+      "quantity": 5700,
+      "initialQuantity": 7500,
+      "importPrice": 5066.666666666667,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69d8c0e56138917ab3c05119"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-04-10T09:20:37.880Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T09:28:04.980Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8c0e56138917ab3c05122"
+  },
+  "branchId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036d5"
+  },
+  "totalQuantity": 10230,
+  "batches": [
+    {
+      "batchCode": "LO_ZY10_001",
+      "expiryDate": {
+        "$date": "2027-02-06T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-02-06T00:00:00.000Z"
+      },
+      "quantity": 10230,
+      "initialQuantity": 12000,
+      "importPrice": 15050,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69d8c0e56138917ab3c05123"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-04-10T09:20:37.891Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-20T09:19:13.642Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8c0e56138917ab3c0512c"
+  },
+  "branchId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036eb"
+  },
+  "totalQuantity": 11000,
+  "batches": [
+    {
+      "batchCode": "LO_PANANGIN_001",
+      "expiryDate": {
+        "$date": "2028-02-07T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-02-07T00:00:00.000Z"
+      },
+      "quantity": 11000,
+      "initialQuantity": 15000,
+      "importPrice": 2630,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69d8c0e56138917ab3c0512d"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-04-10T09:20:37.899Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T09:28:05.014Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8c0e56138917ab3c05136"
+  },
+  "branchId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036a6"
+  },
+  "totalQuantity": 23000,
+  "batches": [
+    {
+      "batchCode": "LO_KREMIL_001",
+      "expiryDate": {
+        "$date": "2026-12-12T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2025-12-12T00:00:00.000Z"
+      },
+      "quantity": 16000,
+      "initialQuantity": 20000,
+      "importPrice": 1050,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69d8c0e56138917ab3c05137"
+      }
+    },
+    {
+      "batchCode": "LO_KREMIL_001",
+      "expiryDate": {
+        "$date": "2027-04-17T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-17T00:00:00.000Z"
+      },
+      "quantity": 5000,
+      "initialQuantity": 5000,
+      "importPrice": 1000,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69e33aa770871c811c524cb6"
+      }
+    },
+    {
+      "batchCode": "LO_KREMIl_002",
+      "expiryDate": {
+        "$date": "2027-04-16T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-16T00:00:00.000Z"
+      },
+      "quantity": 2000,
+      "initialQuantity": 2000,
+      "importPrice": 900,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69e33c3770871c811c525480"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-04-10T09:20:37.909Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-18T08:09:27.045Z"
+  },
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "69d8c4516138917ab3c05a91"
+  },
+  "branchId": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c0378d"
+  },
+  "totalQuantity": 4800,
+  "batches": [
+    {
+      "batchCode": "LO_CEPHALEXIN_001",
+      "expiryDate": {
+        "$date": "2028-04-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-10T09:35:13.457Z"
+      },
+      "quantity": 4800,
+      "initialQuantity": 5000,
+      "importPrice": 1250,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69d8c4516138917ab3c05a92"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-04-10T09:35:13.459Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T09:50:09.771Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8c4516138917ab3c05a9b"
+  },
+  "branchId": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03759"
+  },
+  "totalQuantity": 38000,
+  "batches": [
+    {
+      "batchCode": "LO_OMEGA3_002",
+      "expiryDate": {
+        "$date": "2027-04-09T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-10T09:35:13.470Z"
+      },
+      "quantity": 23600,
+      "initialQuantity": 24000,
+      "importPrice": 1025,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69d8c4516138917ab3c05a9c"
+      }
+    },
+    {
+      "batchCode": "LO_OMEGA3_002",
+      "expiryDate": {
+        "$date": "2027-04-09T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-10T09:35:13.480Z"
+      },
+      "quantity": 4000,
+      "initialQuantity": 4000,
+      "importPrice": 1012.5,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69d8c4516138917ab3c05aa6"
+      }
+    },
+    {
+      "batchCode": "LO_OMEGA3_001",
+      "expiryDate": {
+        "$date": "2028-04-03T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-10T09:35:13.490Z"
+      },
+      "quantity": 10400,
+      "initialQuantity": 12000,
+      "importPrice": 1000,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69d8c4516138917ab3c05aaf"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-04-10T09:35:13.471Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T10:26:32.485Z"
+  },
+  "__v": 3
+},
+{
+  "_id": {
+    "$oid": "69d8c4516138917ab3c05ab6"
+  },
+  "branchId": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036f6"
+  },
+  "totalQuantity": 1794,
+  "batches": [
+    {
+      "batchCode": "LO_XOANGNHATNHAT_001",
+      "expiryDate": {
+        "$date": "2027-04-01T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-10T09:35:13.498Z"
+      },
+      "quantity": 1794,
+      "initialQuantity": 1800,
+      "importPrice": 5066.666666666667,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69d8c4516138917ab3c05ab7"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-04-10T09:35:13.499Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T09:41:19.634Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "69d8c4516138917ab3c05ac0"
+  },
+  "branchId": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036a6"
+  },
+  "totalQuantity": 3894,
+  "batches": [
+    {
+      "batchCode": "LO_KREMIL_001",
+      "expiryDate": {
+        "$date": "2026-12-12T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-10T09:35:13.508Z"
+      },
+      "quantity": 3894,
+      "initialQuantity": 4000,
+      "importPrice": 1050,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69d8c4516138917ab3c05ac1"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-04-10T09:35:13.510Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-18T07:48:09.240Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "69d8c4516138917ab3c05aca"
+  },
+  "branchId": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036d5"
+  },
+  "totalQuantity": 1740,
+  "batches": [
+    {
+      "batchCode": "LO_ZY10_001",
+      "expiryDate": {
+        "$date": "2026-02-06T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-10T09:35:13.520Z"
+      },
+      "quantity": 1680,
+      "initialQuantity": 1710,
+      "importPrice": 15050,
+      "quality": "DAMAGED",
+      "_id": {
+        "$oid": "69d8c4516138917ab3c05acb"
+      }
+    },
+    {
+      "batchCode": "LO_ZY10_001",
+      "expiryDate": {
+        "$date": "2027-02-06T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-02-06T00:00:00.000Z"
+      },
+      "quantity": 60,
+      "initialQuantity": 60,
+      "importPrice": 15050,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69e5ef9da6838d6ef88af1a1"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-04-10T09:35:13.521Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-20T09:19:25.632Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "69d8c4516138917ab3c05ad4"
+  },
+  "branchId": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03621"
+  },
+  "totalQuantity": 2040,
+  "batches": [
+    {
+      "batchCode": "LO_BISOLVON_001",
+      "expiryDate": {
+        "$date": "2027-04-05T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-10T09:35:13.530Z"
+      },
+      "quantity": 2040,
+      "initialQuantity": 2100,
+      "importPrice": 1666.6666666666667,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69d8c4516138917ab3c05ad5"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-04-10T09:35:13.531Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-19T15:23:21.063Z"
+  },
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "69d8c4516138917ab3c05ade"
+  },
+  "branchId": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036eb"
+  },
+  "totalQuantity": 4000,
+  "batches": [
+    {
+      "batchCode": "LO_PANANGIN_001",
+      "expiryDate": {
+        "$date": "2028-02-07T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-10T09:35:13.541Z"
+      },
+      "quantity": 4000,
+      "initialQuantity": 4000,
+      "importPrice": 2630,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69d8c4516138917ab3c05adf"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-04-10T09:35:13.542Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T09:35:13.542Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8c4516138917ab3c05ae8"
+  },
+  "branchId": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c0370c"
+  },
+  "totalQuantity": 1800,
+  "batches": [
+    {
+      "batchCode": "LO_DESLORNINE",
+      "expiryDate": {
+        "$date": "2028-03-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-10T09:35:13.550Z"
+      },
+      "quantity": 1800,
+      "initialQuantity": 1800,
+      "importPrice": 2666.6666666666665,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69d8c4516138917ab3c05ae9"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-04-10T09:35:13.551Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T09:35:13.551Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8d4bc60d77b6b90abebe9"
+  },
+  "branchId": {
+    "$oid": "69bbeb6046db36be1ce4ab85"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c0378d"
+  },
+  "totalQuantity": 395,
+  "batches": [
+    {
+      "batchCode": "LO_CEPHALEXIN_001",
+      "expiryDate": {
+        "$date": "2028-04-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-10T10:45:16.248Z"
+      },
+      "quantity": 395,
+      "initialQuantity": 1000,
+      "importPrice": 1250,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69d8d4bc60d77b6b90abebea"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-04-10T10:45:16.252Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-21T01:56:30.820Z"
+  },
+  "__v": 4
+},
+{
+  "_id": {
+    "$oid": "69e33c3770871c811c525487"
+  },
+  "branchId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03777"
+  },
+  "totalQuantity": 0,
+  "batches": [
+    {
+      "batchCode": "LO_CEFUROXIM_001",
+      "expiryDate": {
+        "$date": "2027-04-16T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-16T00:00:00.000Z"
+      },
+      "quantity": 0,
+      "initialQuantity": 2000,
+      "importPrice": 2500,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69e33c3770871c811c525488"
+      }
+    },
+    {
+      "batchCode": "LO_CEFUROXIM_002",
+      "expiryDate": {
+        "$date": "2027-04-01T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-01T00:00:00.000Z"
+      },
+      "quantity": 0,
+      "initialQuantity": 2400,
+      "importPrice": 2250,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69e5e3550850ab36986232ec"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-04-18T08:09:27.054Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-02T12:56:43.177Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "69e50d01aa10e61ceb133799"
+  },
+  "branchId": {
+    "$oid": "69bbeb6046db36be1ce4ab85"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03621"
+  },
+  "totalQuantity": 420,
+  "batches": [
+    {
+      "batchCode": "LO_BISOLVON_001",
+      "expiryDate": {
+        "$date": "2027-04-05T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-05T00:00:00.000Z"
+      },
+      "quantity": 420,
+      "initialQuantity": 450,
+      "importPrice": 1666.6666666666667,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69e50d01aa10e61ceb13379a"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-04-19T17:12:33.604Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-21T01:41:25.126Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e5e2870850ab3698622dac"
+  },
+  "branchId": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03777"
+  },
+  "totalQuantity": 60,
+  "batches": [
+    {
+      "batchCode": "LO_CEFUROXIM_001",
+      "expiryDate": {
+        "$date": "2027-04-16T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-16T00:00:00.000Z"
+      },
+      "quantity": 60,
+      "initialQuantity": 240,
+      "importPrice": 2500,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69e5e2870850ab3698622dad"
+      }
+    },
+    {
+      "batchCode": "LO_CEFUROXIM_002",
+      "expiryDate": {
+        "$date": "2027-04-01T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-01T00:00:00.000Z"
+      },
+      "quantity": 0,
+      "initialQuantity": 2400,
+      "importPrice": 2250,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69e5e3ba0850ab36986235ff"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-04-20T08:23:35.788Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-20T09:03:38.211Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "69e5f1dea6838d6ef88af747"
+  },
+  "branchId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69e5f117a6838d6ef88af399"
+  },
+  "totalQuantity": 90,
+  "batches": [
+    {
+      "batchCode": "LO_POVIDINE20_001",
+      "expiryDate": {
+        "$date": "2027-04-19T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-19T00:00:00.000Z"
+      },
+      "quantity": 90,
+      "initialQuantity": 100,
+      "importPrice": 5000,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69e5f1dea6838d6ef88af748"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-04-20T09:29:02.319Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-20T09:29:46.220Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e5f217a6838d6ef88af987"
+  },
+  "branchId": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "medicineId": {
+    "$oid": "69e5f117a6838d6ef88af399"
+  },
+  "totalQuantity": 10,
+  "batches": [
+    {
+      "batchCode": "LO_POVIDINE20_001",
+      "expiryDate": {
+        "$date": "2027-04-19T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-19T00:00:00.000Z"
+      },
+      "quantity": 10,
+      "initialQuantity": 10,
+      "importPrice": 5000,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69e5f217a6838d6ef88af988"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-04-20T09:29:59.637Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-20T09:29:59.637Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e6d36d367e95b501ae7073"
+  },
+  "branchId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03613"
+  },
+  "totalQuantity": 8,
+  "batches": [
+    {
+      "batchCode": "LO_HALIXOL_001",
+      "expiryDate": {
+        "$date": "2027-04-19T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-19T00:00:00.000Z"
+      },
+      "quantity": 8,
+      "initialQuantity": 1200,
+      "importPrice": 1500,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "69e6d36d367e95b501ae7074"
+      }
+    },
+    {
+      "batchCode": "LO_HALIXOL_001",
+      "expiryDate": {
+        "$date": "2027-04-19T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-04-19T00:00:00.000Z"
+      },
+      "quantity": 0,
+      "initialQuantity": 300,
+      "importPrice": 1000,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "6a491fd41d345c3b089080b5"
+      }
+    },
+    {
+      "batchCode": "LO_HALIXOL_002",
+      "expiryDate": {
+        "$date": "2027-07-01T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-01T00:00:00.000Z"
+      },
+      "quantity": 0,
+      "initialQuantity": 210,
+      "importPrice": 1000,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "6a491fd41d345c3b089080be"
+      }
+    },
+    {
+      "batchCode": "LO_HALIXOL_002",
+      "expiryDate": {
+        "$date": "2027-07-01T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-01T00:00:00.000Z"
+      },
+      "quantity": 0,
+      "initialQuantity": 100,
+      "importPrice": 1250,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "6a49260e1d345c3b08908bd6"
+      }
+    },
+    {
+      "batchCode": "LO_HALIXOL_002",
+      "expiryDate": {
+        "$date": "2027-07-01T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-01T00:00:00.000Z"
+      },
+      "quantity": 0,
+      "initialQuantity": 100,
+      "importPrice": 150,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "6a4927081d345c3b0890901f"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-04-21T01:31:25.979Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-08T12:32:00.706Z"
+  },
+  "__v": 5
+},
+{
+  "_id": {
+    "$oid": "6a047b2cb64c06bcffc12d26"
+  },
+  "branchId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "6a047a90b64c06bcffc12905"
+  },
+  "totalQuantity": 5250,
+  "batches": [
+    {
+      "batchCode": "LO_EQUORAL_001",
+      "expiryDate": {
+        "$date": "2027-05-12T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-05-12T00:00:00.000Z"
+      },
+      "quantity": 5250,
+      "initialQuantity": 6250,
+      "importPrice": 11500,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "6a047b2cb64c06bcffc12d27"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-05-13T13:22:52.930Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-30T12:24:56.407Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a047b2cb64c06bcffc12d30"
+  },
+  "branchId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "6a0478c2b64c06bcffc1271a"
+  },
+  "totalQuantity": 1600,
+  "batches": [
+    {
+      "batchCode": "LO_ATORVASTATIN",
+      "expiryDate": {
+        "$date": "2027-05-11T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-05-11T00:00:00.000Z"
+      },
+      "quantity": 1600,
+      "initialQuantity": 2000,
+      "importPrice": 3249.9995,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "6a047b2cb64c06bcffc12d31"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-05-13T13:22:52.945Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-13T13:24:00.998Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a047bc8b64c06bcffc133a0"
+  },
+  "branchId": {
+    "$oid": "69bbeb6046db36be1ce4ab85"
+  },
+  "medicineId": {
+    "$oid": "6a047a90b64c06bcffc12905"
+  },
+  "totalQuantity": 1000,
+  "batches": [
+    {
+      "batchCode": "LO_EQUORAL_001",
+      "expiryDate": {
+        "$date": "2027-05-12T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-05-12T00:00:00.000Z"
+      },
+      "quantity": 1000,
+      "initialQuantity": 1000,
+      "importPrice": 11500,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "6a047bc8b64c06bcffc133a1"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-05-13T13:25:28.205Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-13T13:25:28.205Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a047bc8b64c06bcffc133aa"
+  },
+  "branchId": {
+    "$oid": "69bbeb6046db36be1ce4ab85"
+  },
+  "medicineId": {
+    "$oid": "6a0478c2b64c06bcffc1271a"
+  },
+  "totalQuantity": 400,
+  "batches": [
+    {
+      "batchCode": "LO_ATORVASTATIN",
+      "expiryDate": {
+        "$date": "2027-05-11T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-05-11T00:00:00.000Z"
+      },
+      "quantity": 400,
+      "initialQuantity": 400,
+      "importPrice": 3249.9995,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "6a047bc8b64c06bcffc133ab"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-05-13T13:25:28.219Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-13T13:25:28.219Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a4f980ccf960a3744db7073"
+  },
+  "branchId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "6a4f971c2a5a156b913b8225"
+  },
+  "totalQuantity": 40000,
+  "batches": [
+    {
+      "batchCode": "LO_MAC_001",
+      "expiryDate": {
+        "$date": "2027-07-07T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-01T00:00:00.000Z"
+      },
+      "quantity": 20000,
+      "initialQuantity": 30000,
+      "importPrice": 1000,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "6a4f980ccf960a3744db7074"
+      }
+    },
+    {
+      "batchCode": "LO_MAC_002",
+      "expiryDate": {
+        "$date": "2027-07-09T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-01T00:00:00.000Z"
+      },
+      "quantity": 20000,
+      "initialQuantity": 20000,
+      "importPrice": 1400,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "6a4f9a94cf960a3744db73f3"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-07-09T12:46:04.401Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-13T09:22:10.642Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "6a4f9d1b23b5ab6c554c60b7"
+  },
+  "branchId": {
+    "$oid": "69bbeb6046db36be1ce4ab85"
+  },
+  "medicineId": {
+    "$oid": "6a4f971c2a5a156b913b8225"
+  },
+  "totalQuantity": 10000,
+  "batches": [
+    {
+      "batchCode": "LO_MAC_001",
+      "expiryDate": {
+        "$date": "2027-07-07T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-01T00:00:00.000Z"
+      },
+      "quantity": 10000,
+      "initialQuantity": 10000,
+      "importPrice": 1000,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "6a4f9d1b23b5ab6c554c60b8"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-07-09T13:07:39.815Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-09T13:07:39.815Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a5f5ab760608e296e9bf19e"
+  },
+  "branchId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "6a5f5a5260608e296e9bee71"
+  },
+  "totalQuantity": 80,
+  "batches": [
+    {
+      "batchCode": "LO_LN_001",
+      "expiryDate": {
+        "$date": "2027-07-20T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-20T00:00:00.000Z"
+      },
+      "quantity": 0,
+      "initialQuantity": 1000,
+      "importPrice": 5000,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "6a5f5ab760608e296e9bf19f"
+      }
+    },
+    {
+      "batchCode": "LO_LN_001",
+      "expiryDate": {
+        "$date": "2027-07-20T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-20T00:00:00.000Z"
+      },
+      "quantity": 50,
+      "initialQuantity": 100,
+      "importPrice": 4500,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "6a5f5e0c60608e296e9bfd33"
+      }
+    },
+    {
+      "batchCode": "LO_LN_002",
+      "expiryDate": {
+        "$date": "2027-07-15T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-15T00:00:00.000Z"
+      },
+      "quantity": 0,
+      "initialQuantity": 50,
+      "importPrice": 4000,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "6a5f5e0d60608e296e9bfd40"
+      }
+    },
+    {
+      "batchCode": "LO_LN_003",
+      "expiryDate": {
+        "$date": "2027-07-01T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-01T00:00:00.000Z"
+      },
+      "quantity": 20,
+      "initialQuantity": 50,
+      "importPrice": 7000,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "6a5f60c060608e296e9c07f1"
+      }
+    },
+    {
+      "batchCode": "LO_LN_004",
+      "expiryDate": {
+        "$date": "2027-06-30T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-06-30T00:00:00.000Z"
+      },
+      "quantity": 0,
+      "initialQuantity": 150,
+      "importPrice": 10000,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "6a5f612060608e296e9c0c37"
+      }
+    },
+    {
+      "batchCode": "LO_LN_003",
+      "expiryDate": {
+        "$date": "2027-07-01T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-01T00:00:00.000Z"
+      },
+      "quantity": 10,
+      "initialQuantity": 10,
+      "importPrice": 7000,
+      "quality": "DAMAGED",
+      "_id": {
+        "$oid": "6a6c88373101a2c23b34d538"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-07-21T11:40:39.293Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-31T11:34:15.962Z"
+  },
+  "__v": 5
+},
+{
+  "_id": {
+    "$oid": "6a5f5b7460608e296e9bf6e1"
+  },
+  "branchId": {
+    "$oid": "69bbeb6046db36be1ce4ab85"
+  },
+  "medicineId": {
+    "$oid": "6a5f5a5260608e296e9bee71"
+  },
+  "totalQuantity": 20,
+  "batches": [
+    {
+      "batchCode": "LO_LN_001",
+      "expiryDate": {
+        "$date": "2027-07-20T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-20T00:00:00.000Z"
+      },
+      "quantity": 0,
+      "initialQuantity": 1000,
+      "importPrice": 5000,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "6a5f5b7460608e296e9bf6e2"
+      }
+    },
+    {
+      "batchCode": "LO_LN_002",
+      "expiryDate": {
+        "$date": "2027-07-15T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-15T00:00:00.000Z"
+      },
+      "quantity": 0,
+      "initialQuantity": 50,
+      "importPrice": 4000,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "6a5f5f0d60608e296e9c02fd"
+      }
+    },
+    {
+      "batchCode": "LO_LN_001",
+      "expiryDate": {
+        "$date": "2027-07-20T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-20T00:00:00.000Z"
+      },
+      "quantity": 20,
+      "initialQuantity": 50,
+      "importPrice": 4500,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "6a5f5f0d60608e296e9c0310"
+      }
+    },
+    {
+      "batchCode": "LO_LN_004",
+      "expiryDate": {
+        "$date": "2027-06-30T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-06-30T00:00:00.000Z"
+      },
+      "quantity": 0,
+      "initialQuantity": 150,
+      "importPrice": 10000,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "6a5f638160608e296e9c18db"
+      }
+    },
+    {
+      "batchCode": "LO_LN_003",
+      "expiryDate": {
+        "$date": "2027-07-01T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-01T00:00:00.000Z"
+      },
+      "quantity": 0,
+      "initialQuantity": 10,
+      "importPrice": 7000,
+      "quality": "GOOD",
+      "_id": {
+        "$oid": "6a6c87e63101a2c23b34d3b9"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-07-21T11:43:48.184Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-31T11:34:01.081Z"
+  },
+  "__v": 4
+}]

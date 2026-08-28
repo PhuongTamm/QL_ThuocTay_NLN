@@ -1,0 +1,960 @@
+[{
+  "_id": {
+    "$oid": "69d8bd6c6138917ab3c04875"
+  },
+  "month": 4,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03608"
+  },
+  "startQuantity": 0,
+  "importQuantity": 2000,
+  "exportQuantity": 0,
+  "endQuantity": 2000,
+  "createdAt": {
+    "$date": "2026-04-10T09:05:48.404Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T09:05:48.404Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8bd6c6138917ab3c0487f"
+  },
+  "month": 4,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03759"
+  },
+  "startQuantity": 0,
+  "importQuantity": 128000,
+  "exportQuantity": 40000,
+  "endQuantity": 88000,
+  "createdAt": {
+    "$date": "2026-04-10T09:05:48.415Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T09:28:04.973Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8bd6c6138917ab3c04889"
+  },
+  "month": 4,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03621"
+  },
+  "startQuantity": 0,
+  "importQuantity": 10830,
+  "exportQuantity": 2850,
+  "endQuantity": 7980,
+  "createdAt": {
+    "$date": "2026-04-10T09:05:48.426Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-19T17:00:39.812Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8bd6c6138917ab3c04893"
+  },
+  "month": 4,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c0374e"
+  },
+  "startQuantity": 0,
+  "importQuantity": 7000,
+  "exportQuantity": 0,
+  "endQuantity": 7000,
+  "createdAt": {
+    "$date": "2026-04-10T09:05:48.435Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T09:05:48.435Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8bed06138917ab3c04c2c"
+  },
+  "month": 4,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c0378d"
+  },
+  "startQuantity": 0,
+  "importQuantity": 25301,
+  "exportQuantity": 7801,
+  "endQuantity": 17500,
+  "createdAt": {
+    "$date": "2026-04-10T09:11:44.430Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-19T07:31:06.670Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8bed06138917ab3c04c36"
+  },
+  "month": 4,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03701"
+  },
+  "startQuantity": 0,
+  "importQuantity": 3000,
+  "exportQuantity": 0,
+  "endQuantity": 3000,
+  "createdAt": {
+    "$date": "2026-04-10T09:11:44.442Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T09:11:44.442Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8bed06138917ab3c04c40"
+  },
+  "month": 4,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c0370c"
+  },
+  "startQuantity": 0,
+  "importQuantity": 12000,
+  "exportQuantity": 1800,
+  "endQuantity": 10200,
+  "createdAt": {
+    "$date": "2026-04-10T09:11:44.452Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T09:28:05.022Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8bed06138917ab3c04c4a"
+  },
+  "month": 4,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036e0"
+  },
+  "startQuantity": 0,
+  "importQuantity": 40000,
+  "exportQuantity": 0,
+  "endQuantity": 40000,
+  "createdAt": {
+    "$date": "2026-04-10T09:11:44.463Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-18T07:39:45.312Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8c0e56138917ab3c0511d"
+  },
+  "month": 4,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036f6"
+  },
+  "startQuantity": 0,
+  "importQuantity": 7500,
+  "exportQuantity": 1800,
+  "endQuantity": 5700,
+  "createdAt": {
+    "$date": "2026-04-10T09:20:37.885Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T09:28:04.984Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8c0e56138917ab3c05127"
+  },
+  "month": 4,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036d5"
+  },
+  "startQuantity": 0,
+  "importQuantity": 12000,
+  "exportQuantity": 1770,
+  "endQuantity": 10230,
+  "createdAt": {
+    "$date": "2026-04-10T09:20:37.895Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-20T09:19:13.647Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8c0e56138917ab3c05131"
+  },
+  "month": 4,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036eb"
+  },
+  "startQuantity": 0,
+  "importQuantity": 15000,
+  "exportQuantity": 4000,
+  "endQuantity": 11000,
+  "createdAt": {
+    "$date": "2026-04-10T09:20:37.903Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T09:28:05.017Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8c0e56138917ab3c0513b"
+  },
+  "month": 4,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036a6"
+  },
+  "startQuantity": 0,
+  "importQuantity": 27000,
+  "exportQuantity": 4000,
+  "endQuantity": 23000,
+  "createdAt": {
+    "$date": "2026-04-10T09:20:37.913Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-18T08:09:27.049Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8c4516138917ab3c05a96"
+  },
+  "month": 4,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c0378d"
+  },
+  "startQuantity": 0,
+  "importQuantity": 5000,
+  "exportQuantity": 200,
+  "endQuantity": 4800,
+  "createdAt": {
+    "$date": "2026-04-10T09:35:13.464Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T09:50:09.778Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8c4516138917ab3c05aa0"
+  },
+  "month": 4,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03759"
+  },
+  "startQuantity": 0,
+  "importQuantity": 40000,
+  "exportQuantity": 1600,
+  "endQuantity": 38400,
+  "createdAt": {
+    "$date": "2026-04-10T09:35:13.475Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T10:26:32.492Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8c4516138917ab3c05abb"
+  },
+  "month": 4,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036f6"
+  },
+  "startQuantity": 0,
+  "importQuantity": 1800,
+  "exportQuantity": 0,
+  "endQuantity": 1800,
+  "createdAt": {
+    "$date": "2026-04-10T09:35:13.504Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T09:35:13.504Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8c4516138917ab3c05ac5"
+  },
+  "month": 4,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036a6"
+  },
+  "startQuantity": 0,
+  "importQuantity": 4000,
+  "exportQuantity": 100,
+  "endQuantity": 3900,
+  "createdAt": {
+    "$date": "2026-04-10T09:35:13.515Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-18T07:48:09.246Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8c4516138917ab3c05acf"
+  },
+  "month": 4,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036d5"
+  },
+  "startQuantity": 0,
+  "importQuantity": 1770,
+  "exportQuantity": 0,
+  "endQuantity": 1770,
+  "createdAt": {
+    "$date": "2026-04-10T09:35:13.526Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-20T09:19:25.638Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8c4516138917ab3c05ad9"
+  },
+  "month": 4,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03621"
+  },
+  "startQuantity": 0,
+  "importQuantity": 2100,
+  "exportQuantity": 0,
+  "endQuantity": 2100,
+  "createdAt": {
+    "$date": "2026-04-10T09:35:13.537Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T09:35:13.537Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8c4516138917ab3c05ae3"
+  },
+  "month": 4,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036eb"
+  },
+  "startQuantity": 0,
+  "importQuantity": 4000,
+  "exportQuantity": 0,
+  "endQuantity": 4000,
+  "createdAt": {
+    "$date": "2026-04-10T09:35:13.546Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T09:35:13.546Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8c4516138917ab3c05aed"
+  },
+  "month": 4,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c0370c"
+  },
+  "startQuantity": 0,
+  "importQuantity": 1800,
+  "exportQuantity": 0,
+  "endQuantity": 1800,
+  "createdAt": {
+    "$date": "2026-04-10T09:35:13.555Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T09:35:13.555Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8d4bc60d77b6b90abebee"
+  },
+  "month": 4,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "69bbeb6046db36be1ce4ab85"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c0378d"
+  },
+  "startQuantity": 0,
+  "importQuantity": 1000,
+  "exportQuantity": 100,
+  "endQuantity": 900,
+  "createdAt": {
+    "$date": "2026-04-10T10:45:16.258Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-19T07:29:27.801Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e33c3770871c811c52548c"
+  },
+  "month": 4,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03777"
+  },
+  "startQuantity": 0,
+  "importQuantity": 4400,
+  "exportQuantity": 2640,
+  "endQuantity": 1760,
+  "createdAt": {
+    "$date": "2026-04-18T08:09:27.060Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-20T09:02:18.008Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e50d01aa10e61ceb13379e"
+  },
+  "month": 4,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "69bbeb6046db36be1ce4ab85"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03621"
+  },
+  "startQuantity": 0,
+  "importQuantity": 450,
+  "exportQuantity": 0,
+  "endQuantity": 450,
+  "createdAt": {
+    "$date": "2026-04-19T17:12:33.613Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-19T17:12:33.613Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e5e2870850ab3698622db1"
+  },
+  "month": 4,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03777"
+  },
+  "startQuantity": 0,
+  "importQuantity": 2640,
+  "exportQuantity": 0,
+  "endQuantity": 2640,
+  "createdAt": {
+    "$date": "2026-04-20T08:23:35.795Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-20T09:02:22.272Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e5f1dea6838d6ef88af74c"
+  },
+  "month": 4,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69e5f117a6838d6ef88af399"
+  },
+  "startQuantity": 0,
+  "importQuantity": 100,
+  "exportQuantity": 10,
+  "endQuantity": 90,
+  "createdAt": {
+    "$date": "2026-04-20T09:29:02.326Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-20T09:29:46.226Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e5f217a6838d6ef88af98c"
+  },
+  "month": 4,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "medicineId": {
+    "$oid": "69e5f117a6838d6ef88af399"
+  },
+  "startQuantity": 0,
+  "importQuantity": 10,
+  "exportQuantity": 0,
+  "endQuantity": 10,
+  "createdAt": {
+    "$date": "2026-04-20T09:29:59.643Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-20T09:29:59.643Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e6d36e367e95b501ae7078"
+  },
+  "month": 4,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03613"
+  },
+  "startQuantity": 0,
+  "importQuantity": 1000,
+  "exportQuantity": 0,
+  "endQuantity": 1000,
+  "createdAt": {
+    "$date": "2026-04-21T01:31:26.002Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-21T01:31:26.002Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a047b2cb64c06bcffc12d2b"
+  },
+  "month": 5,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "6a047a90b64c06bcffc12905"
+  },
+  "startQuantity": 0,
+  "importQuantity": 5000,
+  "exportQuantity": 1000,
+  "endQuantity": 4000,
+  "createdAt": {
+    "$date": "2026-05-13T13:22:52.938Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-13T13:24:00.991Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a047b2cb64c06bcffc12d35"
+  },
+  "month": 5,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "6a0478c2b64c06bcffc1271a"
+  },
+  "startQuantity": 0,
+  "importQuantity": 2000,
+  "exportQuantity": 400,
+  "endQuantity": 1600,
+  "createdAt": {
+    "$date": "2026-05-13T13:22:52.950Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-13T13:24:01.003Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a047bc8b64c06bcffc133a5"
+  },
+  "month": 5,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "69bbeb6046db36be1ce4ab85"
+  },
+  "medicineId": {
+    "$oid": "6a047a90b64c06bcffc12905"
+  },
+  "startQuantity": 0,
+  "importQuantity": 1000,
+  "exportQuantity": 0,
+  "endQuantity": 1000,
+  "createdAt": {
+    "$date": "2026-05-13T13:25:28.212Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-13T13:25:28.212Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a047bc8b64c06bcffc133af"
+  },
+  "month": 5,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "69bbeb6046db36be1ce4ab85"
+  },
+  "medicineId": {
+    "$oid": "6a0478c2b64c06bcffc1271a"
+  },
+  "startQuantity": 0,
+  "importQuantity": 400,
+  "exportQuantity": 0,
+  "endQuantity": 400,
+  "createdAt": {
+    "$date": "2026-05-13T13:25:28.224Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-13T13:25:28.224Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a43b5981ca2fdd487d48b8e"
+  },
+  "month": 6,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "6a047a90b64c06bcffc12905"
+  },
+  "startQuantity": 4000,
+  "importQuantity": 1250,
+  "exportQuantity": 0,
+  "endQuantity": 5250,
+  "createdAt": {
+    "$date": "2026-06-30T12:24:56.436Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-30T12:24:56.436Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a46595ec66d2f3ade6009bb"
+  },
+  "month": 7,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03608"
+  },
+  "startQuantity": 0,
+  "importQuantity": 0,
+  "exportQuantity": 2000,
+  "endQuantity": -2000,
+  "createdAt": {
+    "$date": "2026-07-02T12:28:14.353Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-02T12:28:14.353Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a465a6ac66d2f3ade6017ec"
+  },
+  "month": 7,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03613"
+  },
+  "startQuantity": 0,
+  "importQuantity": 1310,
+  "exportQuantity": 1902,
+  "endQuantity": -592,
+  "createdAt": {
+    "$date": "2026-07-02T12:32:42.477Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-08T12:32:00.712Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a465e8100957edf87e639b4"
+  },
+  "month": 7,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03701"
+  },
+  "startQuantity": 0,
+  "importQuantity": 3551,
+  "exportQuantity": 4582,
+  "endQuantity": -1031,
+  "createdAt": {
+    "$date": "2026-07-02T12:50:09.202Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-08T14:27:12.007Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a46600b00957edf87e63c6f"
+  },
+  "month": 7,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03777"
+  },
+  "startQuantity": 0,
+  "importQuantity": 0,
+  "exportQuantity": 1760,
+  "endQuantity": -1760,
+  "createdAt": {
+    "$date": "2026-07-02T12:56:43.185Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-02T12:56:43.185Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a4f980ccf960a3744db7078"
+  },
+  "month": 7,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "6a4f971c2a5a156b913b8225"
+  },
+  "startQuantity": 0,
+  "importQuantity": 50000,
+  "exportQuantity": 10000,
+  "endQuantity": 40000,
+  "createdAt": {
+    "$date": "2026-07-09T12:46:04.418Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-13T09:22:10.657Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a4f9d1b23b5ab6c554c60bc"
+  },
+  "month": 7,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "69bbeb6046db36be1ce4ab85"
+  },
+  "medicineId": {
+    "$oid": "6a4f971c2a5a156b913b8225"
+  },
+  "startQuantity": 0,
+  "importQuantity": 10000,
+  "exportQuantity": 0,
+  "endQuantity": 10000,
+  "createdAt": {
+    "$date": "2026-07-09T13:07:39.824Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-09T13:07:39.824Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a5f5ab760608e296e9bf1a3"
+  },
+  "month": 7,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "medicineId": {
+    "$oid": "6a5f5a5260608e296e9bee71"
+  },
+  "startQuantity": 0,
+  "importQuantity": 1360,
+  "exportQuantity": 1280,
+  "endQuantity": 80,
+  "createdAt": {
+    "$date": "2026-07-21T11:40:39.314Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-31T11:34:15.967Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a5f5b7460608e296e9bf6e6"
+  },
+  "month": 7,
+  "year": 2026,
+  "warehouseId": {
+    "$oid": "69bbeb6046db36be1ce4ab85"
+  },
+  "medicineId": {
+    "$oid": "6a5f5a5260608e296e9bee71"
+  },
+  "startQuantity": 0,
+  "importQuantity": 1260,
+  "exportQuantity": 10,
+  "endQuantity": 1250,
+  "createdAt": {
+    "$date": "2026-07-21T11:43:48.194Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-31T11:34:01.085Z"
+  },
+  "__v": 0
+}]

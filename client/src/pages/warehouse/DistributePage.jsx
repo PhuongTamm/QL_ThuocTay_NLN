@@ -566,7 +566,7 @@ const DistributePage = () => {
       subtitle: "Gửi trả hàng cận date, bán chậm về lại Kho tổng",
       submitLabel: "Hoàn Tất Trả Hàng",
       focusRing: "focus:border-sky-500 focus:ring-sky-500/20",
-      textPrimary: "text-sky-600",
+      textPrimary: "text-slate-600",
     },
     DISPOSE: {
       icon: <Trash size={22} color="white" />,
@@ -1081,14 +1081,14 @@ const DistributePage = () => {
                         </div>
                         <div className="flex items-center gap-3">
                           {/* Hiển thị tổng tồn kho khả dụng */}
-                          <span
+                          {/* <span
                             className={`text-[11px] font-bold px-2 py-1 rounded-md border ${
                               totalValidBaseQty > 0
                                 ? "text-emerald-700 bg-emerald-50 border-emerald-200"
                                 : "text-red-700 bg-red-50 border-red-200"
                             }`}>
                             Tồn khả dụng: {totalValidBaseQty} {baseUnit}
-                          </span>
+                          </span> */}
                           <button
                             type="button"
                             onClick={() => removeItemRow(index)}

@@ -15,7 +15,7 @@ import {
   DollarSign,
   ListChecks,
   Edit,
-  Save, // Thêm icon Save
+  Save,
 } from "lucide-react";
 import api from "../../services/api";
 
@@ -258,7 +258,7 @@ const PriceManagement = () => {
   // Đồng bộ theo Danh mục
   const handleBulkUpdate = async (e) => {
     e.preventDefault();
-    if (!bulkCategoryId) return addToast("Vui lòng chọn danh mục", "error");
+    if (!bulkCategoryId) return addToast("Vui lòng chọn nhóm thuốc", "error");
 
     setIsBulking(true);
     try {
@@ -333,14 +333,22 @@ const PriceManagement = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-sky-50 via-blue-50 to-slate-50 p-6 font-sans">
       <style>{`
-        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+         @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes modalIn { from { transform: translateY(14px) scale(.97); opacity: 0; } to { transform: none; opacity: 1; } }
         input[type=number]::-webkit-inner-spin-button, 
         input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        
+        @keyframes fadeInPage {
+          from { opacity: 0; transform: translateY(12px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-page-in {
+          animation: fadeInPage 0.4s ease-out forwards;
+        }
       `}</style>
       <Toast toasts={toasts} removeToast={removeToast} />
 
-      <div className="space-y-6 max-w-7xl mx-auto">
+      <div className="animate-page-in space-y-6 ">
         {/* HEADER */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
@@ -405,7 +413,7 @@ const PriceManagement = () => {
                 style={{
                   background: "linear-gradient(135deg, #f59e0b, #d97706)",
                 }}>
-                <Zap size={18} fill="currentColor" /> Đồng bộ toàn Danh mục
+                <Zap size={18} fill="currentColor" /> Đồng bộ theo nhóm thuốc
               </button>
             )}
           </div>
@@ -450,7 +458,7 @@ const PriceManagement = () => {
             <select
               value={filterSyncNeeded}
               onChange={(e) => setFilterSyncNeeded(e.target.value)}
-              className="w-full md:w-56 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#0ea5e9]/30 bg-slate-50 font-medium">
+              className="w-full md:w-56 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#0ea5e9]/30 bg-slate-50 ">
               <option value="all">Hiển thị tất cả</option>
               <option value="need_sync">Chỉ xem thuốc lệch giá</option>
             </select>
@@ -558,12 +566,12 @@ const PriceManagement = () => {
                               </span>
                             </span>
                             <span className="text-emerald-600 flex items-center gap-1 justify-center">
-                              <TrendingUp size={10} /> % Lợi nhuận: {item.markup * 100}%
+                              <TrendingUp size={10} /> % Lợi nhuận:{" "}
+                              {item.markup * 100}%
                             </span>
                           </div>
                         </td>
 
-                        {/* CỘT GIÁ BÁN & GIÁ GỢI Ý GỘP CHUNG */}
                         {/* CỘT GIÁ BÁN & GIÁ GỢI Ý GỘP CHUNG */}
                         <td className="px-5 py-4 text-right">
                           <div className="flex flex-col items-end gap-1.5">
@@ -653,7 +661,7 @@ const PriceManagement = () => {
                         </td>
                         <td className="px-5 py-4">
                           <div className="flex justify-center gap-2">
-                            {item.isNeedSync && (
+                            {item.isNeedSync ? (
                               <button
                                 onClick={() =>
                                   handleQuickSyncPrice(
@@ -664,7 +672,14 @@ const PriceManagement = () => {
                                 }
                                 className="flex items-center gap-1 px-3 py-1.5 bg-[#0ea5e9] text-white text-xs font-bold rounded-lg hover:bg-[#0369a1] transition-colors shadow-md shadow-[#0ea5e9]/20"
                                 title="Áp dụng ngay mức giá gợi ý (MAC)">
-                                <ArrowRightLeft size={12} /> Đồng bộ 
+                                <ArrowRightLeft size={12} /> Đồng bộ
+                              </button>
+                            ) : (
+                              <button
+                                disabled
+                                className="flex items-center gap-1 px-3 py-1.5 bg-slate-100 text-slate-500 text-xs font-bold rounded-lg cursor-not-allowed"
+                                title="Không có giá gợi ý để đồng bộ">
+                                <ArrowRightLeft size={12} /> Đồng bộ
                               </button>
                             )}
                             <button
@@ -806,16 +821,16 @@ const PriceManagement = () => {
             <div className="px-6 py-4 border-b border-slate-100">
               <h2 className="font-bold text-slate-800 text-lg flex items-center gap-2">
                 <Zap className="text-amber-500" fill="currentColor" /> Cập nhật
-                giá theo Danh mục
+                giá theo nhóm thuốc
               </h2>
               <p className="text-xs text-slate-500 mt-1">
                 Hệ thống sẽ quét và áp dụng giá gợi ý (MAC + Lợi nhuận) cho toàn
-                bộ thuốc thuộc danh mục đã chọn.
+                bộ thuốc thuộc nhóm thuốc đã chọn.
               </p>
             </div>
             <form onSubmit={handleBulkUpdate} className="p-6">
               <label className="block text-sm font-bold text-slate-700 mb-2">
-                Chọn Danh mục cần đồng bộ:
+                Chọn Nhóm thuốc cần đồng bộ:
               </label>
               <select
                 required
@@ -848,7 +863,7 @@ const PriceManagement = () => {
                   ) : (
                     <Zap size={16} />
                   )}{" "}
-                  Bắt đầu Đồng bộ
+                  Bắt đầu đồng bộ
                 </button>
               </div>
             </form>

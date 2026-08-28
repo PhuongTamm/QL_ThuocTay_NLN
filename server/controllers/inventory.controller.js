@@ -5,7 +5,7 @@ const MedicineVariant = require("../models/MedicineVariant");
 // 1. Xem tồn kho hiện tại (Realtime)
 exports.getInventoryByBranch = async (req, res) => {
   try {
-    // TÌM VÀ SỬA ĐOẠN NÀY
+    
     let { branchId } = req.query;
 
     if (req.user.role === "branch_manager" || req.user.role === "pharmacist") {

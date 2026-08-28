@@ -66,19 +66,17 @@ const MedicineList = () => {
   const [viewingImages, setViewingImages] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const [editingVariantMed, setEditingVariantMed] = useState(null); // Lưu trữ thuốc gốc khi đang sửa biến thể
+  const [editingVariantMed, setEditingVariantMed] = useState(null);
 
-  // ---> THÊM HÀM TÍNH TOÁN NÀY <---
-  // Hàm tự động tính giá gợi ý dựa trên MAC và Category Markup
   const getSuggestedPrice = (med, convRate) => {
     if (!med) return 0;
-    const mac = med.mac || 0; // Lấy giá vốn bình quân (MAC)
+    const mac = med.mac || 0;
     let markup = 0;
     if (med.categoryId) {
       const catId = med.categoryId._id || med.categoryId;
       const category = categories.find((c) => c._id === catId);
       if (category && category.markupPercentage) {
-        markup = category.markupPercentage; // Lấy tỷ lệ lợi nhuận
+        markup = category.markupPercentage;
       }
     }
     return mac * Number(convRate || 1) * (1 + markup);
@@ -89,6 +87,7 @@ const MedicineList = () => {
     setViewingImages(images);
     setCurrentImageIndex(0);
   };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -117,7 +116,9 @@ const MedicineList = () => {
     }
   };
 
-  const handleDeleteMedicine = async (medicineId) => {
+  // Đã thêm tham số e và e.stopPropagation()
+  const handleDeleteMedicine = async (e, medicineId) => {
+    e.stopPropagation();
     if (
       window.confirm(
         "Bạn có chắc muốn xóa thuốc gốc này? Các biến thể liên quan cũng sẽ bị ảnh hưởng.",
@@ -125,13 +126,15 @@ const MedicineList = () => {
     ) {
       try {
         const response = await api.delete(`/medicines/${medicineId}`);
-        if (response.success) {
+        if (response.data?.success || response.success) {
           window.alert("Xóa thuốc gốc thành công!");
           fetchData();
         } else {
           window.alert(
             "Xóa thuốc gốc thất bại: " +
-              (response.message || "Lỗi không xác định"),
+              (response.data?.message ||
+                response.message ||
+                "Lỗi không xác định"),
           );
         }
       } catch (error) {
@@ -140,7 +143,9 @@ const MedicineList = () => {
     }
   };
 
-  const handleOpenEditModal = (med) => {
+  // Đã thêm tham số e và e.stopPropagation()
+  const handleOpenEditModal = (e, med) => {
+    e.stopPropagation();
     setEditingMed({ ...med });
     setEditImages([]);
     setEditImagePreviews([]);
@@ -188,22 +193,33 @@ const MedicineList = () => {
     }
   };
 
-  const handleDeleteVariant = async (variantId) => {
+  // Đã thêm tham số e và e.stopPropagation()
+  const handleDeleteVariant = async (e, variantId) => {
+    e.stopPropagation();
     if (
       window.confirm(
         "Bạn có chắc muốn xóa quy cách này? Hành động không thể hoàn tác.",
       )
     ) {
       try {
-        await api.delete(`/medicines/variants/${variantId}`);
-        fetchData();
+        const response = await api.delete(`/medicines/variants/${variantId}`);
+        if (response.data?.success || response.success) {
+          window.alert("Xóa quy cách thành công!");
+          fetchData();
+        } else {
+          window.alert(
+            response.data?.message || response.message || "Lỗi không xác định",
+          );
+        }
       } catch (error) {
         alert(error.response?.data?.message || "Lỗi khi xóa quy cách!");
       }
     }
   };
 
-  const handleOpenAddVariantModal = (med) => {
+  // Đã thêm tham số e và e.stopPropagation()
+  const handleOpenAddVariantModal = (e, med) => {
+    e.stopPropagation();
     setSelectedMedicineForVariant(med);
     setNewVariant({
       sku: "",
@@ -211,6 +227,7 @@ const MedicineList = () => {
       unit: "Hộp",
       packagingSpecification: "",
       currentPrice: 0,
+      conversionRate: 1, // Reset conversionRate
     });
     setIsAddVariantModalOpen(true);
   };
@@ -233,13 +250,15 @@ const MedicineList = () => {
         conversionRate: Number(newVariant.conversionRate),
       };
       const response = await api.post("/medicines/variants", payload);
-      if (response.success) {
+      if (response.data?.success || response.success) {
         window.alert("Thêm quy cách thành công!");
         setIsAddVariantModalOpen(false);
       } else {
         window.alert(
           "Thêm quy cách thất bại: " +
-            (response.message || "Lỗi không xác định"),
+            (response.data?.message ||
+              response.message ||
+              "Lỗi không xác định"),
         );
       }
       if (!expandedRows.includes(selectedMedicineForVariant._id)) {
@@ -248,16 +267,18 @@ const MedicineList = () => {
       fetchData();
     } catch (error) {
       alert(
-        error.data?.message || "Đã xảy ra lỗi khi thêm quy cách!",
+        error.response?.data?.message || "Đã xảy ra lỗi khi thêm quy cách!",
       );
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleOpenEditVariant = (variant, med) => {
+  // Đã thêm tham số e và e.stopPropagation()
+  const handleOpenEditVariant = (e, variant, med) => {
+    e.stopPropagation();
     setEditingVariant({ ...variant });
-    setEditingVariantMed(med); // Lưu trữ thuốc gốc liên quan
+    setEditingVariantMed(med);
     setIsEditVariantModalOpen(true);
   };
 
@@ -461,7 +482,7 @@ const MedicineList = () => {
                     Hoạt chất
                   </th>
                   <th className="p-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
-                    Danh mục
+                    Nhóm thuốc
                   </th>
                   <th className="p-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
                     Phân loại
@@ -588,19 +609,19 @@ const MedicineList = () => {
                           <div className="flex justify-end gap-1.5">
                             <button
                               title="Thêm quy cách"
-                              onClick={() => handleOpenAddVariantModal(med)}
+                              onClick={(e) => handleOpenAddVariantModal(e, med)}
                               className="w-8 h-8 flex items-center justify-center rounded-xl text-emerald-600 hover:bg-emerald-50 transition-all hover:scale-110">
                               <PackagePlus size={17} />
                             </button>
                             <button
                               title="Sửa thuốc gốc"
-                              onClick={() => handleOpenEditModal(med)}
+                              onClick={(e) => handleOpenEditModal(e, med)}
                               className="w-8 h-8 flex items-center justify-center rounded-xl text-[#0ea5e9] hover:bg-[#0ea5e9]/10 transition-all hover:scale-110">
                               <Edit size={17} />
                             </button>
                             <button
                               title="Xóa thuốc gốc"
-                              onClick={() => handleDeleteMedicine(med._id)}
+                              onClick={(e) => handleDeleteMedicine(e, med._id)}
                               className="w-8 h-8 flex items-center justify-center rounded-xl text-red-500 hover:bg-red-50 transition-all hover:scale-110">
                               <Trash2 size={17} />
                             </button>
@@ -634,6 +655,12 @@ const MedicineList = () => {
                                         <th className="px-4 py-2.5 text-center text-xs font-bold text-slate-400 uppercase tracking-wide">
                                           Đơn vị
                                         </th>
+                                        <th className="px-4 py-2.5 text-center text-xs font-bold text-slate-400 uppercase tracking-wide">
+                                          Mô tả đóng gói
+                                        </th>
+                                        <th className="px-4 py-2.5 text-center text-xs font-bold text-slate-400 uppercase tracking-wide">
+                                          Tỷ lệ quy đổi
+                                        </th>
                                         <th className="px-4 py-2.5 text-right text-xs font-bold text-slate-400 uppercase tracking-wide">
                                           Giá bán lẻ
                                         </th>
@@ -660,6 +687,16 @@ const MedicineList = () => {
                                               {variant.unit}
                                             </span>
                                           </td>
+                                          <td className="px-4 py-3 text-center">
+                                            <span className="text-sm font-normal text-slate-700">
+                                              {variant.packagingSpecification}
+                                            </span>
+                                          </td>
+                                          <td className="px-4 py-3 text-center">
+                                            <span className="text-sm font-normal text-slate-700">
+                                              {variant.conversionRate}
+                                            </span>
+                                          </td>
                                           <td className="px-4 py-3 text-right text-red-500">
                                             {formatCurrency(
                                               variant.currentPrice,
@@ -668,8 +705,9 @@ const MedicineList = () => {
                                           <td className="px-4 py-3">
                                             <div className="flex justify-end gap-1.5">
                                               <button
-                                                onClick={() =>
+                                                onClick={(e) =>
                                                   handleOpenEditVariant(
+                                                    e,
                                                     variant,
                                                     med,
                                                   )
@@ -678,8 +716,9 @@ const MedicineList = () => {
                                                 <Edit size={14} />
                                               </button>
                                               <button
-                                                onClick={() =>
+                                                onClick={(e) =>
                                                   handleDeleteVariant(
+                                                    e,
                                                     variant._id,
                                                   )
                                                 }

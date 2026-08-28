@@ -1,6 +1,7 @@
 const Medicine = require("../models/Medicine");
 const MedicineVariant = require("../models/MedicineVariant");
 const Category = require("../models/Category");
+const Inventory = require("../models/Inventory");
 const fs = require("fs");
 const path = require("path");
 
@@ -356,8 +357,30 @@ exports.updateVariant = async (req, res) => {
 exports.deleteVariant = async (req, res) => {
   try {
     const { id } = req.params;
+
+    // 1. Tìm thông tin biến thể trước khi xóa
+    const variant = await MedicineVariant.findById(id);
+    if (!variant) {
+      return res.status(404).json({ success: false, message: "Không tìm thấy quy cách này." });
+    }
+
+    // 2. KIỂM TRA RÀNG BUỘC: Có lô thuốc nào đang tồn tại không?
+    // Nếu totalQuantity > 0 nghĩa là thuốc này đang có ít nhất 1 lô còn hàng trong kho
+    const activeInventory = await Inventory.findOne({
+      medicineId: variant.medicineId,
+      totalQuantity: { $gt: 0 } 
+    });
+
+    if (activeInventory) {
+      return res.status(400).json({
+        success: false,
+        message: "Không thể xóa! Thuốc này đang có lô hàng tồn trong kho. Vui lòng xuất hết hoặc xuất hủy lô trước khi xóa quy cách."
+      });
+    }
+
+    // 3. Nếu an toàn (kho đã xuất sạch), tiến hành xóa
     await MedicineVariant.findByIdAndDelete(id);
-    res.json({ success: true, message: "Đã xóa biến thể" });
+    res.json({ success: true, message: "Đã xóa quy cách thành công." });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

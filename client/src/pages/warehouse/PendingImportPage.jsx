@@ -8,8 +8,14 @@ import {
   Store,
   Layers,
   CalendarDays,
+  DollarSign,
 } from "lucide-react";
 import api from "../../services/api";
+
+const formatCurrency = (val) =>
+  new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(
+    val || 0,
+  );
 
 const PendingImportPage = () => {
   const [transactions, setTransactions] = useState([]);
@@ -138,168 +144,191 @@ const PendingImportPage = () => {
           </div>
         ) : (
           <div className="flex flex-col gap-6">
-            {transactions.map((trans) => (
-              <div
-                key={trans._id}
-                className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:border-[#1d5fa7]/30 transition-all duration-200">
-                {/* ── Card Header (Nền nhạt, chữ tối màu) ── */}
-                <div className="p-5 flex flex-col md:flex-row md:justify-between md:items-start gap-4 bg-[#1d5fa7]/5 border-b border-[#1d5fa7]/10">
-                  <div className="flex flex-col gap-3">
-                    {/* Nhãn phân loại */}
-                    <span className="text-[10px] font-bold px-2.5 py-1 rounded-md text-[#1d5fa7] border border-[#1d5fa7]/20 bg-white w-fit uppercase tracking-wide shadow-sm">
-                      {trans.type === "RETURN_TO_WAREHOUSE"
-                        ? "Phiếu Trả Hàng"
-                        : "Phiếu Luân Chuyển"}
-                    </span>
+            {transactions.map((trans) => {
+              // Tính tổng giá trị của toàn bộ phiếu
+              const totalTransactionValue = trans.details.reduce(
+                (sum, detail) =>
+                  sum + (detail.quantity || 0) * (detail.price || 0),
+                0,
+              );
 
-                    {/* Meta Info */}
-                    <div className="flex flex-col flex-wrap gap-1 text-[13px] text-slate-600">
-                      <div className="flex items-center gap-1.5">
-                        <Store size={14} className="text-slate-400" />
-                        <span>
-                          Từ:{" "}
-                          <span className="font-bold text-slate-800">
-                            {trans.fromBranch?.name || "Kho Tổng"}
-                          </span>
-                        </span>
-                      </div>
-                      {/* <div className="w-1 h-1 rounded-full bg-slate-300 hidden sm:block" /> */}
-                      <div className="flex items-center gap-1.5">
-                        <Clock size={14} className="text-slate-400" />
-                        <span className="font-sm text-slate-500">
-                          {new Date(trans.createdAt).toLocaleString("vi-VN", {
-                            dateStyle: "medium",
-                            timeStyle: "short",
-                          })}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Mã phiếu & Số mặt hàng */}
-                  <div className="text-left md:text-right">
-                    <span className="text-[10px] text-slate-500 uppercase font-bold tracking-wide block mb-0.5">
-                      Mã phiếu
-                    </span>
-                    <span className="text-base font-bold text-slate-800 block mb-2">
-                      {trans.code}
-                    </span>
-                    <div className="flex items-center justify-start md:justify-end gap-1.5 text-[13px] text-slate-600">
-                      <Layers size={14} className="text-slate-400" />
-                      <span className="font-medium">
-                        {trans.details.length} mặt hàng trong phiếu
+              return (
+                <div
+                  key={trans._id}
+                  className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:border-[#1d5fa7]/30 transition-all duration-200">
+                  {/* ── Card Header ── */}
+                  <div className="p-5 flex flex-col md:flex-row md:justify-between md:items-start gap-4 bg-[#1d5fa7]/5 border-b border-[#1d5fa7]/10">
+                    <div className="flex flex-col gap-3">
+                      {/* Nhãn phân loại */}
+                      <span className="text-[10px] font-bold px-2.5 py-1 rounded-md text-[#1d5fa7] border border-[#1d5fa7]/20 bg-white w-fit uppercase tracking-wide shadow-sm">
+                        {trans.type === "RETURN_TO_WAREHOUSE"
+                          ? "Phiếu Trả Hàng"
+                          : "Phiếu Luân Chuyển"}
                       </span>
+
+                      {/* Meta Info */}
+                      <div className="flex flex-col flex-wrap gap-1 text-[13px] text-slate-600">
+                        <div className="flex items-center gap-1.5">
+                          <Store size={14} className="text-slate-400" />
+                          <span>
+                            Từ:{" "}
+                            <span className="font-bold text-slate-800">
+                              {trans.fromBranch?.name || "Kho Tổng"}
+                            </span>
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <Clock size={14} className="text-slate-400" />
+                          <span className="font-sm text-slate-500">
+                            {new Date(trans.createdAt).toLocaleString("vi-VN", {
+                              dateStyle: "medium",
+                              timeStyle: "short",
+                            })}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Mã phiếu & Số mặt hàng */}
+                    <div className="text-left md:text-right">
+                      <span className="text-[10px] text-slate-500 uppercase font-bold tracking-wide block mb-0.5">
+                        Mã phiếu
+                      </span>
+                      <span className="text-base font-bold text-slate-800 block mb-2">
+                        {trans.code}
+                      </span>
+                      <div className="flex items-center justify-start md:justify-end gap-1.5 text-[13px] text-slate-600">
+                        <Layers size={14} className="text-slate-400" />
+                        <span className="font-medium">
+                          {trans.details.length} mặt hàng trong phiếu
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {/* ── Detail Table ── */}
-                <div className="overflow-x-auto scrollbar-thin">
-                  <table className="w-full text-left text-sm border-collapse">
-                    <thead>
-                      <tr className="border-b border-slate-100">
-                        <th className="py-3 px-5 text-center text-xs font-bold text-slate-500 uppercase tracking-wide w-12">
-                          STT
-                        </th>
-                        <th className="py-3 px-5 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
-                          Mã SKU
-                        </th>
-                        <th className="py-3 px-5 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
-                          Tên hàng hóa (Quy cách)
-                        </th>
-                        <th className="py-3 px-5 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
-                          Mã Lô / HSD
-                        </th>
-                        {trans.type === "RETURN_TO_WAREHOUSE" && (
-                          <th className="py-3 px-5 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
-                            Lý do trả hàng
+                  {/* ── Detail Table ── */}
+                  <div className="overflow-x-auto scrollbar-thin">
+                    <table className="w-full text-left text-sm border-collapse">
+                      <thead>
+                        <tr className="border-b border-slate-100 bg-slate-50/50">
+                          <th className="py-3 px-5 text-center text-xs font-bold text-slate-500 uppercase tracking-wide w-12">
+                            STT
                           </th>
-                        )}
-                        <th className="py-3 px-5 text-right text-xs font-bold text-slate-500 uppercase tracking-wide">
-                          Số lượng
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-50">
-                      {trans.details.map((detail, idx) => (
-                        <tr
-                          key={idx}
-                          className="hover:bg-[#1d5fa7]/5 transition-colors">
-                          {/* STT */}
-                          <td className="py-4 px-5 text-center text-slate-500 font-normal">
-                            {idx + 1}
-                          </td>
-
-                          {/* SKU */}
-                          <td className="py-4 px-5 text-center text-slate-600 font-normal">
-                            {detail.variantId?.sku}
-                          </td>
-
-                          {/* Tên thuốc */}
-                          <td className="py-4 px-5 text-center text-slate-800 font-normal">
-                            {detail.variantId?.name}
-                          </td>
-
-                          {/* Lô & HSD */}
-                          <td className="py-4 px-5 text-center">
-                            <div className="flex flex-col items-center gap-1 text-slate-700 font-normal">
-                              <span>{detail.batchCode}</span>
-                              <div className="flex items-center gap-1 text-xs text-slate-500">
-                                <CalendarDays size={10} />
-                                <span>
-                                  {new Date(
-                                    detail.expiryDate,
-                                  ).toLocaleDateString("vi-VN")}
-                                </span>
-                              </div>
-                            </div>
-                          </td>
-
-                          {/* Lý do trả hàng (vẫn giữ nguyên format cảnh báo) */}
+                          <th className="py-3 px-5 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
+                            Mã SKU
+                          </th>
+                          <th className="py-3 px-5 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
+                            Tên hàng hóa (Quy cách)
+                          </th>
+                          <th className="py-3 px-5 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
+                            Mã Lô / HSD
+                          </th>
                           {trans.type === "RETURN_TO_WAREHOUSE" && (
+                            <th className="py-3 px-5 text-center text-xs font-bold text-slate-500 uppercase tracking-wide">
+                              Lý do trả
+                            </th>
+                          )}
+                          <th className="py-3 px-5 text-right text-xs font-bold text-slate-500 uppercase tracking-wide">
+                            Đơn giá nhập
+                          </th>
+                          <th className="py-3 px-5 text-right text-xs font-bold text-slate-500 uppercase tracking-wide">
+                            Số lượng
+                          </th>
+                          <th className="py-3 px-5 text-right text-xs font-bold text-slate-500 uppercase tracking-wide">
+                            Thành tiền
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-50">
+                        {trans.details.map((detail, idx) => (
+                          <tr
+                            key={idx}
+                            className="hover:bg-[#1d5fa7]/5 transition-colors">
+                            <td className="py-4 px-5 text-center text-slate-500 font-normal">
+                              {idx + 1}
+                            </td>
+                            <td className="py-4 px-5 text-center text-slate-600 font-normal">
+                              {detail.variantId?.sku}
+                            </td>
+                            <td className="py-4 px-5 text-center text-slate-800 font-normal">
+                              {detail.variantId?.name}
+                            </td>
                             <td className="py-4 px-5 text-center">
-                              <span
-                                className={`inline-flex items-center text-[11px] font-bold px-2.5 py-1 rounded-md border ${
-                                  detail.reason === "DAMAGED"
-                                    ? "text-red-700 bg-red-50 border-red-200"
-                                    : detail.reason === "EXPIRED"
-                                      ? "text-orange-700 bg-orange-50 border-orange-200"
-                                      : "text-slate-700 bg-slate-50 border-slate-200"
-                                }`}>
-                                {getReasonText(detail.reason)}
+                              <div className="flex flex-col items-center gap-1 text-slate-700 font-normal">
+                                <span>{detail.batchCode}</span>
+                                <div className="flex items-center gap-1 text-xs text-slate-500">
+                                  <CalendarDays size={10} />
+                                  <span>
+                                    {new Date(
+                                      detail.expiryDate,
+                                    ).toLocaleDateString("vi-VN")}
+                                  </span>
+                                </div>
+                              </div>
+                            </td>
+                            {trans.type === "RETURN_TO_WAREHOUSE" && (
+                              <td className="py-4 px-5 text-center">
+                                <span
+                                  className={`inline-flex items-center text-[11px] font-bold px-2.5 py-1 rounded-md border ${
+                                    detail.reason === "DAMAGED"
+                                      ? "text-red-700 bg-red-50 border-red-200"
+                                      : detail.reason === "EXPIRED"
+                                        ? "text-orange-700 bg-orange-50 border-orange-200"
+                                        : "text-slate-700 bg-slate-50 border-slate-200"
+                                  }`}>
+                                  {getReasonText(detail.reason)}
+                                </span>
+                              </td>
+                            )}
+                            <td className="py-4 px-5 text-right text-slate-600 font-normal whitespace-nowrap">
+                              {formatCurrency(detail.price)}
+                            </td>
+                            <td className="py-4 px-5 text-right text-slate-800 font-normal">
+                              {detail.quantity}{" "}
+                              <span className="text-slate-500 text-xs ml-0.5">
+                                {detail.variantId?.unit}
                               </span>
                             </td>
-                          )}
+                            <td className="py-4 px-5 text-right text-slate-700 whitespace-nowrap">
+                              {formatCurrency(
+                                (detail.quantity || 0) * (detail.price || 0),
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
 
-                          {/* Số lượng */}
-                          <td className="py-4 px-5 text-right text-slate-800 font-normal">
-                            {detail.quantity}{" "}
-                            <span className="text-slate-500 text-xs ml-0.5">
-                              {detail.variantId?.unit}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                  {/* ── Card Footer ── */}
+                  <div className="p-4 pl-10 border-t border-slate-100 bg-slate-50 flex flex-col sm:flex-row justify-between items-center gap-4">
+                    {/* Hiển thị tổng giá trị phiếu */}
+                    <div className="flex items-center gap-2">
+                      <div>
+                        <p className="text-xs font-bold text-slate-500 uppercase tracking-wide">
+                          Tổng giá trị phiếu
+                        </p>
+                        <p className="text-lg font-black text-red-600">
+                          {formatCurrency(totalTransactionValue)}
+                        </p>
+                      </div>
+                    </div>
 
-                {/* ── Card Footer ── */}
-                <div className="p-4 border-t border-slate-100 bg-slate-50 flex justify-end">
-                  <button
-                    onClick={() => handleConfirm(trans._id)}
-                    className="flex items-center gap-2 px-6 py-2.5 text-white rounded-xl text-sm font-bold transition-all hover:-translate-y-0.5"
-                    style={{
-                      background:
-                        "linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)",
-                      boxShadow: "0 4px 14px rgba(29, 95, 167, 0.4)",
-                    }}>
-                    <CheckCircle size={18} />
-                    Xác Nhận
-                  </button>
+                    <button
+                      onClick={() => handleConfirm(trans._id)}
+                      className="flex items-center justify-center w-full sm:w-auto gap-2 px-6 py-2.5 text-white rounded-xl text-sm font-bold transition-all hover:-translate-y-0.5"
+                      style={{
+                        background:
+                          "linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)",
+                        boxShadow: "0 4px 14px rgba(29, 95, 167, 0.4)",
+                      }}>
+                      <CheckCircle size={18} />
+                      Xác Nhận Nhập Kho
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

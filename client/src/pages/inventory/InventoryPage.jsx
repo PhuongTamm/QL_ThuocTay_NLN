@@ -17,6 +17,11 @@ import {
   Plus,
   FileWarning,
   Printer,
+  Pill,
+  Layers,
+  Tag,
+  User,
+  CalendarDays,
 } from "lucide-react";
 import api from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
@@ -67,6 +72,10 @@ const InventoryPage = () => {
   const [disposeCart, setDisposeCart] = useState([]);
   const [isSubmittingDispose, setIsSubmittingDispose] = useState(false);
   const [isExportingPDF, setIsExportingPDF] = useState(false);
+
+  // ĐỘC LẬP: Dữ liệu tồn kho chỉ dành riêng cho Kho Tổng (Modal Xuất Hủy)
+  const [warehouseInventories, setWarehouseInventories] = useState([]);
+  const [loadingDispose, setLoadingDispose] = useState(false);
 
   useEffect(() => {
     if (user?.role === "admin" || user?.role === "warehouse_manager") {
@@ -159,10 +168,43 @@ const InventoryPage = () => {
     }
   };
 
+  // === HÀM MỞ MODAL XUẤT HỦY (Chỉ kéo dữ liệu Kho Tổng) ===
+  const handleOpenDisposeModal = async () => {
+    if (user?.role !== "admin" && user?.role !== "warehouse_manager") {
+      alert("Bạn không có quyền thực hiện hành động này");
+      return;
+    }
+    setDisposeSearchTerm("");
+    setDisposeCart([]);
+    setIsDisposeModalOpen(true);
+
+    setLoadingDispose(true);
+    try {
+      const warehouse = branches.find((b) => b.type === "warehouse");
+      const wId = warehouse ? warehouse._id : "";
+      const res = await api.get(
+        wId ? `/inventories?branchId=${wId}` : "/inventories",
+      );
+
+      // Lọc lại một lần nữa để đảm bảo chỉ có dữ liệu kho tổng
+      const rawData = res.data.data || [];
+      const whData = rawData.filter(
+        (inv) =>
+          !inv.branchId || inv.branchId === wId || inv.branchId?._id === wId,
+      );
+
+      setWarehouseInventories(whData);
+    } catch (error) {
+      console.error("Lỗi tải tồn kho tổng:", error);
+    } finally {
+      setLoadingDispose(false);
+    }
+  };
+
   const getExpiryStatus = (value) => {
     if (value === "OVERSTOCK")
       return {
-        label: "Hàng ế (Thừa)",
+        label: "Bán chậm/Quá tồn",
         color: "bg-yellow-100 text-yellow-700 border-yellow-200",
         icon: "warning",
       };
@@ -283,21 +325,23 @@ const InventoryPage = () => {
     });
 
     const printDiv = document.createElement("div");
-    printDiv.style.fontFamily = "Arial, sans-serif";
+    printDiv.style.fontFamily = "Times New Roman, sans-serif";
     printDiv.style.color = "#000000";
     printDiv.style.backgroundColor = "#ffffff";
     printDiv.style.padding = "20px";
 
     let html = `
-      <div style="text-align: center; margin-bottom: 30px;">
-        <h2 style="margin: 0; font-size: 24px; text-transform: uppercase; font-weight: bold;">BÁO CÁO TỒN KHO TỔNG HỢP</h2>
+      <div style="display: flex; justify-content: space-between; margin-bottom: 25px;">
+        <div>
+          <h3 style="margin: 0; font-size: 16px; font-weight: bold; text-transform: uppercase;">HỆ THỐNG PHARMASYS</h3>
+          <p style="margin: 5px 0; font-size: 14px;">Đơn vị báo cáo: <strong>${branchName}</strong></p>
+        </div>
+        <div style="text-align: right;">
+          <p style="margin: 5px 0; font-size: 14px; font-style: italic;">Ngày lập: ${exportTime}</p>
+        </div>
       </div>
 
-      <div style="margin-bottom: 25px; font-size: 14px; line-height: 1.6;">
-        <p style="margin: 0;">Kho / Vị trí: <strong>${branchName}</strong></p>
-        <p style="margin: 0;">Ngày xuất báo cáo: <strong>${exportTime}</strong></p>
-        <p style="margin: 0;">Người lập phiếu: <strong>${creatorName}</strong></p>
-      </div>
+      <h2 style="text-align: center; font-size: 22px; font-weight: bold; margin-bottom: 25px;">BÁO CÁO TỒN KHO TỔNG HỢP</h2>
 
       <div style="margin-bottom: 30px; font-size: 14px; line-height: 1.8;">
         <h3 style="font-size: 16px; margin-bottom: 12px; text-transform: uppercase; font-weight: bold; border-bottom: 1px solid #000; display: inline-block; padding-bottom: 4px;">THỐNG KÊ TỔNG QUAN</h3>
@@ -305,7 +349,7 @@ const InventoryPage = () => {
         <p style="margin: 0;">Tổng số loại thuốc: <strong>${totalMedicines} loại</strong></p>
         <p style="margin: 0;">Tổng số lượng tồn: <strong>${totalBaseQuantity.toLocaleString()} (Đơn vị cơ sở)</strong></p>
         <p style="margin: 0;">Tổng giá trị tồn kho (theo giá nhập): <strong>${Math.round(totalImportValue).toLocaleString()} VNĐ</strong></p>
-        <p style="margin: 0;">Tổng giá trị tồn kho (theo giá bán ước tính): <strong style="color: #0369a1;">${Math.round(totalRetailValue).toLocaleString()} VNĐ</strong></p>
+        <p style="margin: 0;">Tổng giá trị tồn kho (theo giá bán ước tính): <strong style="color: #000;">${Math.round(totalRetailValue).toLocaleString()} VNĐ</strong></p>
       </div>
 
       <h3 style="font-size: 16px; margin-bottom: 10px; text-transform: uppercase; font-weight: bold;">BẢNG KÊ CHI TIẾT</h3>
@@ -338,12 +382,12 @@ const InventoryPage = () => {
                 : "";
 
             return `<div style="margin-bottom: 6px; padding-bottom: 6px; border-bottom: 1px dashed #cbd5e1; font-family: monospace;">
-                    <strong>${b.batchCode}</strong> | HSD: ${expiry} | Tồn: <span style="color: #ef4444; font-weight: bold;">${b.quantity}</span> | Vốn: ${b.importPrice?.toLocaleString() || 0}đ${qualityText}
+                    <strong>${b.batchCode}</strong> | HSD: ${expiry} | Tồn: <span style="color: #000; font-weight: bold;">${b.quantity}</span> | Vốn: ${b.importPrice?.toLocaleString() || 0}đ${qualityText}
                   </div>`;
           })
           .join("");
       } else {
-        batchHtml = `<span style="color: #94a3b8; font-style: italic;">Đã xuất sạch / Hết hàng</span>`;
+        batchHtml = `<span style="color: #94a3b8; font-style: italic;">Đã hết</span>`;
       }
 
       html += `
@@ -353,14 +397,29 @@ const InventoryPage = () => {
           <td style="padding: 10px 8px; border: 1px solid #94a3b8; vertical-align: top;">${inv.medicineId?.name || ""}</td>
           <td style="padding: 10px 8px; border: 1px solid #94a3b8; vertical-align: top;">${batchHtml}</td>
           <td style="padding: 10px 8px; border: 1px solid #94a3b8; text-align: center; vertical-align: top;">
-            <span style="color: #0369a1; font-weight: bold; font-size: 16px;">${inv.totalQuantity.toLocaleString()}</span><br/>
-            <span style="font-size: 10px; color: #64748b;">${inv.medicineId?.baseUnit || ""}</span>
+            <span style="color: #000; font-weight: bold; font-size: 14px;">${inv.totalQuantity.toLocaleString()}</span><br/>
+            <span style="font-size: 10px; color: #000;">${inv.medicineId?.baseUnit || ""}</span>
           </td>
         </tr>
       `;
     });
 
-    html += `</tbody></table>`;
+    html += `</tbody></table>
+      <div style="display: flex; justify-content: space-between; margin-top: 40px; text-align: center; font-size: 14px;">
+        <div style="width: 33.33%;">
+          <strong style="display: block; margin-bottom: 80px;">Người lập phiếu</strong>
+          <span>${creatorName}</span>
+        </div>
+        <div style="width: 33.33%;">
+          <strong style="display: block; margin-bottom: 80px;">Thủ kho</strong>
+          <span>(Ký, ghi rõ họ tên)</span>
+        </div>
+        <div style="width: 33.33%;">
+          <strong style="display: block; margin-bottom: 80px;">Giám đốc</strong>
+          <span>(Ký, ghi rõ họ tên)</span>
+        </div>
+      </div>
+    `;
     printDiv.innerHTML = html;
 
     const opt = {
@@ -404,11 +463,9 @@ const InventoryPage = () => {
     let htmlRows = "";
 
     transaction.details.forEach((item, idx) => {
-      const cartItem = disposeCart.find((c) => c.variantId === item.variantId);
-      const name = cartItem?.medicine?.name || "Sản phẩm không rõ";
-      const unit =
-        cartItem?.inventory?.variants?.find((v) => v._id === item.variantId)
-          ?.unit || "---";
+      const variant = window.allVariants?.find((v) => v._id === item.variantId);
+      const name = variant?.name || "Sản phẩm không rõ";
+      const unit = variant?.unit || "---";
       const expiry = item.expiryDate
         ? new Date(item.expiryDate).toLocaleDateString("vi-VN")
         : "---";
@@ -507,46 +564,33 @@ const InventoryPage = () => {
     await html2pdf().set(opt).from(printDiv).save();
   };
 
-  /* ─── LOGIC XỬ LÝ CART XUẤT HỦY ─── */
-  const getFlatBatchesForDisposal = () => {
-    const list = [];
-    inventories.forEach((inv) => {
-      const matchSearch =
-        inv.medicineId?.name
-          .toLowerCase()
-          .includes(disposeSearchTerm.toLowerCase()) ||
-        inv.medicineId?.code
-          .toLowerCase()
-          .includes(disposeSearchTerm.toLowerCase()) ||
-        inv.batches.some((b) =>
-          b.batchCode.toLowerCase().includes(disposeSearchTerm.toLowerCase()),
-        );
-
-      if (matchSearch) {
-        inv.batches
-          .filter((b) => b.quantity > 0)
-          .forEach((batch) => {
-            list.push({
-              inventory: inv,
-              medicine: inv.medicineId,
-              batch: batch,
-            });
-          });
-      }
-    });
-    return list.sort((a, b) => {
-      if (a.batch.quality !== "GOOD" && b.batch.quality === "GOOD") return -1;
-      if (a.batch.quality === "GOOD" && b.batch.quality !== "GOOD") return 1;
-      return new Date(a.batch.expiryDate) - new Date(b.batch.expiryDate);
-    });
+  /* ─── LOGIC XỬ LÝ CART XUẤT HỦY THEO QUY CÁCH (Sử dụng warehouseInventories) ─── */
+  const getMedicinesForDisposal = () => {
+    let data = [...warehouseInventories];
+    if (disposeSearchTerm) {
+      const term = disposeSearchTerm.toLowerCase();
+      data = data.filter(
+        (inv) =>
+          inv.medicineId?.name.toLowerCase().includes(term) ||
+          inv.medicineId?.code.toLowerCase().includes(term),
+      );
+    }
+    return data;
   };
 
-  const handleAddToDisposeCart = (med, inv, batch) => {
-    const cartItemId = `${med._id}_${batch._id}`;
-    const existing = disposeCart.find((item) => item.cartItemId === cartItemId);
+  const handleAddToDisposeCart = (med, inv, variant) => {
+    // Tạo ID duy nhất cho dòng trong phiếu hủy (Tránh trùng nếu bấm nhiều lần)
+    const cartItemId = `${variant._id}_${Date.now()}`;
 
-    if (existing) {
-      alert("Lô này đã có trong danh sách xuất hủy bên phải!");
+    // Check xem quy cách này đã có dòng nào chưa chọn lô chưa (tránh spam)
+    const isExist = disposeCart.some(
+      (item) => item.variantId === variant._id && !item.batchId,
+    );
+
+    if (isExist) {
+      alert(
+        `Quy cách ${variant.name} đang có dòng chờ chọn lô trong phiếu hủy!`,
+      );
       return;
     }
 
@@ -556,10 +600,11 @@ const InventoryPage = () => {
         cartItemId,
         inventory: inv,
         medicine: med,
-        batch: batch,
-        variantId: inv.variants?.[0]?._id || "",
+        variant: variant,
+        variantId: variant._id,
+        batchId: "", // Sẽ cho người dùng chọn bên phải
         quantity: 1,
-        reason: batch.quality !== "GOOD" ? batch.quality : "EXPIRED",
+        reason: "EXPIRED",
       },
     ]);
   };
@@ -573,23 +618,25 @@ const InventoryPage = () => {
   };
 
   const handleSubmitDisposal = async () => {
-    if (disposeCart.length === 0)
-      return alert("Chưa chọn lô thuốc nào để hủy!");
+    if (disposeCart.length === 0) return alert("Chưa chọn thuốc nào để hủy!");
 
     for (let i = 0; i < disposeCart.length; i++) {
       const item = disposeCart[i];
-      if (!item.variantId)
-        return alert(`Dòng ${i + 1}: Chưa chọn quy cách (Đơn vị tính)!`);
+      if (!item.batchId)
+        return alert(`Dòng ${i + 1}: Vui lòng chọn Lô muốn xuất hủy!`);
       if (item.quantity <= 0)
         return alert(`Dòng ${i + 1}: Số lượng phải lớn hơn 0!`);
 
-      const variant = item.inventory.variants.find(
-        (v) => v._id === item.variantId,
+      // Lấy lô thực tế từ inventory
+      const targetBatch = item.inventory.batches.find(
+        (b) => b._id === item.batchId,
       );
-      const baseDeduct = item.quantity * variant.conversionRate;
-      if (baseDeduct > item.batch.quantity) {
+      if (!targetBatch) return alert(`Dòng ${i + 1}: Lô không hợp lệ!`);
+
+      const baseDeduct = item.quantity * item.variant.conversionRate;
+      if (baseDeduct > targetBatch.quantity) {
         return alert(
-          `Dòng ${i + 1}: Số lượng hủy (${baseDeduct} ${item.medicine.baseUnit}) vượt quá tồn kho của lô này (${item.batch.quantity})!`,
+          `Dòng ${i + 1}: Số lượng hủy (${baseDeduct} ${item.medicine.baseUnit}) vượt quá tồn kho của lô ${targetBatch.batchCode} (${targetBatch.quantity} ${item.medicine.baseUnit})!`,
         );
       }
     }
@@ -597,13 +644,18 @@ const InventoryPage = () => {
     setIsSubmittingDispose(true);
     try {
       const payload = {
-        items: disposeCart.map((item) => ({
-          variantId: item.variantId,
-          batchCode: item.batch.batchCode,
-          batchId: item.batch._id,
-          quantity: Number(item.quantity),
-          reason: item.reason,
-        })),
+        items: disposeCart.map((item) => {
+          const targetBatch = item.inventory.batches.find(
+            (b) => b._id === item.batchId,
+          );
+          return {
+            variantId: item.variantId,
+            batchCode: targetBatch.batchCode,
+            batchId: item.batchId,
+            quantity: Number(item.quantity),
+            reason: item.reason,
+          };
+        }),
       };
 
       const res = await api.post("/transactions/dispose", payload);
@@ -611,6 +663,10 @@ const InventoryPage = () => {
         const wantToPrint = window.confirm(
           "Chốt phiếu xuất hủy thành công! Chi phí tổn thất đã được ghi nhận. Bạn có muốn in PHIẾU XUẤT HỦY không?",
         );
+        // Lấy lại danh sách variants để in PDF vì API trả về phiếu chỉ có ID
+        const allVariantsRes = await api.get("/medicines/variants");
+        window.allVariants = allVariantsRes.data.data; // Lưu tạm để generatePDF dùng
+
         if (wantToPrint && res.data.transaction) {
           await generateDisposalPDF(res.data.transaction);
         }
@@ -627,16 +683,17 @@ const InventoryPage = () => {
   };
 
   const totalDisposalLossValue = disposeCart.reduce((sum, item) => {
-    const variant = item.inventory.variants.find(
-      (v) => v._id === item.variantId,
-    );
-    if (!variant) return sum;
-    const baseQty = item.quantity * variant.conversionRate;
-    return sum + baseQty * item.batch.importPrice;
+    if (!item.batchId) return sum;
+    const batch = item.inventory.batches.find((b) => b._id === item.batchId);
+    if (!batch) return sum;
+    const baseQty = item.quantity * item.variant.conversionRate;
+    return sum + baseQty * (batch.importPrice || 0);
   }, 0);
 
   const inputCls =
     "w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#0ea5e9]/30 focus:border-[#0ea5e9] transition bg-white text-slate-800 placeholder:text-slate-400";
+  const inputBase =
+    "w-full border border-slate-200 rounded-lg px-2.5 py-2 text-xs font-medium text-slate-800 bg-white outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 disabled:bg-slate-50 disabled:text-slate-500";
 
   return (
     <div
@@ -653,7 +710,7 @@ const InventoryPage = () => {
         .animate-page-in {
           animation: fadeInPage 0.4s ease-out forwards;
         }
-         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes modalIn { from { transform: translateY(14px) scale(.97); opacity: 0; } to { transform: none; opacity: 1; } }
         .scrollbar-thin::-webkit-scrollbar { width: 5px; height: 5px; }
         .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
@@ -664,7 +721,7 @@ const InventoryPage = () => {
       `}</style>
       <div className="animate-page-in space-y-6">
         {/* ── PAGE HEADER ── */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 ">
           <div className="flex items-center gap-3">
             <div
               className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0"
@@ -701,20 +758,9 @@ const InventoryPage = () => {
               Xuất PDF
             </button>
 
-            {/* SỬA QUYỀN LẬP PHIẾU XUẤT HỦY TẠI ĐÂY */}
+            {/* NÚT LẬP PHIẾU XUẤT HỦY */}
             <button
-              onClick={() => {
-                if (
-                  user?.role !== "admin" &&
-                  user?.role !== "warehouse_manager"
-                ) {
-                  alert("Bạn không có quyền thực hiện hành động này");
-                  return;
-                }
-                setDisposeSearchTerm("");
-                setDisposeCart([]);
-                setIsDisposeModalOpen(true);
-              }}
+              onClick={handleOpenDisposeModal}
               className="flex items-center gap-2 px-5 py-2.5 text-white font-bold rounded-2xl transition-all hover:-translate-y-0.5"
               style={{
                 background: "linear-gradient(135deg, #0ea5e9, #0369a1)",
@@ -905,7 +951,6 @@ const InventoryPage = () => {
                           </span>
                         </td>
                         <td className="p-4 text-center">
-                          {/* SỬA LẠI PHẦN HIỂN THỊ SỐ LƯỢNG TỒN (ĐÃ HẾT/SẮP HẾT) TẠI ĐÂY */}
                           {inv.totalQuantity === 0 ? (
                             <div className="flex flex-col items-center">
                               <span className="text-sm font-bold text-red-500">
@@ -957,14 +1002,16 @@ const InventoryPage = () => {
           </div>
         </div>
       </div>
+
       {/* ══════════════════════════════════════════
-          MODAL: TẠO PHIẾU XUẤT HỦY (DISPOSAL)
+          MODAL: TẠO PHIẾU XUẤT HỦY (STYLE NHƯ IMPORT)
       ══════════════════════════════════════════ */}
       {isDisposeModalOpen && (
         <ModalOverlay
           onClose={() => setIsDisposeModalOpen(false)}
           zIndex="z-[60]">
           <div className="bg-white rounded-2xl shadow-2xl w-[1200px] max-w-[95vw] h-[85vh] flex flex-col overflow-hidden">
+            {/* Header Modal */}
             <div
               className="flex justify-between items-center px-6 py-4 text-white shrink-0"
               style={{
@@ -987,9 +1034,15 @@ const InventoryPage = () => {
               </button>
             </div>
 
-            <div className="flex-1 flex overflow-hidden bg-slate-50">
-              <div className="w-1/2 flex flex-col border-r border-slate-200 bg-white">
-                <div className="p-4 border-b border-slate-100 shrink-0">
+            {/* Content: Chia làm 2 cột (Trái tìm thuốc, Phải điền thông tin phiếu) */}
+            <div className="flex-1 flex flex-col lg:flex-row overflow-hidden bg-slate-50">
+              {/* === CỘT TRÁI: TÌM & CHỌN QUY CÁCH THUỐC === */}
+              <div className="w-full lg:w-[400px] xl:w-[450px] flex flex-col border-r border-slate-200 bg-white shrink-0">
+                <div className="p-4 border-b border-slate-100 bg-slate-50/50">
+                  <h3 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                    <Pill size={16} className="text-slate-600" /> Tìm Thuốc Để
+                    Hủy
+                  </h3>
                   <div className="relative">
                     <Search
                       size={16}
@@ -997,266 +1050,392 @@ const InventoryPage = () => {
                     />
                     <input
                       autoFocus
-                      placeholder="Tìm mã thuốc, tên, lô thuốc cần hủy..."
-                      className="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-[#0ea5e9] focus:ring-2 focus:ring-[#0ea5e9]/30 bg-slate-50 text-sm"
+                      placeholder="Tên thuốc, mã SKU..."
+                      className="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 text-sm font-medium text-slate-800 bg-white"
                       value={disposeSearchTerm}
                       onChange={(e) => setDisposeSearchTerm(e.target.value)}
                     />
                   </div>
                 </div>
 
-                <div className="flex-1 overflow-y-auto scrollbar-thin p-4 space-y-3">
-                  {getFlatBatchesForDisposal().map((item, idx) => {
-                    const status = getExpiryStatus(
-                      item.batch.quality === "GOOD"
-                        ? item.batch.expiryDate
-                        : item.batch.quality,
-                    );
-                    const isErrorBatch = item.batch.quality !== "GOOD";
-
-                    return (
-                      <div
-                        key={idx}
-                        className={`p-4 rounded-xl border ${isErrorBatch ? "bg-orange-50 border-orange-200" : "bg-white border-slate-200 hover:border-[#0ea5e9]/50"} transition shadow-sm flex flex-col gap-2`}>
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-600 mr-2">
-                              {item.medicine.code}
-                            </span>
-                            <span className="font-bold text-slate-800">
-                              {item.medicine.name}
-                            </span>
-                          </div>
-                          <span
-                            className={`px-2 py-0.5 text-[10px] font-bold rounded-full border ${status.color}`}>
-                            {status.label}
-                          </span>
-                        </div>
-
-                        <div className="flex justify-between items-end mt-1">
-                          <div className="text-xs text-slate-500 space-y-1">
-                            <p>
-                              Mã lô:{" "}
-                              <span className="font-mono font-bold text-slate-700">
-                                {item.batch.batchCode}
-                              </span>
-                            </p>
-                            <p>
-                              HSD:{" "}
-                              {new Date(
-                                item.batch.expiryDate,
-                              ).toLocaleDateString("vi-VN")}
-                            </p>
-                            <p>
-                              Tồn:{" "}
-                              <span className="font-bold text-red-500 text-sm">
-                                {item.batch.quantity}
-                              </span>{" "}
-                              {item.medicine.baseUnit}
-                            </p>
-                          </div>
-                          <button
-                            onClick={() =>
-                              handleAddToDisposeCart(
-                                item.medicine,
-                                item.inventory,
-                                item.batch,
-                              )
-                            }
-                            className="bg-[#0ea5e9] text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-[#0369a1] transition flex items-center gap-1 shadow-md">
-                            <Plus size={14} /> Thêm vào phiếu
-                          </button>
-                        </div>
-                      </div>
-                    );
-                  })}
-                  {getFlatBatchesForDisposal().length === 0 && (
-                    <div className="text-center py-10 text-slate-400 text-sm italic">
-                      Không tìm thấy lô thuốc nào phù hợp.
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className="w-1/2 flex flex-col bg-slate-50">
-                <div className="p-4 border-b border-slate-200 bg-white shrink-0 flex justify-between items-center">
-                  <h3 className="font-bold text-slate-800">
-                    Danh sách chờ hủy ({disposeCart.length})
-                  </h3>
-                  <button
-                    onClick={() => setDisposeCart([])}
-                    className="text-xs text-red-500 font-bold hover:underline">
-                    Xóa tất cả
-                  </button>
-                </div>
-
-                <div className="flex-1 overflow-y-auto scrollbar-thin p-4 space-y-3">
-                  {disposeCart.length === 0 ? (
-                    <div className="h-full flex flex-col items-center justify-center text-slate-400 gap-3">
-                      <Trash2 size={40} className="opacity-20" />
+                <div className="flex-1 overflow-y-auto scrollbar-thin p-3 space-y-2 bg-slate-50/30">
+                  {loadingDispose ? (
+                    <div className="text-center py-10 text-slate-400 flex flex-col items-center gap-2">
+                      <Loader2
+                        size={24}
+                        className="animate-spin text-sky-500"
+                      />
                       <p className="text-sm font-medium">
-                        Chưa có lô thuốc nào được chọn
+                        Đang tải dữ liệu Kho Tổng...
                       </p>
                     </div>
+                  ) : getMedicinesForDisposal().length === 0 ? (
+                    <div className="text-center py-10 text-slate-400 text-sm italic">
+                      Không tìm thấy thuốc nào phù hợp.
+                    </div>
                   ) : (
-                    disposeCart.map((cartItem, idx) => {
-                      const variantList = cartItem.inventory.variants || [];
-                      const selectedVariant = variantList.find(
-                        (v) => v._id === cartItem.variantId,
-                      );
-                      const baseQtyDeduct = selectedVariant
-                        ? cartItem.quantity * selectedVariant.conversionRate
-                        : 0;
-                      const isOverLimit =
-                        baseQtyDeduct > cartItem.batch.quantity;
+                    getMedicinesForDisposal().map((inv) => {
+                      const medVariants = inv.variants || [];
+                      // Bỏ qua nếu thuốc không có lô nào (không thể hủy)
+                      if (
+                        !inv.batches ||
+                        inv.batches.filter((b) => b.quantity > 0).length === 0
+                      )
+                        return null;
 
                       return (
                         <div
-                          key={cartItem.cartItemId}
-                          className={`p-4 rounded-xl border bg-white shadow-sm relative overflow-hidden ${isOverLimit ? "border-red-400 ring-1 ring-red-400" : "border-slate-200"}`}>
-                          {cartItem.batch.quality !== "GOOD" && (
-                            <div className="absolute left-0 top-0 bottom-0 w-1 bg-orange-400"></div>
-                          )}
-
-                          <div className="flex justify-between items-start mb-3">
-                            <div className="pr-6">
-                              <p className="font-bold text-slate-800 text-sm leading-tight">
-                                {cartItem.medicine.name}
-                              </p>
-                              <p className="text-xs text-slate-500 mt-1">
-                                Lô:{" "}
-                                <span className="font-mono font-bold text-slate-700">
-                                  {cartItem.batch.batchCode}
-                                </span>{" "}
-                                (Trạng thái: {cartItem.batch.quality})
-                              </p>
-                              <p className="text-xs text-slate-500">
-                                Tồn:{" "}
-                                <span className="font-bold text-red-500">
-                                  {cartItem.batch.quantity}
-                                </span>{" "}
-                                {cartItem.medicine.baseUnit}
-                                <span className="ml-2 text-slate-400">
-                                  Giá vốn:{" "}
-                                  {(
-                                    cartItem.batch.importPrice || 0
-                                  ).toLocaleString()}
-                                  đ/đv
-                                </span>
-                              </p>
-                            </div>
-                            <button
-                              onClick={() =>
-                                setDisposeCart(
-                                  disposeCart.filter(
-                                    (i) => i.cartItemId !== cartItem.cartItemId,
-                                  ),
-                                )
-                              }
-                              className="text-slate-300 hover:text-red-500 transition absolute top-3 right-3">
-                              <X size={18} />
-                            </button>
-                          </div>
-
-                          <div className="grid grid-cols-12 gap-2 items-end bg-slate-50 p-2 rounded-lg border border-slate-100">
-                            <div className="col-span-5">
-                              <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">
-                                Đơn vị
-                              </label>
-                              <select
-                                value={cartItem.variantId}
-                                onChange={(e) =>
-                                  handleUpdateDisposeCart(
-                                    cartItem.cartItemId,
-                                    "variantId",
-                                    e.target.value,
-                                  )
-                                }
-                                className="w-full text-xs p-1.5 border border-slate-200 rounded outline-none bg-white">
-                                <option value="">- Chọn -</option>
-                                {variantList.map((v) => (
-                                  <option key={v._id} value={v._id}>
-                                    {v.unit} (x{v.conversionRate})
-                                  </option>
-                                ))}
-                              </select>
-                            </div>
-                            <div className="col-span-3">
-                              <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">
-                                Số lượng
-                              </label>
-                              <input
-                                type="number"
-                                min="1"
-                                value={cartItem.quantity}
-                                onChange={(e) =>
-                                  handleUpdateDisposeCart(
-                                    cartItem.cartItemId,
-                                    "quantity",
-                                    e.target.value,
-                                  )
-                                }
-                                className={`w-full text-xs p-1.5 border rounded outline-none text-center font-bold ${isOverLimit ? "border-red-500 text-red-600 bg-red-50" : "border-slate-200 text-slate-800 bg-white"}`}
-                              />
-                            </div>
-                            <div className="col-span-4">
-                              <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">
-                                Lý do hủy
-                              </label>
-                              <select
-                                value={cartItem.reason}
-                                onChange={(e) =>
-                                  handleUpdateDisposeCart(
-                                    cartItem.cartItemId,
-                                    "reason",
-                                    e.target.value,
-                                  )
-                                }
-                                className="w-full text-xs p-1.5 border border-slate-200 rounded outline-none bg-white text-red-600 font-semibold">
-                                <option value="EXPIRED">
-                                  Cận Date/Hết hạn
-                                </option>
-                                <option value="DAMAGED">Hư hỏng/Lỗi</option>
-                              </select>
+                          key={inv.medicineId._id}
+                          className="bg-white border border-slate-100 rounded-xl p-3 shadow-sm hover:border-sky-500 hover:shadow-md transition-all duration-200">
+                          <div className="flex justify-between items-start mb-2">
+                            <div className="pr-2">
+                              <span className="text-[10px] font-bold px-1.5 py-0.5 bg-slate-100 text-slate-600 rounded mr-2">
+                                {inv.medicineId.code}
+                              </span>
+                              <span className="font-bold text-slate-800 text-sm">
+                                {inv.medicineId.name}
+                              </span>
                             </div>
                           </div>
-                          {isOverLimit && (
-                            <p className="text-[10px] text-red-500 mt-2 italic">
-                              * Số lượng quy đổi ({baseQtyDeduct}) vượt quá tồn
-                              kho hiện tại!
-                            </p>
-                          )}
+
+                          <div className="mt-2 pt-2 border-t border-slate-100 space-y-1.5">
+                            {medVariants.length === 0 ? (
+                              <p className="text-[11px] text-amber-500 italic">
+                                Chưa cấu hình đơn vị bán.
+                              </p>
+                            ) : (
+                              medVariants.map((variant) => {
+                                const variantQty = Math.floor(
+                                  inv.totalQuantity /
+                                    (variant.conversionRate || 1),
+                                );
+                                return (
+                                  <div
+                                    key={variant._id}
+                                    className="flex justify-between items-center bg-slate-50 p-2 rounded-lg border border-slate-100 hover:border-sky-200 transition-colors">
+                                    <div>
+                                      <span className="text-xs font-semibold text-slate-700 block">
+                                        {variant.name}
+                                      </span>
+                                      <span className="text-[10px] text-slate-500">
+                                        Tồn:{" "}
+                                        <span className="font-bold text-sky-600">
+                                          {variantQty}
+                                        </span>{" "}
+                                        {variant.unit}
+                                      </span>
+                                    </div>
+                                    <button
+                                      onClick={() =>
+                                        handleAddToDisposeCart(
+                                          inv.medicineId,
+                                          inv,
+                                          variant,
+                                        )
+                                      }
+                                      className="flex items-center gap-1 text-[11px] font-bold bg-sky-50 text-sky-600 px-2.5 py-1.5 rounded-md hover:bg-sky-600 hover:text-white transition-colors border border-sky-100 hover:border-sky-600">
+                                      <Plus size={12} strokeWidth={3} /> Chọn
+                                    </button>
+                                  </div>
+                                );
+                              })
+                            )}
+                          </div>
                         </div>
                       );
                     })
                   )}
                 </div>
+              </div>
 
-                <div className="p-4 border-t border-slate-200 bg-white shrink-0 flex flex-col gap-3">
-                  <div className="flex justify-between items-center bg-slate-50 border border-slate-200 p-3 rounded-xl">
-                    <span className="text-sm font-bold text-slate-700">
-                      Tổng giá trị tổn thất ước tính:
+              {/* === CỘT PHẢI: GIỎ HÀNG XUẤT HỦY === */}
+              <div className="flex-1 flex flex-col bg-slate-50 overflow-hidden">
+                <div className="p-4 border-b border-slate-200 bg-white shrink-0 flex flex-col gap-3">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-2">
+                      <Layers size={16} className="text-sky-600" />
+                      <span className="text-sm font-bold text-slate-700">
+                        Chi tiết xuất hủy ({disposeCart.length})
+                      </span>
+                    </div>
+                    {disposeCart.length > 0 && (
+                      <button
+                        onClick={() => setDisposeCart([])}
+                        className="text-xs font-bold text-rose-500 hover:text-rose-700 flex items-center gap-1 px-2 py-1 rounded hover:bg-rose-50 transition-colors">
+                        <Trash2 size={14} /> Xóa tất cả
+                      </button>
+                    )}
+                  </div>
+
+                  {/* THÔNG TIN PHIẾU HỦY */}
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs bg-slate-50 p-2.5 rounded-lg border border-slate-100">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-slate-400 font-medium flex items-center gap-1">
+                        <CalendarDays size={13} /> Ngày lập:
+                      </span>
+                      <span className="font-bold text-slate-700">
+                        {new Date().toLocaleDateString("vi-VN")}
+                      </span>
+                    </div>
+                    <div className="w-px h-3 bg-slate-300 hidden md:block"></div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-slate-400 font-medium flex items-center gap-1">
+                        <User size={13} /> Người lập:
+                      </span>
+                      <span className="font-bold text-slate-700">
+                        {user?.fullName || "Hệ thống"}
+                      </span>
+                    </div>
+                    <div className="w-px h-3 bg-slate-300 hidden md:block"></div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-slate-400 font-medium flex items-center gap-1">
+                        <Store size={13} /> Chi nhánh lập:
+                      </span>
+                      <span className="font-bold text-slate-700">
+                        {branches.find((b) => b.type === "warehouse")?.name ||
+                          "Kho Tổng"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex-1 overflow-y-auto scrollbar-thin p-4">
+                  {disposeCart.length === 0 ? (
+                    <div className="h-full flex flex-col items-center justify-center text-slate-400 space-y-2 py-10">
+                      <Tag size={40} className="text-slate-200" />
+                      <p className="text-sm font-medium text-slate-500">
+                        Chưa có sản phẩm nào trong phiếu hủy.
+                      </p>
+                      <p className="text-xs text-slate-400">
+                        Chọn quy cách thuốc ở danh sách bên trái để thêm vào
+                        phiếu.
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col gap-3">
+                      {disposeCart.map((cartItem, index) => {
+                        // Lấy các lô đang có sẵn (tồn > 0)
+                        const availableBatches =
+                          cartItem.inventory.batches.filter(
+                            (b) => b.quantity > 0,
+                          );
+
+                        // Lấy ra quy cách được chọn
+                        const selectedVariant = cartItem.variant;
+
+                        // Tính toán số lượng tồn tối đa của lô đang chọn quy theo biến thể
+                        let maxQtyForSelectedBatch = 0;
+                        let itemLossValue = 0;
+                        let selectedBatchObj = null;
+
+                        if (cartItem.batchId) {
+                          selectedBatchObj = availableBatches.find(
+                            (b) => b._id === cartItem.batchId,
+                          );
+                          if (selectedBatchObj) {
+                            maxQtyForSelectedBatch = Math.floor(
+                              selectedBatchObj.quantity /
+                                selectedVariant.conversionRate,
+                            );
+                            const baseQty =
+                              cartItem.quantity *
+                              selectedVariant.conversionRate;
+                            itemLossValue =
+                              baseQty * (selectedBatchObj.importPrice || 0);
+                          }
+                        }
+
+                        const isOverLimit =
+                          maxQtyForSelectedBatch > 0 &&
+                          cartItem.quantity > maxQtyForSelectedBatch;
+
+                        // Hiển thị trạng thái lô thuốc được chọn
+                        let batchStatusBadge = null;
+                        if (selectedBatchObj) {
+                          const status = getExpiryStatus(
+                            selectedBatchObj.quality === "GOOD"
+                              ? selectedBatchObj.expiryDate
+                              : selectedBatchObj.quality,
+                          );
+                          batchStatusBadge = (
+                            <span
+                              className={`mt-1.5 inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold rounded-full border ${status.color}`}>
+                              Trạng thái lô: {status.label}
+                            </span>
+                          );
+                        }
+
+                        return (
+                          <div
+                            key={cartItem.cartItemId}
+                            className={`bg-white border ${isOverLimit ? "border-red-400" : "border-slate-200"} rounded-xl p-3 shadow-sm hover:border-sky-300 transition-colors`}>
+                            <div className="flex justify-between items-start mb-3 border-b border-slate-100 pb-2">
+                              <div>
+                                <p className="font-bold text-slate-800 text-sm">
+                                  {selectedVariant.name}
+                                </p>
+                                <p className="text-xs text-slate-500 mt-0.5">
+                                  Mã: {cartItem.medicine.code} | ĐV:{" "}
+                                  {selectedVariant.unit}
+                                </p>
+                                {batchStatusBadge}
+                              </div>
+                              <button
+                                onClick={() =>
+                                  setDisposeCart(
+                                    disposeCart.filter(
+                                      (i) =>
+                                        i.cartItemId !== cartItem.cartItemId,
+                                    ),
+                                  )
+                                }
+                                className="text-slate-400 hover:text-rose-500 hover:bg-rose-50 p-1.5 rounded-lg transition-colors">
+                                <X size={16} />
+                              </button>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-4 gap-3 items-end">
+                              {/* Chọn Lô */}
+                              <div className="md:col-span-1">
+                                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">
+                                  Chọn Lô Hủy{" "}
+                                  <span className="text-red-500">*</span>
+                                </label>
+                                <select
+                                  value={cartItem.batchId}
+                                  onChange={(e) =>
+                                    handleUpdateDisposeCart(
+                                      cartItem.cartItemId,
+                                      "batchId",
+                                      e.target.value,
+                                    )
+                                  }
+                                  className={inputBase}>
+                                  <option value="">-- Chọn lô --</option>
+                                  {availableBatches.map((b) => {
+                                    const batchVariantQty = Math.floor(
+                                      b.quantity /
+                                        selectedVariant.conversionRate,
+                                    );
+                                    let statusText = "";
+                                    if (b.quality !== "GOOD")
+                                      statusText = `(${b.quality})`;
+                                    else if (
+                                      new Date(b.expiryDate) < new Date()
+                                    )
+                                      statusText = "(Hết hạn)";
+
+                                    return (
+                                      <option key={b._id} value={b._id}>
+                                        {b.batchCode} - Tồn: {batchVariantQty}{" "}
+                                        {statusText}
+                                      </option>
+                                    );
+                                  })}
+                                </select>
+                              </div>
+
+                              {/* Số lượng */}
+                              <div className="md:col-span-1">
+                                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">
+                                  Số Lượng{" "}
+                                  <span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                  type="number"
+                                  min="1"
+                                  max={maxQtyForSelectedBatch || undefined}
+                                  value={cartItem.quantity}
+                                  onChange={(e) =>
+                                    handleUpdateDisposeCart(
+                                      cartItem.cartItemId,
+                                      "quantity",
+                                      parseInt(e.target.value) || 1,
+                                    )
+                                  }
+                                  className={`${inputBase} text-center font-extrabold text-sky-600 ${isOverLimit ? "text-red-600 border-red-500 bg-red-50" : ""}`}
+                                />
+                                {isOverLimit && (
+                                  <p className="text-[10px] text-red-500 mt-1 absolute">
+                                    Vượt số tồn lô!
+                                  </p>
+                                )}
+                              </div>
+
+                              {/* Lý do */}
+                              <div className="md:col-span-1">
+                                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">
+                                  Lý do hủy{" "}
+                                  <span className="text-red-500">*</span>
+                                </label>
+                                <select
+                                  value={cartItem.reason}
+                                  onChange={(e) =>
+                                    handleUpdateDisposeCart(
+                                      cartItem.cartItemId,
+                                      "reason",
+                                      e.target.value,
+                                    )
+                                  }
+                                  className={`${inputBase} text-rose-600 font-bold`}>
+                                  <option value="EXPIRED">
+                                    Cận Date / Hết hạn
+                                  </option>
+                                  <option value="DAMAGED">Hư hỏng / Lỗi</option>
+                                </select>
+                              </div>
+
+                              {/* Giá trị tổn thất */}
+                              <div className="md:col-span-1 text-right">
+                                <label className="block text-[10px] font-bold text-rose-500 uppercase tracking-wide mb-1">
+                                  Tổn thất ước tính
+                                </label>
+                                <div className="text-sm font-bold text-slate-600 px-2 py-2 bg-slate-50 rounded-lg border border-slate-100">
+                                  {itemLossValue.toLocaleString()} đ
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+
+                {/* Footer Chốt phiếu */}
+                <div className="px-6 py-4 border-t border-slate-100 bg-slate-50 flex flex-col sm:flex-row justify-between items-center gap-4 shrink-0">
+                  <div className="flex items-center gap-3 bg-white px-4 py-2.5 rounded-xl border border-slate-200 shadow-sm">
+                    <span className="text-sm text-slate-600 font-bold uppercase tracking-wide">
+                      Tổng tổn thất:
                     </span>
-                    <span className="text-xl font-black text-red-500">
-                      {totalDisposalLossValue.toLocaleString()} đ
+                    <span className="text-xl font-black text-rose-600 tracking-tight">
+                      {totalDisposalLossValue.toLocaleString()}{" "}
+                      <span className="text-sm font-bold ml-0.5 text-rose-500">
+                        đ
+                      </span>
                     </span>
                   </div>
 
                   <button
                     onClick={handleSubmitDisposal}
                     disabled={isSubmittingDispose || disposeCart.length === 0}
-                    className="w-full text-white px-6 py-3 rounded-xl font-bold flex justify-center items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg transition-all active:scale-95 hover:-translate-y-0.5"
+                    className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3 text-white rounded-xl text-sm font-bold transition-all hover:-translate-y-0.5 tracking-wide shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
                     style={{
                       background:
-                        "linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)",
-                      boxShadow: "0 4px 14px rgba(14, 165, 233, 0.3)",
+                        disposeCart.length > 0
+                          ? "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)"
+                          : "#94a3b8",
+                      boxShadow:
+                        disposeCart.length > 0
+                          ? "0 4px 14px rgba(220, 38, 38, 0.3)"
+                          : "none",
                     }}>
                     {isSubmittingDispose ? (
                       <Loader2 size={18} className="animate-spin" />
                     ) : (
                       <Trash2 size={18} />
                     )}
-                    Chốt Xuất Hủy & Ghi Nhận Chi Phí
+                    Chốt Hủy Hàng
                   </button>
                 </div>
               </div>

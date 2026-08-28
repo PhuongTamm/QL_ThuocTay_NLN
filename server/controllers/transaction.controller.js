@@ -567,38 +567,99 @@ exports.sellAtBranch = async (req, res) => {
           new Date(a.expiryDate).getTime() - new Date(b.expiryDate).getTime(),
       );
 
-      let remainingBaseQtyToDeduct = baseQtyToDeduct;
+      let remainQty = baseQtyToDeduct;
+      const convRate = variant.conversionRate;
 
-      // === 4. VÒNG LẶP TRỪ KHO CHỈ CHẠY TRÊN validBatches ===
-      for (let batch of validBatches) {
-        if (remainingBaseQtyToDeduct <= 0) break;
+      // === 4. THUẬT TOÁN 2-PASS: TRÁNH CHIA LẺ ĐƠN VỊ BÁN KHI BÁN LẺ ===
 
-        const deductAmount = Math.min(batch.quantity, remainingBaseQtyToDeduct);
+      // PASS 1: Cố gắng lấy "Chẵn đơn vị" (Bội số của tỷ lệ quy đổi) từ các lô
+      let remainFull = Math.floor(remainQty / convRate) * convRate;
 
-        // Trừ kho (Bản chất validBatches là tham chiếu đến inventory.batches nên save() vẫn hoạt động đúng)
-        batch.quantity -= deductAmount;
+      for (let i = 0; i < validBatches.length; i++) {
+        if (remainFull <= 0) break;
+        let batch = validBatches[i];
 
-        remainingBaseQtyToDeduct -= deductAmount;
-        inventory.totalQuantity -= deductAmount; // Vẫn phải trừ tổng kho gốc
+        // Tìm số lượng chẵn tối đa có thể lấy từ lô này
+        let maxMultiple = Math.floor(batch.quantity / convRate) * convRate;
 
-        // Ghi vào hóa đơn
-        const variantQtyDeducted = deductAmount / variant.conversionRate;
+        if (maxMultiple > 0) {
+          let takeFull = Math.min(maxMultiple, remainFull);
+          if (takeFull > 0) {
+            batch.quantity -= takeFull;
+            remainQty -= takeFull;
+            remainFull -= takeFull;
+            inventory.totalQuantity -= takeFull; // Trừ tổng kho gốc
 
-        // TÍNH GIÁ VỐN CỦA QUY CÁCH NÀY DỰA TRÊN LÔ ĐANG XUẤT (FEFO)
-        const costPriceOfVariant = batch.importPrice * variant.conversionRate;
+            await updateMonthlyReport(
+              branchId,
+              variant.medicineId,
+              takeFull,
+              "EXPORT",
+            );
 
-        transactionDetails.push({
-          variantId: item.variantId,
-          batchCode: batch.batchCode,
-          manufacturingDate: batch.manufacturingDate,
-          expiryDate: batch.expiryDate,
-          quantity: variantQtyDeducted,
-          price: item.price, // Giá bán lẻ (Doanh thu)
-          costPrice: costPriceOfVariant, // Giá vốn thực tế lô đó (Chi phí), Ghi nhận giá vốn để tính lãi lỗ
-        });
+            const variantQtyDeducted = takeFull / convRate;
+            const costPriceOfVariant = batch.importPrice * convRate;
+
+            transactionDetails.push({
+              variantId: item.variantId,
+              batchCode: batch.batchCode,
+              manufacturingDate: batch.manufacturingDate,
+              expiryDate: batch.expiryDate,
+              quantity: variantQtyDeducted, // Ghi nhận số lượng bán (ví dụ: 1 hộp)
+              price: item.price, // Giá bán lẻ (Doanh thu)
+              costPrice: costPriceOfVariant, // Giá vốn thực tế lô đó
+            });
+          }
+        }
       }
 
-      if (remainingBaseQtyToDeduct > 0) {
+      // PASS 2: Nếu vẫn còn thiếu (do khách mua lẻ viên, hoặc các lô cộng lại bị lẻ), lấy nốt phần dư
+      if (remainQty > 0) {
+        for (let i = 0; i < validBatches.length; i++) {
+          if (remainQty <= 0) break;
+          let batch = validBatches[i];
+
+          if (batch.quantity > 0) {
+            let take = Math.min(batch.quantity, remainQty);
+            batch.quantity -= take;
+            remainQty -= take;
+            inventory.totalQuantity -= take; // Trừ tổng kho gốc
+
+            await updateMonthlyReport(
+              branchId,
+              variant.medicineId,
+              take,
+              "EXPORT",
+            );
+
+            const variantQtyDeducted = take / convRate;
+            const costPriceOfVariant = batch.importPrice * convRate;
+
+            // Kiểm tra xem lô này đã được ghi nhận ở Pass 1 chưa, nếu có thì cộng dồn tránh tách 2 dòng trùng nhau
+            const existingDetail = transactionDetails.find(
+              (d) =>
+                d.batchCode === batch.batchCode &&
+                d.variantId.toString() === item.variantId.toString(),
+            );
+
+            if (existingDetail) {
+              existingDetail.quantity += variantQtyDeducted;
+            } else {
+              transactionDetails.push({
+                variantId: item.variantId,
+                batchCode: batch.batchCode,
+                manufacturingDate: batch.manufacturingDate,
+                expiryDate: batch.expiryDate,
+                quantity: variantQtyDeducted, // Có thể ra số thập phân (lẻ viên) ở đây
+                price: item.price,
+                costPrice: costPriceOfVariant,
+              });
+            }
+          }
+        }
+      }
+
+      if (remainQty > 0) {
         throw new Error(`Lỗi trừ kho: Các lô hiện tại không đủ để xuất!`);
       }
 

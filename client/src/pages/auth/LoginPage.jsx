@@ -43,11 +43,11 @@ const LoginPage = () => {
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 md:p-8 font-sans">
       {/* Khung chứa chính dạng Split-card chuyên nghiệp */}
       <div className="max-w-5xl w-full bg-white rounded-[2rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] overflow-hidden flex flex-col md:flex-row min-h-[600px]">
-        {/* ─── PHẦN BÊN TRÁI: Branding & Decor (Màu chủ đạo #1d5fa7) ─── */}
-        <div className="md:w-5/12 bg-gradient-to-br from-[#1d5fa7] to-[#12427a] p-10 lg:p-12 text-white flex flex-col justify-between relative overflow-hidden hidden md:flex">
+        {/* ─── PHẦN BÊN TRÁI: Branding & Decor (Đồng bộ màu Sidebar) ─── */}
+        <div className="md:w-5/12 bg-gradient-to-br from-[#1068ec] to-[#51b2db] p-10 lg:p-12 text-white flex flex-col justify-between relative overflow-hidden hidden md:flex">
           {/* Họa tiết nền mờ */}
-          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-white opacity-5 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-[#4ca1ff] opacity-10 rounded-full blur-3xl"></div>
+          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-white opacity-10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-white opacity-5 rounded-full blur-3xl"></div>
 
           <div className="relative z-10">
             <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center mb-8 border border-white/20 shadow-inner">
@@ -56,18 +56,18 @@ const LoginPage = () => {
             <h2 className="text-4xl font-black tracking-tight mb-4 leading-tight">
               PharmaSys
             </h2>
-            <p className="text-white/80 text-lg font-medium leading-relaxed max-w-sm">
+            <p className="text-white/90 text-lg font-medium leading-relaxed max-w-sm">
               Hệ thống quản lý nhà thuốc toàn diện. Tối ưu vận hành, kiểm soát
               chặt chẽ.
             </p>
           </div>
 
           <div className="relative z-10 mt-12">
-            <div className="flex items-center gap-3 text-sm font-semibold text-white/90 bg-white/10 w-fit px-4 py-2.5 rounded-full backdrop-blur-sm border border-white/10">
+            <div className="flex items-center gap-3 text-sm font-semibold text-white/90 bg-white/10 w-fit px-4 py-2.5 rounded-full backdrop-blur-sm border border-white/10 shadow-sm">
               <ShieldCheck size={18} className="text-emerald-300" />
               <span>Bảo mật dữ liệu cấp y tế</span>
             </div>
-            <p className="text-white/50 text-xs font-medium mt-6">
+            <p className="text-white/60 text-xs font-medium mt-6">
               © {new Date().getFullYear()} Pharmacy Management System.
             </p>
           </div>
@@ -77,7 +77,7 @@ const LoginPage = () => {
         <div className="md:w-7/12 p-8 sm:p-12 lg:p-16 flex flex-col justify-center relative bg-white">
           {/* Logo hiển thị trên mobile (ẩn trên PC) */}
           <div className="md:hidden flex items-center gap-3 mb-8">
-            <div className="w-12 h-12 bg-[#1d5fa7] rounded-xl flex items-center justify-center shadow-lg shadow-[#1d5fa7]/30">
+            <div className="w-12 h-12 bg-gradient-to-br from-[#1068ec] to-[#51b2db] rounded-xl flex items-center justify-center shadow-lg shadow-[#1068ec]/30">
               <HeartPulse size={24} className="text-white" strokeWidth={2.5} />
             </div>
             <h2 className="text-2xl font-black text-slate-800 tracking-tight">
@@ -115,13 +115,13 @@ const LoginPage = () => {
                 </label>
                 <div className="relative group">
                   <User
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#1d5fa7] transition-colors"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#1068ec] transition-colors"
                     size={20}
                   />
                   <input
                     type="email"
                     required
-                    className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-4 focus:ring-[#1d5fa7]/10 focus:border-[#1d5fa7] outline-none transition-all font-medium text-slate-800 placeholder:text-slate-400"
+                    className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-4 focus:ring-[#1068ec]/10 focus:border-[#1068ec] outline-none transition-all font-medium text-slate-800 placeholder:text-slate-400"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="admin@pharmacy.com"
@@ -136,13 +136,13 @@ const LoginPage = () => {
                 </label>
                 <div className="relative group">
                   <Lock
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#1d5fa7] transition-colors"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#1068ec] transition-colors"
                     size={20}
                   />
                   <input
                     type="password"
                     required
-                    className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-4 focus:ring-[#1d5fa7]/10 focus:border-[#1d5fa7] outline-none transition-all font-medium text-slate-800 placeholder:text-slate-400"
+                    className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-4 focus:ring-[#1068ec]/10 focus:border-[#1068ec] outline-none transition-all font-medium text-slate-800 placeholder:text-slate-400"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
@@ -151,20 +151,11 @@ const LoginPage = () => {
               </div>
             </div>
 
-            {/* Quên mật khẩu (UI Placeholder) */}
-            <div className="flex justify-end mt-2">
-              <a
-                href="#"
-                className="text-sm font-bold text-[#1d5fa7] hover:text-[#12427a] transition-colors">
-                Quên mật khẩu?
-              </a>
-            </div>
-
             {/* Nút Đăng nhập */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#1d5fa7] text-white py-4 rounded-xl font-bold text-base hover:bg-[#154a85] hover:shadow-lg hover:shadow-[#1d5fa7]/30 transition-all flex justify-center items-center gap-2 mt-6 active:scale-[0.98] disabled:opacity-70 disabled:pointer-events-none">
+              className="w-full bg-[#3286d4] text-white py-4 rounded-xl font-bold text-base hover:bg-[#0d56c2] hover:shadow-lg hover:shadow-[#1068ec]/30 transition-all flex justify-center items-center gap-2 mt-6 active:scale-[0.98] disabled:opacity-70 disabled:pointer-events-none">
               {loading ? (
                 <>
                   <Loader className="animate-spin" size={20} />

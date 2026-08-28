@@ -198,7 +198,7 @@ const AddMedicine = () => {
 
               <div>
                 <label className={labelCls}>
-                  Danh mục thuốc <span className="text-red-500">*</span>
+                  Nhóm thuốc <span className="text-red-500">*</span>
                 </label>
                 <select
                   name="categoryId"
