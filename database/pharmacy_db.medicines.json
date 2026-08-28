@@ -1,0 +1,1123 @@
+[{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03608"
+  },
+  "code": "A0001",
+  "name": "Ausmuco 750V",
+  "categoryId": {
+    "$oid": "6981f8a706a08b227fa7ee0f"
+  },
+  "isPrescription": true,
+  "manufacturer": "DHT",
+  "ingredients": "Carbocistein 750mg",
+  "description": "Điều trị hỗ trợ trong bệnh lý hô hấp có tăng tiết nhầy.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776239181/pharmacy-medicines/u1dfnbqtysobximzfmjc.webp",
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776239181/pharmacy-medicines/ohib0gbcliu2dacw46cf.webp",
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776239183/pharmacy-medicines/euzkn6m5h0vy5c0cnqjn.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.306Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-31T12:50:13.171Z"
+  },
+  "__v": 0,
+  "mac": 2500
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03613"
+  },
+  "code": "H0001",
+  "name": "Halixol 30mg",
+  "categoryId": {
+    "$oid": "6981f8a706a08b227fa7ee0f"
+  },
+  "isPrescription": false,
+  "manufacturer": "Egis",
+  "ingredients": "Ambroxol hydrochloride 30mg",
+  "description": "Điều trị tắc nghẽn đường hô hấp, hòa tan dịch nhầy.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776238629/pharmacy-medicines/pfhipjuu90wqtcr8dfjr.webp",
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776238629/pharmacy-medicines/mdqiawl9j2xa2ws6gzq5.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.317Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-15T07:37:09.806Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03621"
+  },
+  "code": "B0001",
+  "name": "Bisolvon 8mg",
+  "categoryId": {
+    "$oid": "6981f8a706a08b227fa7ee0f"
+  },
+  "isPrescription": false,
+  "manufacturer": "Sanofi",
+  "ingredients": "Bromhexin hydrochloride 8mg",
+  "description": "Loãng đờm trong bệnh phế quản phổi.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776238361/pharmacy-medicines/en5sazkjqse6ecdaptrf.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.323Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-31T12:50:18.262Z"
+  },
+  "__v": 0,
+  "mac": 1833.3333333333333
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c0362c"
+  },
+  "code": "V0001",
+  "name": "Viên ngậm Difflam",
+  "categoryId": {
+    "$oid": "6981f8a706a08b227fa7ee0f"
+  },
+  "isPrescription": false,
+  "manufacturer": "iNova",
+  "ingredients": "Benzydamine hydrochloride",
+  "description": "Viên ngậm kháng viêm vị quả mâm xôi giảm đau họng.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776238191/pharmacy-medicines/vbsdgym3onxtrikpzp8q.webp",
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776238191/pharmacy-medicines/uc6ozc31htidnvuw5nyt.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.331Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-15T07:29:51.768Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03637"
+  },
+  "code": "F0001",
+  "name": "Fluimucil 600mg",
+  "categoryId": {
+    "$oid": "6981f8a706a08b227fa7ee0f"
+  },
+  "isPrescription": false,
+  "manufacturer": "Zambon",
+  "ingredients": "Acetylcysteine 600mg",
+  "description": "Viên nén sủi giúp tiêu chất nhầy.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776237596/pharmacy-medicines/foab0olmt4eil9d1jgmz.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.336Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-15T07:19:56.633Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03642"
+  },
+  "code": "S0001",
+  "name": "SaVi Alvic",
+  "categoryId": {
+    "$oid": "6981f89606a08b227fa7ee06"
+  },
+  "isPrescription": false,
+  "manufacturer": "Savipharm",
+  "ingredients": "Paracetamol + Ibuprofen",
+  "description": "Giảm đau, hạ sốt, kháng viêm.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776237456/pharmacy-medicines/oqk0yqjipfngg9sbc7sc.webp",
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776237455/pharmacy-medicines/lrabhdszagtcbo5mhljx.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.342Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-15T07:17:36.466Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03650"
+  },
+  "code": "D0001",
+  "name": "Dolfenal 500mg",
+  "categoryId": {
+    "$oid": "6981f89606a08b227fa7ee06"
+  },
+  "isPrescription": false,
+  "manufacturer": "United International Pharma",
+  "ingredients": "Axit mefenamic 500mg",
+  "description": "Trị cơn đau nhẹ đến trung bình.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776237405/pharmacy-medicines/xnv70znxsbszxrloqtwd.webp",
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776237405/pharmacy-medicines/trlvt2mdhm4bnoukjek0.webp",
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776237405/pharmacy-medicines/evhztprlwhrnuyoosmti.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.349Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-31T13:06:19.791Z"
+  },
+  "__v": 0,
+  "mac": 1300
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c0365e"
+  },
+  "code": "E0001",
+  "name": "Effer-Paralmax 325",
+  "categoryId": {
+    "$oid": "6981f89606a08b227fa7ee06"
+  },
+  "isPrescription": false,
+  "manufacturer": "Boston",
+  "ingredients": "Paracetamol 325mg",
+  "description": "Viên sủi giảm đau, hạ sốt.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776237340/pharmacy-medicines/ku2k5ciqfs39lehyo2ff.webp",
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776237339/pharmacy-medicines/rywyijfjp9jq1tgi3s0l.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.354Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-31T13:06:23.306Z"
+  },
+  "__v": 0,
+  "mac": 2100
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03669"
+  },
+  "code": "P0001",
+  "name": "Panadol Extra",
+  "categoryId": {
+    "$oid": "6981f89606a08b227fa7ee06"
+  },
+  "isPrescription": false,
+  "manufacturer": "GSK",
+  "ingredients": "Paracetamol 500mg, Caffeine 65mg",
+  "description": "Giảm đau, hạ sốt.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776236898/pharmacy-medicines/oyzfegmwfnwlwntzzdfr.webp",
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776236898/pharmacy-medicines/a6yf5erlqvdwjgeng6gb.webp",
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776236898/pharmacy-medicines/yjhizonjtqaqjovpgl9l.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.360Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-31T13:06:22.742Z"
+  },
+  "__v": 0,
+  "mac": 1222.2222222222222
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03674"
+  },
+  "code": "P0002",
+  "name": "Paralmax 650 Sủi",
+  "categoryId": {
+    "$oid": "6981f89606a08b227fa7ee06"
+  },
+  "isPrescription": false,
+  "manufacturer": "Boston",
+  "ingredients": "Paracetamol 650mg",
+  "description": "Viên sủi giảm đau, hạ sốt từ nhẹ đến vừa.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776236817/pharmacy-medicines/qtsd2paunogyeyn1olhq.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.367Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-31T13:06:22.192Z"
+  },
+  "__v": 0,
+  "mac": 2250
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03682"
+  },
+  "code": "S0002",
+  "name": "Spamerin 135mg",
+  "categoryId": {
+    "$oid": "6981f89d06a08b227fa7ee09"
+  },
+  "isPrescription": true,
+  "manufacturer": "Abbott",
+  "ingredients": "Alverine citrate 135mg",
+  "description": "Trị các triệu chứng của hội chứng ruột kích thích.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776236732/pharmacy-medicines/krx4cpcrwtgtlwb7oqfn.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.373Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-15T07:05:33.034Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03690"
+  },
+  "code": "B0002",
+  "name": "Biolac 500mg",
+  "categoryId": {
+    "$oid": "6981f89d06a08b227fa7ee09"
+  },
+  "isPrescription": false,
+  "manufacturer": "Biopharma",
+  "ingredients": "Men vi sinh sống",
+  "description": "Bổ sung vi sinh, trị tiêu chảy và táo bón.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776236687/pharmacy-medicines/esff2ntnbnovwezbueyd.webp",
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776236687/pharmacy-medicines/xqcbqpnjdp0ahhyhy6fv.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.381Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-15T07:04:48.126Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c0369b"
+  },
+  "code": "B0003",
+  "name": "Buscopan 10mg",
+  "categoryId": {
+    "$oid": "6981f89d06a08b227fa7ee09"
+  },
+  "isPrescription": false,
+  "manufacturer": "Sanofi",
+  "ingredients": "Hyoscine butylbromide 10mg",
+  "description": "Trị co thắt đường tiêu hoá, sinh dục - tiết niệu.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776236635/pharmacy-medicines/wypjecoia6tv08w0nt0z.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.386Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-15T07:03:55.645Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c036a6"
+  },
+  "code": "V0002",
+  "name": "Viên nhai Kremil-S",
+  "categoryId": {
+    "$oid": "6981f89d06a08b227fa7ee09"
+  },
+  "isPrescription": false,
+  "manufacturer": "United International Pharma",
+  "ingredients": "Aluminium hydroxide, Magnesium",
+  "description": "Làm dịu các triệu chứng đầy hơi, đau dạ dày.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776236612/pharmacy-medicines/qlvj1jr7jkqm2zgyezed.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.393Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-15T07:03:33.082Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c036b1"
+  },
+  "code": "L0001",
+  "name": "Lopradium 2mg",
+  "categoryId": {
+    "$oid": "6981f89d06a08b227fa7ee09"
+  },
+  "isPrescription": false,
+  "manufacturer": "Imexpharm",
+  "ingredients": "Loperamid 2mg",
+  "description": "Đặc trị tiêu chảy cấp.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776236529/pharmacy-medicines/saiyckayll9saq50pr2u.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.399Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-15T07:02:10.191Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c036bf"
+  },
+  "code": "S0003",
+  "name": "Shikamic 50mg",
+  "categoryId": {
+    "$oid": "6981f8a206a08b227fa7ee0c"
+  },
+  "isPrescription": true,
+  "manufacturer": "Hasan",
+  "ingredients": "Trimetazidine 50mg",
+  "description": "Hỗ trợ điều trị suy tim, phòng ngừa độc tính trên tim.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776236487/pharmacy-medicines/jaf52ylc6kmovydw1pb0.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.405Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-15T07:01:28.028Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c036ca"
+  },
+  "code": "C0001",
+  "name": "Cardioton",
+  "categoryId": {
+    "$oid": "6981f8a206a08b227fa7ee0c"
+  },
+  "isPrescription": false,
+  "manufacturer": "Agimexpharm",
+  "ingredients": "Vitamin, khoáng chất",
+  "description": "Hỗ trợ chức năng tim mạch và giúp hệ tim mạch khỏe mạnh.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776236451/pharmacy-medicines/jellwin1dnv0nbdymksc.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.411Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-15T07:00:52.869Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c036d5"
+  },
+  "code": "Z0001",
+  "name": "ZY-10 Forte 100mg",
+  "categoryId": {
+    "$oid": "6981f8a206a08b227fa7ee0c"
+  },
+  "isPrescription": false,
+  "manufacturer": "ZY",
+  "ingredients": "Coenzyme Q10 100mg",
+  "description": "Trị bệnh tim mạch, bổ sung năng lượng cho tim.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776236389/pharmacy-medicines/huqs6cjkggviubcgi2pc.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.416Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-15T06:59:50.206Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c036e0"
+  },
+  "code": "T0001",
+  "name": "Ticonet 30mg",
+  "categoryId": {
+    "$oid": "6981f8a206a08b227fa7ee0c"
+  },
+  "isPrescription": false,
+  "manufacturer": "Dược Hậu Giang",
+  "ingredients": "Ubidecarenon (Coenzyme Q10) 30mg",
+  "description": "Hỗ trợ duy trì sức khỏe tim mạch.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776236345/pharmacy-medicines/lpwd6kabxzavqa2eztqu.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.421Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-15T06:59:05.806Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c036eb"
+  },
+  "code": "P0003",
+  "name": "Panangin",
+  "categoryId": {
+    "$oid": "6981f8a206a08b227fa7ee0c"
+  },
+  "isPrescription": true,
+  "manufacturer": "Gedeon Richter",
+  "ingredients": "Magnesium aspartate, Potassium aspartate",
+  "description": "Trị suy tim, loạn nhịp.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776225506/pharmacy-medicines/xbu2atoe0fkdgdigh8g7.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.426Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-15T03:58:27.431Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c036f6"
+  },
+  "code": "T0002",
+  "name": "Thuốc Xoang Nhất Nhất",
+  "categoryId": {
+    "$oid": "69c3a38e1bb59ed8c0d4d6bd"
+  },
+  "isPrescription": false,
+  "manufacturer": "Nhất Nhất",
+  "ingredients": "Thảo dược",
+  "description": "Trị viêm xoang, viêm mũi dị ứng.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776225460/pharmacy-medicines/onxfxryncjbd04nbxszx.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.432Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-10T12:19:11.563Z"
+  },
+  "__v": 0,
+  "mac": 3333.3333333333335
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03701"
+  },
+  "code": "H0002",
+  "name": "Hỗn hợp dung dịch uống Oralegic 30mg/5ml",
+  "categoryId": {
+    "$oid": "69c3a38e1bb59ed8c0d4d6bd"
+  },
+  "isPrescription": true,
+  "manufacturer": "Dược Hậu Giang",
+  "ingredients": "Fexofenadine 30mg/5ml",
+  "description": "Điều trị viêm mũi dị ứng theo mùa.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776225343/pharmacy-medicines/r5zkveidsqbv6annrz4i.webp",
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776225349/pharmacy-medicines/rvgh8pcfce9riftbtlgi.webp"
+  ],
+  "baseUnit": "Ống",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.437Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-15T03:55:50.106Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03717"
+  },
+  "code": "T0003",
+  "name": "Telfast HD 180mg",
+  "categoryId": {
+    "$oid": "69c3a38e1bb59ed8c0d4d6bd"
+  },
+  "isPrescription": false,
+  "manufacturer": "Sanofi",
+  "ingredients": "Fexofenadine 180mg",
+  "description": "Trị viêm mũi dị ứng, mề đay vô căn mạn tính.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776224668/pharmacy-medicines/ntvuvu2meu3hiqxcnfgg.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.449Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-10T09:21:31.339Z"
+  },
+  "__v": 0,
+  "mac": 377.77777777777777
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03722"
+  },
+  "code": "A0002",
+  "name": "A.T Fexofenadin 30mg/5ml",
+  "categoryId": {
+    "$oid": "69c3a38e1bb59ed8c0d4d6bd"
+  },
+  "isPrescription": false,
+  "manufacturer": "An Thiên",
+  "ingredients": "Fexofenadin HCl",
+  "description": "Trị viêm mũi dị ứng, mày đay cho trẻ.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776224630/pharmacy-medicines/uqp1zcksbnrm8ghnbilj.webp"
+  ],
+  "baseUnit": "Gói",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.455Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-15T03:43:51.073Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c0372d"
+  },
+  "code": "O0001",
+  "name": "Orlistat RVN 120mg",
+  "categoryId": {
+    "$oid": "6981f8b106a08b227fa7ee12"
+  },
+  "isPrescription": true,
+  "manufacturer": "Merap",
+  "ingredients": "Orlistat 120mg",
+  "description": "Kiểm soát cân nặng, hỗ trợ điều trị béo phì.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776224502/pharmacy-medicines/xjqhc988t4utt5kcu501.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.460Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-05T14:30:32.790Z"
+  },
+  "__v": 0,
+  "mac": 10500
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03738"
+  },
+  "code": "B0004",
+  "name": "Bisbeta 120",
+  "categoryId": {
+    "$oid": "6981f8b106a08b227fa7ee12"
+  },
+  "isPrescription": true,
+  "manufacturer": "SPM",
+  "ingredients": "Orlistat 120mg",
+  "description": "Kiểm soát cân nặng, hỗ trợ trị béo phì.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776224424/pharmacy-medicines/k1x7wvhzlnzqdmigmmdh.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.466Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-15T03:40:25.048Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03743"
+  },
+  "code": "O0002",
+  "name": "Orlistat Stada 120mg",
+  "categoryId": {
+    "$oid": "6981f8b106a08b227fa7ee12"
+  },
+  "isPrescription": true,
+  "manufacturer": "Stada",
+  "ingredients": "Orlistat 120mg",
+  "description": "Kiểm soát cân nặng, hỗ trợ trị béo phì.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776224313/pharmacy-medicines/xk3kla3huc1pvycqu86j.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.471Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-10T17:24:09.892Z"
+  },
+  "__v": 0,
+  "mac": 2142.8571428571427
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c0374e"
+  },
+  "code": "C0002",
+  "name": "Cystine B6 Bailleul",
+  "categoryId": {
+    "$oid": "6981f8b106a08b227fa7ee12"
+  },
+  "isPrescription": false,
+  "manufacturer": "Bailleul",
+  "ingredients": "L-Cystine, Vitamin B6",
+  "description": "Trị bệnh lý liên quan đến tóc, móng (rụng tóc, móng yếu).",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776224225/pharmacy-medicines/fx2skpbxqy7xnyidz15j.webp",
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776224225/pharmacy-medicines/oztleapwspwgfflsyn7p.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.476Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-15T03:37:05.618Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03759"
+  },
+  "code": "D0003",
+  "name": "Dầu cá Omega 3 Healthy Care",
+  "categoryId": {
+    "$oid": "6981f8b106a08b227fa7ee12"
+  },
+  "isPrescription": false,
+  "manufacturer": "Healthy Care",
+  "ingredients": "Fish Oil 1000mg",
+  "description": "Hỗ trợ tim mạch, bổ mắt, làm đẹp da.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776224051/pharmacy-medicines/p1psjneeqf4pcggi8lid.webp",
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776224051/pharmacy-medicines/osyvcealdss6j3jttlkr.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.482Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-05T14:30:31.086Z"
+  },
+  "__v": 0,
+  "mac": 858.3333333333334
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03761"
+  },
+  "code": "A0003",
+  "name": "Amoxicillin 500mg",
+  "categoryId": {
+    "$oid": "6981f88806a08b227fa7ee03"
+  },
+  "isPrescription": true,
+  "manufacturer": "Domesco",
+  "ingredients": "Amoxicillin 500mg",
+  "description": "Kháng sinh nhóm Penicillin.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776223557/pharmacy-medicines/xlz4bsjjquhoh7yntpei.webp",
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776223538/pharmacy-medicines/gqocoqtzjbltoezy5glx.webp",
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776223537/pharmacy-medicines/svsvnp3eoodck70tw0lj.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.485Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-31T12:50:17.706Z"
+  },
+  "__v": 0,
+  "mac": 900
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c0376c"
+  },
+  "code": "A0004",
+  "name": "Augmentin 625mg",
+  "categoryId": {
+    "$oid": "6981f88806a08b227fa7ee03"
+  },
+  "isPrescription": true,
+  "manufacturer": "GSK",
+  "ingredients": "Amoxicillin 500mg, Clavulanate 125mg",
+  "description": "Kháng sinh phổ rộng trị nhiễm khuẩn.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776223398/pharmacy-medicines/ddo7buuso5wdhglxzmyz.webp",
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776223398/pharmacy-medicines/hq2dpw5jtlo8dmddfvzl.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.490Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-15T03:23:19.084Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03777"
+  },
+  "code": "C0003",
+  "name": "Cefuroxim 500mg",
+  "categoryId": {
+    "$oid": "6981f88806a08b227fa7ee03"
+  },
+  "isPrescription": true,
+  "manufacturer": "Dược Hậu Giang",
+  "ingredients": "Cefuroxime 500mg",
+  "description": "Kháng sinh nhóm Cephalosporin.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776223165/pharmacy-medicines/xfjf9engwfpdmtp23n7f.webp",
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776222927/pharmacy-medicines/zmmcsqrdpbneofpbg1bo.webp",
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776222927/pharmacy-medicines/vhoje0sviy4vctljk9x3.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.496Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-31T12:50:19.408Z"
+  },
+  "__v": 0,
+  "mac": 2000
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03782"
+  },
+  "code": "A0005",
+  "name": "Azithromycin 250mg",
+  "categoryId": {
+    "$oid": "6981f88806a08b227fa7ee03"
+  },
+  "isPrescription": true,
+  "manufacturer": "Stella",
+  "ingredients": "Azithromycin 250mg",
+  "description": "Kháng sinh trị nhiễm khuẩn đường hô hấp.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776218425/pharmacy-medicines/gvqkllkjrkrmgw0jz0sf.webp",
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776218426/pharmacy-medicines/cm2xmvvf9ewzvbvph8m6.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.501Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-10T17:27:01.184Z"
+  },
+  "__v": 0,
+  "mac": 4166.666666666667
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c0378d"
+  },
+  "code": "C0004",
+  "name": "Cephalexin 500mg",
+  "categoryId": {
+    "$oid": "6981f88806a08b227fa7ee03"
+  },
+  "isPrescription": true,
+  "manufacturer": "Vidipha",
+  "ingredients": "Cephalexin 500mg",
+  "description": "Kháng sinh điều trị nhiễm khuẩn da, mô mềm.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776218370/pharmacy-medicines/tvn9pxmlj3wg6l3cablr.webp",
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776218370/pharmacy-medicines/jftinqlxcz6nrhckszfv.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.504Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-31T12:50:18.842Z"
+  },
+  "__v": 0,
+  "mac": 1200
+},
+{
+  "_id": {
+    "$oid": "69e5f117a6838d6ef88af399"
+  },
+  "code": "P0004",
+  "name": "Povidine 10% chai 20ml",
+  "categoryId": {
+    "$oid": "69c3a38e1bb59ed8c0d4d6bd"
+  },
+  "isPrescription": false,
+  "manufacturer": " DƯỢC PHẨM DƯỢC LIỆU PHARMEDIC",
+  "ingredients": " Povidon",
+  "description": "\r\nSát khuẩn để giúp ngăn ngừa nhiễm khuẩn ở vết cắt, vết trầy và vết bỏng nhỏ",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776677144/pharmacy-medicines/vz0ctl1oruwt9caed4s6.webp",
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776677143/pharmacy-medicines/aqde27aqhs6nmjededmo.webp"
+  ],
+  "baseUnit": "Chai",
+  "createdAt": {
+    "$date": "2026-04-20T09:25:43.163Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-31T13:06:21.572Z"
+  },
+  "__v": 0,
+  "mac": 4500
+},
+{
+  "_id": {
+    "$oid": "69e5f182a6838d6ef88af48c"
+  },
+  "code": "P0005",
+  "name": "Povidine 10% 90ml",
+  "categoryId": {
+    "$oid": "69c3a38e1bb59ed8c0d4d6bd"
+  },
+  "isPrescription": false,
+  "manufacturer": "DƯỢC PHẨM DƯỢC LIỆU PHARMEDIC",
+  "ingredients": " Povidon",
+  "description": "Sát khuẩn để giúp ngăn ngừa nhiễm khuẩn ở vết cắt, vết trầy và vết bỏng nhỏ\r\n",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776677250/pharmacy-medicines/yx3q0jbl5ojlywa2ujga.webp",
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1776677250/pharmacy-medicines/owxh17m60ngg4kcymkoy.webp"
+  ],
+  "baseUnit": "Chai",
+  "createdAt": {
+    "$date": "2026-04-20T09:27:30.206Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-31T13:06:20.992Z"
+  },
+  "__v": 0,
+  "mac": 15000
+},
+{
+  "_id": {
+    "$oid": "6a0478c2b64c06bcffc1271a"
+  },
+  "code": "A0006",
+  "name": "Atorvastatin Domesco 20mg trị tăng cholesterol máu",
+  "categoryId": {
+    "$oid": "6981f8a206a08b227fa7ee0c"
+  },
+  "isPrescription": true,
+  "manufacturer": " DOMESCO",
+  "ingredients": " Atorvastatin",
+  "description": "Trị tăng cholesterol máu",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1778677954/pharmacy-medicines/dukljurmmoeek2q02dql.webp",
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1778677954/pharmacy-medicines/shntdp8j52eepyie3wbt.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-05-13T13:12:34.015Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-05T14:19:14.054Z"
+  },
+  "__v": 0,
+  "mac": 3750
+},
+{
+  "_id": {
+    "$oid": "6a047a90b64c06bcffc12905"
+  },
+  "code": "E0002",
+  "name": "Equoral 25 mg dự phòng thải ghép sau ghép tạng",
+  "categoryId": {
+    "$oid": "6981f88806a08b227fa7ee03"
+  },
+  "isPrescription": true,
+  "manufacturer": " TEVA CZECH INDUSTRIES S.R.O.",
+  "ingredients": " Ciclosporin",
+  "description": "Phòng ngừa thải ghép ở bệnh nhân đã được điều trị với các thuốc ức chế miễn dịch khác",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1778678417/pharmacy-medicines/cm7nj0215wgf40zziuj9.webp"
+  ],
+  "baseUnit": "Viên",
+  "createdAt": {
+    "$date": "2026-05-13T13:20:16.777Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-05T14:19:14.643Z"
+  },
+  "__v": 0,
+  "mac": 11040.17857142857
+},
+{
+  "_id": {
+    "$oid": "6a798129f56d0821d584b64d"
+  },
+  "code": "A0007",
+  "name": "Ambroxol HCl Tablets 30mg long đờm, tiêu nhầy, trị bệnh đường hô hấp (10 vỉ x 10 viên)",
+  "categoryId": {
+    "$oid": "6981f8a706a08b227fa7ee0f"
+  },
+  "isPrescription": false,
+  "manufacturer": " STANDARD CHEM & PHARM",
+  "ingredients": "Ambroxol HCl 30mg.",
+  "description": "Thuốc long đàm và tiêu chất nhầy, được chỉ định cho các bệnh đường hô hấp cấp tính và mạn tính có kèm tăng tiết phế quản bất thường, đặc biệt trong đợt cấp của viêm phế quản mạn tính, hen phế quản.",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1786347826/pharmacy-medicines/brybzdcq3c8iccnidnbs.webp",
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1786347828/pharmacy-medicines/bdvehqqes2enjf4ubrzd.webp",
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1786347827/pharmacy-medicines/oy5hthtrlgsqa5ymkutf.webp"
+  ],
+  "baseUnit": "Viên",
+  "mac": 1083.3333333333333,
+  "createdAt": {
+    "$date": "2026-08-10T07:43:37.517Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-10T12:14:17.230Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a84982343665d99fe475212"
+  },
+  "code": "T0004",
+  "name": "test",
+  "categoryId": {
+    "$oid": "6981f8a706a08b227fa7ee0f"
+  },
+  "isPrescription": false,
+  "manufacturer": "ABC",
+  "ingredients": "Cao lá thường xuân khô",
+  "description": "trị ho",
+  "images": [],
+  "baseUnit": "Viên",
+  "mac": 1136.3636363636363,
+  "createdAt": {
+    "$date": "2026-08-18T17:36:35.546Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-19T02:32:14.351Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a8499c543665d99fe475a12"
+  },
+  "code": "L0002",
+  "name": "Loperamide Stella 2mg trị tiêu chảy",
+  "categoryId": {
+    "$oid": "6981f89d06a08b227fa7ee09"
+  },
+  "isPrescription": false,
+  "manufacturer": "STELLAPHARM",
+  "ingredients": "Loperamide hydrochloride",
+  "description": "Giảm triệu chứng tiêu chảy cấp không đặc trưng và tiêu chảy mạn do bệnh viêm ruột",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1787075014/pharmacy-medicines/xgqrktxykhpqxjuchmmh.webp"
+  ],
+  "baseUnit": "Viên",
+  "mac": 1039.2730522287302,
+  "createdAt": {
+    "$date": "2026-08-18T17:43:33.848Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-19T02:21:36.577Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a85a94b97b170ded328febe"
+  },
+  "code": "T0005",
+  "name": "Thuốc test 2",
+  "categoryId": {
+    "$oid": "6981f8a706a08b227fa7ee0f"
+  },
+  "isPrescription": true,
+  "manufacturer": "DHG",
+  "ingredients": "Vitamin E 300mg, Vitamin C",
+  "description": "Uống nước",
+  "images": [],
+  "baseUnit": "Viên",
+  "mac": 1150,
+  "createdAt": {
+    "$date": "2026-08-19T13:02:03.778Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-19T13:06:06.383Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a86bafb140508bdeaef34cc"
+  },
+  "code": "B0005",
+  "name": "Bisnol 120mg trị viêm loét dạ dày, tá tràng",
+  "categoryId": {
+    "$oid": "6981f89d06a08b227fa7ee09"
+  },
+  "isPrescription": false,
+  "manufacturer": "DAVIPHARM",
+  "ingredients": "Tripotassium dicitrate bismuthate",
+  "description": "Ðiều trị loét dạ dày và tá tràng chảy mạn do bệnh viêm ruột",
+  "images": [
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1787214587/pharmacy-medicines/qeuw9v3bx2ljdv8gnlul.webp",
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1787214586/pharmacy-medicines/wtrheobnyso0mckx6pcn.webp",
+    "https://res.cloudinary.com/dhgboefgg/image/upload/v1787214586/pharmacy-medicines/vfebrego8kt4gix9wlnt.webp"
+  ],
+  "baseUnit": "Viên",
+  "mac": 1225,
+  "createdAt": {
+    "$date": "2026-08-20T08:29:47.352Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-20T08:34:04.408Z"
+  },
+  "__v": 0
+}]

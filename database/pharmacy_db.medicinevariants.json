@@ -1,0 +1,3041 @@
+[{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c0360a"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03608"
+  },
+  "sku": "A0001-VIEN",
+  "name": "Ausmuco 750V (Viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên",
+  "currentPrice": 2900,
+  "priceHistory": [
+    {
+      "price": 2900,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c0360b"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.311Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.311Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.311Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c0360d"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03608"
+  },
+  "sku": "A0001-HOP",
+  "name": "Ausmuco 750V (Hộp 2 vỉ)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 2 vỉ x 10 viên",
+  "currentPrice": 58000,
+  "priceHistory": [
+    {
+      "price": 58000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c0360e"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.313Z"
+      }
+    }
+  ],
+  "conversionRate": 20,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.314Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.314Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03615"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03613"
+  },
+  "sku": "H0001-VIEN",
+  "name": "Halixol 30mg (Viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên",
+  "currentPrice": 2000,
+  "priceHistory": [
+    {
+      "price": 2000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03616"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.318Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.318Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.318Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03618"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03613"
+  },
+  "sku": "H0001-VI",
+  "name": "Halixol 30mg (Vỉ 10 viên)",
+  "unit": "Vỉ",
+  "packagingSpecification": "Vỉ 10 viên",
+  "currentPrice": 20000,
+  "priceHistory": [
+    {
+      "price": 20000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03619"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.319Z"
+      }
+    }
+  ],
+  "conversionRate": 10,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.319Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.319Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c0361b"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03613"
+  },
+  "sku": "H0001-HOP",
+  "name": "Halixol 30mg (Hộp 2 vỉ)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 2 vỉ x 10 viên",
+  "currentPrice": 40000,
+  "priceHistory": [
+    {
+      "price": 40000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c0361c"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.320Z"
+      }
+    }
+  ],
+  "conversionRate": 20,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.320Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.320Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03623"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03621"
+  },
+  "sku": "B0001-VIEN",
+  "name": "Bisolvon 8mg (Viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên",
+  "currentPrice": 2000,
+  "priceHistory": [
+    {
+      "price": 2000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03624"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.325Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.325Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.325Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03626"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03621"
+  },
+  "sku": "B0001-HOP",
+  "name": "Bisolvon 8mg (Hộp 3 vỉ)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 3 vỉ x 10 viên",
+  "currentPrice": 60000,
+  "priceHistory": [
+    {
+      "price": 60000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03627"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.326Z"
+      }
+    }
+  ],
+  "conversionRate": 30,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.327Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.327Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c0362e"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c0362c"
+  },
+  "sku": "V0001-VIEN",
+  "name": "Difflam (Viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên",
+  "currentPrice": 5500,
+  "priceHistory": [
+    {
+      "price": 5500,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c0362f"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.332Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.332Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.332Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03631"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c0362c"
+  },
+  "sku": "V0001-VI",
+  "name": "Difflam (Vỉ 8 viên)",
+  "unit": "Vỉ",
+  "packagingSpecification": "Vỉ 8 viên",
+  "currentPrice": 44500,
+  "priceHistory": [
+    {
+      "price": 44500,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03632"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.333Z"
+      }
+    }
+  ],
+  "conversionRate": 8,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.333Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.333Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03639"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03637"
+  },
+  "sku": "F0001-VIEN",
+  "name": "Fluimucil 600mg (Viên sủi)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên sủi",
+  "currentPrice": 17000,
+  "priceHistory": [
+    {
+      "price": 17000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c0363a"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.337Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.337Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.337Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c0363c"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03637"
+  },
+  "sku": "F0001-HOP",
+  "name": "Fluimucil 600mg (Hộp 10 viên)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 5 vỉ x 2 viên",
+  "currentPrice": 170000,
+  "priceHistory": [
+    {
+      "price": 170000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c0363d"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.338Z"
+      }
+    }
+  ],
+  "conversionRate": 10,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.338Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.338Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03644"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03642"
+  },
+  "sku": "S0001-VIEN",
+  "name": "SaVi Alvic (Viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên",
+  "currentPrice": 1000,
+  "priceHistory": [
+    {
+      "price": 1000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03645"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.343Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.343Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.343Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03647"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03642"
+  },
+  "sku": "S0001-VI",
+  "name": "SaVi Alvic (Vỉ 10 viên)",
+  "unit": "Vỉ",
+  "packagingSpecification": "Vỉ 10 viên",
+  "currentPrice": 10000,
+  "priceHistory": [
+    {
+      "price": 10000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03648"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.345Z"
+      }
+    }
+  ],
+  "conversionRate": 10,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.345Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.345Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c0364a"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03642"
+  },
+  "sku": "S0001-HOP",
+  "name": "SaVi Alvic (Hộp 10 vỉ)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 10 vỉ x 10 viên",
+  "currentPrice": 100000,
+  "priceHistory": [
+    {
+      "price": 100000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c0364b"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.346Z"
+      }
+    }
+  ],
+  "conversionRate": 100,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.346Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.346Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03652"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03650"
+  },
+  "sku": "D0001-VIEN",
+  "name": "Dolfenal 500mg (Viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên",
+  "currentPrice": 1500,
+  "priceHistory": [
+    {
+      "price": 1500,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03653"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.350Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.350Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.350Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03655"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03650"
+  },
+  "sku": "D0001-VI",
+  "name": "Dolfenal 500mg (Vỉ 4 viên)",
+  "unit": "Vỉ",
+  "packagingSpecification": "Vỉ 4 viên",
+  "currentPrice": 6000,
+  "priceHistory": [
+    {
+      "price": 6000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03656"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.351Z"
+      }
+    }
+  ],
+  "conversionRate": 4,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.351Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.351Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03658"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03650"
+  },
+  "sku": "D0001-HOP",
+  "name": "Dolfenal 500mg (Hộp 25 vỉ)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 25 vỉ x 4 viên",
+  "currentPrice": 150000,
+  "priceHistory": [
+    {
+      "price": 150000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03659"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.352Z"
+      }
+    }
+  ],
+  "conversionRate": 100,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.352Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.352Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03660"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c0365e"
+  },
+  "sku": "E0001-VIEN",
+  "name": "Effer-Paralmax 325 (Viên sủi)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên sủi",
+  "currentPrice": 2000,
+  "priceHistory": [
+    {
+      "price": 2000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03661"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.355Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.355Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.355Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03663"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c0365e"
+  },
+  "sku": "E0001-HOP",
+  "name": "Effer-Paralmax 325 (Hộp 20 viên)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 5 vỉ x 4 viên",
+  "currentPrice": 40000,
+  "priceHistory": [
+    {
+      "price": 40000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03664"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.356Z"
+      }
+    }
+  ],
+  "conversionRate": 20,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.356Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.356Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c0366b"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03669"
+  },
+  "sku": "P0001-VIEN",
+  "name": "Panadol Extra (Viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên",
+  "currentPrice": 1500,
+  "priceHistory": [
+    {
+      "price": 1500,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c0366c"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.361Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.361Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.361Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c0366e"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03669"
+  },
+  "sku": "P0001-HOP",
+  "name": "Panadol Extra (Hộp 15 vỉ)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 15 vỉ x 12 viên",
+  "currentPrice": 270000,
+  "priceHistory": [
+    {
+      "price": 270000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c0366f"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.362Z"
+      }
+    }
+  ],
+  "conversionRate": 180,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.363Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.363Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03676"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03674"
+  },
+  "sku": "P0002-VIEN",
+  "name": "Paralmax 650 Sủi (Viên sủi)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên sủi",
+  "currentPrice": 2900,
+  "priceHistory": [
+    {
+      "price": 2900,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03677"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.368Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.368Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.368Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03679"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03674"
+  },
+  "sku": "P0002-VI",
+  "name": "Paralmax 650 Sủi (Vỉ 4 viên)",
+  "unit": "Vỉ",
+  "packagingSpecification": "Vỉ 4 viên",
+  "currentPrice": 11600,
+  "priceHistory": [
+    {
+      "price": 11600,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c0367a"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.369Z"
+      }
+    }
+  ],
+  "conversionRate": 4,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.369Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.369Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c0367c"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03674"
+  },
+  "sku": "P0002-HOP",
+  "name": "Paralmax 650 Sủi (Hộp 5 vỉ)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 5 vỉ x 4 viên",
+  "currentPrice": 58000,
+  "priceHistory": [
+    {
+      "price": 58000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c0367d"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.370Z"
+      }
+    }
+  ],
+  "conversionRate": 20,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.370Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.370Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03684"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03682"
+  },
+  "sku": "S0002-VIEN",
+  "name": "Spamerin 135mg (Viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên",
+  "currentPrice": 2300,
+  "priceHistory": [
+    {
+      "price": 2300,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03685"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.374Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.374Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.374Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03687"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03682"
+  },
+  "sku": "S0002-VI",
+  "name": "Spamerin 135mg (Vỉ 10 viên)",
+  "unit": "Vỉ",
+  "packagingSpecification": "Vỉ 10 viên",
+  "currentPrice": 23000,
+  "priceHistory": [
+    {
+      "price": 23000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03688"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.375Z"
+      }
+    }
+  ],
+  "conversionRate": 10,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.376Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.376Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c0368a"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03682"
+  },
+  "sku": "S0002-HOP",
+  "name": "Spamerin 135mg (Hộp 3 vỉ)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 3 vỉ x 10 viên",
+  "currentPrice": 69000,
+  "priceHistory": [
+    {
+      "price": 69000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c0368b"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.377Z"
+      }
+    }
+  ],
+  "conversionRate": 30,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.377Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.377Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03692"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03690"
+  },
+  "sku": "B0002-VIEN",
+  "name": "Biolac 500mg (Viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên",
+  "currentPrice": 1000,
+  "priceHistory": [
+    {
+      "price": 1000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03693"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.382Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.382Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.382Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03695"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03690"
+  },
+  "sku": "B0002-HOP",
+  "name": "Biolac 500mg (Hộp 10 vỉ)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 10 vỉ x 10 viên",
+  "currentPrice": 96300,
+  "priceHistory": [
+    {
+      "price": 96300,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03696"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.383Z"
+      }
+    }
+  ],
+  "conversionRate": 100,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.384Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.384Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c0369d"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c0369b"
+  },
+  "sku": "B0003-VIEN",
+  "name": "Buscopan 10mg (Viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên",
+  "currentPrice": 1500,
+  "priceHistory": [
+    {
+      "price": 1500,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c0369e"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.387Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.387Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.387Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c036a0"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c0369b"
+  },
+  "sku": "B0003-HOP",
+  "name": "Buscopan 10mg (Hộp 5 vỉ)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 5 vỉ x 20 viên",
+  "currentPrice": 150000,
+  "priceHistory": [
+    {
+      "price": 150000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c036a1"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.388Z"
+      }
+    }
+  ],
+  "conversionRate": 100,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.388Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.388Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c036a8"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036a6"
+  },
+  "sku": "V0002-VIEN",
+  "name": "Kremil-S (Viên nhai)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên",
+  "currentPrice": 1200,
+  "priceHistory": [
+    {
+      "price": 1200,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c036a9"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.394Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.395Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.395Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c036ab"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036a6"
+  },
+  "sku": "V0002-HOP",
+  "name": "Kremil-S (Hộp 10 vỉ)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 10 vỉ x 10 viên",
+  "currentPrice": 120000,
+  "priceHistory": [
+    {
+      "price": 120000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c036ac"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.396Z"
+      }
+    }
+  ],
+  "conversionRate": 100,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.396Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.396Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c036b3"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036b1"
+  },
+  "sku": "L0001-VIEN",
+  "name": "Lopradium 2mg (Viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên",
+  "currentPrice": 380,
+  "priceHistory": [
+    {
+      "price": 380,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c036b4"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.400Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.400Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.400Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c036b6"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036b1"
+  },
+  "sku": "L0001-VI",
+  "name": "Lopradium 2mg (Vỉ 10 viên)",
+  "unit": "Vỉ",
+  "packagingSpecification": "Vỉ 10 viên",
+  "currentPrice": 3800,
+  "priceHistory": [
+    {
+      "price": 3800,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c036b7"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.401Z"
+      }
+    }
+  ],
+  "conversionRate": 10,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.401Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.401Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c036b9"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036b1"
+  },
+  "sku": "L0001-HOP",
+  "name": "Lopradium 2mg (Hộp 10 vỉ)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 10 vỉ x 10 viên",
+  "currentPrice": 38000,
+  "priceHistory": [
+    {
+      "price": 38000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c036ba"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.401Z"
+      }
+    }
+  ],
+  "conversionRate": 100,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.402Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.402Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c036c1"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036bf"
+  },
+  "sku": "S0003-VIEN",
+  "name": "Shikamic 50mg (Viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên",
+  "currentPrice": 9300,
+  "priceHistory": [
+    {
+      "price": 9300,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c036c2"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.406Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.406Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.406Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c036c4"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036bf"
+  },
+  "sku": "S0003-HOP",
+  "name": "Shikamic 50mg (Hộp 3 vỉ)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 3 vỉ x 10 viên",
+  "currentPrice": 279000,
+  "priceHistory": [
+    {
+      "price": 279000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c036c5"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.407Z"
+      }
+    }
+  ],
+  "conversionRate": 30,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.407Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.407Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c036cc"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036ca"
+  },
+  "sku": "C0001-VIEN",
+  "name": "Cardioton (Viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên",
+  "currentPrice": 7700,
+  "priceHistory": [
+    {
+      "price": 7700,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c036cd"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.412Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.412Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.412Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c036cf"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036ca"
+  },
+  "sku": "C0001-HOP",
+  "name": "Cardioton (Hộp 6 vỉ)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 6 vỉ x 10 viên",
+  "currentPrice": 462000,
+  "priceHistory": [
+    {
+      "price": 462000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c036d0"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.413Z"
+      }
+    }
+  ],
+  "conversionRate": 60,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.413Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.413Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c036d7"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036d5"
+  },
+  "sku": "Z0001-VIEN",
+  "name": "ZY-10 Forte (Viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên",
+  "currentPrice": 15700,
+  "priceHistory": [
+    {
+      "price": 15700,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c036d8"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.417Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.417Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.417Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c036da"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036d5"
+  },
+  "sku": "Z0001-HOP",
+  "name": "ZY-10 Forte (Hộp 3 vỉ)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 3 vỉ x 10 viên",
+  "currentPrice": 471000,
+  "priceHistory": [
+    {
+      "price": 471000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c036db"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.418Z"
+      }
+    }
+  ],
+  "conversionRate": 30,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.418Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.418Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c036e2"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036e0"
+  },
+  "sku": "T0001-VIEN",
+  "name": "Ticonet 30mg (Viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên",
+  "currentPrice": 4700,
+  "priceHistory": [
+    {
+      "price": 4700,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c036e3"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.421Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.422Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.422Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c036e5"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036e0"
+  },
+  "sku": "T0001-HOP",
+  "name": "Ticonet 30mg (Hộp 10 vỉ)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 10 vỉ x 10 viên",
+  "currentPrice": 470000,
+  "priceHistory": [
+    {
+      "price": 470000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c036e6"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.422Z"
+      }
+    }
+  ],
+  "conversionRate": 100,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.422Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.422Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c036ed"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036eb"
+  },
+  "sku": "P0003-VIEN",
+  "name": "Panangin (Viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên",
+  "currentPrice": 2820,
+  "priceHistory": [
+    {
+      "price": 2820,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c036ee"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.427Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.427Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.427Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c036f0"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036eb"
+  },
+  "sku": "P0003-HOP",
+  "name": "Panangin (Hộp 50 viên)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 1 lọ x 50 viên",
+  "currentPrice": 141000,
+  "priceHistory": [
+    {
+      "price": 141000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c036f1"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.429Z"
+      }
+    }
+  ],
+  "conversionRate": 50,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.429Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.429Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c036f8"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036f6"
+  },
+  "sku": "T0002-VIEN",
+  "name": "Xoang Nhất Nhất (Viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên",
+  "currentPrice": 5400,
+  "priceHistory": [
+    {
+      "price": 5400,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c036f9"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.433Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.433Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.433Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c036fb"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c036f6"
+  },
+  "sku": "T0002-HOP",
+  "name": "Xoang Nhất Nhất (Hộp 3 vỉ)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 3 vỉ x 10 viên",
+  "currentPrice": 162000,
+  "priceHistory": [
+    {
+      "price": 162000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c036fc"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.434Z"
+      }
+    }
+  ],
+  "conversionRate": 30,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.434Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.434Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03703"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03701"
+  },
+  "sku": "H0002-ONG",
+  "name": "Oralegic 30mg/5ml (Ống)",
+  "unit": "Ống",
+  "packagingSpecification": "1 Ống 5ml",
+  "currentPrice": 9000,
+  "priceHistory": [
+    {
+      "price": 9000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03704"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.438Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.439Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.439Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03706"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03701"
+  },
+  "sku": "H0002-HOP",
+  "name": "Oralegic 30mg/5ml (Hộp 10 ống)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 10 ống x 5ml",
+  "currentPrice": 90000,
+  "priceHistory": [
+    {
+      "price": 90000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03707"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.440Z"
+      }
+    }
+  ],
+  "conversionRate": 10,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.440Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.440Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03719"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03717"
+  },
+  "sku": "T0003-VIEN",
+  "name": "Telfast HD 180mg (Viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên",
+  "currentPrice": 500,
+  "priceHistory": [
+    {
+      "price": 8900,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c0371a"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.450Z"
+      }
+    },
+    {
+      "price": 453,
+      "effectiveDate": {
+        "$date": "2026-08-17T06:22:00.690Z"
+      },
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "6a82a8881f83898d09b4d683"
+      }
+    },
+    {
+      "price": 500,
+      "effectiveDate": {
+        "$date": "2026-08-17T06:23:44.185Z"
+      },
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "6a82a8f01f83898d09b4da61"
+      }
+    },
+    {
+      "price": 600,
+      "effectiveDate": {
+        "$date": "2026-08-17T11:48:57.311Z"
+      },
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "6a82f52988396f243504333e"
+      }
+    },
+    {
+      "price": 500,
+      "effectiveDate": {
+        "$date": "2026-08-17T11:49:28.865Z"
+      },
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "6a82f54888396f24350434e4"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.451Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-17T11:49:28.865Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c0371c"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03717"
+  },
+  "sku": "T0003-HOP",
+  "name": "Telfast HD 180mg (Hộp 3 vỉ x 10 viên)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 3 vỉ x 10 viên",
+  "currentPrice": 13000,
+  "priceHistory": [
+    {
+      "price": 268000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c0371d"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.451Z"
+      }
+    },
+    {
+      "price": 13600,
+      "effectiveDate": {
+        "$date": "2026-08-17T06:21:58.268Z"
+      },
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "6a82a8861f83898d09b4d601"
+      }
+    },
+    {
+      "price": 13000,
+      "effectiveDate": {
+        "$date": "2026-08-17T06:23:35.138Z"
+      },
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "6a82a8e71f83898d09b4d9db"
+      }
+    },
+    {
+      "price": 13500,
+      "effectiveDate": {
+        "$date": "2026-08-17T11:48:57.320Z"
+      },
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "6a82f52988396f2435043343"
+      }
+    },
+    {
+      "price": 13000,
+      "effectiveDate": {
+        "$date": "2026-08-17T11:49:28.869Z"
+      },
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "6a82f54888396f24350434ea"
+      }
+    }
+  ],
+  "conversionRate": 30,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.451Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-17T11:49:28.869Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03724"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03722"
+  },
+  "sku": "A0002-GOI",
+  "name": "A.T Fexofenadin (Gói)",
+  "unit": "Gói",
+  "packagingSpecification": "1 Gói 5ml",
+  "currentPrice": 5000,
+  "priceHistory": [
+    {
+      "price": 5000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03725"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.455Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.455Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.455Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03727"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03722"
+  },
+  "sku": "A0002-HOP",
+  "name": "A.T Fexofenadin (Hộp 30 gói)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 30 gói x 5ml",
+  "currentPrice": 150000,
+  "priceHistory": [
+    {
+      "price": 150000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03728"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.456Z"
+      }
+    }
+  ],
+  "conversionRate": 30,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.456Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.456Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c0372f"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c0372d"
+  },
+  "sku": "O0001-VIEN",
+  "name": "Orlistat RVN 120 (Viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên",
+  "currentPrice": 10500,
+  "priceHistory": [
+    {
+      "price": 10500,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03730"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.461Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.461Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.461Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03732"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c0372d"
+  },
+  "sku": "O0001-HOP",
+  "name": "Orlistat RVN 120 (Hộp 3 vỉ)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 3 vỉ x 10 viên",
+  "currentPrice": 315000,
+  "priceHistory": [
+    {
+      "price": 315000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03733"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.462Z"
+      }
+    }
+  ],
+  "conversionRate": 30,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.462Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.462Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c0373a"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03738"
+  },
+  "sku": "B0004-VIEN",
+  "name": "Bisbeta 120 (Viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên",
+  "currentPrice": 9000,
+  "priceHistory": [
+    {
+      "price": 9000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c0373b"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.467Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.467Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.467Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c0373d"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03738"
+  },
+  "sku": "B0004-HOP",
+  "name": "Bisbeta 120 (Hộp 2 vỉ)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 2 vỉ x 21 viên",
+  "currentPrice": 378000,
+  "priceHistory": [
+    {
+      "price": 378000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c0373e"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.467Z"
+      }
+    }
+  ],
+  "conversionRate": 42,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.468Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.468Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03745"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03743"
+  },
+  "sku": "O0002-VIEN",
+  "name": "Orlistat Stada 120 (Viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên",
+  "currentPrice": 8300,
+  "priceHistory": [
+    {
+      "price": 8300,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03746"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.472Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.472Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.472Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03748"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03743"
+  },
+  "sku": "O0002-HOP",
+  "name": "Orlistat Stada 120 (Hộp 2 vỉ)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 2 vỉ x 21 viên",
+  "currentPrice": 348600,
+  "priceHistory": [
+    {
+      "price": 348600,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03749"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.472Z"
+      }
+    }
+  ],
+  "conversionRate": 42,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.473Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.473Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03750"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c0374e"
+  },
+  "sku": "C0002-VIEN",
+  "name": "Cystine B6 Bailleul (Viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên",
+  "currentPrice": 5800,
+  "priceHistory": [
+    {
+      "price": 5800,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03751"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.477Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.477Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.477Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03753"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c0374e"
+  },
+  "sku": "C0002-HOP",
+  "name": "Cystine B6 Bailleul (Hộp 1 vỉ)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 1 vỉ x 20 viên",
+  "currentPrice": 116000,
+  "priceHistory": [
+    {
+      "price": 116000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03754"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.478Z"
+      }
+    }
+  ],
+  "conversionRate": 20,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.479Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.479Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c0375b"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03759"
+  },
+  "sku": "D0003-LO",
+  "name": "Omega 3 (Lọ 400 viên)",
+  "unit": "Lọ",
+  "packagingSpecification": "Lọ 400 viên",
+  "currentPrice": 450000,
+  "priceHistory": [
+    {
+      "price": 450000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c0375c"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.482Z"
+      }
+    }
+  ],
+  "conversionRate": 400,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.482Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.482Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03763"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03761"
+  },
+  "sku": "A0003-VIEN",
+  "name": "Amoxicillin 500mg (Viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên",
+  "currentPrice": 1000,
+  "priceHistory": [
+    {
+      "price": 1000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03764"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.486Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.486Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.486Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03766"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03761"
+  },
+  "sku": "A0003-HOP",
+  "name": "Amoxicillin 500mg (Hộp 10 vỉ)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 10 vỉ x 10 viên",
+  "currentPrice": 100000,
+  "priceHistory": [
+    {
+      "price": 100000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03767"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.486Z"
+      }
+    }
+  ],
+  "conversionRate": 100,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.487Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.487Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c0376e"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c0376c"
+  },
+  "sku": "A0004-VIEN",
+  "name": "Augmentin 625mg (Viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên",
+  "currentPrice": 15000,
+  "priceHistory": [
+    {
+      "price": 15000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c0376f"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.490Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.490Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.490Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03771"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c0376c"
+  },
+  "sku": "A0004-HOP",
+  "name": "Augmentin 625mg (Hộp 2 vỉ)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 2 vỉ x 7 viên",
+  "currentPrice": 210000,
+  "priceHistory": [
+    {
+      "price": 210000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03772"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.491Z"
+      }
+    }
+  ],
+  "conversionRate": 14,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.492Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.492Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03779"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03777"
+  },
+  "sku": "C0003-VIEN",
+  "name": "Cefuroxim 500mg (Viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên",
+  "currentPrice": 5000,
+  "priceHistory": [
+    {
+      "price": 5000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c0377a"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.497Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.497Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.497Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c0377c"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03777"
+  },
+  "sku": "C0003-HOP",
+  "name": "Cefuroxim 500mg (Hộp 2 vỉ)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 2 vỉ x 10 viên",
+  "currentPrice": 100000,
+  "priceHistory": [
+    {
+      "price": 100000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c0377d"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.498Z"
+      }
+    }
+  ],
+  "conversionRate": 20,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.498Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.498Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03784"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03782"
+  },
+  "sku": "A0005-VIEN",
+  "name": "Azithromycin 250mg (Viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên",
+  "currentPrice": 6000,
+  "priceHistory": [
+    {
+      "price": 6000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03785"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.501Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.501Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.501Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03787"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c03782"
+  },
+  "sku": "A0005-HOP",
+  "name": "Azithromycin 250mg (Hộp 1 vỉ)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 1 vỉ x 6 viên",
+  "currentPrice": 36000,
+  "priceHistory": [
+    {
+      "price": 36000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03788"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.502Z"
+      }
+    }
+  ],
+  "conversionRate": 6,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.502Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.502Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c0378f"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c0378d"
+  },
+  "sku": "C0004-VIEN",
+  "name": "Cephalexin 500mg (Viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 Viên",
+  "currentPrice": 1500,
+  "priceHistory": [
+    {
+      "price": 1500,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03790"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.505Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.505Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.505Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b9176138917ab3c03792"
+  },
+  "medicineId": {
+    "$oid": "69d8b9176138917ab3c0378d"
+  },
+  "sku": "C0004-HOP",
+  "name": "Cephalexin 500mg (Hộp 10 vỉ)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 10 vỉ x 10 viên",
+  "currentPrice": 150000,
+  "priceHistory": [
+    {
+      "price": 150000,
+      "_id": {
+        "$oid": "69d8b9176138917ab3c03793"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-10T08:47:19.506Z"
+      }
+    }
+  ],
+  "conversionRate": 100,
+  "createdAt": {
+    "$date": "2026-04-10T08:47:19.506Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T08:47:19.506Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e5f117a6838d6ef88af39e"
+  },
+  "medicineId": {
+    "$oid": "69e5f117a6838d6ef88af399"
+  },
+  "sku": "P0004-CHAI",
+  "name": "Povidine 10% chai 20ml",
+  "unit": "Chai",
+  "packagingSpecification": "chai 20ml",
+  "currentPrice": 8000,
+  "priceHistory": [
+    {
+      "price": 8000,
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "69e5f117a6838d6ef88af39f"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-20T09:25:43.178Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-20T09:25:43.179Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-20T09:25:43.179Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e5f182a6838d6ef88af491"
+  },
+  "medicineId": {
+    "$oid": "69e5f182a6838d6ef88af48c"
+  },
+  "sku": "P0005-CHAI",
+  "name": "Povidine 10% 90ml",
+  "unit": "Chai",
+  "packagingSpecification": "chai 90ml",
+  "currentPrice": 18000,
+  "priceHistory": [
+    {
+      "price": 18000,
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "69e5f182a6838d6ef88af492"
+      },
+      "effectiveDate": {
+        "$date": "2026-04-20T09:27:30.220Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-04-20T09:27:30.220Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-20T09:27:30.220Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a0478c6b64c06bcffc1271f"
+  },
+  "medicineId": {
+    "$oid": "6a0478c2b64c06bcffc1271a"
+  },
+  "sku": "A0006-HOP",
+  "name": "Atorvastatin Domesco 20mg trị tăng cholesterol máu",
+  "unit": "Hộp",
+  "packagingSpecification": "2 vỉ x 10 viên",
+  "currentPrice": 75000,
+  "priceHistory": [
+    {
+      "price": 75000,
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "6a0478c6b64c06bcffc12720"
+      },
+      "effectiveDate": {
+        "$date": "2026-05-13T13:12:38.470Z"
+      }
+    }
+  ],
+  "conversionRate": 20,
+  "createdAt": {
+    "$date": "2026-05-13T13:12:38.472Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-13T13:12:38.472Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a047a92b64c06bcffc1290a"
+  },
+  "medicineId": {
+    "$oid": "6a047a90b64c06bcffc12905"
+  },
+  "sku": "E0002-HOP",
+  "name": "Equoral 25 mg dự phòng thải ghép sau ghép tạng",
+  "unit": "Hộp",
+  "packagingSpecification": "5 vỉ x 10 viên",
+  "currentPrice": 600000,
+  "priceHistory": [
+    {
+      "price": 600000,
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "6a047a92b64c06bcffc1290b"
+      },
+      "effectiveDate": {
+        "$date": "2026-05-13T13:20:18.399Z"
+      }
+    }
+  ],
+  "conversionRate": 50,
+  "createdAt": {
+    "$date": "2026-05-13T13:20:18.400Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-13T13:20:18.400Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a798135f56d0821d584b653"
+  },
+  "medicineId": {
+    "$oid": "6a798129f56d0821d584b64d"
+  },
+  "sku": "A0007-HOP",
+  "name": "Ambroxol HCl Tablets 30mg long đờm, tiêu nhầy, trị bệnh đường hô hấp (Hộp)",
+  "unit": "Hộp",
+  "packagingSpecification": "10 vỉ x 10 viên",
+  "currentPrice": 130000,
+  "priceHistory": [
+    {
+      "price": 0,
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "6a798135f56d0821d584b654"
+      },
+      "effectiveDate": {
+        "$date": "2026-08-10T07:43:49.439Z"
+      }
+    },
+    {
+      "price": 130000,
+      "effectiveDate": {
+        "$date": "2026-08-10T13:47:13.231Z"
+      },
+      "updatedBy": {
+        "$oid": "6978c3c01467ef891161fc6a"
+      },
+      "_id": {
+        "$oid": "6a79d66178d663204a3f9507"
+      }
+    }
+  ],
+  "conversionRate": 100,
+  "createdAt": {
+    "$date": "2026-08-10T07:43:49.442Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-10T13:47:13.233Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a79854af56d0821d584b85f"
+  },
+  "medicineId": {
+    "$oid": "6a798129f56d0821d584b64d"
+  },
+  "sku": "A0007-VI",
+  "name": "Ambroxol HCl Tablets 30mg long đờm, tiêu nhầy, trị bệnh đường hô hấp (10 vỉ x 10 viên)",
+  "unit": "Vỉ",
+  "packagingSpecification": "Vỉ 10 viên",
+  "currentPrice": 0,
+  "priceHistory": [
+    {
+      "price": 0,
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "6a79854af56d0821d584b860"
+      },
+      "effectiveDate": {
+        "$date": "2026-08-10T08:01:14.679Z"
+      }
+    }
+  ],
+  "conversionRate": 10,
+  "createdAt": {
+    "$date": "2026-08-10T08:01:14.681Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-10T08:01:14.681Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a79859af56d0821d584b8de"
+  },
+  "medicineId": {
+    "$oid": "6a798129f56d0821d584b64d"
+  },
+  "sku": "A0007-VIEN",
+  "name": "Ambroxol HCl Tablets 30mg long đờm, tiêu nhầy, trị bệnh đường hô hấp (10 vỉ x 10 viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 viên",
+  "currentPrice": 0,
+  "priceHistory": [
+    {
+      "price": 0,
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "6a79859af56d0821d584b8df"
+      },
+      "effectiveDate": {
+        "$date": "2026-08-10T08:02:34.958Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-08-10T08:02:34.959Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-10T08:02:34.959Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a84982d43665d99fe475218"
+  },
+  "medicineId": {
+    "$oid": "6a84982343665d99fe475212"
+  },
+  "sku": "T0004-HOP",
+  "name": "test (Hộp 100 viên)",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 100 viên",
+  "currentPrice": 0,
+  "priceHistory": [
+    {
+      "price": 0,
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "6a84982d43665d99fe475219"
+      },
+      "effectiveDate": {
+        "$date": "2026-08-18T17:36:45.381Z"
+      }
+    }
+  ],
+  "conversionRate": 100,
+  "createdAt": {
+    "$date": "2026-08-18T17:36:45.382Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-18T17:36:45.382Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a84983c43665d99fe475328"
+  },
+  "medicineId": {
+    "$oid": "6a84982343665d99fe475212"
+  },
+  "sku": "T0004-VIEN",
+  "name": "test",
+  "unit": "Viên",
+  "packagingSpecification": "1 viên",
+  "currentPrice": 0,
+  "priceHistory": [
+    {
+      "price": 0,
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "6a84983c43665d99fe475329"
+      },
+      "effectiveDate": {
+        "$date": "2026-08-18T17:37:00.530Z"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-08-18T17:37:00.530Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-18T17:37:00.530Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a8499c743665d99fe475a18"
+  },
+  "medicineId": {
+    "$oid": "6a8499c543665d99fe475a12"
+  },
+  "sku": "L0002-HOP",
+  "name": "Loperamide Stella 2mg trị tiêu chảy (Hộp 100 viên)",
+  "unit": "Hộp",
+  "packagingSpecification": "(Hộp 100 viên)",
+  "currentPrice": 138000,
+  "priceHistory": [
+    {
+      "price": 0,
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "6a8499c743665d99fe475a19"
+      },
+      "effectiveDate": {
+        "$date": "2026-08-18T17:43:35.578Z"
+      }
+    },
+    {
+      "price": 138000,
+      "effectiveDate": {
+        "$date": "2026-08-18T17:51:29.797Z"
+      },
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "6a849ba143665d99fe476761"
+      }
+    }
+  ],
+  "conversionRate": 100,
+  "createdAt": {
+    "$date": "2026-08-18T17:43:35.579Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-18T17:51:29.798Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a8499e243665d99fe475b2e"
+  },
+  "medicineId": {
+    "$oid": "6a8499c543665d99fe475a12"
+  },
+  "sku": "L0002-VIEN",
+  "name": "Loperamide Stella 2mg trị tiêu chảy (1 viên)",
+  "unit": "Viên",
+  "packagingSpecification": "1 viên",
+  "currentPrice": 1380,
+  "priceHistory": [
+    {
+      "price": 0,
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "6a8499e243665d99fe475b2f"
+      },
+      "effectiveDate": {
+        "$date": "2026-08-18T17:44:02.742Z"
+      }
+    },
+    {
+      "price": 1380,
+      "effectiveDate": {
+        "$date": "2026-08-18T17:51:31.673Z"
+      },
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "6a849ba343665d99fe4767f1"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-08-18T17:44:02.743Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-18T17:51:31.673Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a85a95497b170ded328fec4"
+  },
+  "medicineId": {
+    "$oid": "6a85a94b97b170ded328febe"
+  },
+  "sku": "T0005-HOP",
+  "name": "Thuốc test 2",
+  "unit": "Hộp",
+  "packagingSpecification": "Hộp 100 viên",
+  "currentPrice": 138000,
+  "priceHistory": [
+    {
+      "price": 0,
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "6a85a95497b170ded328fec5"
+      },
+      "effectiveDate": {
+        "$date": "2026-08-19T13:02:12.024Z"
+      }
+    },
+    {
+      "price": 138000,
+      "effectiveDate": {
+        "$date": "2026-08-19T13:08:46.646Z"
+      },
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "6a85aade97b170ded32918a7"
+      }
+    }
+  ],
+  "conversionRate": 100,
+  "createdAt": {
+    "$date": "2026-08-19T13:02:12.027Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-19T13:08:46.648Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a85a9d597b170ded329065c"
+  },
+  "medicineId": {
+    "$oid": "6a85a94b97b170ded328febe"
+  },
+  "sku": "T0005-VIEN",
+  "name": "Thuốc test 2",
+  "unit": "Viên",
+  "packagingSpecification": "1 viên",
+  "currentPrice": 1380,
+  "priceHistory": [
+    {
+      "price": 0,
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "6a85a9d597b170ded329065d"
+      },
+      "effectiveDate": {
+        "$date": "2026-08-19T13:04:21.444Z"
+      }
+    },
+    {
+      "price": 1380,
+      "effectiveDate": {
+        "$date": "2026-08-19T13:08:49.938Z"
+      },
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "6a85aae197b170ded329193c"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-08-19T13:04:21.445Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-19T13:08:49.938Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a86bb08140508bdeaef34d2"
+  },
+  "medicineId": {
+    "$oid": "6a86bafb140508bdeaef34cc"
+  },
+  "sku": "B0005-HOP",
+  "name": "Bisnol 120mg trị viêm loét dạ dày, tá tràng",
+  "unit": "Hộp",
+  "packagingSpecification": "100 viên",
+  "currentPrice": 147000,
+  "priceHistory": [
+    {
+      "price": 0,
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "6a86bb08140508bdeaef34d3"
+      },
+      "effectiveDate": {
+        "$date": "2026-08-20T08:30:01.001Z"
+      }
+    },
+    {
+      "price": 147000,
+      "effectiveDate": {
+        "$date": "2026-08-20T08:37:14.167Z"
+      },
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "6a86bcba140508bdeaef4ae2"
+      }
+    }
+  ],
+  "conversionRate": 100,
+  "createdAt": {
+    "$date": "2026-08-20T08:30:01.006Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-20T08:37:14.170Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a86bb20140508bdeaef35fc"
+  },
+  "medicineId": {
+    "$oid": "6a86bafb140508bdeaef34cc"
+  },
+  "sku": "B0005-VIEN",
+  "name": "Bisnol 120mg trị viêm loét dạ dày, tá tràng",
+  "unit": "Viên",
+  "packagingSpecification": "1 viên",
+  "currentPrice": 1470,
+  "priceHistory": [
+    {
+      "price": 0,
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "6a86bb20140508bdeaef35fd"
+      },
+      "effectiveDate": {
+        "$date": "2026-08-20T08:30:24.687Z"
+      }
+    },
+    {
+      "price": 1470,
+      "effectiveDate": {
+        "$date": "2026-08-20T08:37:16.182Z"
+      },
+      "updatedBy": {
+        "$oid": "6978c1bfbd6e7ca61b13d073"
+      },
+      "_id": {
+        "$oid": "6a86bcbc140508bdeaef4b7c"
+      }
+    }
+  ],
+  "conversionRate": 1,
+  "createdAt": {
+    "$date": "2026-08-20T08:30:24.689Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-20T08:37:16.182Z"
+  },
+  "__v": 0
+}]

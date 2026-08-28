@@ -1,0 +1,4613 @@
+[{
+  "_id": {
+    "$oid": "6a6c9a0b67f02706fc48472c"
+  },
+  "code": "PN1785502219950",
+  "type": "IMPORT_SUPPLIER",
+  "status": "COMPLETED",
+  "toBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "supplierName": "DHG",
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c0360d"
+      },
+      "batchCode": "LO_AUSMUCO_001",
+      "expiryDate": {
+        "$date": "2027-07-05T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-05T00:00:00.000Z"
+      },
+      "quantity": 20,
+      "price": 50000,
+      "_id": {
+        "$oid": "6a6c9a0b67f02706fc48472d"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c03766"
+      },
+      "batchCode": "LO_AMOXICILLIN_001",
+      "expiryDate": {
+        "$date": "2027-07-06T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-06T00:00:00.000Z"
+      },
+      "quantity": 40,
+      "price": 90000,
+      "_id": {
+        "$oid": "6a6c9a0b67f02706fc48472e"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c03626"
+      },
+      "batchCode": "LO_BISOLVON_001",
+      "expiryDate": {
+        "$date": "2027-07-07T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-07T00:00:00.000Z"
+      },
+      "quantity": 60,
+      "price": 55000,
+      "_id": {
+        "$oid": "6a6c9a0b67f02706fc48472f"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c03792"
+      },
+      "batchCode": "LO_CEPHALEXIN_001",
+      "expiryDate": {
+        "$date": "2027-07-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-08T00:00:00.000Z"
+      },
+      "quantity": 80,
+      "price": 120000,
+      "_id": {
+        "$oid": "6a6c9a0b67f02706fc484730"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c0377c"
+      },
+      "batchCode": "LO_CEFUROXIM_001",
+      "expiryDate": {
+        "$date": "2027-07-09T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-09T00:00:00.000Z"
+      },
+      "quantity": 30,
+      "price": 40000,
+      "_id": {
+        "$oid": "6a6c9a0b67f02706fc484731"
+      }
+    }
+  ],
+  "totalValue": 18700000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-07-31T12:50:19.955Z"
+  },
+  "createdAt": {
+    "$date": "2026-07-31T12:50:19.958Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-31T12:50:19.958Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a6c9dcf67f02706fc48497f"
+  },
+  "code": "PN1785503183913",
+  "type": "IMPORT_SUPPLIER",
+  "status": "COMPLETED",
+  "toBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "supplierName": "Pymepharco",
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c0375b"
+      },
+      "batchCode": "LO_OMEGA_001",
+      "expiryDate": {
+        "$date": "2027-07-10T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-10T00:00:00.000Z"
+      },
+      "quantity": 100,
+      "price": 340000,
+      "_id": {
+        "$oid": "6a6c9dcf67f02706fc484980"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c03658"
+      },
+      "batchCode": "LO_DOLFENAL_001",
+      "expiryDate": {
+        "$date": "2027-07-11T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-11T00:00:00.000Z"
+      },
+      "quantity": 70,
+      "price": 130000,
+      "_id": {
+        "$oid": "6a6c9dcf67f02706fc484981"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "6a047a92b64c06bcffc1290a"
+      },
+      "batchCode": "LO_EQUORAL_001",
+      "expiryDate": {
+        "$date": "2027-07-12T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-12T00:00:00.000Z"
+      },
+      "quantity": 120,
+      "price": 550000,
+      "_id": {
+        "$oid": "6a6c9dcf67f02706fc484982"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "69e5f182a6838d6ef88af491"
+      },
+      "batchCode": "LO_POVIDINE90_001",
+      "expiryDate": {
+        "$date": "2027-07-13T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-13T00:00:00.000Z"
+      },
+      "quantity": 100,
+      "price": 15000,
+      "_id": {
+        "$oid": "6a6c9dcf67f02706fc484983"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "69e5f117a6838d6ef88af39e"
+      },
+      "batchCode": "LO_POVIDINE20_001",
+      "expiryDate": {
+        "$date": "2027-07-13T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-13T00:00:00.000Z"
+      },
+      "quantity": 100,
+      "price": 4500,
+      "_id": {
+        "$oid": "6a6c9dcf67f02706fc484984"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c0367c"
+      },
+      "batchCode": "LO_PARALMAX_001",
+      "expiryDate": {
+        "$date": "2027-07-16T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-16T00:00:00.000Z"
+      },
+      "quantity": 90,
+      "price": 45000,
+      "_id": {
+        "$oid": "6a6c9dcf67f02706fc484985"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c0366e"
+      },
+      "batchCode": "LO_PANADOLEXTRA_001",
+      "expiryDate": {
+        "$date": "2027-07-14T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-14T00:00:00.000Z"
+      },
+      "quantity": 70,
+      "price": 220000,
+      "_id": {
+        "$oid": "6a6c9dcf67f02706fc484986"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c03663"
+      },
+      "batchCode": "LO_EFERPARALMAX_001",
+      "expiryDate": {
+        "$date": "2027-07-15T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-15T00:00:00.000Z"
+      },
+      "quantity": 100,
+      "price": 42000,
+      "_id": {
+        "$oid": "6a6c9dcf67f02706fc484987"
+      }
+    }
+  ],
+  "totalValue": 134700000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-07-31T13:06:23.916Z"
+  },
+  "createdAt": {
+    "$date": "2026-07-31T13:06:23.919Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-31T13:06:23.919Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a6cc0c138eca57fd117c6d6"
+  },
+  "code": "PX1785512129063",
+  "type": "EXPORT_TO_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "toBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c3c01467ef891161fc6a"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c03626"
+      },
+      "batchCode": "LO_BISOLVON_001",
+      "expiryDate": {
+        "$date": "2027-07-07T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-07T00:00:00.000Z"
+      },
+      "quantity": 30,
+      "price": 55000,
+      "_id": {
+        "$oid": "6a6cc0c138eca57fd117c6d7"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c03663"
+      },
+      "batchCode": "LO_EFERPARALMAX_001",
+      "expiryDate": {
+        "$date": "2027-07-15T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-15T00:00:00.000Z"
+      },
+      "quantity": 50,
+      "price": 42000,
+      "_id": {
+        "$oid": "6a6cc0c138eca57fd117c6d8"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c0366e"
+      },
+      "batchCode": "LO_PANADOLEXTRA_001",
+      "expiryDate": {
+        "$date": "2027-07-14T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-14T00:00:00.000Z"
+      },
+      "quantity": 20,
+      "price": 220000,
+      "_id": {
+        "$oid": "6a6cc0c138eca57fd117c6d9"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-07-31T15:35:29.068Z"
+  },
+  "createdAt": {
+    "$date": "2026-07-31T15:35:29.070Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-31T15:43:37.417Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a6cc1ac38eca57fd117c8cb"
+  },
+  "code": "PX1785512364417",
+  "type": "EXPORT_TO_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "toBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c3c01467ef891161fc6a"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a047a92b64c06bcffc1290a"
+      },
+      "batchCode": "LO_EQUORAL_001",
+      "expiryDate": {
+        "$date": "2027-07-12T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-12T00:00:00.000Z"
+      },
+      "quantity": 20,
+      "price": 550000,
+      "_id": {
+        "$oid": "6a6cc1ac38eca57fd117c8cc"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "69e5f117a6838d6ef88af39e"
+      },
+      "batchCode": "LO_POVIDINE20_001",
+      "expiryDate": {
+        "$date": "2027-07-13T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-13T00:00:00.000Z"
+      },
+      "quantity": 30,
+      "price": 4500,
+      "_id": {
+        "$oid": "6a6cc1ac38eca57fd117c8cd"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "69e5f182a6838d6ef88af491"
+      },
+      "batchCode": "LO_POVIDINE90_001",
+      "expiryDate": {
+        "$date": "2027-07-13T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-13T00:00:00.000Z"
+      },
+      "quantity": 30,
+      "price": 15000,
+      "_id": {
+        "$oid": "6a6cc1ac38eca57fd117c8ce"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-07-31T15:39:24.422Z"
+  },
+  "createdAt": {
+    "$date": "2026-07-31T15:39:24.424Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-31T15:43:40.896Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a6cc1f838eca57fd117cad8"
+  },
+  "code": "PH1785512440710",
+  "type": "DISPOSAL",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "createdBy": {
+    "$oid": "6978c3c01467ef891161fc6a"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69e5f117a6838d6ef88af39e"
+      },
+      "batchCode": "LO_POVIDINE20_001",
+      "expiryDate": {
+        "$date": "2027-07-13T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-13T00:00:00.000Z"
+      },
+      "quantity": 10,
+      "price": 4500,
+      "reason": "DAMAGED",
+      "_id": {
+        "$oid": "6a6cc1f838eca57fd117cad9"
+      }
+    }
+  ],
+  "totalValue": 45000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-07-31T15:40:40.713Z"
+  },
+  "createdAt": {
+    "$date": "2026-07-31T15:40:40.715Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-31T15:40:40.715Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a6cc33838eca57fd117cd8b"
+  },
+  "code": "HD1785512760249",
+  "type": "SALE_AT_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c4af1467ef891161fc6d"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c03623"
+      },
+      "batchCode": "LO_BISOLVON_001",
+      "expiryDate": {
+        "$date": "2027-07-07T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-07T00:00:00.000Z"
+      },
+      "quantity": 5,
+      "price": 2000,
+      "costPrice": 1833.3333333333333,
+      "_id": {
+        "$oid": "6a6cc33838eca57fd117cd8c"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c0366b"
+      },
+      "batchCode": "LO_PANADOLEXTRA_001",
+      "expiryDate": {
+        "$date": "2027-07-14T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-14T00:00:00.000Z"
+      },
+      "quantity": 5,
+      "price": 1500,
+      "costPrice": 1222.2222222222222,
+      "_id": {
+        "$oid": "6a6cc33838eca57fd117cd8d"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "69e5f182a6838d6ef88af491"
+      },
+      "batchCode": "LO_POVIDINE90_001",
+      "expiryDate": {
+        "$date": "2027-07-13T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-13T00:00:00.000Z"
+      },
+      "quantity": 1,
+      "price": 18000,
+      "costPrice": 15000,
+      "_id": {
+        "$oid": "6a6cc33838eca57fd117cd8e"
+      }
+    }
+  ],
+  "customerId": {
+    "$oid": "69d8c5bf6138917ab3c0607d"
+  },
+  "customerName": "Phương Tâm",
+  "customerPhone": "0843577368",
+  "paymentMethod": "QR",
+  "totalAmount": 35500,
+  "date": {
+    "$date": "2026-07-31T15:46:00.252Z"
+  },
+  "createdAt": {
+    "$date": "2026-07-31T15:46:00.255Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-31T15:46:00.255Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a6cc38a38eca57fd117cda4"
+  },
+  "code": "HD1785512842327",
+  "type": "SALE_AT_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c4af1467ef891161fc6d"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c03626"
+      },
+      "batchCode": "LO_BISOLVON_001",
+      "expiryDate": {
+        "$date": "2027-07-07T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-07T00:00:00.000Z"
+      },
+      "quantity": 1,
+      "price": 60000,
+      "costPrice": 55000,
+      "_id": {
+        "$oid": "6a6cc38a38eca57fd117cda5"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "6a047a92b64c06bcffc1290a"
+      },
+      "batchCode": "LO_EQUORAL_001",
+      "expiryDate": {
+        "$date": "2027-07-12T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-12T00:00:00.000Z"
+      },
+      "quantity": 1,
+      "price": 600000,
+      "costPrice": 550000,
+      "_id": {
+        "$oid": "6a6cc38a38eca57fd117cda6"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "Khách lẻ",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 660000,
+  "date": {
+    "$date": "2026-07-31T15:47:22.328Z"
+  },
+  "createdAt": {
+    "$date": "2026-07-31T15:47:22.329Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-31T15:47:22.329Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a6cc4f238eca57fd117d041"
+  },
+  "code": "PT1785513202416",
+  "type": "RETURN_TO_WAREHOUSE",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "toBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "createdBy": {
+    "$oid": "6978c4af1467ef891161fc6d"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c03626"
+      },
+      "batchCode": "LO_BISOLVON_001",
+      "expiryDate": {
+        "$date": "2027-07-07T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-07T00:00:00.000Z"
+      },
+      "quantity": 2,
+      "price": 55000,
+      "reason": "DAMAGED",
+      "_id": {
+        "$oid": "6a6cc4f238eca57fd117d042"
+      }
+    }
+  ],
+  "totalValue": 110000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-07-31T15:53:22.417Z"
+  },
+  "createdAt": {
+    "$date": "2026-07-31T15:53:22.419Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-31T16:20:37.433Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a6ccd03db14f765afc654ff"
+  },
+  "code": "HD1785515267937",
+  "type": "SALE_AT_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c4af1467ef891161fc6d"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c03623"
+      },
+      "batchCode": "LO_BISOLVON_001",
+      "expiryDate": {
+        "$date": "2027-07-07T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-07T00:00:00.000Z"
+      },
+      "quantity": 5,
+      "price": 2000,
+      "costPrice": 1833.3333333333333,
+      "_id": {
+        "$oid": "6a6ccd03db14f765afc65500"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "Khách lẻ",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 10000,
+  "date": {
+    "$date": "2026-07-31T16:27:47.947Z"
+  },
+  "createdAt": {
+    "$date": "2026-07-31T16:27:47.950Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-31T16:27:47.950Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a7346638d56fb4cf5b65714"
+  },
+  "code": "PN1785939555241",
+  "type": "IMPORT_SUPPLIER",
+  "status": "COMPLETED",
+  "toBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "supplierName": "Pymepharco",
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a047a92b64c06bcffc1290a"
+      },
+      "batchCode": "LO_EQUORAL_001",
+      "expiryDate": {
+        "$date": "2027-07-12T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-12T00:00:00.000Z"
+      },
+      "quantity": 20,
+      "price": 550000,
+      "_id": {
+        "$oid": "6a7346638d56fb4cf5b65715"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "6a047a92b64c06bcffc1290a"
+      },
+      "batchCode": "LO_EQUORAL_001",
+      "expiryDate": {
+        "$date": "2027-07-12T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-12T00:00:00.000Z"
+      },
+      "quantity": 10,
+      "price": 500000,
+      "_id": {
+        "$oid": "6a7346638d56fb4cf5b65716"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "6a0478c6b64c06bcffc1271f"
+      },
+      "batchCode": "LO_ATORVASTATIN_001",
+      "expiryDate": {
+        "$date": "2027-08-01T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-01T00:00:00.000Z"
+      },
+      "quantity": 50,
+      "price": 75000,
+      "_id": {
+        "$oid": "6a7346638d56fb4cf5b65717"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "6a047a92b64c06bcffc1290a"
+      },
+      "batchCode": "LO_EQUORAL_002",
+      "expiryDate": {
+        "$date": "2027-07-02T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-02T00:00:00.000Z"
+      },
+      "quantity": 30,
+      "price": 575000,
+      "_id": {
+        "$oid": "6a7346638d56fb4cf5b65718"
+      }
+    }
+  ],
+  "totalValue": 37000000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-05T14:19:15.243Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-05T14:19:15.244Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-05T14:19:15.244Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a7349098d56fb4cf5b65aa3"
+  },
+  "code": "PN1785940233314",
+  "type": "IMPORT_SUPPLIER",
+  "status": "COMPLETED",
+  "toBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "supplierName": "DHG",
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c0375b"
+      },
+      "batchCode": "LO_OMEGA_001",
+      "expiryDate": {
+        "$date": "2027-07-10T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-10T00:00:00.000Z"
+      },
+      "quantity": 50,
+      "price": 350000,
+      "_id": {
+        "$oid": "6a7349098d56fb4cf5b65aa4"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c03732"
+      },
+      "batchCode": "LO_ORLISTATRVN_001",
+      "expiryDate": {
+        "$date": "2027-08-02T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-02T00:00:00.000Z"
+      },
+      "quantity": 100,
+      "price": 315000,
+      "_id": {
+        "$oid": "6a7349098d56fb4cf5b65aa5"
+      }
+    }
+  ],
+  "totalValue": 49000000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-05T14:30:33.315Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-05T14:30:33.316Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-05T14:30:33.316Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a7349c08d56fb4cf5b65cd4"
+  },
+  "code": "PN1785940416255",
+  "type": "IMPORT_SUPPLIER",
+  "status": "COMPLETED",
+  "toBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "supplierName": "DHG",
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69e5f182a6838d6ef88af491"
+      },
+      "batchCode": "LO_POVIDINE90_002",
+      "expiryDate": {
+        "$date": "2027-08-03T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-03T00:00:00.000Z"
+      },
+      "quantity": 100,
+      "price": 15000,
+      "_id": {
+        "$oid": "6a7349c08d56fb4cf5b65cd5"
+      }
+    }
+  ],
+  "totalValue": 1500000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-05T14:33:36.256Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-05T14:33:36.256Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-05T14:33:36.256Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a734d5b8d56fb4cf5b66cc5"
+  },
+  "code": "PX1785941339026",
+  "type": "EXPORT_TO_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "toBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c0360d"
+      },
+      "batchCode": "LO_AUSMUCO_001",
+      "expiryDate": {
+        "$date": "2027-07-05T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-05T00:00:00.000Z"
+      },
+      "quantity": 10,
+      "price": 50000,
+      "_id": {
+        "$oid": "6a734d5b8d56fb4cf5b66cc6"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-05T14:48:59.027Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-05T14:48:59.027Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-05T14:49:42.866Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a734df78d56fb4cf5b6723f"
+  },
+  "code": "PX1785941495113",
+  "type": "EXPORT_TO_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "toBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c03623"
+      },
+      "batchCode": "LO_BISOLVON_001",
+      "expiryDate": {
+        "$date": "2027-07-07T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-07T00:00:00.000Z"
+      },
+      "quantity": 10,
+      "price": 1833.3333333333333,
+      "_id": {
+        "$oid": "6a734df78d56fb4cf5b67240"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-05T14:51:35.114Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-05T14:51:35.114Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-05T14:51:49.745Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a734e388d56fb4cf5b675c2"
+  },
+  "code": "PX1785941560797",
+  "type": "EXPORT_TO_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "toBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69e5f182a6838d6ef88af491"
+      },
+      "batchCode": "LO_POVIDINE90_001",
+      "expiryDate": {
+        "$date": "2027-07-13T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-13T00:00:00.000Z"
+      },
+      "quantity": 70,
+      "price": 15000,
+      "_id": {
+        "$oid": "6a734e388d56fb4cf5b675c3"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "69e5f182a6838d6ef88af491"
+      },
+      "batchCode": "LO_POVIDINE90_002",
+      "expiryDate": {
+        "$date": "2027-08-03T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-03T00:00:00.000Z"
+      },
+      "quantity": 10,
+      "price": 15000,
+      "_id": {
+        "$oid": "6a734e388d56fb4cf5b675c4"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-05T14:52:40.798Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-05T14:52:40.799Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-05T14:52:54.253Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a79981cf56d0821d584c98a"
+  },
+  "code": "PN1786353692250",
+  "type": "IMPORT_SUPPLIER",
+  "status": "COMPLETED",
+  "toBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "supplierName": "DHG",
+  "createdBy": {
+    "$oid": "6978c3c01467ef891161fc6a"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c0371c"
+      },
+      "batchCode": "LO_TELFAST_001",
+      "expiryDate": {
+        "$date": "2027-08-03T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-03T00:00:00.000Z"
+      },
+      "quantity": 10,
+      "price": 10000,
+      "_id": {
+        "$oid": "6a79981cf56d0821d584c98b"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c0371c"
+      },
+      "batchCode": "LO_TELFAST_002",
+      "expiryDate": {
+        "$date": "2027-08-02T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-02T00:00:00.000Z"
+      },
+      "quantity": 20,
+      "price": 12000,
+      "_id": {
+        "$oid": "6a79981cf56d0821d584c98c"
+      }
+    }
+  ],
+  "totalValue": 340000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-10T09:21:32.252Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-10T09:21:32.253Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-10T09:21:32.253Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a79ba2c78d663204a3f85d9"
+  },
+  "code": "PN1786362412337",
+  "type": "IMPORT_SUPPLIER",
+  "status": "COMPLETED",
+  "toBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "supplierName": "DHG",
+  "createdBy": {
+    "$oid": "6978c3c01467ef891161fc6a"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a798135f56d0821d584b653"
+      },
+      "batchCode": "LO_AMBROXOL_001",
+      "expiryDate": {
+        "$date": "2027-08-03T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-03T00:00:00.000Z"
+      },
+      "quantity": 20,
+      "price": 110000,
+      "_id": {
+        "$oid": "6a79ba2c78d663204a3f85da"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "6a798135f56d0821d584b653"
+      },
+      "batchCode": "LO_AMBROXOL _002",
+      "expiryDate": {
+        "$date": "2027-08-02T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-02T00:00:00.000Z"
+      },
+      "quantity": 10,
+      "price": 110000,
+      "_id": {
+        "$oid": "6a79ba2c78d663204a3f85db"
+      }
+    }
+  ],
+  "totalValue": 3300000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-10T11:46:52.339Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-10T11:46:52.340Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-10T11:46:52.340Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a79bd9b78d663204a3f87d0"
+  },
+  "code": "PN1786363291580",
+  "type": "IMPORT_SUPPLIER",
+  "status": "COMPLETED",
+  "toBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "supplierName": "Pymepharco",
+  "createdBy": {
+    "$oid": "6978c3c01467ef891161fc6a"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a798135f56d0821d584b653"
+      },
+      "batchCode": "LO_AMBROXOL_001",
+      "expiryDate": {
+        "$date": "2027-08-03T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-03T00:00:00.000Z"
+      },
+      "quantity": 10,
+      "price": 110000,
+      "_id": {
+        "$oid": "6a79bd9b78d663204a3f87d1"
+      }
+    }
+  ],
+  "totalValue": 1100000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-10T12:01:31.581Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-10T12:01:31.583Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-10T12:01:31.583Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a79c09b78d663204a3f8a25"
+  },
+  "code": "PN1786364059250",
+  "type": "IMPORT_SUPPLIER",
+  "status": "COMPLETED",
+  "toBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "supplierName": "Traphaco",
+  "createdBy": {
+    "$oid": "6978c3c01467ef891161fc6a"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a798135f56d0821d584b653"
+      },
+      "batchCode": "LO_AMBROXOL_001",
+      "expiryDate": {
+        "$date": "2027-08-03T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-03T00:00:00.000Z"
+      },
+      "quantity": 5,
+      "price": 95000,
+      "_id": {
+        "$oid": "6a79c09b78d663204a3f8a26"
+      }
+    }
+  ],
+  "totalValue": 475000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-10T12:14:19.251Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-10T12:14:19.252Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-10T12:14:19.252Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a79c1c178d663204a3f8c87"
+  },
+  "code": "PN1786364353406",
+  "type": "IMPORT_SUPPLIER",
+  "status": "COMPLETED",
+  "toBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "supplierName": "DHG",
+  "createdBy": {
+    "$oid": "6978c3c01467ef891161fc6a"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c036fb"
+      },
+      "batchCode": "LO_NHATNHAT_001",
+      "expiryDate": {
+        "$date": "2027-08-06T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-06T00:00:00.000Z"
+      },
+      "quantity": 10,
+      "price": 100000,
+      "_id": {
+        "$oid": "6a79c1c178d663204a3f8c88"
+      }
+    }
+  ],
+  "totalValue": 1000000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-10T12:19:13.407Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-10T12:19:13.408Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-10T12:19:13.408Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a79c8b678d663204a3f9248"
+  },
+  "code": "PX1786366134767",
+  "type": "EXPORT_TO_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "toBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c3c01467ef891161fc6a"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a798135f56d0821d584b653"
+      },
+      "batchCode": "LO_AMBROXOL _002",
+      "expiryDate": {
+        "$date": "2027-08-02T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-02T00:00:00.000Z"
+      },
+      "quantity": 10,
+      "price": 110000,
+      "_id": {
+        "$oid": "6a79c8b678d663204a3f9249"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "6a798135f56d0821d584b653"
+      },
+      "batchCode": "LO_AMBROXOL_001",
+      "expiryDate": {
+        "$date": "2027-08-03T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-03T00:00:00.000Z"
+      },
+      "quantity": 20,
+      "price": 110000,
+      "_id": {
+        "$oid": "6a79c8b678d663204a3f924a"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-10T12:48:54.768Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-10T12:48:54.769Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-10T13:06:55.232Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a79e00378d663204a3f9a90"
+  },
+  "code": "PX1786372099764",
+  "type": "EXPORT_TO_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "toBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c3c01467ef891161fc6a"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a0478c6b64c06bcffc1271f"
+      },
+      "batchCode": "LO_ATORVASTATIN_001",
+      "expiryDate": {
+        "$date": "2027-08-01T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-01T00:00:00.000Z"
+      },
+      "quantity": 10,
+      "price": 75000,
+      "_id": {
+        "$oid": "6a79e00378d663204a3f9a91"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-10T14:28:19.765Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-10T14:28:19.765Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-10T14:28:30.062Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a79e25c78d663204a3f9af7"
+  },
+  "code": "HD1786372700295",
+  "type": "SALE_AT_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c4af1467ef891161fc6d"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a0478c6b64c06bcffc1271f"
+      },
+      "batchCode": "LO_ATORVASTATIN_001",
+      "expiryDate": {
+        "$date": "2027-08-01T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-01T00:00:00.000Z"
+      },
+      "quantity": 1,
+      "price": 75000,
+      "costPrice": 75000,
+      "_id": {
+        "$oid": "6a79e25c78d663204a3f9af8"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "6a047a92b64c06bcffc1290a"
+      },
+      "batchCode": "LO_EQUORAL_001",
+      "expiryDate": {
+        "$date": "2027-07-12T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-12T00:00:00.000Z"
+      },
+      "quantity": 1,
+      "price": 600000,
+      "costPrice": 550000,
+      "_id": {
+        "$oid": "6a79e25c78d663204a3f9af9"
+      }
+    }
+  ],
+  "customerId": {
+    "$oid": "6a79e25c78d663204a3f9ae5"
+  },
+  "customerName": "Nguyen Van A",
+  "customerPhone": "0369019203",
+  "paymentMethod": "QR",
+  "totalAmount": 675000,
+  "date": {
+    "$date": "2026-08-10T14:38:20.296Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-10T14:38:20.296Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-10T14:38:20.296Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a79e64678d663204a3f9bb4"
+  },
+  "code": "HD1786373702386",
+  "type": "SALE_AT_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c4af1467ef891161fc6d"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a798135f56d0821d584b653"
+      },
+      "batchCode": "LO_AMBROXOL_001",
+      "expiryDate": {
+        "$date": "2027-08-03T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-03T00:00:00.000Z"
+      },
+      "quantity": 1,
+      "price": 130000,
+      "costPrice": 110000,
+      "_id": {
+        "$oid": "6a79e64678d663204a3f9bb5"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "Khách lẻ",
+  "customerPhone": "",
+  "paymentMethod": "QR",
+  "totalAmount": 130000,
+  "date": {
+    "$date": "2026-08-10T14:55:02.387Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-10T14:55:02.388Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-10T14:55:02.388Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a7a0943ae6fb97ab8ea3e42"
+  },
+  "code": "PN1786382659468",
+  "type": "IMPORT_SUPPLIER",
+  "status": "COMPLETED",
+  "toBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "supplierName": "DHG",
+  "createdBy": {
+    "$oid": "6978c3c01467ef891161fc6a"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c03748"
+      },
+      "batchCode": "LO_ORLISTAT_001",
+      "expiryDate": {
+        "$date": "2027-08-06T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-06T00:00:00.000Z"
+      },
+      "quantity": 10,
+      "price": 90000,
+      "_id": {
+        "$oid": "6a7a0943ae6fb97ab8ea3e43"
+      }
+    }
+  ],
+  "totalValue": 900000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-10T17:24:19.471Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-10T17:24:19.472Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-10T17:24:19.472Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a7a09e6ae6fb97ab8ea43c6"
+  },
+  "code": "PN1786382822897",
+  "type": "IMPORT_SUPPLIER",
+  "status": "COMPLETED",
+  "toBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "supplierName": "DHG",
+  "createdBy": {
+    "$oid": "6978c3c01467ef891161fc6a"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c03787"
+      },
+      "batchCode": "LO_AZITHROMYCIN_001",
+      "expiryDate": {
+        "$date": "2027-08-06T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-06T00:00:00.000Z"
+      },
+      "quantity": 2,
+      "price": 25000,
+      "_id": {
+        "$oid": "6a7a09e6ae6fb97ab8ea43c7"
+      }
+    }
+  ],
+  "totalValue": 50000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-10T17:27:02.898Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-10T17:27:02.899Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-10T17:27:02.899Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a7a0a9aae6fb97ab8ea4474"
+  },
+  "code": "PH1786383002639",
+  "type": "DISPOSAL",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "createdBy": {
+    "$oid": "6978c3c01467ef891161fc6a"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c03787"
+      },
+      "batchCode": "LO_AZITHROMYCIN_001",
+      "expiryDate": {
+        "$date": "2027-08-06T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-06T00:00:00.000Z"
+      },
+      "quantity": 2,
+      "price": 25000,
+      "reason": "DAMAGED",
+      "_id": {
+        "$oid": "6a7a0a9aae6fb97ab8ea4475"
+      }
+    }
+  ],
+  "totalValue": 50000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-10T17:30:02.640Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-10T17:30:02.642Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-10T17:30:02.642Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a7a11a4ae6fb97ab8ea5686"
+  },
+  "code": "PH1786384804644",
+  "type": "DISPOSAL",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "createdBy": {
+    "$oid": "6978c3c01467ef891161fc6a"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69e5f117a6838d6ef88af39e"
+      },
+      "batchCode": "LO_POVIDINE20_001",
+      "expiryDate": {
+        "$date": "2027-07-13T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-13T00:00:00.000Z"
+      },
+      "quantity": 10,
+      "price": 4500,
+      "reason": "DAMAGED",
+      "_id": {
+        "$oid": "6a7a11a4ae6fb97ab8ea5687"
+      }
+    }
+  ],
+  "totalValue": 45000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-10T18:00:04.645Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-10T18:00:04.646Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-10T18:00:04.646Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a82a7751f83898d09b4d25b"
+  },
+  "code": "PX1786947445979",
+  "type": "EXPORT_TO_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "toBranch": {
+    "$oid": "69bbeb6046db36be1ce4ab85"
+  },
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c0371c"
+      },
+      "batchCode": "LO_TELFAST_002",
+      "expiryDate": {
+        "$date": "2027-08-02T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-02T00:00:00.000Z"
+      },
+      "quantity": 5,
+      "price": 12000,
+      "_id": {
+        "$oid": "6a82a7751f83898d09b4d25c"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c03719"
+      },
+      "batchCode": "LO_TELFAST_002",
+      "expiryDate": {
+        "$date": "2027-08-02T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-02T00:00:00.000Z"
+      },
+      "quantity": 10,
+      "price": 400,
+      "_id": {
+        "$oid": "6a82a7751f83898d09b4d25d"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-17T06:17:25.983Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-17T06:17:25.984Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-17T06:18:33.432Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a82aaa21f83898d09b4dc20"
+  },
+  "code": "HD1786948258748",
+  "type": "SALE_AT_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "69bbeb6046db36be1ce4ab85"
+  },
+  "createdBy": {
+    "$oid": "69d8c69eb1315087727b00af"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c0371c"
+      },
+      "batchCode": "LO_TELFAST_002",
+      "expiryDate": {
+        "$date": "2027-08-02T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-02T00:00:00.000Z"
+      },
+      "quantity": 1,
+      "price": 13000,
+      "costPrice": 12000,
+      "_id": {
+        "$oid": "6a82aaa21f83898d09b4dc21"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c03719"
+      },
+      "batchCode": "LO_TELFAST_002",
+      "expiryDate": {
+        "$date": "2027-08-02T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-02T00:00:00.000Z"
+      },
+      "quantity": 2,
+      "price": 500,
+      "costPrice": 400,
+      "_id": {
+        "$oid": "6a82aaa21f83898d09b4dc22"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "Khách lẻ",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 14000,
+  "date": {
+    "$date": "2026-08-17T06:30:58.749Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-17T06:30:58.750Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-17T06:30:58.750Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a82ac5a1f83898d09b4e1f7"
+  },
+  "code": "PT1786948698267",
+  "type": "RETURN_TO_WAREHOUSE",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "69bbeb6046db36be1ce4ab85"
+  },
+  "toBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "createdBy": {
+    "$oid": "69d8c69eb1315087727b00af"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c0371c"
+      },
+      "batchCode": "LO_TELFAST_002",
+      "expiryDate": {
+        "$date": "2027-08-02T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-02T00:00:00.000Z"
+      },
+      "quantity": 1,
+      "price": 12000,
+      "reason": "OVERSTOCK",
+      "_id": {
+        "$oid": "6a82ac5a1f83898d09b4e1f8"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c0371c"
+      },
+      "batchCode": "LO_TELFAST_002",
+      "expiryDate": {
+        "$date": "2027-08-02T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-02T00:00:00.000Z"
+      },
+      "quantity": 1,
+      "price": 12000,
+      "reason": "DAMAGED",
+      "_id": {
+        "$oid": "6a82ac5a1f83898d09b4e1f9"
+      }
+    }
+  ],
+  "totalValue": 24000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-17T06:38:18.268Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-17T06:38:18.269Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-17T06:42:00.797Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a82ae2c1f83898d09b4e89c"
+  },
+  "code": "PX1786949164160",
+  "type": "EXPORT_TO_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "toBranch": {
+    "$oid": "69bbeb6046db36be1ce4ab85"
+  },
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c0371c"
+      },
+      "batchCode": "LO_TELFAST_002",
+      "expiryDate": {
+        "$date": "2027-08-02T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-02T00:00:00.000Z"
+      },
+      "quantity": 14,
+      "price": 12000,
+      "_id": {
+        "$oid": "6a82ae2c1f83898d09b4e89d"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c0371c"
+      },
+      "batchCode": "LO_TELFAST_001",
+      "expiryDate": {
+        "$date": "2027-08-03T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-03T00:00:00.000Z"
+      },
+      "quantity": 1,
+      "price": 10000,
+      "_id": {
+        "$oid": "6a82ae2c1f83898d09b4e89e"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-17T06:46:04.160Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-17T06:46:04.161Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-17T07:02:01.955Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a82b0e31f83898d09b4f1a3"
+  },
+  "code": "HD1786949859476",
+  "type": "SALE_AT_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "697c870a6b09b0e1bbb2bd94"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69e5f117a6838d6ef88af39e"
+      },
+      "batchCode": "LO_POVIDINE20_001",
+      "expiryDate": {
+        "$date": "2027-07-13T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-13T00:00:00.000Z"
+      },
+      "quantity": 2,
+      "price": 8000,
+      "costPrice": 4500,
+      "_id": {
+        "$oid": "6a82b0e31f83898d09b4f1a4"
+      }
+    }
+  ],
+  "customerId": {
+    "$oid": "69d8c5bf6138917ab3c0607d"
+  },
+  "customerName": "Phương Tâm",
+  "customerPhone": "0843577368",
+  "paymentMethod": "QR",
+  "totalAmount": 16000,
+  "date": {
+    "$date": "2026-08-17T06:57:39.477Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-17T06:57:39.478Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-17T06:57:39.478Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a82b21b1f83898d09b4fa3d"
+  },
+  "code": "HD1786950171479",
+  "type": "SALE_AT_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "69bbeb6046db36be1ce4ab85"
+  },
+  "createdBy": {
+    "$oid": "69d8c69eb1315087727b00af"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c0371c"
+      },
+      "batchCode": "LO_TELFAST_002",
+      "expiryDate": {
+        "$date": "2027-08-02T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-02T00:00:00.000Z"
+      },
+      "quantity": 15,
+      "price": 13000,
+      "costPrice": 12000,
+      "_id": {
+        "$oid": "6a82b21b1f83898d09b4fa3e"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "Khách lẻ",
+  "customerPhone": "",
+  "paymentMethod": "QR",
+  "totalAmount": 195000,
+  "date": {
+    "$date": "2026-08-17T07:02:51.480Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-17T07:02:51.481Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-17T07:02:51.481Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a82b24c1f83898d09b4fa67"
+  },
+  "code": "HD1786950220301",
+  "type": "SALE_AT_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "69bbeb6046db36be1ce4ab85"
+  },
+  "createdBy": {
+    "$oid": "69d8c69eb1315087727b00af"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c0371c"
+      },
+      "batchCode": "LO_TELFAST_002",
+      "expiryDate": {
+        "$date": "2027-08-02T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-02T00:00:00.000Z"
+      },
+      "quantity": 1,
+      "price": 13000,
+      "costPrice": 12000,
+      "_id": {
+        "$oid": "6a82b24c1f83898d09b4fa68"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c03719"
+      },
+      "batchCode": "LO_TELFAST_002",
+      "expiryDate": {
+        "$date": "2027-08-02T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-02T00:00:00.000Z"
+      },
+      "quantity": 8,
+      "price": 500,
+      "costPrice": 400,
+      "_id": {
+        "$oid": "6a82b24c1f83898d09b4fa69"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "69d8b9176138917ab3c03719"
+      },
+      "batchCode": "LO_TELFAST_001",
+      "expiryDate": {
+        "$date": "2027-08-03T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-03T00:00:00.000Z"
+      },
+      "quantity": 1,
+      "price": 500,
+      "costPrice": 333.3333333333333,
+      "_id": {
+        "$oid": "6a82b24c1f83898d09b4fa6a"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "Khách lẻ",
+  "customerPhone": "",
+  "paymentMethod": "QR",
+  "totalAmount": 17500,
+  "date": {
+    "$date": "2026-08-17T07:03:40.303Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-17T07:03:40.305Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-17T07:03:40.305Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a8487f343665d99fe47468c"
+  },
+  "code": "HD1787070451156",
+  "type": "SALE_AT_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c4af1467ef891161fc6d"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69e5f117a6838d6ef88af39e"
+      },
+      "batchCode": "LO_POVIDINE20_001",
+      "expiryDate": {
+        "$date": "2027-07-13T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-13T00:00:00.000Z"
+      },
+      "quantity": 28,
+      "price": 8000,
+      "costPrice": 4500,
+      "_id": {
+        "$oid": "6a8487f343665d99fe47468d"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "Khách lẻ",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 224000,
+  "date": {
+    "$date": "2026-08-18T16:27:31.160Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-18T16:27:31.163Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-18T16:27:31.163Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a8489fa43665d99fe474acb"
+  },
+  "code": "HD1787070970502",
+  "type": "SALE_AT_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c4af1467ef891161fc6d"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69e5f182a6838d6ef88af491"
+      },
+      "batchCode": "LO_POVIDINE90_001",
+      "expiryDate": {
+        "$date": "2027-07-13T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-13T00:00:00.000Z"
+      },
+      "quantity": 1,
+      "price": 18000,
+      "costPrice": 15000,
+      "_id": {
+        "$oid": "6a8489fa43665d99fe474acc"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "Khách lẻ",
+  "customerPhone": "",
+  "paymentMethod": "QR",
+  "totalAmount": 18000,
+  "date": {
+    "$date": "2026-08-18T16:36:10.504Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-18T16:36:10.505Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-18T16:36:10.505Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a8498bd43665d99fe4756c9"
+  },
+  "code": "PN1787074749037",
+  "type": "IMPORT_SUPPLIER",
+  "status": "COMPLETED",
+  "toBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "supplierName": "DHG",
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a84982d43665d99fe475218"
+      },
+      "batchCode": "LO_TEST_001",
+      "expiryDate": {
+        "$date": "2027-08-18T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-18T00:00:00.000Z"
+      },
+      "quantity": 5,
+      "price": 100000,
+      "_id": {
+        "$oid": "6a8498bd43665d99fe4756ca"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "6a84982d43665d99fe475218"
+      },
+      "batchCode": "LO_TEST_002",
+      "expiryDate": {
+        "$date": "2027-08-17T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-17T00:00:00.000Z"
+      },
+      "quantity": 5,
+      "price": 130000,
+      "_id": {
+        "$oid": "6a8498bd43665d99fe4756cb"
+      }
+    }
+  ],
+  "totalValue": 1150000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-18T17:39:09.039Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-18T17:39:09.040Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-18T17:39:09.040Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a849a2043665d99fe475ed9"
+  },
+  "code": "PN1787075104765",
+  "type": "IMPORT_SUPPLIER",
+  "status": "COMPLETED",
+  "toBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "supplierName": "DHG",
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a8499c743665d99fe475a18"
+      },
+      "batchCode": "LO_LOPERAMIDE_001",
+      "expiryDate": {
+        "$date": "2027-08-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-08T00:00:00.000Z"
+      },
+      "quantity": 10,
+      "price": 100000,
+      "_id": {
+        "$oid": "6a849a2043665d99fe475eda"
+      }
+    }
+  ],
+  "totalValue": 1000000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-18T17:45:04.767Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-18T17:45:04.767Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-18T17:45:04.767Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a849b1643665d99fe47624d"
+  },
+  "code": "PX1787075350776",
+  "type": "EXPORT_TO_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "toBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a8499c743665d99fe475a18"
+      },
+      "batchCode": "LO_LOPERAMIDE_001",
+      "expiryDate": {
+        "$date": "2027-08-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-08T00:00:00.000Z"
+      },
+      "quantity": 5,
+      "price": 100000,
+      "_id": {
+        "$oid": "6a849b1643665d99fe47624e"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-18T17:49:10.777Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-18T17:49:10.778Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-18T17:51:55.698Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a849b7243665d99fe4765d5"
+  },
+  "code": "PN1787075442384",
+  "type": "IMPORT_SUPPLIER",
+  "status": "COMPLETED",
+  "toBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "supplierName": "Pymepharco",
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a8499c743665d99fe475a18"
+      },
+      "batchCode": "LO_LOPERAMIDE_002",
+      "expiryDate": {
+        "$date": "2027-08-10T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-10T00:00:00.000Z"
+      },
+      "quantity": 5,
+      "price": 130000,
+      "_id": {
+        "$oid": "6a849b7243665d99fe4765d6"
+      }
+    }
+  ],
+  "totalValue": 650000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-18T17:50:42.385Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-18T17:50:42.386Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-18T17:50:42.386Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a849c0943665d99fe476eae"
+  },
+  "code": "PX1787075593280",
+  "type": "EXPORT_TO_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "toBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a8499c743665d99fe475a18"
+      },
+      "batchCode": "LO_LOPERAMIDE_001",
+      "expiryDate": {
+        "$date": "2027-08-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-08T00:00:00.000Z"
+      },
+      "quantity": 5,
+      "price": 100000,
+      "_id": {
+        "$oid": "6a849c0943665d99fe476eaf"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "6a8499c743665d99fe475a18"
+      },
+      "batchCode": "LO_LOPERAMIDE_002",
+      "expiryDate": {
+        "$date": "2027-08-10T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-10T00:00:00.000Z"
+      },
+      "quantity": 1,
+      "price": 130000,
+      "_id": {
+        "$oid": "6a849c0943665d99fe476eb0"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-18T17:53:13.281Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-18T17:53:13.282Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-18T17:54:57.985Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a849d2643665d99fe477196"
+  },
+  "code": "HD1787075878140",
+  "type": "SALE_AT_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c4af1467ef891161fc6d"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a8499c743665d99fe475a18"
+      },
+      "batchCode": "LO_LOPERAMIDE_001",
+      "expiryDate": {
+        "$date": "2027-08-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-08T00:00:00.000Z"
+      },
+      "quantity": 9,
+      "price": 138000,
+      "costPrice": 100000,
+      "_id": {
+        "$oid": "6a849d2643665d99fe477197"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "6a8499e243665d99fe475b2e"
+      },
+      "batchCode": "LO_LOPERAMIDE_001",
+      "expiryDate": {
+        "$date": "2027-08-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-08T00:00:00.000Z"
+      },
+      "quantity": 10,
+      "price": 1380,
+      "costPrice": 1000,
+      "_id": {
+        "$oid": "6a849d2643665d99fe477198"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "Khách lẻ",
+  "customerPhone": "",
+  "paymentMethod": "QR",
+  "totalAmount": 1255800,
+  "date": {
+    "$date": "2026-08-18T17:57:58.142Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-18T17:57:58.143Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-18T17:57:58.143Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a849e0443665d99fe4771d6"
+  },
+  "code": "HD1787076100122",
+  "type": "SALE_AT_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c4af1467ef891161fc6d"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a047a92b64c06bcffc1290a"
+      },
+      "batchCode": "LO_EQUORAL_001",
+      "expiryDate": {
+        "$date": "2027-07-12T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-12T00:00:00.000Z"
+      },
+      "quantity": 1,
+      "price": 600000,
+      "costPrice": 550000,
+      "_id": {
+        "$oid": "6a849e0443665d99fe4771d7"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "Khách lẻ",
+  "customerPhone": "",
+  "paymentMethod": "QR",
+  "totalAmount": 600000,
+  "date": {
+    "$date": "2026-08-18T18:01:40.123Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-18T18:01:40.124Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-18T18:01:40.124Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a849e2e43665d99fe47729f"
+  },
+  "code": "HD1787076142635",
+  "type": "SALE_AT_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c4af1467ef891161fc6d"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a8499c743665d99fe475a18"
+      },
+      "batchCode": "LO_LOPERAMIDE_001",
+      "expiryDate": {
+        "$date": "2027-08-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-08T00:00:00.000Z"
+      },
+      "quantity": 0.9,
+      "price": 138000,
+      "costPrice": 100000,
+      "_id": {
+        "$oid": "6a849e2e43665d99fe4772a0"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "6a8499c743665d99fe475a18"
+      },
+      "batchCode": "LO_LOPERAMIDE_002",
+      "expiryDate": {
+        "$date": "2027-08-10T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-10T00:00:00.000Z"
+      },
+      "quantity": 0.1,
+      "price": 138000,
+      "costPrice": 130000,
+      "_id": {
+        "$oid": "6a849e2e43665d99fe4772a1"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "Khách lẻ",
+  "customerPhone": "",
+  "paymentMethod": "QR",
+  "totalAmount": 138000,
+  "date": {
+    "$date": "2026-08-18T18:02:22.637Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-18T18:02:22.638Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-18T18:02:22.638Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a849ebb43665d99fe4775d4"
+  },
+  "code": "PN1787076283649",
+  "type": "IMPORT_SUPPLIER",
+  "status": "COMPLETED",
+  "toBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "supplierName": "DHG",
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a8499e243665d99fe475b2e"
+      },
+      "batchCode": "LO_LOPERAMIDE_001",
+      "expiryDate": {
+        "$date": "2027-08-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-08T00:00:00.000Z"
+      },
+      "quantity": 10,
+      "price": 1000,
+      "_id": {
+        "$oid": "6a849ebb43665d99fe4775d5"
+      }
+    }
+  ],
+  "totalValue": 10000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-18T18:04:43.650Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-18T18:04:43.651Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-18T18:04:43.651Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a849ed843665d99fe477918"
+  },
+  "code": "PX1787076312315",
+  "type": "EXPORT_TO_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "toBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a8499c743665d99fe475a18"
+      },
+      "batchCode": "LO_LOPERAMIDE_002",
+      "expiryDate": {
+        "$date": "2027-08-10T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-10T00:00:00.000Z"
+      },
+      "quantity": 1,
+      "price": 130000,
+      "_id": {
+        "$oid": "6a849ed843665d99fe477919"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-18T18:05:12.315Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-18T18:05:12.316Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-18T18:05:42.164Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a849f2143665d99fe477b71"
+  },
+  "code": "PX1787076385464",
+  "type": "EXPORT_TO_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "toBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a8499e243665d99fe475b2e"
+      },
+      "batchCode": "LO_LOPERAMIDE_001",
+      "expiryDate": {
+        "$date": "2027-08-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-08T00:00:00.000Z"
+      },
+      "quantity": 5,
+      "price": 1000,
+      "_id": {
+        "$oid": "6a849f2143665d99fe477b72"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-18T18:06:25.465Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-18T18:06:25.466Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-18T18:06:35.924Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a849f6d43665d99fe477d68"
+  },
+  "code": "HD1787076461628",
+  "type": "SALE_AT_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c4af1467ef891161fc6d"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a8499c743665d99fe475a18"
+      },
+      "batchCode": "LO_LOPERAMIDE_001",
+      "expiryDate": {
+        "$date": "2027-08-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-08T00:00:00.000Z"
+      },
+      "quantity": 0.05,
+      "price": 138000,
+      "costPrice": 100000,
+      "_id": {
+        "$oid": "6a849f6d43665d99fe477d69"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "6a8499c743665d99fe475a18"
+      },
+      "batchCode": "LO_LOPERAMIDE_002",
+      "expiryDate": {
+        "$date": "2027-08-10T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-10T00:00:00.000Z"
+      },
+      "quantity": 0.95,
+      "price": 138000,
+      "costPrice": 130000,
+      "_id": {
+        "$oid": "6a849f6d43665d99fe477d6a"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "Khách lẻ",
+  "customerPhone": "",
+  "paymentMethod": "QR",
+  "totalAmount": 138000,
+  "date": {
+    "$date": "2026-08-18T18:07:41.629Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-18T18:07:41.629Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-18T18:07:41.629Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a84a43589d4053653d69aeb"
+  },
+  "code": "HD1787077685462",
+  "type": "SALE_AT_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c4af1467ef891161fc6d"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a8499e243665d99fe475b2e"
+      },
+      "batchCode": "LO_LOPERAMIDE_002",
+      "expiryDate": {
+        "$date": "2027-08-10T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-10T00:00:00.000Z"
+      },
+      "quantity": 5,
+      "price": 1380,
+      "costPrice": 1300,
+      "_id": {
+        "$oid": "6a84a43589d4053653d69aec"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "Khách lẻ",
+  "customerPhone": "",
+  "paymentMethod": "QR",
+  "totalAmount": 6900,
+  "date": {
+    "$date": "2026-08-18T18:28:05.467Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-18T18:28:05.468Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-18T18:28:05.468Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a84a4a389d4053653d69e52"
+  },
+  "code": "PN1787077795523",
+  "type": "IMPORT_SUPPLIER",
+  "status": "COMPLETED",
+  "toBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "supplierName": "DHG",
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a8499c743665d99fe475a18"
+      },
+      "batchCode": "LO_LOPERAMIDE_001",
+      "expiryDate": {
+        "$date": "2027-08-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-08T00:00:00.000Z"
+      },
+      "quantity": 1,
+      "price": 110000,
+      "_id": {
+        "$oid": "6a84a4a389d4053653d69e53"
+      }
+    }
+  ],
+  "totalValue": 110000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-18T18:29:55.524Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-18T18:29:55.525Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-18T18:29:55.525Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a84a4c289d4053653d69f8e"
+  },
+  "code": "PX1787077826430",
+  "type": "EXPORT_TO_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "toBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a8499c743665d99fe475a18"
+      },
+      "batchCode": "LO_LOPERAMIDE_001",
+      "expiryDate": {
+        "$date": "2027-08-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-08T00:00:00.000Z"
+      },
+      "quantity": 1,
+      "price": 110000,
+      "_id": {
+        "$oid": "6a84a4c289d4053653d69f8f"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "6a8499c743665d99fe475a18"
+      },
+      "batchCode": "LO_LOPERAMIDE_002",
+      "expiryDate": {
+        "$date": "2027-08-10T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-10T00:00:00.000Z"
+      },
+      "quantity": 1,
+      "price": 130000,
+      "_id": {
+        "$oid": "6a84a4c289d4053653d69f90"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-18T18:30:26.431Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-18T18:30:26.432Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-18T18:30:44.064Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a84a54b89d4053653d6a0e7"
+  },
+  "code": "HD1787077963811",
+  "type": "SALE_AT_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c4af1467ef891161fc6d"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a8499e243665d99fe475b2e"
+      },
+      "batchCode": "LO_LOPERAMIDE_001",
+      "expiryDate": {
+        "$date": "2027-08-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-08T00:00:00.000Z"
+      },
+      "quantity": 5,
+      "price": 1380,
+      "costPrice": 1100,
+      "_id": {
+        "$oid": "6a84a54b89d4053653d6a0e8"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "Khách lẻ",
+  "customerPhone": "",
+  "paymentMethod": "QR",
+  "totalAmount": 6900,
+  "date": {
+    "$date": "2026-08-18T18:32:43.813Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-18T18:32:43.814Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-18T18:32:43.814Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a84a56e89d4053653d6a159"
+  },
+  "code": "HD1787077998928",
+  "type": "SALE_AT_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c4af1467ef891161fc6d"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "69e5f182a6838d6ef88af491"
+      },
+      "batchCode": "LO_POVIDINE90_001",
+      "expiryDate": {
+        "$date": "2027-07-13T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-07-13T00:00:00.000Z"
+      },
+      "quantity": 1,
+      "price": 18000,
+      "costPrice": 15000,
+      "_id": {
+        "$oid": "6a84a56e89d4053653d6a15a"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "6a8499c743665d99fe475a18"
+      },
+      "batchCode": "LO_LOPERAMIDE_002",
+      "expiryDate": {
+        "$date": "2027-08-10T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-10T00:00:00.000Z"
+      },
+      "quantity": 1,
+      "price": 138000,
+      "costPrice": 130000,
+      "_id": {
+        "$oid": "6a84a56e89d4053653d6a15b"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "Khách lẻ",
+  "customerPhone": "",
+  "paymentMethod": "QR",
+  "totalAmount": 156000,
+  "date": {
+    "$date": "2026-08-18T18:33:18.930Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-18T18:33:18.931Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-18T18:33:18.931Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a84aa5389d4053653d6b4d1"
+  },
+  "code": "PX1787079251471",
+  "type": "EXPORT_TO_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "toBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a8499c743665d99fe475a18"
+      },
+      "batchCode": "LO_LOPERAMIDE_002",
+      "expiryDate": {
+        "$date": "2027-08-10T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-10T00:00:00.000Z"
+      },
+      "quantity": 1,
+      "price": 130000,
+      "_id": {
+        "$oid": "6a84aa5389d4053653d6b4d2"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "6a8499e243665d99fe475b2e"
+      },
+      "batchCode": "LO_LOPERAMIDE_001",
+      "expiryDate": {
+        "$date": "2027-08-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-08T00:00:00.000Z"
+      },
+      "quantity": 5,
+      "price": 1000,
+      "_id": {
+        "$oid": "6a84aa5389d4053653d6b4d3"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "6a8499e243665d99fe475b2e"
+      },
+      "batchCode": "LO_LOPERAMIDE_002",
+      "expiryDate": {
+        "$date": "2027-08-10T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-10T00:00:00.000Z"
+      },
+      "quantity": 5,
+      "price": 1300,
+      "_id": {
+        "$oid": "6a84aa5389d4053653d6b4d4"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-18T18:54:11.473Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-18T18:54:11.474Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-18T19:06:21.560Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a84aa8d89d4053653d6bc4d"
+  },
+  "code": "PN1787079309818",
+  "type": "IMPORT_SUPPLIER",
+  "status": "COMPLETED",
+  "toBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "supplierName": "DHG",
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a8499e243665d99fe475b2e"
+      },
+      "batchCode": "LO_LOPERAMIDE_001",
+      "expiryDate": {
+        "$date": "2027-08-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-08T00:00:00.000Z"
+      },
+      "quantity": 5,
+      "price": 1000,
+      "_id": {
+        "$oid": "6a84aa8d89d4053653d6bc4e"
+      }
+    }
+  ],
+  "totalValue": 5000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-18T18:55:09.820Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-18T18:55:09.821Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-18T18:55:09.821Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a84aca689d4053653d6bf12"
+  },
+  "code": "PX1787079846918",
+  "type": "EXPORT_TO_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "toBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a8499e243665d99fe475b2e"
+      },
+      "batchCode": "LO_LOPERAMIDE_001",
+      "expiryDate": {
+        "$date": "2027-08-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-08T00:00:00.000Z"
+      },
+      "quantity": 5,
+      "price": 1000,
+      "_id": {
+        "$oid": "6a84aca689d4053653d6bf13"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-18T19:04:06.919Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-18T19:04:06.919Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-18T19:05:30.122Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a85128386ae0993f09b3712"
+  },
+  "code": "PN1787105923820",
+  "type": "IMPORT_SUPPLIER",
+  "status": "COMPLETED",
+  "toBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "supplierName": "DHG",
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a8499c743665d99fe475a18"
+      },
+      "batchCode": "LO_LOPERAMIDE_001",
+      "expiryDate": {
+        "$date": "2027-08-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-08T00:00:00.000Z"
+      },
+      "quantity": 2,
+      "price": 100000,
+      "_id": {
+        "$oid": "6a85128386ae0993f09b3713"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "6a8499e243665d99fe475b2e"
+      },
+      "batchCode": "LO_LOPERAMIDE_001",
+      "expiryDate": {
+        "$date": "2027-08-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-08T00:00:00.000Z"
+      },
+      "quantity": 5,
+      "price": 1000,
+      "_id": {
+        "$oid": "6a85128386ae0993f09b3714"
+      }
+    }
+  ],
+  "totalValue": 205000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-19T02:18:43.828Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-19T02:18:43.830Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-19T02:18:43.830Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a85133286ae0993f09b3e9c"
+  },
+  "code": "PN1787106098856",
+  "type": "IMPORT_SUPPLIER",
+  "status": "COMPLETED",
+  "toBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "supplierName": "DHG",
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a8499e243665d99fe475b2e"
+      },
+      "batchCode": "LO_LOPERAMIDE_002",
+      "expiryDate": {
+        "$date": "2027-08-10T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-10T00:00:00.000Z"
+      },
+      "quantity": 10,
+      "price": 1000,
+      "_id": {
+        "$oid": "6a85133286ae0993f09b3e9d"
+      }
+    }
+  ],
+  "totalValue": 10000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-19T02:21:38.857Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-19T02:21:38.858Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-19T02:21:38.858Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a8515af86ae0993f09b4f3c"
+  },
+  "code": "PN1787106735559",
+  "type": "IMPORT_SUPPLIER",
+  "status": "COMPLETED",
+  "toBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "supplierName": "DHG",
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a84983c43665d99fe475328"
+      },
+      "batchCode": "LO_TEST_001",
+      "expiryDate": {
+        "$date": "2027-08-18T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-18T00:00:00.000Z"
+      },
+      "quantity": 10,
+      "price": 1000,
+      "_id": {
+        "$oid": "6a8515af86ae0993f09b4f3d"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "6a84983c43665d99fe475328"
+      },
+      "batchCode": "LO_TEST_002",
+      "expiryDate": {
+        "$date": "2027-08-17T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-17T00:00:00.000Z"
+      },
+      "quantity": 90,
+      "price": 1000,
+      "_id": {
+        "$oid": "6a8515af86ae0993f09b4f3e"
+      }
+    }
+  ],
+  "totalValue": 100000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-19T02:32:15.560Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-19T02:32:15.562Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-19T02:32:15.562Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a85966339738962c076f5c4"
+  },
+  "code": "PX1787139683279",
+  "type": "EXPORT_TO_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "toBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a8499c743665d99fe475a18"
+      },
+      "batchCode": "LO_LOPERAMIDE_001",
+      "expiryDate": {
+        "$date": "2027-08-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-08T00:00:00.000Z"
+      },
+      "quantity": 2,
+      "price": 100000,
+      "_id": {
+        "$oid": "6a85966339738962c076f5c5"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-19T11:41:23.283Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-19T11:41:23.285Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-19T11:41:31.532Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a8596d839738962c076f733"
+  },
+  "code": "HD1787139800417",
+  "type": "SALE_AT_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c4af1467ef891161fc6d"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a8499e243665d99fe475b2e"
+      },
+      "batchCode": "LO_LOPERAMIDE_001",
+      "expiryDate": {
+        "$date": "2027-08-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-08T00:00:00.000Z"
+      },
+      "quantity": 15,
+      "price": 1380,
+      "costPrice": 1000,
+      "_id": {
+        "$oid": "6a8596d839738962c076f734"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "6a8499c743665d99fe475a18"
+      },
+      "batchCode": "LO_LOPERAMIDE_001",
+      "expiryDate": {
+        "$date": "2027-08-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-08T00:00:00.000Z"
+      },
+      "quantity": 1,
+      "price": 138000,
+      "costPrice": 100000,
+      "_id": {
+        "$oid": "6a8596d839738962c076f735"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "6a8499c743665d99fe475a18"
+      },
+      "batchCode": "LO_LOPERAMIDE_002",
+      "expiryDate": {
+        "$date": "2027-08-10T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-10T00:00:00.000Z"
+      },
+      "quantity": 1,
+      "price": 138000,
+      "costPrice": 130000,
+      "_id": {
+        "$oid": "6a8596d839738962c076f736"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "Khách lẻ",
+  "customerPhone": "",
+  "paymentMethod": "QR",
+  "totalAmount": 296700,
+  "date": {
+    "$date": "2026-08-19T11:43:20.420Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-19T11:43:20.422Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-19T11:43:20.422Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a8597a839738962c076fc94"
+  },
+  "code": "PX1787140008033",
+  "type": "EXPORT_TO_BRANCH",
+  "status": "PENDING",
+  "fromBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "toBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a8499c743665d99fe475a18"
+      },
+      "batchCode": "LO_LOPERAMIDE_001",
+      "expiryDate": {
+        "$date": "2027-08-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-08T00:00:00.000Z"
+      },
+      "quantity": 0.05,
+      "price": 100000,
+      "_id": {
+        "$oid": "6a8597a839738962c076fc95"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "6a8499c743665d99fe475a18"
+      },
+      "batchCode": "LO_LOPERAMIDE_002",
+      "expiryDate": {
+        "$date": "2027-08-10T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-10T00:00:00.000Z"
+      },
+      "quantity": 0.95,
+      "price": 130000,
+      "_id": {
+        "$oid": "6a8597a839738962c076fc96"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-19T11:46:48.034Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-19T11:46:48.034Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-19T11:46:48.034Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a85a99b97b170ded32901fe"
+  },
+  "code": "PN1787144603225",
+  "type": "IMPORT_SUPPLIER",
+  "status": "COMPLETED",
+  "toBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "supplierName": "DHG",
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a85a95497b170ded328fec4"
+      },
+      "batchCode": "LO_TEST2_001",
+      "expiryDate": {
+        "$date": "2027-08-05T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-05T00:00:00.000Z"
+      },
+      "quantity": 10,
+      "price": 100000,
+      "_id": {
+        "$oid": "6a85a99b97b170ded32901ff"
+      }
+    }
+  ],
+  "totalValue": 1000000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-19T13:03:23.227Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-19T13:03:23.229Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-19T13:03:23.229Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a85aa0297b170ded3290e6c"
+  },
+  "code": "PX1787144706980",
+  "type": "EXPORT_TO_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "toBranch": {
+    "$oid": "69bbeb6046db36be1ce4ab85"
+  },
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a85a95497b170ded328fec4"
+      },
+      "batchCode": "LO_TEST2_001",
+      "expiryDate": {
+        "$date": "2027-08-05T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-05T00:00:00.000Z"
+      },
+      "quantity": 5,
+      "price": 100000,
+      "_id": {
+        "$oid": "6a85aa0297b170ded3290e6d"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-19T13:05:06.981Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-19T13:05:06.982Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-19T13:07:57.396Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a85aa4097b170ded32911e0"
+  },
+  "code": "PN1787144768220",
+  "type": "IMPORT_SUPPLIER",
+  "status": "COMPLETED",
+  "toBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "supplierName": "DHG",
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a85a95497b170ded328fec4"
+      },
+      "batchCode": "LO_TEST2_002",
+      "expiryDate": {
+        "$date": "2027-08-01T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-01T00:00:00.000Z"
+      },
+      "quantity": 5,
+      "price": 130000,
+      "_id": {
+        "$oid": "6a85aa4097b170ded32911e1"
+      }
+    }
+  ],
+  "totalValue": 650000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-19T13:06:08.221Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-19T13:06:08.222Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-19T13:06:08.222Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a85aa7a97b170ded3291686"
+  },
+  "code": "PX1787144826912",
+  "type": "EXPORT_TO_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "toBranch": {
+    "$oid": "69bbeb6046db36be1ce4ab85"
+  },
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a85a95497b170ded328fec4"
+      },
+      "batchCode": "LO_TEST2_002",
+      "expiryDate": {
+        "$date": "2027-08-01T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-01T00:00:00.000Z"
+      },
+      "quantity": 5,
+      "price": 130000,
+      "_id": {
+        "$oid": "6a85aa7a97b170ded3291687"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "6a85a95497b170ded328fec4"
+      },
+      "batchCode": "LO_TEST2_001",
+      "expiryDate": {
+        "$date": "2027-08-05T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-05T00:00:00.000Z"
+      },
+      "quantity": 1,
+      "price": 100000,
+      "_id": {
+        "$oid": "6a85aa7a97b170ded3291688"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-19T13:07:06.913Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-19T13:07:06.914Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-19T13:08:00.174Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a85ab1097b170ded32919f4"
+  },
+  "code": "HD1787144976025",
+  "type": "SALE_AT_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "69bbeb6046db36be1ce4ab85"
+  },
+  "createdBy": {
+    "$oid": "69d8c69eb1315087727b00af"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a85a95497b170ded328fec4"
+      },
+      "batchCode": "LO_TEST2_002",
+      "expiryDate": {
+        "$date": "2027-08-01T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-01T00:00:00.000Z"
+      },
+      "quantity": 5,
+      "price": 138000,
+      "costPrice": 130000,
+      "_id": {
+        "$oid": "6a85ab1097b170ded32919f5"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "6a85a95497b170ded328fec4"
+      },
+      "batchCode": "LO_TEST2_001",
+      "expiryDate": {
+        "$date": "2027-08-05T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-05T00:00:00.000Z"
+      },
+      "quantity": 1,
+      "price": 138000,
+      "costPrice": 100000,
+      "_id": {
+        "$oid": "6a85ab1097b170ded32919f6"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "6a85a9d597b170ded329065c"
+      },
+      "batchCode": "LO_TEST2_001",
+      "expiryDate": {
+        "$date": "2027-08-05T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-05T00:00:00.000Z"
+      },
+      "quantity": 10,
+      "price": 1380,
+      "costPrice": 1000,
+      "_id": {
+        "$oid": "6a85ab1097b170ded32919f7"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "Khách lẻ",
+  "customerPhone": "",
+  "paymentMethod": "QR",
+  "totalAmount": 841800,
+  "date": {
+    "$date": "2026-08-19T13:09:36.026Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-19T13:09:36.026Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-19T13:09:36.026Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a86bb72140508bdeaef3c49"
+  },
+  "code": "PN1787214706336",
+  "type": "IMPORT_SUPPLIER",
+  "status": "COMPLETED",
+  "toBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "supplierName": "DHG",
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a86bb08140508bdeaef34d2"
+      },
+      "batchCode": "LO_BISNOL _001",
+      "expiryDate": {
+        "$date": "2027-08-10T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-10T00:00:00.000Z"
+      },
+      "quantity": 10,
+      "price": 100000,
+      "_id": {
+        "$oid": "6a86bb72140508bdeaef3c4a"
+      }
+    }
+  ],
+  "totalValue": 1000000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-20T08:31:46.338Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-20T08:31:46.340Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-20T08:31:46.340Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a86bbac140508bdeaef3eef"
+  },
+  "code": "PX1787214764454",
+  "type": "EXPORT_TO_BRANCH",
+  "status": "PENDING",
+  "fromBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "toBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a86bb08140508bdeaef34d2"
+      },
+      "batchCode": "LO_BISNOL _001",
+      "expiryDate": {
+        "$date": "2027-08-10T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-10T00:00:00.000Z"
+      },
+      "quantity": 5,
+      "price": 100000,
+      "_id": {
+        "$oid": "6a86bbac140508bdeaef3ef0"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-20T08:32:44.455Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-20T08:32:44.456Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-20T08:32:44.456Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a86bbfd140508bdeaef42c8"
+  },
+  "code": "PN1787214845726",
+  "type": "IMPORT_SUPPLIER",
+  "status": "COMPLETED",
+  "toBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "supplierName": "DHG",
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a86bb08140508bdeaef34d2"
+      },
+      "batchCode": "LO_BISNOL_002",
+      "expiryDate": {
+        "$date": "2027-08-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-08T00:00:00.000Z"
+      },
+      "quantity": 5,
+      "price": 130000,
+      "_id": {
+        "$oid": "6a86bbfd140508bdeaef42c9"
+      }
+    }
+  ],
+  "totalValue": 650000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-20T08:34:05.728Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-20T08:34:05.729Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-20T08:34:05.729Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a86bbfe140508bdeaef42cf"
+  },
+  "code": "PN1787214846508",
+  "type": "IMPORT_SUPPLIER",
+  "status": "COMPLETED",
+  "toBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "supplierName": "DHG",
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a86bb08140508bdeaef34d2"
+      },
+      "batchCode": "LO_BISNOL_002",
+      "expiryDate": {
+        "$date": "2027-08-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-08T00:00:00.000Z"
+      },
+      "quantity": 5,
+      "price": 130000,
+      "_id": {
+        "$oid": "6a86bbfe140508bdeaef42d0"
+      }
+    }
+  ],
+  "totalValue": 650000,
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-20T08:34:06.510Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-20T08:34:06.511Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-20T08:34:06.511Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a86bc64140508bdeaef4915"
+  },
+  "code": "PX1787214948531",
+  "type": "EXPORT_TO_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "toBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c1bfbd6e7ca61b13d073"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a86bb08140508bdeaef34d2"
+      },
+      "batchCode": "LO_BISNOL_002",
+      "expiryDate": {
+        "$date": "2027-08-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-08T00:00:00.000Z"
+      },
+      "quantity": 5,
+      "price": 130000,
+      "_id": {
+        "$oid": "6a86bc64140508bdeaef4916"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "6a86bb08140508bdeaef34d2"
+      },
+      "batchCode": "LO_BISNOL_002",
+      "expiryDate": {
+        "$date": "2027-08-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-08T00:00:00.000Z"
+      },
+      "quantity": 5,
+      "price": 130000,
+      "_id": {
+        "$oid": "6a86bc64140508bdeaef4917"
+      }
+    },
+    {
+      "variantId": {
+        "$oid": "6a86bb08140508bdeaef34d2"
+      },
+      "batchCode": "LO_BISNOL _001",
+      "expiryDate": {
+        "$date": "2027-08-10T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-10T00:00:00.000Z"
+      },
+      "quantity": 1,
+      "price": 100000,
+      "_id": {
+        "$oid": "6a86bc64140508bdeaef4918"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "",
+  "customerPhone": "",
+  "paymentMethod": "CASH",
+  "totalAmount": 0,
+  "date": {
+    "$date": "2026-08-20T08:35:48.533Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-20T08:35:48.534Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-20T08:36:34.925Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a86bcd7140508bdeaef4c49"
+  },
+  "code": "HD1787215063004",
+  "type": "SALE_AT_BRANCH",
+  "status": "COMPLETED",
+  "fromBranch": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "createdBy": {
+    "$oid": "6978c4af1467ef891161fc6d"
+  },
+  "details": [
+    {
+      "variantId": {
+        "$oid": "6a86bb08140508bdeaef34d2"
+      },
+      "batchCode": "LO_BISNOL_002",
+      "expiryDate": {
+        "$date": "2027-08-08T00:00:00.000Z"
+      },
+      "manufacturingDate": {
+        "$date": "2026-08-08T00:00:00.000Z"
+      },
+      "quantity": 10,
+      "price": 147000,
+      "costPrice": 130000,
+      "_id": {
+        "$oid": "6a86bcd7140508bdeaef4c4a"
+      }
+    }
+  ],
+  "customerId": null,
+  "customerName": "Khách lẻ",
+  "customerPhone": "",
+  "paymentMethod": "QR",
+  "totalAmount": 1470000,
+  "date": {
+    "$date": "2026-08-20T08:37:43.006Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-20T08:37:43.007Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-20T08:37:43.007Z"
+  },
+  "__v": 0
+}]

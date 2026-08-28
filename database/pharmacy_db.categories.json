@@ -1,0 +1,128 @@
+[{
+  "_id": {
+    "$oid": "6981f88806a08b227fa7ee03"
+  },
+  "name": "Thuốc Kháng Sinh",
+  "description": "Nhóm thuốc điều trị nhiễm khuẩn (Beta-lactam, Macrolid, Quinolon...)",
+  "isActive": true,
+  "createdAt": {
+    "$date": "2026-02-03T13:30:48.638Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-13T08:55:02.123Z"
+  },
+  "__v": 0,
+  "markupPercentage": 0.15
+},
+{
+  "_id": {
+    "$oid": "6981f89606a08b227fa7ee06"
+  },
+  "name": "Thuốc Giảm Đau - Hạ Sốt",
+  "description": "Các thuốc giảm đau, hạ sốt, chống viêm không steroid (Paracetamol, Ibuprofen...)",
+  "isActive": true,
+  "createdAt": {
+    "$date": "2026-02-03T13:31:02.891Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-13T08:55:06.697Z"
+  },
+  "__v": 0,
+  "markupPercentage": 0.2
+},
+{
+  "_id": {
+    "$oid": "6981f89d06a08b227fa7ee09"
+  },
+  "name": "Thuốc Tiêu Hóa",
+  "description": "Điều trị dạ dày, đường ruột, men vi sinh, tiêu chảy, táo bón",
+  "isActive": true,
+  "createdAt": {
+    "$date": "2026-02-03T13:31:09.114Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-13T08:55:13.135Z"
+  },
+  "__v": 0,
+  "markupPercentage": 0.2
+},
+{
+  "_id": {
+    "$oid": "6981f8a206a08b227fa7ee0c"
+  },
+  "name": "Thuốc Tim Mạch - Huyết Áp",
+  "description": "Điều trị cao huyết áp, mỡ máu, suy tim, chống đông máu",
+  "isActive": true,
+  "createdAt": {
+    "$date": "2026-02-03T13:31:14.811Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-13T08:56:58.027Z"
+  },
+  "__v": 0,
+  "markupPercentage": 0.1
+},
+{
+  "_id": {
+    "$oid": "6981f8a706a08b227fa7ee0f"
+  },
+  "name": "Thuốc Hô Hấp",
+  "description": "Điều trị ho, long đờm, hen suyễn, dị ứng mũi",
+  "isActive": true,
+  "createdAt": {
+    "$date": "2026-02-03T13:31:19.753Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-13T08:42:02.710Z"
+  },
+  "__v": 0,
+  "markupPercentage": 0.2
+},
+{
+  "_id": {
+    "$oid": "6981f8b106a08b227fa7ee12"
+  },
+  "name": "Thực Phẩm Chức Năng",
+  "description": "Vitamin, khoáng chất, bổ gan, bổ mắt, tăng cường sức đề kháng",
+  "isActive": true,
+  "createdAt": {
+    "$date": "2026-02-03T13:31:29.763Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-13T08:55:34.884Z"
+  },
+  "__v": 0,
+  "markupPercentage": 0.3
+},
+{
+  "_id": {
+    "$oid": "69c3a38e1bb59ed8c0d4d6bd"
+  },
+  "name": "Thuốc Da Liễu - Dị ứng",
+  "description": "Thuốc điều trị ngoài da ngăn ngừa nhiễm khuẩn, dị ứng",
+  "isActive": true,
+  "createdAt": {
+    "$date": "2026-03-25T08:57:50.285Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-20T03:21:50.957Z"
+  },
+  "__v": 0,
+  "markupPercentage": 0.2
+},
+{
+  "_id": {
+    "$oid": "6a5f59f060608e296e9bed63"
+  },
+  "name": "Danh mục test đồng bộ",
+  "description": "",
+  "isActive": true,
+  "markupPercentage": 0.2,
+  "createdAt": {
+    "$date": "2026-07-21T11:37:20.788Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-21T11:37:20.788Z"
+  },
+  "__v": 0
+}]

@@ -1,0 +1,48 @@
+[{
+  "_id": {
+    "$oid": "6978c2481467ef891161fc65"
+  },
+  "name": "Kho Tổng Dược Phẩm",
+  "address": "Khu Công Nghiệp A, TP.HCM",
+  "phone": "02838999999",
+  "type": "warehouse",
+  "createdAt": {
+    "$date": "2026-01-27T13:48:56.860Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-27T13:48:56.860Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6978c3481467ef891161fc67"
+  },
+  "name": "Nhà Thuốc Số 1 - Cần Thơ",
+  "address": "Ninh Kiều, Cần Thơ",
+  "phone": "02923888888",
+  "type": "store",
+  "createdAt": {
+    "$date": "2026-01-27T13:53:12.588Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-27T13:53:12.588Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69bbeb6046db36be1ce4ab85"
+  },
+  "name": "Nhà Thuốc Số 2 - Cần Thơ",
+  "address": "Ninh Kiều, Cần Thơ",
+  "phone": "0987654321",
+  "type": "store",
+  "createdAt": {
+    "$date": "2026-03-19T12:26:08.106Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-19T12:26:08.106Z"
+  },
+  "__v": 0
+}]

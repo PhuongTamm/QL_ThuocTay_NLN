@@ -1,0 +1,48 @@
+[{
+  "_id": {
+    "$oid": "69bc17fdcbece648ac09491e"
+  },
+  "name": "Test",
+  "phone": "0987654321",
+  "points": 0,
+  "totalSpent": 252500,
+  "createdAt": {
+    "$date": "2026-03-19T15:36:29.555Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-23T12:22:52.626Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8c5bf6138917ab3c0607d"
+  },
+  "name": "Phương Tâm",
+  "phone": "0843577368",
+  "points": 0,
+  "totalSpent": 781100,
+  "createdAt": {
+    "$date": "2026-04-10T09:41:19.618Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-17T06:57:39.482Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a79e25c78d663204a3f9ae5"
+  },
+  "name": "Nguyen Van A",
+  "phone": "0369019203",
+  "points": 0,
+  "totalSpent": 675000,
+  "createdAt": {
+    "$date": "2026-08-10T14:38:20.278Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-10T14:38:20.297Z"
+  },
+  "__v": 0
+}]
