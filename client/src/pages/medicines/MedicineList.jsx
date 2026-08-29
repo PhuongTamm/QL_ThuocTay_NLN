@@ -21,7 +21,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 
-/* ─── Modal wrapper ─── */
 const ModalOverlay = ({ children, onClose }) => (
   <div
     className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
@@ -116,7 +115,6 @@ const MedicineList = () => {
     }
   };
 
-  // Đã thêm tham số e và e.stopPropagation()
   const handleDeleteMedicine = async (e, medicineId) => {
     e.stopPropagation();
     if (
@@ -143,7 +141,6 @@ const MedicineList = () => {
     }
   };
 
-  // Đã thêm tham số e và e.stopPropagation()
   const handleOpenEditModal = (e, med) => {
     e.stopPropagation();
     setEditingMed({ ...med });
@@ -193,7 +190,6 @@ const MedicineList = () => {
     }
   };
 
-  // Đã thêm tham số e và e.stopPropagation()
   const handleDeleteVariant = async (e, variantId) => {
     e.stopPropagation();
     if (
@@ -217,7 +213,6 @@ const MedicineList = () => {
     }
   };
 
-  // Đã thêm tham số e và e.stopPropagation()
   const handleOpenAddVariantModal = (e, med) => {
     e.stopPropagation();
     setSelectedMedicineForVariant(med);
@@ -227,7 +222,7 @@ const MedicineList = () => {
       unit: "Hộp",
       packagingSpecification: "",
       currentPrice: 0,
-      conversionRate: 1, // Reset conversionRate
+      conversionRate: 1, 
     });
     setIsAddVariantModalOpen(true);
   };
@@ -274,7 +269,6 @@ const MedicineList = () => {
     }
   };
 
-  // Đã thêm tham số e và e.stopPropagation()
   const handleOpenEditVariant = (e, variant, med) => {
     e.stopPropagation();
     setEditingVariant({ ...variant });
@@ -343,7 +337,6 @@ const MedicineList = () => {
       return 0;
     });
 
-  /* ─── Shared input style ─── */
   const inputCls =
     "w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#0ea5e9]/30 focus:border-[#0ea5e9] transition bg-white text-slate-800 placeholder:text-slate-400";
   const labelCls =
@@ -363,7 +356,7 @@ const MedicineList = () => {
         }
       `}</style>
       <div className="animate-page-in space-y-6">
-        {/* ── PAGE HEADER ── */}
+        {/* PAGE HEADER */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <div
@@ -398,7 +391,7 @@ const MedicineList = () => {
           </button>
         </div>
 
-        {/* ── SEARCH & FILTER BAR ── */}
+        {/* SEARCH & FILTER BAR */}
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm mb-4 p-4">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
             {/* Search */}
@@ -462,7 +455,7 @@ const MedicineList = () => {
           </div>
         </div>
 
-        {/* ── TABLE ── */}
+        {/* TABLE */}
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
@@ -758,9 +751,7 @@ const MedicineList = () => {
           </div>
         </div>
       </div>
-      {/* ══════════════════════════════════════════
-          LIGHTBOX XEM ẢNH THUỐC
-      ══════════════════════════════════════════ */}
+      {/* LIGHTBOX XEM ẢNH THUỐC */}
       {viewingImages && (
         <div
           className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 backdrop-blur-sm"
@@ -820,9 +811,7 @@ const MedicineList = () => {
         </div>
       )}
 
-      {/* ══════════════════════════════════════════
-          MODAL 1: SỬA THUỐC GỐC
-      ══════════════════════════════════════════ */}
+      {/* MODAL SỬA THUỐC GỐC */}
       {isEditModalOpen && editingMed && (
         <ModalOverlay onClose={() => setIsEditModalOpen(false)}>
           <div
@@ -845,7 +834,6 @@ const MedicineList = () => {
               </button>
             </div>
 
-            {/* Body */}
             <form
               id="editMedicineForm"
               onSubmit={handleSaveEdit}
@@ -926,7 +914,7 @@ const MedicineList = () => {
                 />
               </div>
 
-              {/* Image upload */}
+              {/* upload ảnh */}
               <div className="pt-4 border-t border-slate-100">
                 <label className={labelCls}>Hình ảnh</label>
                 {editingMed.images && editingMed.images.length > 0 && (
@@ -1013,9 +1001,7 @@ const MedicineList = () => {
         </ModalOverlay>
       )}
 
-      {/* ══════════════════════════════════════════
-          MODAL 2: THÊM QUY CÁCH MỚI
-      ══════════════════════════════════════════ */}
+      {/* MODAL THÊM QUY CÁCH MỚI */}
       {isAddVariantModalOpen && selectedMedicineForVariant && (
         <ModalOverlay onClose={() => setIsAddVariantModalOpen(false)}>
           <div
@@ -1203,9 +1189,7 @@ const MedicineList = () => {
         </ModalOverlay>
       )}
 
-      {/* ══════════════════════════════════════════
-          MODAL 3: SỬA QUY CÁCH
-      ══════════════════════════════════════════ */}
+      {/* MODAL SỬA QUY CÁCH */}
       {isEditVariantModalOpen && editingVariant && (
         <ModalOverlay onClose={() => setIsEditVariantModalOpen(false)}>
           <div

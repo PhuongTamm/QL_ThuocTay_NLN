@@ -129,13 +129,13 @@ const Sidebar = () => {
         </h1>
       </div>
 
-      {/* KHU VỰC THÔNG TIN TÀI KHOẢN */}
+      {/* THÔNG TIN TÀI KHOẢN */}
       <Link
         to="/profile"
         className="flex flex-col items-center py-6 border-b border-white/20 hover:bg-white/10 transition-colors cursor-pointer group"
         title="Xem thông tin cá nhân">
         <div className="w-16 h-16 rounded-full flex items-center justify-center text-[#0ea5e9] text-xl font-bold mb-3 shadow-lg shadow-black/10 overflow-hidden border-[3px] border-white bg-white group-hover:scale-105 transition-transform duration-300">
-          {/* HIỂN THỊ ẢNH ĐẠI DIỆN */}
+          {/* ẢNH ĐẠI DIỆN */}
           {user?.avatar ? (
             <img
               src={user.avatar}

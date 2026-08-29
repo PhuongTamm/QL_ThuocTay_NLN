@@ -2,7 +2,7 @@ const Inventory = require("../models/Inventory");
 const MonthlyInventory = require("../models/MonthlyInventory");
 const MedicineVariant = require("../models/MedicineVariant");
 
-// 1. Xem tồn kho hiện tại (Realtime)
+// Xem tồn kho hiện tại 
 exports.getInventoryByBranch = async (req, res) => {
   try {
     
@@ -18,16 +18,16 @@ exports.getInventoryByBranch = async (req, res) => {
       branchId = req.user.branchId;
     }
 
-    // Xây dựng bộ lọc tìm kiếm
+    // bộ lọc tìm kiếm
     const query = {};
     if (branchId) query.branchId = branchId;
 
-    // 2. Tìm tồn kho theo medicineId (Thuốc gốc)
+    // Tìm tồn kho theo medicineId 
     const inventories = await Inventory.find(query)
       .populate("medicineId") // Nối với bảng Medicine
       .lean();
 
-    // 3. Gắn mảng biến thể (Quy cách) vào mỗi thuốc để trả về cho Frontend
+    // Gắn mảng biến thể vào mỗi thuốc để trả về cho Frontend
     for (let inv of inventories) {
       if (inv.medicineId) {
         inv.variants = await MedicineVariant.find({
@@ -38,7 +38,7 @@ exports.getInventoryByBranch = async (req, res) => {
       }
     }
 
-    // 4. Lọc bỏ các data rác (Trường hợp thuốc gốc đã bị xóa nhưng tồn kho vẫn kẹt lại)
+    // Lọc bỏ các data rác (Trường hợp thuốc gốc đã bị xóa nhưng tồn kho vẫn kẹt lại)
     const validInventories = inventories.filter(
       (inv) => inv.medicineId !== null,
     );
@@ -49,7 +49,7 @@ exports.getInventoryByBranch = async (req, res) => {
   }
 };
 
-// 2. Xem báo cáo xuất nhập tồn tháng (Monthly Report)
+// Xem báo cáo xuất nhập tồn tháng (Monthly Report)
 exports.getMonthlyReport = async (req, res) => {
   try {
     const { month, year, warehouseId } = req.query;
@@ -78,7 +78,7 @@ exports.getMonthlyReport = async (req, res) => {
       });
     }
 
-    // 1. Lấy dữ liệu Xuất Nhập Tồn tháng
+    // Lấy dữ liệu Xuất Nhập Tồn tháng
     const report = await MonthlyInventory.find({
       month: Number(month),
       year: Number(year),
@@ -87,12 +87,12 @@ exports.getMonthlyReport = async (req, res) => {
       .populate("medicineId", "code name baseUnit")
       .lean();
 
-    // 2. Lấy Tồn kho hiện tại (để móc ra chi tiết các Lô)
+    // Lấy Tồn kho hiện tại 
     const inventories = await Inventory.find({
       branchId: targetBranchId,
     }).lean();
 
-    // 3. Ghép mảng lô (batches) vào báo cáo tháng
+    // Ghép mảng lô vào báo cáo tháng
     const enrichedReport = report.map((r) => {
       const inv = inventories.find(
         (i) =>
@@ -102,11 +102,11 @@ exports.getMonthlyReport = async (req, res) => {
       );
       return {
         ...r,
-        batches: inv ? inv.batches : [], // Gắn mảng batches vào đây
+        batches: inv ? inv.batches : [], 
       };
     });
 
-    // 4. Sắp xếp theo tên thuốc A-Z
+    // Sắp xếp theo tên thuốc A-Z
     enrichedReport.sort((a, b) => {
       const nameA = a.medicineId?.name || "";
       const nameB = b.medicineId?.name || "";

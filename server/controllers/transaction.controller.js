@@ -6,7 +6,7 @@ const MedicineVariant = require("../models/MedicineVariant");
 const Customer = require("../models/Customer");
 const Branch = require("../models/Branch");
 
-// --- HELPER: Cập nhật sổ cái (Đã đổi variantId thành medicineId) ---
+//Cập nhật báo cáo xuất nhập tồn tháng (Monthly Report)
 const updateMonthlyReport = async (
   warehouseId,
   medicineId,
@@ -61,7 +61,7 @@ const updateMonthlyReport = async (
   }
 };
 
-// 1. NHẬP KHO TỪ NCC (Áp dụng thuật toán Base Unit)
+// NHẬP KHO TỪ NCC 
 exports.importFromSupplier = async (req, res) => {
   try {
     const { items, supplierName } = req.body;
@@ -84,7 +84,7 @@ exports.importFromSupplier = async (req, res) => {
           `Lỗi: Lô hàng ${item.batchCode} chưa được nhập Ngày sản xuất (MFG).`,
         );
       }
-      // BƯỚC 1: LẤY THÔNG TIN QUY ĐỔI TỪ BIẾN THỂ
+      // LẤY THÔNG TIN QUY ĐỔI TỪ BIẾN THỂ
       const variant = await MedicineVariant.findById(item.variantId);
       if (!variant)
         throw new Error(`Không tìm thấy biến thể thuốc ID: ${item.variantId}`);
@@ -94,16 +94,14 @@ exports.importFromSupplier = async (req, res) => {
       const baseQuantity = Number(item.quantity) * variant.conversionRate;
       const baseImportPrice = Number(item.price) / variant.conversionRate;
 
-      // BƯỚC 2: CẬP NHẬT KHO THEO MEDICINE ID VÀ SỐ LƯỢNG CƠ SỞ
+      // CẬP NHẬT KHO THEO MEDICINE ID VÀ SỐ LƯỢNG CƠ SỞ
       let inventory = await Inventory.findOne({
         branchId: currentBranchId,
         medicineId: medicineId,
       });
 
-      // ====================================================================
       // TÍNH TOÁN GIÁ VỐN BÌNH QUÂN GIA QUYỀN (MAC)
       // Công thức: [(Tồn cũ * Giá vốn cũ) + (Nhập mới * Giá nhập mới)] / (Tồn cũ + Nhập mới)
-      // ====================================================================
       const medicine = await Medicine.findById(medicineId);
       if (medicine) {
         const oldTotalQty = inventory ? inventory.totalQuantity : 0;
@@ -118,7 +116,6 @@ exports.importFromSupplier = async (req, res) => {
         medicine.mac = newMac;
         await medicine.save();
       }
-      // =========================================================================
 
       if (!inventory) {
         inventory = new Inventory({
@@ -198,17 +195,15 @@ exports.importFromSupplier = async (req, res) => {
   }
 };
 
-// 2. XUẤT KHO TỔNG -> CHI NHÁNH
+//XUẤT KHO TỔNG -> CHI NHÁNH
 exports.createDistributionRequest = async (req, res) => {
   try {
     const { toBranchId, items } = req.body;
     const fromBranchId = req.user.branchId;
     const details = [];
 
-    // =======================================================================
-    // BƯỚC 1: TIỀN KIỂM TRA (PRE-VALIDATION & AGGREGATION)
-    // Gom tất cả các món hàng cùng một loại thuốc để tính TỔNG yêu cầu
-    // =======================================================================
+    // TIỀN KIỂM TRA 
+    // Gom tất cả các lô cùng một loại thuốc để tính tổng yêu cầu
     const requiredQuantities = {};
     const today = new Date();
 
@@ -230,7 +225,7 @@ exports.createDistributionRequest = async (req, res) => {
       requiredQuantities[medId].qty += baseQty;
     }
 
-    // Kiểm tra xem tổng tồn kho hợp lệ có đáp ứng được tổng yêu cầu không
+    // Kiểm tra xem tổng tồn kho hợp lệ có đáp ứng tổng yêu cầu không
     for (const medId in requiredQuantities) {
       const reqInfo = requiredQuantities[medId];
       const sourceInv = await Inventory.findOne({
@@ -264,9 +259,7 @@ exports.createDistributionRequest = async (req, res) => {
       }
     }
 
-    // =======================================================================
-    // BƯỚC 2: TIẾN HÀNH TRỪ KHO (EXECUTION) - Đã đảm bảo 100% qua vòng test
-    // =======================================================================
+    //TIẾN HÀNH TRỪ KHO 
     for (const item of items) {
       const variant = await MedicineVariant.findById(item.variantId);
       const medicineId = variant.medicineId;
@@ -293,8 +286,7 @@ exports.createDistributionRequest = async (req, res) => {
       let remainQty = baseQtyToDeduct;
 
       // THUẬT TOÁN 2-PASS: TRÁNH CHIA LẺ HỘP KHI XUẤT KHO
-
-      // PASS 1: Cố gắng lấy "Chẵn hộp" (Bội số của tỷ lệ quy đổi) từ các lô
+      // PASS 1:  lấy "Chẵn hộp" (Bội số của tỷ lệ quy đổi) từ các lô
       let remainFull = Math.floor(remainQty / convRate) * convRate;
 
       for (let i = 0; i < validBatches.length; i++) {
@@ -349,7 +341,7 @@ exports.createDistributionRequest = async (req, res) => {
                 batchCode: batch.batchCode,
                 expiryDate: batch.expiryDate,
                 manufacturingDate: batch.manufacturingDate,
-                quantity: take / convRate, // Có thể ra số thập phân ở đây
+                quantity: take / convRate, 
                 price: batch.importPrice * convRate,
               });
             }
@@ -387,7 +379,7 @@ exports.createDistributionRequest = async (req, res) => {
   }
 };
 
-// 3. Lấy danh sách chờ nhập
+//Lấy danh sách chờ nhập
 exports.getPendingImports = async (req, res) => {
   try {
     const currentBranchId = req.user.branchId;
@@ -403,7 +395,7 @@ exports.getPendingImports = async (req, res) => {
   }
 };
 
-// 4. Xác nhận nhập kho tại Chi nhánh (VÀ CẢ KHO TỔNG NHẬN HÀNG TRẢ VỀ)
+// Xác nhận nhập kho tại Chi nhánh và kho tổng
 exports.confirmImport = async (req, res) => {
   try {
     const { id } = req.params;
@@ -447,12 +439,11 @@ exports.confirmImport = async (req, res) => {
         batchQuality = item.reason;
       }
 
-      // ĐÃ FIX: KIỂM TRA LÔ ĐÃ TỒN TẠI CHƯA (Trùng Mã lô, Trùng Chất lượng và Trùng Giá vốn)
       const existingBatchIndex = inventory.batches.findIndex(
         (b) =>
           b.batchCode === item.batchCode &&
           b.quality === batchQuality &&
-          Math.abs(b.importPrice - baseImportPrice) < 0.01, // Dùng Math.abs để tránh lỗi sai số thập phân trong JS
+          Math.abs(b.importPrice - baseImportPrice) < 0.01, 
       );
 
       if (existingBatchIndex > -1) {
@@ -498,14 +489,13 @@ exports.confirmImport = async (req, res) => {
   }
 };
 
-// 5. BÁN LẺ TẠI CHI NHÁNH
+// BÁN LẺ TẠI CHI NHÁNH
 exports.sellAtBranch = async (req, res) => {
   try {
     const { items, customerPhone, customerName, paymentMethod, customerId } =
       req.body;
     const branchId = req.body.branchId || req.user.branchId || req.user.id;
 
-    // 1. XỬ LÝ KHÁCH HÀNG (Upsert)
     let finalCustomerId = customerId || null;
     if (customerPhone && !finalCustomerId) {
       let existingCustomer = await Customer.findOne({ phone: customerPhone });
@@ -523,7 +513,6 @@ exports.sellAtBranch = async (req, res) => {
     let totalBillAmount = 0;
     const transactionDetails = []; // Mảng chứa chi tiết hóa đơn (Đã được bóc tách theo lô FEFO)
 
-    // 2. VÒNG LẶP XỬ LÝ TỪNG MÓN HÀNG TRONG GIỎ
     for (const item of items) {
       // Tìm thông tin Quy cách để lấy Tỷ lệ quy đổi
       const variant = await MedicineVariant.findById(item.variantId);
@@ -541,7 +530,7 @@ exports.sellAtBranch = async (req, res) => {
         throw new Error(`Kho không có thuốc có ID: ${variant.medicineId}`);
       }
 
-      // === 1. LOGIC LỌC HÀNG HỢP LỆ (Lấy từ createDistributionRequest) ===
+      // LỌC THUỐC HỢP LỆ 
       const today = new Date();
       const validBatches = inventory.batches.filter(
         (b) =>
@@ -550,7 +539,7 @@ exports.sellAtBranch = async (req, res) => {
           new Date(b.expiryDate) > today,
       );
 
-      // === 2. CHECK LẠI TỒN KHO (Chỉ đếm hàng ĐỦ ĐIỀU KIỆN) ===
+      // CHECK LẠI TỒN KHO (Chỉ đếm hàng ĐỦ ĐIỀU KIỆN)
       const totalValidAvailable = validBatches.reduce(
         (sum, b) => sum + b.quantity,
         0,
@@ -561,7 +550,7 @@ exports.sellAtBranch = async (req, res) => {
         );
       }
 
-      // === 3. SẮP XẾP FEFO TRÊN MẢNG ĐÃ LỌC (Dùng getTime để chính xác 100%) ===
+      // SẮP XẾP FEFO TRÊN MẢNG ĐÃ LỌC 
       validBatches.sort(
         (a, b) =>
           new Date(a.expiryDate).getTime() - new Date(b.expiryDate).getTime(),
@@ -570,9 +559,8 @@ exports.sellAtBranch = async (req, res) => {
       let remainQty = baseQtyToDeduct;
       const convRate = variant.conversionRate;
 
-      // === 4. THUẬT TOÁN 2-PASS: TRÁNH CHIA LẺ ĐƠN VỊ BÁN KHI BÁN LẺ ===
-
-      // PASS 1: Cố gắng lấy "Chẵn đơn vị" (Bội số của tỷ lệ quy đổi) từ các lô
+      //  THUẬT TOÁN 2-PASS: TRÁNH CHIA LẺ ĐƠN VỊ BÁN KHI BÁN LẺ 
+      // PASS 1: lấy "Chẵn đơn vị" (Bội số của tỷ lệ quy đổi) từ các lô
       let remainFull = Math.floor(remainQty / convRate) * convRate;
 
       for (let i = 0; i < validBatches.length; i++) {
@@ -650,7 +638,7 @@ exports.sellAtBranch = async (req, res) => {
                 batchCode: batch.batchCode,
                 manufacturingDate: batch.manufacturingDate,
                 expiryDate: batch.expiryDate,
-                quantity: variantQtyDeducted, // Có thể ra số thập phân (lẻ viên) ở đây
+                quantity: variantQtyDeducted, 
                 price: item.price,
                 costPrice: costPriceOfVariant,
               });
@@ -670,7 +658,7 @@ exports.sellAtBranch = async (req, res) => {
       totalBillAmount += item.quantity * item.price;
     }
 
-    // 4. TẠO PHIẾU GIAO DỊCH (HÓA ĐƠN)
+    // TẠO HÓA ĐƠN
     const newTransaction = new Transaction({
       code: "HD" + Date.now(),
       type: "SALE_AT_BRANCH",
@@ -682,12 +670,11 @@ exports.sellAtBranch = async (req, res) => {
       customerPhone: customerPhone || "",
       paymentMethod: paymentMethod || "CASH",
       totalAmount: totalBillAmount,
-      details: transactionDetails, // <-- Truyền mảng đã được bóc tách lô FEFO vào đây
+      details: transactionDetails, 
     });
 
     await newTransaction.save();
 
-    // 5. CỘNG ĐIỂM / DOANH THU CHO KHÁCH HÀNG (Nếu có)
     if (finalCustomerId) {
       await Customer.findByIdAndUpdate(finalCustomerId, {
         $inc: { totalSpent: totalBillAmount },
@@ -705,10 +692,10 @@ exports.sellAtBranch = async (req, res) => {
   }
 };
 
-// --- LẤY LỊCH SỬ NHẬP CỦA 1 LÔ CỤ THỂ ---
+// LẤY LỊCH SỬ NHẬP CỦA 1 LÔ CỤ THỂ 
 exports.getBatchImportHistory = async (req, res) => {
   try {
-    // 1. Nhận thêm batchQuality từ giao diện
+    // Nhận thêm batchQuality từ giao diện
     const { branchId, medicineId, batchCode, importPrice, batchQuality } =
       req.query;
 
@@ -744,9 +731,6 @@ exports.getBatchImportHistory = async (req, res) => {
             return;
           }
 
-          // ==============================================================
-          // BƯỚC LỌC QUAN TRỌNG: PHÂN BIỆT LỊCH SỬ THEO QUALITY (TRẠNG THÁI)
-          // ==============================================================
           let txQuality = "GOOD"; // Mặc định Nhập NCC và Luân chuyển là hàng An toàn (GOOD)
 
           // Nếu là phiếu trả hàng, trạng thái của lô sẽ tương ứng với lý do trả (DAMAGED, EXPIRED, OVERSTOCK)
@@ -758,7 +742,6 @@ exports.getBatchImportHistory = async (req, res) => {
           if (batchQuality && txQuality !== batchQuality) {
             return;
           }
-          // ==============================================================
 
           history.push({
             transactionCode: trans.code,
@@ -786,7 +769,7 @@ exports.getBatchImportHistory = async (req, res) => {
   }
 };
 
-// --- LẤY LỊCH SỬ PHIẾU GIAO DỊCH KHÔNG ---
+// LẤY LỊCH SỬ PHIẾU GIAO DỊCH 
 exports.getTransactionHistory = async (req, res) => {
   try {
     const { role, branchId } = req.user;
@@ -813,7 +796,7 @@ exports.getTransactionHistory = async (req, res) => {
   }
 };
 
-// 6. XUẤT TRẢ VỀ KHO TỔNG (RETURN_TO_WAREHOUSE)
+// XUẤT TRẢ VỀ KHO TỔNG 
 exports.returnToWarehouse = async (req, res) => {
   try {
     const { items } = req.body;
@@ -848,7 +831,6 @@ exports.returnToWarehouse = async (req, res) => {
       });
       if (!sourceInv) throw new Error("Không tìm thấy tồn kho!");
 
-      // ĐÃ SỬA: TÌM ĐÍCH DANH THEO _id CỦA LÔ THUỐC
       const batchIndex = sourceInv.batches.findIndex(
         (b) => b._id.toString() === item.batchId,
       );
@@ -908,7 +890,7 @@ exports.returnToWarehouse = async (req, res) => {
   }
 };
 
-// 7. XUẤT HỦY HÀNG HÓA TỔN THẤT (DISPOSAL)
+// XUẤT HỦY HÀNG HÓA TỔN THẤT 
 exports.disposeInventory = async (req, res) => {
   try {
     const { items } = req.body;
@@ -951,7 +933,6 @@ exports.disposeInventory = async (req, res) => {
       sourceInv.totalQuantity -= baseQtyToDeduct;
       await sourceInv.save();
 
-      // Cập nhật sổ cái hàng tháng
       await updateMonthlyReport(
         currentBranchId,
         medicineId,
@@ -974,15 +955,15 @@ exports.disposeInventory = async (req, res) => {
       });
     }
 
-    // TẠO PHIẾU XUẤT HỦY (Chốt luôn, không chờ ai nhận)
+    // TẠO PHIẾU XUẤT HỦY (không chờ ai nhận)
     const trans = await Transaction.create({
-      code: `PH${Date.now()}`, // PH = Phiếu Hủy
+      code: `PH${Date.now()}`, 
       type: "DISPOSAL",
       status: "COMPLETED", // Hoàn tất ngay lập tức
       fromBranch: currentBranchId,
       createdBy: req.user._id || req.user.id,
       details: details,
-      totalValue: totalLossValue, // <--- ĐÂY LÀ CON SỐ TỔN THẤT ĐỂ KẾ TOÁN LÊN BÁO CÁO
+      totalValue: totalLossValue, 
     });
 
     res.status(200).json({

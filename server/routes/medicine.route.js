@@ -61,7 +61,7 @@ router.post(
   medicineController.checkDrugInteractions,
 );
 
-// API: Cập nhật đồng loạt giá theo Danh mục (Chỉ dành cho Admin/Quản lý)
+// Cập nhật đồng loạt giá theo Danh mục (Chỉ dành cho Admin/Quản lý)
 router.put(
   "/category/:categoryId/bulk-update-prices",
   verifyToken,
@@ -69,7 +69,7 @@ router.put(
   medicineController.bulkUpdatePriceByCategory
 );
 
-// API: Xem lịch sử cập nhật giá của một quy cách (Ai cũng có thể xem)
+// Xem lịch sử cập nhật giá của một quy cách (Ai cũng có thể xem)
 router.get(
   "/variants/:variantId/price-history",
   verifyToken,

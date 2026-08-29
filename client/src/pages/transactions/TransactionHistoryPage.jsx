@@ -28,7 +28,6 @@ const TransactionHistoryPage = () => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // States cho bộ lọc
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState("ALL");
   const [datePreset, setDatePreset] = useState("ALL"); // ALL, TODAY, THIS_MONTH, CUSTOM
@@ -37,8 +36,7 @@ const TransactionHistoryPage = () => {
   const [selectedTx, setSelectedTx] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // State xuất PDF
-  const [exportingType, setExportingType] = useState(null); // 'IMPORT_EXPORT' | 'REVENUE' | null
+  const [exportingType, setExportingType] = useState(null); 
 
   const [branches, setBranches] = useState([]);
 
@@ -59,9 +57,9 @@ const TransactionHistoryPage = () => {
     }
   };
 
-  // Logic lọc dữ liệu tổng hợp
+  // lọc dữ liệu tổng hợp
   const filteredData = transactions.filter((tx) => {
-    // 1. Lọc theo từ khóa (Mã phiếu, tên NCC)
+    // Lọc theo từ khóa (Mã phiếu, tên NCC)
     const matchSearch =
       tx.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (tx.supplierName &&
@@ -71,10 +69,10 @@ const TransactionHistoryPage = () => {
       (tx.customerPhone &&
         tx.customerPhone.toLowerCase().includes(searchTerm.toLowerCase()));
 
-    // 2. Lọc theo loại phiếu
+    // Lọc theo loại phiếu
     const matchType = filterType === "ALL" || tx.type === filterType;
 
-    // 3. Lọc theo thời gian
+    // Lọc theo thời gian
     let matchDate = true;
     const txDate = new Date(tx.createdAt);
     const today = new Date();
@@ -112,11 +110,10 @@ const TransactionHistoryPage = () => {
     setIsModalOpen(true);
   };
 
-  /* ─── LOGIC XUẤT PDF CÁC LOẠI BÁO CÁO (ĐÃ ĐƯỢC CHỈNH SỬA) ─── */
+  /* XUẤT PDF  */
   const handleExportPDF = (reportType) => {
     setExportingType(reportType);
 
-    // 1. CHUẨN BỊ DỮ LIỆU & TIÊU ĐỀ
     let targetData = [];
     let title = "";
     if (reportType === "IMPORT_EXPORT") {
@@ -127,7 +124,7 @@ const TransactionHistoryPage = () => {
       targetData = filteredData.filter((tx) => tx.type === "SALE_AT_BRANCH");
     }
 
-    // 2. LẤY THÔNG TIN CƠ BẢN (NGƯỜI LẬP, CHI NHÁNH, THỜI GIAN)
+    // THÔNG TIN 
     const exportTime = new Date().toLocaleString("vi-VN", {
       hour: "2-digit",
       minute: "2-digit",
@@ -138,7 +135,6 @@ const TransactionHistoryPage = () => {
     });
 
     const creatorName = user?.fullName || user?.username;
-    // Tìm chi nhánh của người dùng hiện tại
     const myBranch = branches.find((b) => b._id === user?.branchId);
 
     const branchName = myBranch
@@ -164,7 +160,7 @@ const TransactionHistoryPage = () => {
       periodText = `Từ ${sDate} đến ${eDate}`;
     }
 
-    // 3. TÍNH TOÁN CÁC CHỈ SỐ THỐNG KÊ (NHẬP, HỦY, DOANH THU)
+    // TÍNH TOÁN CÁC CHỈ SỐ THỐNG KÊ 
     let totalImportCost = 0;
     let totalDisposalCost = 0;
     let totalRevenueAmount = 0;
@@ -182,7 +178,6 @@ const TransactionHistoryPage = () => {
       }
     });
 
-    // 4. XÂY DỰNG GIAO DIỆN HTML (BẢNG KHÔNG DÙNG ROWSPAN, MÀU ĐEN TOÀN BỘ)
     const printDiv = document.createElement("div");
     printDiv.style.fontFamily = "'Times New Roman', Times, serif"; // Đổi sang Times New Roman
     printDiv.style.color = "#000000";
@@ -236,7 +231,7 @@ const TransactionHistoryPage = () => {
     targetData.forEach((tx) => {
       const txDate = new Date(tx.createdAt).toLocaleDateString("vi-VN");
 
-      // Xử lý Cột Đối tác / Khách hàng
+      // Cột Đối tác / Khách hàng
       let partnerInfo = "";
       if (reportType === "IMPORT_EXPORT") {
         const typeMap = {
@@ -259,7 +254,6 @@ const TransactionHistoryPage = () => {
         partnerInfo = `<strong>${tx.customerName || "Khách vãng lai"}</strong><br/><span>${tx.customerPhone || "---"}</span>`;
       }
 
-      // Xây dựng bảng chi tiết con bên trong cột "Chi tiết hàng hóa"
       let detailsHtml = `<table style="width: 100%; border-collapse: collapse; border: none;"><tbody>`;
 
       tx.details.forEach((item, idx) => {
@@ -268,7 +262,6 @@ const TransactionHistoryPage = () => {
           ? new Date(item.expiryDate).toLocaleDateString("vi-VN")
           : "---";
 
-        // Tạo đường kẻ đứt phân tách giữa các mặt hàng trong cùng 1 phiếu
         const isLast = idx === tx.details.length - 1;
         const borderStyle = isLast ? "" : "border-bottom: 1px dashed #000;";
 
@@ -292,7 +285,6 @@ const TransactionHistoryPage = () => {
       });
       detailsHtml += `</tbody></table>`;
 
-      // Render dòng chính của giao dịch (Chống rớt trang bằng page-break-inside: avoid)
       html += `
         <tr style="page-break-inside: avoid; color: #000;">
           <td style="padding: 10px 8px; border: 1px solid #000; text-align: center; vertical-align: top;">${stt++}</td>
@@ -449,7 +441,7 @@ const TransactionHistoryPage = () => {
       `}</style>
 
       <div className="animate-page-in">
-        {/* ── PAGE HEADER ── */}
+        {/*PAGE HEADER */}
         <div className="flex flex-col md:flex-row md:justify-between items-start md:items-center gap-4 mb-6">
           <div className="flex items-center gap-3">
             <div
@@ -470,7 +462,7 @@ const TransactionHistoryPage = () => {
             </div>
           </div>
 
-          {/* ── CỤM NÚT XUẤT PDF ── */}
+          {/* CỤM NÚT XUẤT PDF*/}
           <div className="flex items-center gap-3">
             <button
               onClick={() => handleExportPDF("IMPORT_EXPORT")}
@@ -506,7 +498,7 @@ const TransactionHistoryPage = () => {
           </div>
         </div>
 
-        {/* ── FILTER BAR ── */}
+        {/* FILTER BAR */}
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 mb-4">
           <div className="flex flex-wrap gap-3 items-center">
             <div className="relative w-72">
@@ -585,7 +577,7 @@ const TransactionHistoryPage = () => {
           </div>
         </div>
 
-        {/* ── TRANSACTION TABLE ── */}
+        {/* TRANSACTION TABLE */}
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm border-collapse">
@@ -692,9 +684,7 @@ const TransactionHistoryPage = () => {
         </div>
       </div>
 
-      {/* ══════════════════════════════════════════
-          MODAL: XEM CHI TIẾT PHIẾU
-      ══════════════════════════════════════════ */}
+      {/* MODAL XEM CHI TIẾT PHIẾU*/}
       {isModalOpen && selectedTx && (
         <div
           className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"

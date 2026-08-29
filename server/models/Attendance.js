@@ -12,7 +12,7 @@ const attendanceSchema = new mongoose.Schema(
     // Ngày tháng định dạng YYYY-MM-DD để dễ query
     date: { type: String, required: true },
 
-    // MẢNG LƯU CÁC LẦN QUÉT MẶT TRONG NGÀY (THAY THẾ CHO checkInTime/checkOutTime)
+    // MẢNG LƯU CÁC LẦN QUÉT MẶT TRONG NGÀY 
     scanTimes: [{ type: Date }],
 
     status: {

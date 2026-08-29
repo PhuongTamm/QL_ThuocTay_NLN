@@ -13,7 +13,7 @@ const RegisterFace = ({ userId, onSuccess, onCancel }) => {
     message: "Đang tải AI...",
   });
 
-  // 1. Tải mô hình
+  // Tải mô hình
   useEffect(() => {
     const loadModels = async () => {
       try {
@@ -38,7 +38,7 @@ const RegisterFace = ({ userId, onSuccess, onCancel }) => {
     loadModels();
   }, []);
 
-  // 2. Chụp và trích xuất dữ liệu khuôn mặt
+  // Chụp và trích xuất dữ liệu khuôn mặt
   const handleCaptureAndRegister = async () => {
     if (!webcamRef.current || !isModelLoaded) return;
 
@@ -71,7 +71,7 @@ const RegisterFace = ({ userId, onSuccess, onCancel }) => {
       // Lấy mảng 128 số đặc trưng
       const descriptor = Array.from(detection.descriptor);
 
-      // Gọi API đăng ký (API này đã viết ở file attendance.controller.js lần trước)
+      // Gọi API đăng ký 
       await api.post("/attendance/register-face", {
         userId: userId,
         descriptor: descriptor,
@@ -79,7 +79,7 @@ const RegisterFace = ({ userId, onSuccess, onCancel }) => {
 
       setStatus({ type: "success", message: "Đăng ký khuôn mặt thành công!" });
       setTimeout(() => {
-        if (onSuccess) onSuccess(); // Đóng modal hoặc load lại danh sách
+        if (onSuccess) onSuccess(); // Đóng modal/load lại danh sách
       }, 2000);
     } catch (error) {
       setStatus({

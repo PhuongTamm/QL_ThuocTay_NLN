@@ -14,7 +14,7 @@ const AIChatbot = () => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
-  // --- STATE VÀ REF CHO CHỨC NĂNG KÉO THẢ ---
+  // STATE VÀ REF CHO CHỨC NĂNG KÉO THẢ 
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const isDragging = useRef(false);
   const dragStartInfo = useRef({

@@ -5,7 +5,7 @@ const User = require("../models/User");
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-// Khai báo các công cụ (Hàm) cho Gemini biết nó có thể làm gì
+// Khai báo các công cụ cho Gemini biết nó có thể làm gì
 const tools = [
   {
     functionDeclarations: [
@@ -143,7 +143,6 @@ const tools = [
           required: ["transactionCode"],
         },
       },
-      // Thêm vào mảng functionDeclarations trong chatbot.controller.js
       {
         name: "getBatchHistory",
         description:
@@ -187,7 +186,6 @@ const tools = [
           required: ["transactionType"],
         },
       },
-      // Thêm vào mảng functionDeclarations trong chatbot.controller.js
       {
         name: "getBatchesByMedicine",
         description:
@@ -265,9 +263,7 @@ exports.chatWithBot = async (req, res) => {
     const fullName = user ? user.fullName : "bạn";
     const userRoleText = roleTitles[user.role] || "Nhân viên hệ thống";
 
-    // =========================================================
-    // RAG RETRIEVAL: Tìm kiếm kiến thức liên quan từ Qdrant
-    // =========================================================
+    // RAG Tìm kiếm kiến thức liên quan từ Qdrant
     const searchResults = await vectorService.searchSimilar(message, 5);
 
     let ragContext = "";
@@ -281,9 +277,7 @@ exports.chatWithBot = async (req, res) => {
         "========================================================\n";
     }
 
-    // =========================================================
     // SUPER PROMPT: SYSTEM INSTRUCTION TỐI ƯU NHẤT
-    // =========================================================
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash",
       tools: tools,
@@ -327,8 +321,7 @@ exports.chatWithBot = async (req, res) => {
     const chat = model.startChat({ history: formattedHistory });
     let result = await chat.sendMessage(message);
 
-    // Dùng vòng lặp while để AI có thể tự động gọi bao nhiêu hàm tùy thích
-    // cho đến khi nó gom đủ dữ liệu để trả lời text.
+    // Dùng vòng lặp while để AI có thể tự động gọi bao nhiêu hàm tùy thích cho đến khi nó gom đủ dữ liệu để trả lời text.
     while (
       result.response.functionCalls() &&
       result.response.functionCalls().length > 0
@@ -340,7 +333,7 @@ exports.chatWithBot = async (req, res) => {
       // Thực thi hàm trong Backend
       const apiResponse = await functionsMap[functionName](functionArgs, user);
 
-      // Gửi kết quả lại cho AI và GÁN LẠI result
+      // Gửi kết quả lại cho AI và gán lại result
       result = await chat.sendMessage([
         { functionResponse: { name: functionName, response: apiResponse } },
       ]);

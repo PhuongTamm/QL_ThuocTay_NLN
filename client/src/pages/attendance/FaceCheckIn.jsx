@@ -8,7 +8,7 @@ import {
   ScanFace,
   Scan,
 } from "lucide-react";
-import api from "../../services/api"; // Đảm bảo đúng đường dẫn api.js của bạn
+import api from "../../services/api"; 
 
 const FaceCheckIn = () => {
   const webcamRef = useRef(null);
@@ -19,11 +19,11 @@ const FaceCheckIn = () => {
     message: "Đang chờ quét khuôn mặt...",
   }); // idle, success, error
 
-  // 1. Tải Model khi vào trang
+  // Tải Model khi vào trang
   useEffect(() => {
     const loadModels = async () => {
       try {
-        const MODEL_URL = "/models"; // Đảm bảo bạn đã copy file vào thư mục public/models
+        const MODEL_URL = "/models"; 
         await Promise.all([
           faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),
           faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
@@ -44,7 +44,7 @@ const FaceCheckIn = () => {
     loadModels();
   }, []);
 
-  // 2. Hàm xử lý chụp và trích xuất khuôn mặt
+  // Hàm xử lý chụp và trích xuất khuôn mặt
   const handleCheckIn = async () => {
     if (!webcamRef.current || !isModelLoaded) return;
 
@@ -52,7 +52,7 @@ const FaceCheckIn = () => {
     setStatus({ type: "idle", message: "Đang phân tích khuôn mặt..." });
 
     try {
-      // 1. Chụp ảnh từ webcam
+      // Chụp ảnh từ webcam
       const imageSrc = webcamRef.current.getScreenshot();
       if (!imageSrc) throw new Error("Không lấy được ảnh từ Camera");
 
@@ -60,7 +60,7 @@ const FaceCheckIn = () => {
       img.src = imageSrc;
       await new Promise((resolve) => (img.onload = resolve));
 
-      // 2. AI Phân tích khuôn mặt
+      // AI Phân tích khuôn mặt
       const detection = await faceapi
         .detectSingleFace(img)
         .withFaceLandmarks()
@@ -74,10 +74,9 @@ const FaceCheckIn = () => {
 
       const descriptor = Array.from(detection.descriptor);
 
-      // 3. Gửi lên Backend
+      // Gửi lên Backend
       const res = await api.post("/attendance/check-in", { descriptor });
 
-      // SỬA LỖI Ở ĐÂY: Xử lý cách trả dữ liệu của interceptor trong api.js
       // Nếu backend báo lỗi (success: false), res chính là object lỗi đó.
       if (res && res.success === false) {
         throw new Error(res.message);
@@ -153,7 +152,7 @@ const FaceCheckIn = () => {
                   height: 400,
                   facingMode: "user",
                 }}
-                className="object-cover w-full h-full transform scale-x-[-1]" // Lật gương
+                className="object-cover w-full h-full transform scale-x-[-1]" // Lật 
               />
               {/* Hiệu ứng tia quét */}
               <div className="absolute inset-0 bg-gradient-to-b from-transparent via-sky-500/40 to-transparent w-full h-1/2 animate-[scan_2s_ease-in-out_infinite]" />

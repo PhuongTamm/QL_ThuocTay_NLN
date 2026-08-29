@@ -3,7 +3,7 @@ const router = express.Router();
 const { verifyToken, checkRole } = require("../middleware/authMiddleware");
 const transactionController = require("../controllers/transaction.controller");
 
-// 1. Nhập hàng từ NCC
+// Nhập hàng từ NCC
 router.post(
   "/import-supplier",
   verifyToken,
@@ -11,7 +11,7 @@ router.post(
   transactionController.importFromSupplier,
 );
 
-// 2. Phân phối hàng (Kho -> Chi nhánh)
+// Phân phối hàng (Kho -> Chi nhánh)
 router.post(
   "/distribute",
   verifyToken,
@@ -19,7 +19,7 @@ router.post(
   transactionController.createDistributionRequest,
 );
 
-// Lấy danh sách chờ nhập (Cho Chi nhánh)
+// Lấy danh sách chờ nhập
 router.get(
   "/pending-import",
   verifyToken,
@@ -33,7 +33,7 @@ router.get(
   transactionController.getBatchImportHistory,
 );
 
-// Xác nhận nhập kho (Cho Chi nhánh)
+// Xác nhận nhập kho
 router.put(
   "/:id/confirm-import",
   verifyToken,
@@ -41,11 +41,10 @@ router.put(
   transactionController.confirmImport,
 );
 
-// 5. Bán lẻ tại chi nhánh (Dành cho Dược sĩ / Quản lý chi nhánh)
+// Bán lẻ tại chi nhánh 
 router.post(
   "/sell",
   verifyToken,
-  // Cho phép cả Admin, Quản lý chi nhánh, và Dược sĩ bán hàng
   checkRole(["branch_manager", "pharmacist", "admin"]),
   transactionController.sellAtBranch,
 );

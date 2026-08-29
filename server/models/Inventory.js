@@ -9,21 +9,20 @@ const inventorySchema = new mongoose.Schema(
     }, // Nếu null hoặc định nghĩa ID riêng thì là Kho tổng
 
     medicineId: { type: mongoose.Schema.Types.ObjectId, ref: "Medicine", required: true },
-
     totalQuantity: { type: Number, default: 0 }, // Tổng tất cả các lô
-
+    
     batches: [
       {
         batchCode: { type: String, required: true },
         expiryDate: { type: Date, required: true },
         manufacturingDate: { type: Date, required: true },
 
-        // Số lượng hiện tại còn trong kho (Realtime stock)
+        // Số lượng hiện tại còn trong kho
         quantity: { type: Number, default: 0 },
 
-        initialQuantity: { type: Number, default: 0 }, // Số lượng ban đầu khi nhập lô (dùng để tính toán hiệu suất)
+        initialQuantity: { type: Number, default: 0 }, // Số lượng ban đầu khi nhập lô 
 
-        // Giá nhập (có thể dùng giá bình quân gia quyền hoặc giá nhập lần cuối tùy nghiệp vụ)
+        // Giá nhập 
         importPrice: { type: Number },
 
         quality: {

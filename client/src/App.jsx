@@ -3,31 +3,24 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import Sidebar from "./components/layout/Sidebar";
 import AIChatbot from "./components/Chatbot/AIChatbot";
 
-// --- IMPORT CÁC TRANG (PAGES) ---
 import LoginPage from "./pages/auth/LoginPage";
 import Dashboard from "./pages/dashboard/Dashboard";
 
-// Quản lý Dữ liệu
 import CategoryList from "./pages/categories/CategoryList";
 import MedicineList from "./pages/medicines/MedicineList";
 import AddMedicine from "./pages/medicines/AddMedicine";
 
-// Quản lý Kho bãi & Giao dịch
 import InventoryPage from "./pages/inventory/InventoryPage";
 import ImportSupplier from "./pages/warehouse/ImportSupplier";
 import DistributePage from "./pages/warehouse/DistributePage";
 import PendingImportPage from "./pages/warehouse/PendingImportPage";
 
-// POS Bán Hàng
 import POSPage from "./pages/pos/POSPage";
 
 import FaceCheckIn from "./pages/attendance/FaceCheckIn";
 
-// Hệ thống & Báo cáo
 import BranchUserManagement from "./pages/admin/BranchUserManagement"; // Trang gộp 2 Tabs
-//import ReportPage from "./pages/reports/ReportPage";
 
-// (Giữ lại các file cũ nếu bạn cần tham khảo thêm, nhưng trên menu sẽ không gọi đến)
 import TransactionHistoryPage from "./pages/transactions/TransactionHistoryPage";
 import MonthlyReportPage from "./pages/reports/MonthlyReportPage";
 import ProfilePage from "./pages/profile/ProfilePage";
@@ -36,12 +29,9 @@ import ProfitAnalysis from "./pages/reports/ProfitAnalysis";
 
 // Layout bọc các trang cần đăng nhập
 const MainLayout = ({ children }) => (
-  // Thêm class 'relative' vào thẻ div tổng để đảm bảo Chatbot (dùng position: fixed/absolute) neo đúng vị trí
   <div className="flex h-screen overflow-hidden relative">
     <Sidebar />
     <div className="flex-1 bg-gray-50 h-full overflow-y-auto">{children}</div>
-
-    {/* Chèn Chatbot vào đây */}
     <AIChatbot />
   </div>
 );
@@ -80,11 +70,11 @@ function App() {
           v7_relativeSplatPath: true,
         }}>
         <Routes>
-          {/* --- PUBLIC ROUTE --- */}
+          {/* PUBLIC ROUTE */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/check-in" element={<FaceCheckIn />} />
 
-          {/* --- PRIVATE ROUTES (CÓ SIDEBAR) --- */}
+          {/* PRIVATE ROUTES (CÓ SIDEBAR) */}
           {/* DASHBOARD: Admin, Quản lý kho, Quản lý chi nhánh */}
           <Route
             path="/"
@@ -98,7 +88,7 @@ function App() {
             }
           />
 
-          {/* POS BÁN HÀNG: Admin, Quản lý chi nhánh, Dược sĩ */}
+          {/* POS BÁN THUỐC: Admin, Quản lý chi nhánh, Dược sĩ */}
           <Route
             path="/pos"
             element={
@@ -110,7 +100,7 @@ function App() {
             }
           />
 
-          {/* QUẢN LÝ DANH MỤC & THUỐC: Chỉ Admin và Quản lý kho */}
+          {/* QUẢN LÝ NHÓM THUỐC & THUỐC: Chỉ Admin và Quản lý kho */}
           <Route
             path="/categories"
             element={
@@ -132,7 +122,7 @@ function App() {
             }
           />
 
-          {/* QUẢN LÝ KHO BÃI */}
+          {/* QUẢN LÝ KHO */}
           <Route
             path="/inventory"
             element={
@@ -184,7 +174,7 @@ function App() {
             }
           />
 
-          {/* CHI NHÁNH XÁC NHẬN NHẬN HÀNG: Admin, Quản lý CN, Dược sĩ */}
+          {/* CHI NHÁNH XÁC NHẬN NHẬN HÀNG: Admin, Quản lý CN, Quản lý kho */}
           <Route
             path="/pending-imports"
             element={
@@ -218,7 +208,7 @@ function App() {
             }
           />
 
-          {/* HỆ THỐNG & BÁO CÁO */}
+          {/* BÁO CÁO */}
           <Route
             path="/organization"
             element={

@@ -24,12 +24,10 @@ const ProfilePage = () => {
   const navigate = useNavigate();
   const [showFaceModal, setShowFaceModal] = useState(false);
 
-  // States Avatar
   const [avatarFile, setAvatarFile] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(user?.avatar || "");
   const [isUploading, setIsUploading] = useState(false);
 
-  // States Lịch sử & Bộ lọc thời gian (Đồng bộ chuẩn Dashboard)
   const [datePreset, setDatePreset] = useState("THIS_MONTH");
   const [customRange, setCustomRange] = useState({
     startDate: "",
@@ -53,7 +51,7 @@ const ProfilePage = () => {
     }
   };
 
-  // ─── FETCH LỊCH SỬ CHẤM CÔNG VỚI LOGIC TÍNH NGÀY ───
+  // FETCH LỊCH SỬ CHẤM CÔNG VỚI LOGIC TÍNH NGÀY 
   const fetchAttendanceHistory = async () => {
     setLoadingHistory(true);
     try {
@@ -103,7 +101,6 @@ const ProfilePage = () => {
         fetchAttendanceHistory();
       }
     }
-    // eslint-disable-next-line
   }, [datePreset, customRange, user]);
 
   const handlePresetChange = (preset) => {
@@ -113,7 +110,7 @@ const ProfilePage = () => {
     }
   };
 
-  // ─── UPLOAD AVATAR ───
+  //UPLOAD AVATAR 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -145,7 +142,7 @@ const ProfilePage = () => {
     }
   };
 
-  // ─── LÀM PHẲNG DỮ LIỆU LỊCH SỬ THÀNH TỪNG DÒNG ───
+  // LÀM PHẲNG DỮ LIỆU LỊCH SỬ THÀNH TỪNG DÒNG 
   const formatTime = (dateString) => {
     if (!dateString) return "--:--";
     const date = new Date(dateString);
@@ -170,7 +167,7 @@ const ProfilePage = () => {
   });
   flattenedHistory.sort((a, b) => new Date(b.time) - new Date(a.time));
 
-  // ─── COMPONENT NÚT CHỌN PRESET ───
+  //COMPONENT NÚT CHỌN PRESET 
   const PresetBtn = ({ id, label }) => (
     <button
       onClick={() => handlePresetChange(id)}
@@ -197,9 +194,8 @@ const ProfilePage = () => {
         }
       `}</style>
 
-      {/* Bao bọc toàn bộ trang để áp dụng hiệu ứng Fade/Float */}
       <div className="animate-page-in space-y-6">
-        {/* ─── HEADER & BỘ LỌC NẰM NGANG HÀNG ─── */}
+        {/* HEADER */}
         <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center mb-6 gap-4">
           <div className="flex items-center gap-3">
             <div
@@ -219,7 +215,7 @@ const ProfilePage = () => {
             </div>
           </div>
 
-          {/* Bộ lọc đưa lên cùng hàng với Header */}
+          {/* Bộ lọc  */}
           <div className="flex flex-wrap items-center gap-1.5 bg-white border border-sky-100 rounded-xl p-1.5 shadow-sm w-fit">
             <PresetBtn id="TODAY" label="Hôm nay" />
             <PresetBtn id="LAST_7_DAYS" label="7 Ngày" />
@@ -250,7 +246,7 @@ const ProfilePage = () => {
           </div>
         </div>
 
-        {/* ─── GRID LAYOUT INFO VÀ BẢNG LỊCH SỬ NẰM NGANG ─── */}
+        {/*  GRID LAYOUT INFO VÀ BẢNG LỊCH SỬ */}
         <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 items-start">
           {/* CỘT TRÁI (1/4): AVATAR + INFO + ACTION */}
           <div className="xl:col-span-1 space-y-6">

@@ -23,9 +23,6 @@ import React, { useEffect, useState } from "react";
 import api from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
 
-/* ─────────────────────────────────────────
-   TOAST ALERT SYSTEM
-───────────────────────────────────────── */
 const ToastContext = React.createContext(null);
 
 const ToastProvider = ({ children }) => {
@@ -74,9 +71,7 @@ const ToastProvider = ({ children }) => {
 
 const useToast = () => React.useContext(ToastContext);
 
-/* ─────────────────────────────────────────
-   CONFIRM DIALOG
-───────────────────────────────────────── */
+
 const ConfirmDialog = ({ open, message, onConfirm, onCancel }) => {
   if (!open) return null;
   return (
@@ -107,9 +102,7 @@ const ConfirmDialog = ({ open, message, onConfirm, onCancel }) => {
   );
 };
 
-/* ─────────────────────────────────────────
-   MAIN POS PAGE
-───────────────────────────────────────── */
+
 const POSPageInner = () => {
   const toast = useToast();
   const { user } = useAuth(); // Lấy thông tin user đăng nhập
@@ -182,7 +175,6 @@ const POSPageInner = () => {
       });
       if (res.data.warning) {
         setInteractionWarning(res.data.warning);
-        // Có thể dùng toast cảnh báo
         toast(
           "Phát hiện tương tác thuốc! Vui lòng kiểm tra màn hình.",
           "error",
@@ -204,17 +196,17 @@ const POSPageInner = () => {
     pharmacist: "Dược sĩ",
   };
 
-  // 1. Tải danh sách khách hàng và chi nhánh lúc đầu
+  // Tải danh sách khách hàng và chi nhánh lúc đầu
   useEffect(() => {
     fetchCustomers();
     fetchBranches();
   }, []);
 
-  // 2. Fetch tồn kho mỗi khi selectedBranchId thay đổi
+  // Fetch tồn kho mỗi khi selectedBranchId thay đổi
   useEffect(() => {
     if (selectedBranchId) {
       fetchInventory(selectedBranchId);
-      // Làm sạch giỏ hàng khi đổi chi nhánh để tránh lỗi hàng
+      // Làm sạch giỏ hàng khi đổi chi nhánh 
       setCart([]);
     }
   }, [selectedBranchId]);
@@ -269,10 +261,10 @@ const POSPageInner = () => {
   };
 
   const handlePhoneChange = (e) => {
-    // 1. Chỉ giữ lại số, loại bỏ chữ và ký tự đặc biệt
+    // Chỉ giữ lại số, loại bỏ chữ và ký tự đặc biệt
     const val = e.target.value.replace(/\D/g, "");
 
-    // 2. Chặn không cho nhập quá 10 số
+    //Chặn không cho nhập quá 10 số
     if (val.length > 10) return;
 
     setCustomerInfo({ ...customerInfo, phone: val, _id: null });
@@ -301,7 +293,6 @@ const POSPageInner = () => {
     setShowCustomerDropdown(false);
   };
   
-  // BƯỚC 2: THAY THẾ HÀM handleUpdateQuantity
   const handleUpdateQuantity = (inv, activeVariant, newQuantity) => {
     if (newQuantity < 1) return false;
     const medId = inv.medicineId._id;
@@ -340,7 +331,7 @@ const POSPageInner = () => {
       return false;
     }
 
-    // CẬP NHẬT VÀO GIỎ HÀNG NẾU QUA HẾT CÁC BÀI KIỂM TRA
+    // CẬP NHẬT VÀO GIỎ HÀNG NẾU PASS
     const existingItemIndex = cart.findIndex(
       (item) => item.variantId === activeVariant._id,
     );
@@ -393,12 +384,11 @@ const POSPageInner = () => {
   const total = cart.reduce((sum, item) => sum + item.quantity * item.price, 0);
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
-  // BƯỚC 1: THÊM HÀM NÀY VÀO TRONG POSPageInner
   const getValidBaseQuantity = (inv) => {
     if (!inv || !inv.batches) return 0;
     const today = new Date();
     return inv.batches.reduce((sum, b) => {
-      // Chỉ cộng dồn những lô CÒN HÀNG, CHẤT LƯỢNG TỐT và CHƯA HẾT HẠN
+      // Chỉ cộng dồn những lô còn hàng, chất lượng tốt và chưa hết hạn
       if (
         b.quantity > 0 &&
         b.quality === "GOOD" &&
@@ -421,7 +411,7 @@ const POSPageInner = () => {
         b.quality === "GOOD" &&
         new Date(b.expiryDate) > today
       ) {
-        return sum + Math.floor(b.quantity / conversionRate); // Tính số chẵn của TỪNG lô rồi mới cộng lại
+        return sum + Math.floor(b.quantity / conversionRate); // Tính số chẵn của từng lô rồi mới cộng lại
       }
       return sum;
     }, 0);
@@ -444,7 +434,6 @@ const POSPageInner = () => {
 
     setCustomerGivenMoney("");
 
-    // TÌM VÀ CẬP NHẬT ĐOẠN NÀY: Tìm chi nhánh đang chọn để gán Tên & SĐT vào hóa đơn
     const currentBranch = branches.find((b) => b._id === selectedBranchId);
     const branchName = currentBranch?.name || "Chi nhánh hiện tại";
     const branchPhone = currentBranch?.phone || "Đang cập nhật...";
@@ -453,12 +442,11 @@ const POSPageInner = () => {
       code: "HD" + Date.now(),
       date: new Date().toLocaleString("vi-VN"),
       branchName: branchName,
-      branchPhone: branchPhone, // Bổ sung SĐT chi nhánh
+      branchPhone: branchPhone, 
       items: [...cart],
       total: total,
       customer: customerInfo,
       paymentMethod: paymentMethod,
-      // Bổ sung thông tin người lập phiếu
       staffName: user?.fullName || user?.username || "Nhân viên",
       staffRole: ROLE_LABELS[user?.role] || "Nhân viên",
     });
@@ -473,7 +461,7 @@ const POSPageInner = () => {
     }
     try {
       const payload = {
-        branchId: selectedBranchId, // Bổ sung branchId động
+        branchId: selectedBranchId, 
         customerId: customerInfo._id,
         customerName: customerInfo.name,
         customerPhone: customerInfo.phone,
@@ -491,7 +479,7 @@ const POSPageInner = () => {
       }));
       setCart([]);
       setCustomerInfo({ _id: null, name: "", phone: "" });
-      fetchInventory(selectedBranchId); // Tải lại tồn kho nhánh hiện tại
+      fetchInventory(selectedBranchId); 
       fetchCustomers();
       setShowCheckoutModal(false);
       setShowReceipt(true);
@@ -745,7 +733,7 @@ const POSPageInner = () => {
         }
       `}</style>
 
-      {/* ── LEFT: Medicine Grid ── */}
+      {/* Medicine Grid  */}
       <div
         className="flex-1 flex flex-col h-full overflow-hidden"
         style={{ padding: "20px 16px 20px 20px" }}>
@@ -1030,7 +1018,7 @@ const POSPageInner = () => {
         </div>
       </div>
 
-      {/* ── RIGHT: Cart ── */}
+      {/* Cart */}
       <div
         style={{
           width: 420,
@@ -1423,13 +1411,13 @@ const POSPageInner = () => {
                     </button>
                   </div>
 
-                  {/* Tổng tiền của món đó */}
+                  {/* Tổng tiền  */}
                   <div style={{ minWidth: 65, textAlign: "right" }}>
                     <p
                       style={{
                         fontSize: 13,
                         fontWeight: 800,
-                        color: "#ef4444", // Màu đỏ
+                        color: "#ef4444", 
                       }}>
                       {(item.price * item.quantity).toLocaleString()}đ
                     </p>
@@ -1532,7 +1520,7 @@ const POSPageInner = () => {
         </div>
       </div>
 
-      {/* ── MODAL 1: Medicine Detail ── */}
+      {/* MODAL Chi tiết thuốc */}
       {medicineDetailModal && (
         <div
           className="modal-overlay"
@@ -1784,7 +1772,7 @@ const POSPageInner = () => {
         </div>
       )}
 
-      {/* ── MODAL 2: Checkout ── */}
+      {/* MODAL Xem trước hóa đơn */}
       {showCheckoutModal && receiptData && (
         <div className="modal-overlay">
           <div
@@ -1845,33 +1833,6 @@ const POSPageInner = () => {
                     fontFamily: "monospace",
                     fontSize: 12,
                   }}>
-                  {/* <div
-                    style={{
-                      textAlign: "center",
-                      borderBottom: "1px dashed #d1d5db",
-                      paddingBottom: 10,
-                      marginBottom: 10,
-                    }}>
-                    <p
-                      style={{
-                        fontWeight: 700,
-                        fontSize: 14,
-                        textTransform: "uppercase",
-                      }}>
-                      Nhà Thuốc Của Bạn
-                    </p>
-                    <p style={{ fontSize: 10, color: "#6b7280" }}>
-                      Đ/c: {receiptData.branchName}
-                    </p>
-                    <p
-                      style={{
-                        fontWeight: 700,
-                        marginTop: 6,
-                        textTransform: "uppercase",
-                      }}>
-                      Hóa Đơn Bán Lẻ
-                    </p>
-                  </div> */}
                   <div
                     style={{
                       textAlign: "center",
@@ -1890,7 +1851,6 @@ const POSPageInner = () => {
                     <p style={{ fontSize: 10, color: "#6b7280" }}>
                       Đ/c: {receiptData.branchName}
                     </p>
-                    {/* BỔ SUNG SĐT CHI NHÁNH VÀO XEM TRƯỚC */}
                     <p style={{ fontSize: 10, color: "#6b7280" }}>
                       SĐT: {receiptData.branchPhone}
                     </p>
@@ -1946,7 +1906,6 @@ const POSPageInner = () => {
                     <span>Tổng cộng:</span>
                     <span>{receiptData.total.toLocaleString()}đ</span>
                   </div>
-                  {/* BỔ SUNG NGƯỜI LẬP VÀO XEM TRƯỚC */}
                   <div
                     style={{
                       textAlign: "center",
@@ -1963,7 +1922,6 @@ const POSPageInner = () => {
               </div>
             </div>
 
-            {/* Right: Payment */}
             <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
               <div
                 style={{
@@ -2185,7 +2143,7 @@ const POSPageInner = () => {
         </div>
       )}
 
-      {/* ── MODAL 3: Receipt / Print ── */}
+      {/* MODAL Hóa đơn  */}
       {showReceipt && receiptData && (
         <div className="modal-overlay" style={{ zIndex: 120 }}>
           <div
@@ -2257,34 +2215,7 @@ const POSPageInner = () => {
                   fontSize: 13,
                   lineHeight: 1.5,
                 }}>
-                {/* <div
-                  style={{
-                    textAlign: "center",
-                    borderBottom: "1px dashed #9ca3af",
-                    paddingBottom: 10,
-                    marginBottom: 10,
-                  }}>
-                  <p
-                    style={{
-                      fontWeight: 700,
-                      fontSize: 16,
-                      textTransform: "uppercase",
-                    }}>
-                    Nhà Thuốc Của Bạn
-                  </p>
-                  <p style={{ fontSize: 11 }}>Đ/c: {receiptData.branchName}</p>
-                  <p style={{ fontSize: 11 }}>SĐT: 0123.456.789</p>
-                  <p
-                    style={{
-                      fontWeight: 700,
-                      marginTop: 6,
-                      textTransform: "uppercase",
-                    }}>
-                    Hóa Đơn Bán Lẻ
-                  </p>
-                  <p style={{ fontSize: 11 }}>Mã: {receiptData.code}</p>
-                  <p style={{ fontSize: 11 }}>Ngày: {receiptData.date}</p>
-                </div> */}
+
                 <div
                   style={{
                     textAlign: "center",
@@ -2301,7 +2232,6 @@ const POSPageInner = () => {
                     PharmaSys
                   </p>
                   <p style={{ fontSize: 11 }}>Đ/c: {receiptData.branchName}</p>
-                  {/* SỬA LẠI THÀNH SĐT ĐỘNG CỦA CHI NHÁNH */}
                   <p style={{ fontSize: 11 }}>SĐT: {receiptData.branchPhone}</p>
 
                   <p
@@ -2419,7 +2349,7 @@ const POSPageInner = () => {
       />
     </div>
   );
-};;;;;;
+};
 
 const POSPage = () => (
   <ToastProvider>

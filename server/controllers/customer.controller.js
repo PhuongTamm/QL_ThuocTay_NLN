@@ -1,6 +1,6 @@
 const Customer = require("../models/Customer");
 
-// Lấy danh sách toàn bộ khách hàng để hiển thị gợi ý (Autocomplete) trên POS
+// Lấy danh sách toàn bộ khách hàng để hiển thị gợi ý trên POS
 exports.getAllCustomers = async (req, res) => {
   try {
     const customers = await Customer.find()

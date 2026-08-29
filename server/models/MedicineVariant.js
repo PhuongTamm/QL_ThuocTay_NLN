@@ -13,8 +13,8 @@ const medicineVariantSchema = new mongoose.Schema(
     unit: { type: String, required: true }, // Đơn vị tính: Hộp, Chai, Vỉ
     packagingSpecification: { type: String }, // Quy cách: Hộp 20 vỉ x 10 viên
 
-    // Quản lý giá theo thời gian (Tương ứng bảng DONGIA trong CDM)
-    currentPrice: { type: Number, required: true }, // Giá hiện tại để bán nhanh
+    // Quản lý giá theo thời gian
+    currentPrice: { type: Number, required: true }, // Giá hiện tại để bán 
     priceHistory: [
       {
         price: { type: Number, required: true },

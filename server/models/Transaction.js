@@ -17,7 +17,7 @@ const transactionSchema = new mongoose.Schema(
       required: true,
     },
 
-    // --- QUAN TRỌNG: TRẠNG THÁI PHIẾU ---
+    //  TRẠNG THÁI PHIẾU 
     // PENDING: Phiếu xuất đã tạo, trừ kho nguồn nhưng chưa nhập kho đích
     // COMPLETED: Đã hoàn thành (Nhập từ NCC mặc định là Completed)
     // CANCELLED: Đã hủy
@@ -27,9 +27,8 @@ const transactionSchema = new mongoose.Schema(
       default: "COMPLETED",
     },
 
-    // --- THÔNG TIN NGUỒN / ĐÍCH (Sửa lại tên cho khớp Controller) ---
-    fromBranch: { type: mongoose.Schema.Types.ObjectId, ref: "Branch" }, // Nơi xuất (Kho tổng/Chi nhánh A)
-    toBranch: { type: mongoose.Schema.Types.ObjectId, ref: "Branch" }, // Nơi nhập (Chi nhánh B)
+    fromBranch: { type: mongoose.Schema.Types.ObjectId, ref: "Branch" }, // Nơi xuất (Kho tổng)
+    toBranch: { type: mongoose.Schema.Types.ObjectId, ref: "Branch" }, // Nơi nhập (Chi nhánh)
 
     supplierName: { type: String }, // Chỉ dùng cho IMPORT_SUPPLIER
     createdBy: {
@@ -48,19 +47,12 @@ const transactionSchema = new mongoose.Schema(
         },
 
         // Thông tin Lô
-        batchCode: { type: String, required: true }, // A123
+        batchCode: { type: String, required: true }, 
         expiryDate: { type: Date, required: true },
-        manufacturingDate: { type: Date, required: true }, // Bổ sung ngày sản xuất
-
+        manufacturingDate: { type: Date, required: true }, 
         quantity: { type: Number, required: true },
-
-        // Giá này linh hoạt tùy loại phiếu:
-        // - Nhập NCC: Giá nhập
-        // - Xuất chi nhánh: Giá vốn (ImportPrice)
-        // - Bán lẻ: Giá bán ra
         price: { type: Number },
-
-        costPrice: { type: Number }, // Giá vốn (ImportPrice) để tính lãi lỗ khi bán ra
+        costPrice: { type: Number }, // Giá vốn (ImportPrice) 
         reason: { type: String, enum: ["OVERSTOCK", "EXPIRED", "DAMAGED"] }, //lý do hủy
       },
     ],

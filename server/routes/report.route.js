@@ -3,24 +3,23 @@ const router = express.Router();
 const { verifyToken, checkRole } = require("../middleware/authMiddleware");
 const reportController = require("../controllers/report.controller");
 
-// Tất cả các route báo cáo đều yêu cầu đăng nhập
 router.use(verifyToken);
 
-// 1. Thống kê Dashboard (Cho phép Admin và Quản lý chi nhánh)
+// Thống kê Dashboard 
 router.get(
   "/dashboard",
   checkRole(["admin", "branch_manager", "warehouse_manager"]),
   reportController.getDashboardStats,
 );
 
-// 2. Báo cáo doanh thu (Kèm chart data)
+//Báo cáo doanh thu 
 router.get(
   "/revenue",
   checkRole(["admin", "branch_manager", "warehouse_manager"]),
   reportController.getRevenueReport,
 );
 
-// 3. Top thuốc bán chạy
+// Top thuốc bán chạy
 router.get(
   "/top-medicines",
   checkRole(["admin", "branch_manager", "warehouse_manager", "pharmacist"]),

@@ -23,7 +23,6 @@ const ImportSupplier = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  // ─── STATE QUẢN LÝ DỮ LIỆU GỐC HỆ THỐNG ─────────────────────────────────
   const [supplierName, setSupplierName] = useState("");
   const [medicines, setMedicines] = useState([]);
   const [allVariants, setAllVariants] = useState([]);
@@ -31,16 +30,13 @@ const ImportSupplier = () => {
   const [inventories, setInventories] = useState([]);
   const [branches, setBranches] = useState([]);
 
-  // ─── STATE BỘ LỌC TÌM KIẾM (BÊN TRÁI) ──────────────────────────────────
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [filterRx, setFilterRx] = useState("ALL");
 
-  // ─── STATE MODAL CHI TIẾT THUỐC ────────────────────────────────────────
   const [selectedMedicine, setSelectedMedicine] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // ─── STATE PHIẾU NHẬP HÀNG (BÊN PHẢI) ──────────────────────────────────
   const [items, setItems] = useState([]);
 
   const todayString = new Date().toLocaleDateString("vi-VN");
@@ -50,7 +46,7 @@ const ImportSupplier = () => {
   const warehouseBranch = branches.find((b) => b.type === "warehouse");
   const warehouseId = warehouseBranch?._id;
 
-  // ─── TẢI DỮ LIỆU TỪ BACKEND KHI KHỞI CHẠY ──────────────────────────────
+  // TẢI DỮ LIỆU TỪ BACKEND KHI KHỞI CHẠY 
   useEffect(() => {
     const loadInitialData = async () => {
       try {
@@ -73,7 +69,7 @@ const ImportSupplier = () => {
     loadInitialData();
   }, []);
 
-  // ─── XỬ LÝ LỌC THUỐC ĐA TIÊU CHÍ (DANH SÁCH BÊN TRÁI) ───────────────────
+  //  LỌC THUỐC ĐA TIÊU CHÍ
   const filteredMedicines = medicines.filter((med) => {
     const matchesSearch =
       med.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -100,18 +96,11 @@ const ImportSupplier = () => {
     setIsModalOpen(true);
   };
 
-  // ─── LOGIC THÊM THUỐC VÀO PHIẾU NHẬP ────────────────────────
+  // THÊM THUỐC VÀO PHIẾU NHẬP 
   const handleSelectVariantToImport = (medicine, variant) => {
     const isExist = items.some(
       (item) => item.variantId === variant._id && item.batchSelection === "NEW",
     );
-
-    // if (isExist) {
-    //   alert(
-    //     `Sản phẩm ${variant.name} đang có dòng chờ điền thông tin lô mới trong phiếu nhập.`,
-    //   );
-    //   return;
-    // }
 
     const newItem = {
       medicineId: medicine._id,
@@ -133,7 +122,6 @@ const ImportSupplier = () => {
     setIsModalOpen(false); // Đóng modal nếu gọi từ modal
   };
 
-  // ─── CÁC HÀM THAO TÁC TRÊN PHIẾU NHẬP ──────────────────────────────────
   const handleItemChange = (index, field, value) => {
     const updatedItems = [...items];
     updatedItems[index][field] = value;
@@ -183,7 +171,7 @@ const ImportSupplier = () => {
     0,
   );
 
-  // ─── LOGIC IN PHIẾU PDF ───────────────────────────────────────────────
+  //  IN PHIẾU 
   const generatePDF = async (transaction) => {
     const toName =
       branches.find((b) => b._id === user?.branchId)?.name || "Kho Tổng";
@@ -292,7 +280,7 @@ const ImportSupplier = () => {
     await html2pdf().set(opt).from(printDiv).save();
   };
 
-  // ─── LOGIC LƯU PHIẾU NHẬP ────────────────────────
+  // LƯU PHIẾU NHẬP
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -349,7 +337,6 @@ const ImportSupplier = () => {
     }
 
     try {
-      // SỬA TỪ 'details' THÀNH 'items' Ở ĐÂY ĐỂ ĐỒNG BỘ VỚI BACKEND
       const payload = {
         supplierName: supplierName.trim(),
         items: items.map((item) => ({
@@ -361,7 +348,7 @@ const ImportSupplier = () => {
           manufacturingDate: item.manufacturingDate,
           expiryDate: item.expiryDate,
           quantity: Number(item.quantity),
-          price: Number(parseFloat(item.price).toFixed(2)), // Đồng bộ format giá như bản cũ
+          price: Number(parseFloat(item.price).toFixed(2)), // Đồng bộ format giá 
         })),
       };
 
@@ -440,7 +427,7 @@ const ImportSupplier = () => {
 
       {/* WORKSPACE CHIA LÀM 2 PHẦN */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1 overflow-hidden animate-float-up">
-        {/* ==================== PHẦN BÊN TRÁI: DANH SÁCH THUỐC ==================== */}
+        {/*HẦN BÊN TRÁI: DANH SÁCH THUỐC */}
         <div className="lg:col-span-4 flex flex-col bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden h-full">
           <div className="p-4 border-b border-slate-100 bg-slate-50/50 shrink-0">
             <h2 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-3 flex items-center gap-1.5">
@@ -451,7 +438,7 @@ const ImportSupplier = () => {
               Tìm & Chọn Thuốc
             </h2>
 
-            {/* Thanh tìm kiếm nâng cao */}
+            {/* Thanh tìm kiếm*/}
             <div className="relative mb-3">
               <Search
                 className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
@@ -466,7 +453,7 @@ const ImportSupplier = () => {
               />
             </div>
 
-            {/* Bộ lọc đa tiêu chí */}
+            {/* lọc đa tiêu chí */}
             <div className="grid grid-cols-2 gap-2">
               <select
                 className="w-full text-xs p-2.5 border border-slate-200 rounded-xl bg-white outline-none font-medium text-slate-600 focus:border-sky-500"
@@ -490,7 +477,7 @@ const ImportSupplier = () => {
             </div>
           </div>
 
-          {/* Khối hiển thị danh sách thuốc (Có nút chọn quy cách ra ngoài) */}
+          {/* Khối hiển thị danh sách thuốc */}
           <div className="flex-1 overflow-y-auto p-3 space-y-2 bg-slate-50/30 scrollbar-thin">
             {filteredMedicines.length === 0 ? (
               <div className="text-center py-12 text-slate-400 text-sm font-medium">
@@ -538,7 +525,7 @@ const ImportSupplier = () => {
                       </div>
                     </div>
 
-                    {/* Danh sách quy cách (Biến thể) - Đã cập nhật hiển thị Tồn kho Kho tổng */}
+                    {/* Danh sách quy cách */}
                     <div className="mt-1 pt-2 border-t border-slate-100 space-y-1.5">
                       {medVariants.length === 0 ? (
                         <p className="text-[11px] text-amber-500 italic">
@@ -605,13 +592,13 @@ const ImportSupplier = () => {
           </div>
         </div>
 
-        {/* ==================== PHẦN BÊN PHẢI: GIAO DIỆN PHIẾU NHẬP THUỐC ==================== */}
+        {/* PHẦN BÊN PHẢI: GIAO DIỆN PHIẾU NHẬP THUỐC */}
         <form
           onSubmit={handleSubmit}
           className="lg:col-span-8 flex flex-col bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden h-full">
           {/* Thông tin nhà cung cấp và Header phiếu */}
           <div className="p-4 border-b border-slate-100 bg-slate-50/50 shrink-0">
-            {/* Box Thông Tin Phiếu: Ngày Lập, Nhân Viên, Vị Trí Nhập (Cùng 1 hàng ngang) */}
+            {/* Box Thông Tin Phiếu: Ngày Lập, Nhân Viên, Vị Trí Nhập */}
             <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm mb-4">
               <div className="flex items-center gap-1.5">
                 <span className="text-slate-400 font-medium flex items-center gap-1">
@@ -659,7 +646,7 @@ const ImportSupplier = () => {
             </div>
           </div>
 
-          {/* Dải tiêu đề của Bảng chi tiết mặt hàng */}
+          {/* Bảng chi tiết mặt hàng */}
           <div className="px-4 py-3 border-b border-slate-100 bg-white flex justify-between items-center shrink-0">
             <div className="flex items-center gap-2">
               <Layers size={16} className="text-sky-600" />
@@ -677,7 +664,7 @@ const ImportSupplier = () => {
             )}
           </div>
 
-          {/* Bảng chi tiết các cột thuộc tính phiếu nhập dữ liệu tự động wrap responsive */}
+          {/* Bảng chi tiết các cột thuộc tính phiếu nhập */}
           <div className="flex-1 overflow-auto p-4 bg-slate-50/30 scrollbar-thin">
             {items.length === 0 ? (
               <div className="h-full flex flex-col items-center justify-center text-slate-400 space-y-2 py-10">
@@ -741,7 +728,6 @@ const ImportSupplier = () => {
                         </button>
                       </div>
 
-                      {/* Sử dụng Responsive Grid linh hoạt */}
                       <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3">
                         {/* Chọn Lô - Hiển thị kèm lượng tồn quy đổi */}
                         <div>
@@ -892,7 +878,7 @@ const ImportSupplier = () => {
             )}
           </div>
 
-          {/* FOOTER: HIỂN THỊ TỔNG TIỀN VÀ NÚT LƯU PHIẾU CHỐT SỐ LIỆU */}
+          {/* FOOTER*/}
           <div className="px-6 py-4 border-t border-slate-100 bg-slate-50 flex flex-col sm:flex-row justify-between items-center gap-4 shrink-0">
             <div className="flex items-center gap-3 bg-white px-4 py-2.5 rounded-xl border border-slate-200 shadow-sm">
               <span className="text-sm text-slate-600 font-bold uppercase tracking-wide">
@@ -927,7 +913,7 @@ const ImportSupplier = () => {
         </form>
       </div>
 
-      {/* ==================== DIALOG MODAL: CHI TIẾT THUỐC ==================== */}
+      {/* MODAL CHI TIẾT THUỐC */}
       {isModalOpen && selectedMedicine && (
         <div
           className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-[150] p-4 animate-fade-in"

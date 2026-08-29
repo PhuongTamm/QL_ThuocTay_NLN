@@ -3,8 +3,6 @@ const Branch = require("../models/Branch");
 // GET /api/branches
 exports.getAllBranches = async (req, res) => {
   try {
-    // Lấy tất cả, trừ kho tổng (nếu muốn) hoặc lấy hết tùy logic
-    // Ở đây ta lấy hết để hiển thị tên
     const branches = await Branch.find().sort({ createdAt: -1 });
 
     res.status(200).json({

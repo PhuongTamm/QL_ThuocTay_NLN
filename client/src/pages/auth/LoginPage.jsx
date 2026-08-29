@@ -41,9 +41,9 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 md:p-8 font-sans">
-      {/* Khung chứa chính dạng Split-card chuyên nghiệp */}
+      {/* Khung chứa chính dạng Split-card */}
       <div className="max-w-5xl w-full bg-white rounded-[2rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] overflow-hidden flex flex-col md:flex-row min-h-[600px]">
-        {/* ─── PHẦN BÊN TRÁI: Branding & Decor (Đồng bộ màu Sidebar) ─── */}
+        {/* PHẦN BÊN TRÁI */}
         <div className="md:w-5/12 bg-gradient-to-br from-[#1068ec] to-[#51b2db] p-10 lg:p-12 text-white flex flex-col justify-between relative overflow-hidden hidden md:flex">
           {/* Họa tiết nền mờ */}
           <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-white opacity-10 rounded-full blur-3xl"></div>
@@ -73,9 +73,8 @@ const LoginPage = () => {
           </div>
         </div>
 
-        {/* ─── PHẦN BÊN PHẢI: Form Đăng nhập ─── */}
+        {/* PHẦN BÊN PHẢI: Form Đăng nhập */}
         <div className="md:w-7/12 p-8 sm:p-12 lg:p-16 flex flex-col justify-center relative bg-white">
-          {/* Logo hiển thị trên mobile (ẩn trên PC) */}
           <div className="md:hidden flex items-center gap-3 mb-8">
             <div className="w-12 h-12 bg-gradient-to-br from-[#1068ec] to-[#51b2db] rounded-xl flex items-center justify-center shadow-lg shadow-[#1068ec]/30">
               <HeartPulse size={24} className="text-white" strokeWidth={2.5} />
@@ -108,7 +107,7 @@ const LoginPage = () => {
             )}
 
             <div className="space-y-5">
-              {/* Input Email */}
+              {/* Email */}
               <div>
                 <label className="block text-sm font-bold text-slate-700 mb-2">
                   Tài khoản Email
@@ -129,7 +128,7 @@ const LoginPage = () => {
                 </div>
               </div>
 
-              {/* Input Mật khẩu */}
+              {/* Mật khẩu */}
               <div>
                 <label className="block text-sm font-bold text-slate-700 mb-2">
                   Mật khẩu

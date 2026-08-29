@@ -36,16 +36,13 @@ const DistributePage = () => {
   const [inventories, setInventories] = useState([]);
   const [categories, setCategories] = useState([]);
 
-  // State bộ lọc (Trái)
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [filterRx, setFilterRx] = useState("ALL");
 
-  // Modal Chi tiết thuốc
   const [selectedMedicine, setSelectedMedicine] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Danh sách item trong phiếu (Phải)
   const [items, setItems] = useState([]);
 
   const todayString = new Date().toLocaleDateString("vi-VN");
@@ -83,13 +80,13 @@ const DistributePage = () => {
           : "";
       const invRes = await api.get(`/inventories${branchQuery}`);
       setInventories(invRes.data.data || []);
-      setItems([]); // Clear phiếu khi đổi mode
+      setItems([]); 
     } catch (err) {
       console.error("Lỗi tải tồn kho", err);
     }
   };
 
-  // LỌC TỒN KHO: Chỉ lấy những thuốc đang thực sự có trong kho (inventories)
+  // LỌC TỒN KHO: Chỉ lấy những thuốc đang thực sự có trong kho 
   const filteredInventories = inventories.filter((inv) => {
     const med = inv.medicineId;
     if (!med) return false;
@@ -150,7 +147,7 @@ const DistributePage = () => {
     }
   };
 
-  /* ─── LOGIC IN PHIẾU XUẤT HỦY ─── */
+  /* IN PHIẾU XUẤT HỦY  */
   const generateDisposalPDF = async (transaction) => {
     let branchName = user?.branchId
       ? allBranches.find((x) => x._id === user.branchId)?.name
@@ -269,7 +266,7 @@ const DistributePage = () => {
     await html2pdf().set(opt).from(printDiv).save();
   };
 
-  /* ─── LOGIC IN PHIẾU XUẤT/TRẢ PDF ─── */
+  /* IN PHIẾU XUẤT/TRẢ */
   const generatePDF = async (transaction, currentMode, targetBranchId) => {
     let fromName = "Kho Tổng";
     let toName = "Kho Tổng";
@@ -416,34 +413,7 @@ const DistributePage = () => {
 
       if (items.length === 0) return alert("Phiếu chưa có mặt hàng nào!");
 
-      // --- LOGIC KIỂM TRA TỒN KHO TRƯỚC KHI SUBMIT ---
-      // for (let i = 0; i < items.length; i++) {
-      //   if (!items[i].medicineId)
-      //     return alert(`Dòng thứ ${i + 1}: Chưa chọn thuốc!`);
-      //   if (!items[i].variantId)
-      //     return alert(`Dòng thứ ${i + 1}: Chưa chọn quy cách!`);
-      //   if ((mode === "RETURN" || mode === "DISPOSE") && !items[i].batchId)
-      //     return alert(`Dòng thứ ${i + 1}: Vui lòng chọn Mã lô cần thao tác!`);
-      //   if (items[i].quantity <= 0)
-      //     return alert(`Dòng thứ ${i + 1}: Số lượng phải lớn hơn 0!`);
-
-      //   // Check vượt quá tồn kho (Bất kể Distribute hay Dispose)
-      //   const variant = allVariants.find((v) => v._id === items[i].variantId);
-      //   const medInv = inventories.find(
-      //     (inv) => inv.medicineId?._id === items[i].medicineId,
-      //   );
-      //   const batch = medInv?.batches.find((b) => b._id === items[i].batchId);
-
-      //   if (variant && batch) {
-      //     const baseQtyDeduct = items[i].quantity * variant.conversionRate;
-      //     if (baseQtyDeduct > batch.quantity) {
-      //       return alert(
-      //         `Dòng ${i + 1}: Số lượng quy đổi (${baseQtyDeduct} đ.vị cơ sở) vượt quá tồn kho thực tế của lô này (${batch.quantity})!`,
-      //       );
-      //     }
-      //   }
-      // }
-      // --- LOGIC KIỂM TRA TỒN KHO TRƯỚC KHI SUBMIT ---
+      // KIỂM TRA TỒN KHO TRƯỚC KHI SUBMIT 
       for (let i = 0; i < items.length; i++) {
         if (!items[i].medicineId)
           return alert(`Dòng thứ ${i + 1}: Chưa chọn thuốc!`);
@@ -463,7 +433,7 @@ const DistributePage = () => {
 
         const baseQtyDeduct = items[i].quantity * variant.conversionRate;
 
-        // 1. KIỂM TRA CHO CHẾ ĐỘ XUẤT ĐI (Cộng dồn tất cả các lô đang có)
+        // KIỂM TRA CHO CHẾ ĐỘ XUẤT ĐI (Cộng dồn tất cả các lô đang có)
         if (mode === "DISTRIBUTE") {
           const activeBatches = medInv.batches.filter(
             (b) =>
@@ -482,7 +452,7 @@ const DistributePage = () => {
             );
           }
         }
-        // 2. KIỂM TRA CHO CHẾ ĐỘ TRẢ VỀ / XUẤT HỦY (Chỉ kiểm tra trên 1 lô cụ thể được chọn)
+        // KIỂM TRA CHO CHẾ ĐỘ TRẢ VỀ / XUẤT HỦY (Chỉ kiểm tra trên 1 lô cụ thể được chọn)
         else {
           const batch = medInv.batches.find((b) => b._id === items[i].batchId);
           if (batch && baseQtyDeduct > batch.quantity) {
@@ -675,7 +645,7 @@ const DistributePage = () => {
 
       {/* WORKSPACE CHIA LÀM 2 PHẦN */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1 overflow-hidden animate-float-up">
-        {/* ==================== PHẦN BÊN TRÁI: DANH SÁCH THUỐC ==================== */}
+        {/*  PHẦN BÊN TRÁI: DANH SÁCH THUỐC */}
         <div className="lg:col-span-4 flex flex-col bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden h-full">
           <div className="p-4 border-b border-slate-100 bg-slate-50/50 shrink-0">
             <h2
@@ -683,7 +653,7 @@ const DistributePage = () => {
               <Pill size={16} /> Tìm & Chọn Thuốc
             </h2>
 
-            {/* Thanh tìm kiếm nâng cao */}
+            {/* Thanh tìm kiếm*/}
             <div className="relative mb-3">
               <Search
                 className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
@@ -698,7 +668,7 @@ const DistributePage = () => {
               />
             </div>
 
-            {/* Bộ lọc đa tiêu chí */}
+            {/*lọc đa tiêu chí */}
             <div className="grid grid-cols-2 gap-2">
               <select
                 className={`w-full text-xs p-2.5 border border-slate-200 rounded-xl bg-white outline-none font-medium text-slate-600 ${mode === "DISPOSE" ? "focus:border-red-500" : "focus:border-sky-500"}`}
@@ -775,7 +745,7 @@ const DistributePage = () => {
                   <div
                     key={inv._id}
                     className={`bg-white border border-slate-100 rounded-xl p-3 shadow-sm ${hoverBorder} hover:shadow-md transition-all duration-200 flex flex-col`}>
-                    {/* Header Thuốc - Click mở modal */}
+                    {/* Header Thuốc */}
                     <div
                       className="flex justify-between items-start mb-2 cursor-pointer group"
                       onClick={() => handleOpenDetailModal(med)}>
@@ -885,7 +855,7 @@ const DistributePage = () => {
           </div>
         </div>
 
-        {/* ==================== PHẦN BÊN PHẢI: GIAO DIỆN PHIẾU XUẤT ==================== */}
+        {/*PHẦN BÊN PHẢI: GIAO DIỆN PHIẾU XUẤT */}
         <form
           onSubmit={handleSubmit}
           className="lg:col-span-8 flex flex-col bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden h-full">
@@ -1080,15 +1050,6 @@ const DistributePage = () => {
                           </p>
                         </div>
                         <div className="flex items-center gap-3">
-                          {/* Hiển thị tổng tồn kho khả dụng */}
-                          {/* <span
-                            className={`text-[11px] font-bold px-2 py-1 rounded-md border ${
-                              totalValidBaseQty > 0
-                                ? "text-emerald-700 bg-emerald-50 border-emerald-200"
-                                : "text-red-700 bg-red-50 border-red-200"
-                            }`}>
-                            Tồn khả dụng: {totalValidBaseQty} {baseUnit}
-                          </span> */}
                           <button
                             type="button"
                             onClick={() => removeItemRow(index)}
@@ -1101,7 +1062,7 @@ const DistributePage = () => {
 
                       {/* Inputs Grid */}
                       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 pl-10 pr-2">
-                        {/* 1. MÃ LÔ (Khác DISTRIBUTE thì bắt buộc chọn lô) */}
+                        {/*MÃ LÔ (Khác DISTRIBUTE thì bắt buộc chọn lô) */}
                         {mode !== "DISTRIBUTE" && (
                           <div className="col-span-2 lg:col-span-2">
                             <label className={labelBase}>
@@ -1145,7 +1106,7 @@ const DistributePage = () => {
                           </div>
                         )}
 
-                        {/* 2. LÝ DO (Chỉ RETURN và DISPOSE) */}
+                        {/* LÝ DO (Chỉ RETURN và DISPOSE) */}
                         {mode !== "DISTRIBUTE" && (
                           <div className="col-span-2 lg:col-span-1">
                             <label className={labelBase}>Lý do</label>
@@ -1172,7 +1133,7 @@ const DistributePage = () => {
                           </div>
                         )}
 
-                        {/* 3. SỐ LƯỢNG (Dùng cho cả 3 Mode) */}
+                        {/* SỐ LƯỢNG (Dùng cho cả 3 Mode) */}
                         <div
                           className={`col-span-2 ${mode === "DISTRIBUTE" ? "lg:col-span-4" : "lg:col-span-1"}`}>
                           <label className={labelBase}>
@@ -1196,7 +1157,7 @@ const DistributePage = () => {
                         </div>
                       </div>
 
-                      {/* Hiển thị lỗi đỏ nếu số lượng quy đổi lớn hơn tồn của lô (Giống logic trong Modal Disposal cũ) */}
+                      {/* Hiển thị lỗi đỏ nếu số lượng quy đổi lớn hơn tồn của lô */}
                       {isOverLimit && (
                         <p className="text-[10px] text-red-500 mt-2 pl-10 italic">
                           * Lỗi: Số lượng quy đổi ra đơn vị cơ sở (
@@ -1211,7 +1172,7 @@ const DistributePage = () => {
             )}
           </div>
 
-          {/* FOOTER: NÚT LƯU PHIẾU */}
+          {/* FOOTER */}
           <div className="px-6 py-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3 shrink-0">
             <button
               type="submit"
@@ -1228,7 +1189,7 @@ const DistributePage = () => {
         </form>
       </div>
 
-      {/* ==================== DIALOG MODAL: CHI TIẾT THUỐC ==================== */}
+      {/* MODAL CHI TIẾT THUỐC*/}
       {isModalOpen && selectedMedicine && (
         <div
           className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-[150] p-4 animate-fade-in"

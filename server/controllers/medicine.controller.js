@@ -48,7 +48,7 @@ const generateNamePrefix = (str) => {
     .substring(0, 8); // Lấy 8 ký tự (VD: VITAMINA, VITAMINE)
 };
 
-// 1. Hàm Helper: Tạo mã thuốc gốc (VD: Paracetamol -> P0001)
+// Tạo mã thuốc gốc (VD: Paracetamol -> P0001)
 const generateMedicineCode = async (name) => {
   // Lấy chữ cái đầu tiên (xóa dấu, in hoa)
   let firstLetter = name
@@ -86,7 +86,7 @@ const generateMedicineCode = async (name) => {
   return code;
 };
 
-// 2. Hàm Helper: Tạo tiền tố Đơn vị cho SKU (Lấy 4 ký tự)
+// Tạo tiền tố Đơn vị cho SKU (Lấy 4 ký tự)
 const generateUnitPrefix = (str) => {
   if (!str) return "UN";
   return str
@@ -97,12 +97,11 @@ const generateUnitPrefix = (str) => {
     .substring(0, 4); // VD: VIEN, HOP, CHAI
 };
 
-// 1. Lấy danh sách thuốc (Kèm các biến thể và danh mục)
+// Lấy danh sách thuốc (Kèm các biến thể và danh mục)
 exports.getAllMedicines = async (req, res) => {
   try {
-    // SỬA TẠI ĐÂY: Thêm .populate("categoryId") và .sort({ createdAt: -1 })
     const medicines = await Medicine.find()
-      .populate("categoryId", "name markupPercentage") // Lấy thêm tên danh mục để hiển thị và lọc
+      .populate("categoryId", "name markupPercentage") // Lấy tên danh mục để hiển thị và lọc
       .sort({ createdAt: -1 }) // Mặc định sắp xếp thuốc mới nhất lên đầu
       .lean();
 
@@ -115,7 +114,7 @@ exports.getAllMedicines = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-// 2. Tạo thuốc gốc (Chưa có giá, chưa có quy cách)
+// Tạo thuốc gốc (Chưa có giá, chưa có quy cách)
 exports.createMedicine = async (req, res) => {
   try {
     const {
@@ -127,7 +126,6 @@ exports.createMedicine = async (req, res) => {
       description,
       baseUnit,
     } = req.body;
-    // [RÀNG BUỘC] 1. Thiếu thông tin
     if (!name || name.trim() === "")
       return res
         .status(400)
@@ -137,7 +135,7 @@ exports.createMedicine = async (req, res) => {
         .status(400)
         .json({ success: false, message: "Vui lòng chọn danh mục!" });
 
-    // [RÀNG BUỘC] 2. Chống trùng tên thuốc gốc (Không phân biệt hoa thường)
+    // Chống trùng tên thuốc gốc (Không phân biệt hoa thường)
     const existMed = await Medicine.findOne({
       name: { $regex: new RegExp("^" + name.trim() + "$", "i") },
     });
@@ -206,7 +204,7 @@ exports.deleteMedicine = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // KIỂM TRA RÀNG BUỘC: Có biến thể nào đang dùng thuốc này không?
+    // KIỂM TRA Có biến thể nào đang dùng thuốc này không?
     const existingVariants = await MedicineVariant.findOne({ medicineId: id });
     if (existingVariants) {
       return res.status(400).json({
@@ -241,7 +239,6 @@ exports.createVariant = async (req, res) => {
       conversionRate,
     } = req.body;
 
-    // [RÀNG BUỘC] 1. Kiểm tra dữ liệu đầu vào
     if (!name || name.trim() === "")
       return res.status(400).json({
         success: false,
@@ -264,7 +261,7 @@ exports.createVariant = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Thuốc gốc không tồn tại" });
 
-    // [RÀNG BUỘC] 2. Không được trùng Đơn vị tính (VD: 2 quy cách Hộp)
+    //Không được trùng Đơn vị tính (VD: 2 quy cách Hộp)
     const existingUnit = await MedicineVariant.findOne({ medicineId, unit });
     if (existingUnit)
       return res.status(400).json({
@@ -275,7 +272,7 @@ exports.createVariant = async (req, res) => {
     if (!sku || sku.trim() === "")
       sku = `${medicine.code}-${generateUnitPrefix(unit)}`;
 
-    // [RÀNG BUỘC] 3. Không được trùng mã SKU
+    // Không được trùng mã SKU
     const existSku = await MedicineVariant.findOne({ sku });
     if (existSku)
       return res.status(400).json({
@@ -300,13 +297,11 @@ exports.createVariant = async (req, res) => {
   }
 };
 
-// 2. Cập nhật hàm updateVariant (Logic: Cộng thêm ảnh mới vào ảnh cũ)
 exports.updateVariant = async (req, res) => {
   try {
     const { id } = req.params;
     const updateData = { ...req.body };
 
-    // [RÀNG BUỘC] Tên và Giá khi cập nhật
     if (updateData.name && updateData.name.trim() === "") {
       return res
         .status(400)
@@ -353,18 +348,17 @@ exports.updateVariant = async (req, res) => {
   }
 };
 
-// 3. Thêm hàm Xóa biến thể (Tùy chọn)
+//  Xóa biến thể 
 exports.deleteVariant = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // 1. Tìm thông tin biến thể trước khi xóa
     const variant = await MedicineVariant.findById(id);
     if (!variant) {
       return res.status(404).json({ success: false, message: "Không tìm thấy quy cách này." });
     }
 
-    // 2. KIỂM TRA RÀNG BUỘC: Có lô thuốc nào đang tồn tại không?
+    //KIỂM TRA Có lô thuốc nào đang tồn tại không?
     // Nếu totalQuantity > 0 nghĩa là thuốc này đang có ít nhất 1 lô còn hàng trong kho
     const activeInventory = await Inventory.findOne({
       medicineId: variant.medicineId,
@@ -378,7 +372,7 @@ exports.deleteVariant = async (req, res) => {
       });
     }
 
-    // 3. Nếu an toàn (kho đã xuất sạch), tiến hành xóa
+    //Nếu an toàn (kho đã xuất sạch), tiến hành xóa
     await MedicineVariant.findByIdAndDelete(id);
     res.json({ success: true, message: "Đã xóa quy cách thành công." });
   } catch (error) {
@@ -386,7 +380,6 @@ exports.deleteVariant = async (req, res) => {
   }
 };
 
-// 4. Lấy danh sách biến thể (Để hiển thị khi nhập kho)
 exports.getAllVariants = async (req, res) => {
   try {
     const variants = await MedicineVariant.find().populate(
@@ -401,21 +394,19 @@ exports.getAllVariants = async (req, res) => {
 
 exports.seedMedicines = async (req, res) => {
   try {
-    // 1. Đọc file JSON
+    // Đọc file JSON
     const filePath = path.join(__dirname, "../data/medicines_ak.json");
     const rawData = fs.readFileSync(filePath, "utf-8");
     const seedData = JSON.parse(rawData);
 
-    // 2. Lấy tất cả danh mục hiện có trên Database
+    // Lấy tất cả danh mục hiện có trên Database
     const categories = await Category.find();
 
     let successCount = 0;
     let skipCount = 0;
 
-    // 3. Vòng lặp Insert
+    // Vòng lặp Insert
     for (const item of seedData) {
-      // BƯỚC A: TÌM DANH MỤC PHÙ HỢP (Giải thuật Smart Matching bằng Regex)
-      // Chuyển keyword thành Regex không phân biệt hoa thường
       const keywordRegex = new RegExp(item.categoryKeyword, "i");
       const matchedCategory = categories.find((cat) =>
         keywordRegex.test(cat.name),
@@ -440,7 +431,6 @@ exports.seedMedicines = async (req, res) => {
         continue;
       }
 
-      // BƯỚC B: TẠO THUỐC GỐC
       const code = await generateMedicineCode(item.name);
       const newMed = await Medicine.create({
         code: code,
@@ -452,11 +442,9 @@ exports.seedMedicines = async (req, res) => {
         description: item.description,
         baseUnit: item.baseUnit,
 
-        // SỬA Ở DÒNG NÀY: Lấy mảng images từ JSON, nếu JSON không có thì gán mảng rỗng
         images: item.images || [],
       });
 
-      // BƯỚC C: TẠO CÁC BIẾN THỂ (QUY CÁCH)
       if (item.variants && item.variants.length > 0) {
         for (const variant of item.variants) {
           const sku = `${newMed.code}-${generateUnitPrefix(variant.unit)}`;
@@ -472,7 +460,6 @@ exports.seedMedicines = async (req, res) => {
             priceHistory: [
               {
                 price: variant.currentPrice,
-                // Trong seeder không có req.user.id nên ta để null hoặc bỏ trống
               },
             ],
           });
@@ -492,21 +479,19 @@ exports.seedMedicines = async (req, res) => {
   }
 };
 
-// ===================================================================
-// 1. API CẬP NHẬT ĐỒNG LOẠT GIÁ BÁN CHO TOÀN BỘ THUỐC TRONG DANH MỤC
-// ===================================================================
+// API CẬP NHẬT ĐỒNG LOẠT GIÁ BÁN CHO TOÀN BỘ THUỐC TRONG DANH MỤC
 exports.bulkUpdatePriceByCategory = async (req, res) => {
   try {
     const { categoryId } = req.params;
     const userId = req.user.id;
 
-    // 1. Lấy thông tin Danh mục để lấy markupPercentage
+    // Lấy thông tin Danh mục để lấy markupPercentage
     const category = await Category.findById(categoryId);
     if (!category) {
       return res.status(404).json({ success: false, message: "Không tìm thấy danh mục!" });
     }
 
-    // 2. Tìm tất cả các loại thuốc gốc thuộc danh mục này
+    // Tìm tất cả các loại thuốc gốc thuộc danh mục 
     const medicines = await Medicine.find({ categoryId: category._id });
     if (medicines.length === 0) {
       return res.status(400).json({ success: false, message: "Danh mục này chưa có thuốc nào!" });
@@ -514,12 +499,12 @@ exports.bulkUpdatePriceByCategory = async (req, res) => {
 
     let updatedVariantCount = 0;
 
-    // 3. Vòng lặp quét qua từng loại thuốc
+    // Vòng lặp quét qua từng loại thuốc
     for (const med of medicines) {
       // Bỏ qua các thuốc chưa có giá vốn bình quân (MAC = 0)
       if (!med.mac || med.mac <= 0) continue; 
 
-      // Tìm tất cả các biến thể (Hộp, Vỉ, Viên...) của thuốc này
+      // Tìm tất cả các biến thể (Hộp, Vỉ, Viên...) của thuốc 
       const variants = await MedicineVariant.find({ medicineId: med._id });
       
       for (const variant of variants) {
@@ -554,9 +539,7 @@ exports.bulkUpdatePriceByCategory = async (req, res) => {
   }
 };
 
-// ===================================================================
-// 2. API XEM LỊCH SỬ CẬP NHẬT GIÁ CỦA 1 QUY CÁCH CỤ THỂ
-// ===================================================================
+// API XEM LỊCH SỬ CẬP NHẬT GIÁ CỦA 1 QUY CÁCH CỤ THỂ
 exports.getVariantPriceHistory = async (req, res) => {
   try {
     const { variantId } = req.params;

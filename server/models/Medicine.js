@@ -13,7 +13,7 @@ const medicineSchema = new mongoose.Schema(
       required: true, // Bắt buộc phải chọn nhóm khi tạo thuốc
     },
 
-    // Bổ sung thêm cờ để phân loại thuốc kê đơn (Quan trọng trong y tế)
+    // cờ để phân loại thuốc kê đơn 
     isPrescription: { type: Boolean, default: false },
 
     manufacturer: { type: String }, // VD: Dược Hậu Giang
@@ -29,12 +29,12 @@ const medicineSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-// Hàm tạo nội dung văn bản hoàn chỉnh để AI đọc hiểu dễ dàng
+// Hàm tạo nội dung văn bản hoàn chỉnh để AI đọc hiểu
 const generateTextForEmbedding = (doc, categoryName) => {
   return `Thuốc: ${doc.name}. Mã: ${doc.code}. Danh mục: ${categoryName}. Hoạt chất/Thành phần: ${doc.ingredients || 'Không rõ'}. Mô tả công dụng: ${doc.description || 'Không có mô tả'}. Nhà sản xuất: ${doc.manufacturer || 'Không rõ'}. Thuốc này là loại ${doc.isPrescription ? 'Kê đơn' : 'Không kê đơn'}.`;
 };
 
-// Chuyển MongoDB ObjectId thành UUID (Qdrant yêu cầu ID là UUID hoặc số nguyên)
+// Chuyển MongoDB ObjectId thành UUID 
 const objectIdToUUID = (id) => {
   const hash = crypto.createHash("md5").update(id.toString()).digest("hex");
   return `${hash.slice(0, 8)}-${hash.slice(8, 12)}-${hash.slice(12, 16)}-${hash.slice(16, 20)}-${hash.slice(20)}`;

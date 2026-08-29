@@ -27,9 +27,7 @@ import {
 } from "recharts";
 import api from "../../services/api";
 
-/* ─────────────────────────────────────────
-   STAT CARD — đồng bộ style POSPage
-───────────────────────────────────────── */
+/*  STAT CARD  */
 const StatCard = ({ title, value, icon: Icon, gradient, iconBg }) => (
   <div className="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all duration-200 px-4 py-4 relative">
     <div className="flex items-center gap-2 mb-2 relative z-10">
@@ -47,9 +45,7 @@ const StatCard = ({ title, value, icon: Icon, gradient, iconBg }) => (
   </div>
 );
 
-/* ─────────────────────────────────────────
-   TRANSACTION TYPE BADGE
-───────────────────────────────────────── */
+/* LOẠI GIAO DỊCH */
 const getTransactionLabel = (type) => {
   switch (type) {
     case "SALE_AT_BRANCH":
@@ -69,9 +65,7 @@ const getTransactionLabel = (type) => {
 
 const PIE_COLORS = ["#0ea5e9", "#10b981", "#f59e0b", "#f97316", "#8b5cf6"];
 
-/* ─────────────────────────────────────────
-   DASHBOARD
-───────────────────────────────────────── */
+/* DASHBOARD*/
 const Dashboard = () => {
   const [stats, setStats] = useState(null);
   const [chartData, setChartData] = useState([]);
@@ -250,7 +244,7 @@ const Dashboard = () => {
         }
       `}</style>
       <div className="animate-page-in space-y-6">
-        {/* ── HEADER + DATE FILTER ── */}
+        {/* HEADER  */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
           <div>
             <h1 className="text-2xl font-black text-slate-800 tracking-tight">
@@ -291,7 +285,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* ── LOADING ── */}
+        {/* LOADING */}
         {loading && !stats ? (
           <div className="flex flex-col items-center justify-center h-64 gap-4">
             <Loader2 className="animate-spin text-[#0ea5e9]" size={40} />
@@ -301,7 +295,7 @@ const Dashboard = () => {
           </div>
         ) : (
           <>
-            {/* ── STAT CARDS ── */}
+            {/*STAT CARDS */}
             <div
               className="grid gap-4 mb-6"
               style={{
@@ -344,7 +338,7 @@ const Dashboard = () => {
               />
             </div>
 
-            {/* ── HÀNG 1: CHART DOANH THU + TOP MEDICINES DANH SÁCH ── */}
+            {/* CHART DOANH THU + TOP DANH SÁCH THUỐC */}
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">
               {/* Revenue Chart */}
               <div className="xl:col-span-2 bg-white rounded-2xl border border-slate-100 shadow-sm p-6 flex flex-col">
@@ -430,7 +424,7 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              {/* Top Medicines List */}
+              {/* TOP DANH SÁCH THUỐC */}
               <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 flex flex-col">
                 <div className="flex items-center gap-2 mb-5">
                   <Award size={18} className="text-amber-400" />
@@ -470,9 +464,9 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* ── HÀNG 2: LỊCH SỬ GIAO DỊCH + CHART TRÒN TOP THUỐC ── */}
+            {/* LỊCH SỬ GIAO DỊCH + CHART TRÒN TOP THUỐC */}
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">
-              {/* Lịch sử giao dịch (Chiếm 2 cột) */}
+              {/* Lịch sử giao dịch */}
               <div className="xl:col-span-2 bg-white rounded-2xl border border-slate-100 shadow-sm p-6 flex flex-col">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
                   <h2 className="font-bold text-base text-slate-800">
@@ -590,7 +584,7 @@ const Dashboard = () => {
                 )}
               </div>
 
-              {/* Biểu đồ Tròn: Cơ cấu doanh thu Top Thuốc (Chiếm 1 cột) */}
+              {/* Biểu đồ Tròn cơ cấu doanh thu Top Thuốc  */}
               <div className="bg-white rounded-2xl border border-slate-100 shadow-sm px-4 pt-6 pb-10 flex flex-col">
                 <div className="mb-2 text-center">
                   <h2 className="font-bold text-base text-slate-800">

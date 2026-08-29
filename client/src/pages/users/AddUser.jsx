@@ -26,7 +26,7 @@ const AddUser = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await api.post("/auth/register", formData); // Hoặc /users tùy route server
+      await api.post("/auth/register", formData); 
       alert("Tạo nhân viên thành công!");
       navigate("/users");
     } catch (err) {

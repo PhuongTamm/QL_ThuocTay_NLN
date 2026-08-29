@@ -189,7 +189,7 @@ const BranchUserManagement = () => {
     );
   };
 
-  /* ── shared styles ── */
+  /* shared styles */
   const inputCls =
     "w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#0ea5e9]/30 focus:border-[#0ea5e9] transition bg-white text-slate-800 placeholder:text-slate-400";
   const labelCls =
@@ -222,7 +222,7 @@ const BranchUserManagement = () => {
       `}</style>
 
       <div className="animate-page-in space-y-6">
-        {/* ── PAGE HEADER ── */}
+        {/* PAGE HEADER */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <div
@@ -266,7 +266,7 @@ const BranchUserManagement = () => {
           </button>
         </div>
 
-        {/* ── TABS ── */}
+        {/* TABS */}
         <div className="flex gap-1 bg-white rounded-2xl border border-slate-100 shadow-sm p-1.5 mb-4 w-fit">
           <button
             onClick={() => setActiveTab("branches")}
@@ -298,7 +298,7 @@ const BranchUserManagement = () => {
           </button>
         </div>
 
-        {/* ── TABLE CONTAINER ── */}
+        {/* TABLE CONTAINER */}
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20 gap-3 text-slate-400">
@@ -306,7 +306,7 @@ const BranchUserManagement = () => {
               <p className="text-sm font-medium">Đang tải dữ liệu...</p>
             </div>
           ) : activeTab === "branches" ? (
-            /* ══ TAB: CHI NHÁNH ══ */
+            /* TAB: CHI NHÁNH */
             <table className="w-full text-left text-sm border-collapse">
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-100">
@@ -411,7 +411,7 @@ const BranchUserManagement = () => {
               </tbody>
             </table>
           ) : (
-            /* ══ TAB: NHÂN VIÊN ══ */
+            /* TAB: NHÂN VIÊN */
             <table className="w-full text-left text-sm border-collapse">
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-100">
@@ -510,9 +510,7 @@ const BranchUserManagement = () => {
         </div>
       </div>
 
-      {/* ══════════════════════════════════════════
-         MODAL: THÊM / SỬA CHI NHÁNH
-      ══════════════════════════════════════════ */}
+      {/* MODAL: THÊM / SỬA CHI NHÁNH */}
       {showBranchModal && (
         <div
           className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
@@ -608,9 +606,7 @@ const BranchUserManagement = () => {
         </div>
       )}
 
-      {/* ══════════════════════════════════════════
-         MODAL: THÊM / SỬA NHÂN VIÊN
-      ══════════════════════════════════════════ */}
+      {/* MODAL: THÊM / SỬA NHÂN VIÊN */}
       {showUserModal && (
         <div
           className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
@@ -780,9 +776,7 @@ const BranchUserManagement = () => {
         </div>
       )}
 
-      {/* ══════════════════════════════════════════
-         MODAL: ĐĂNG KÝ KHUÔN MẶT
-      ══════════════════════════════════════════ */}
+      {/* MODAL: ĐĂNG KÝ KHUÔN MẶT */}
       {faceRegisterUser && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
           <RegisterFace

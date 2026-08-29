@@ -19,7 +19,6 @@ import {
 } from "lucide-react";
 import api from "../../services/api";
 
-// ─── Toast Notification System ───────────────────────────────────────────────
 const Toast = ({ toasts, removeToast }) => (
   <div className="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none">
     {toasts.map((t) => (
@@ -63,7 +62,6 @@ const useToast = () => {
   return { toasts, addToast, removeToast };
 };
 
-// ─── Modal Overlay ────────────────────────────────────────────────────────────
 const ModalOverlay = ({ children, onClose }) => (
   <div
     className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
@@ -89,7 +87,7 @@ const PriceManagement = () => {
   const [selectedVariants, setSelectedVariants] = useState([]);
   const [isSyncingSelected, setIsSyncingSelected] = useState(false);
 
-  // ─── STATE QUẢN LÝ NHẬP GIÁ THỦ CÔNG (SỬA NHIỀU DÒNG CÙNG LÚC) ───
+  //  STATE QUẢN LÝ NHẬP GIÁ THỦ CÔNG (SỬA NHIỀU DÒNG CÙNG LÚC) 
   const [manualEdits, setManualEdits] = useState({}); // Lưu object { id_thuoc: gia_moi }
   const [isSavingManualEdits, setIsSavingManualEdits] = useState(false);
 
@@ -160,8 +158,6 @@ const PriceManagement = () => {
     }
   };
 
-  // ─── ACTIONS ────────────────────────────────────────────────────────────────
-
   // Đồng bộ 1 dòng (Nút Sync nhanh)
   const handleQuickSyncPrice = async (variantId, newPrice, unitName) => {
     if (
@@ -182,7 +178,7 @@ const PriceManagement = () => {
     }
   };
 
-  // Đồng bộ NHIỀU dòng được tick checkbox (Theo công thức)
+  // Đồng bộ nhiều dòng được tick checkbox 
   const handleSyncSelected = async () => {
     if (selectedVariants.length === 0) return;
     if (
@@ -214,7 +210,7 @@ const PriceManagement = () => {
     }
   };
 
-  // LƯU TOÀN BỘ CÁC GIÁ NHẬP TAY (GLOBAL SAVE)
+  // LƯU TOÀN BỘ CÁC GIÁ NHẬP TAY 
   const handleSaveManualEdits = async () => {
     const editKeys = Object.keys(manualEdits);
     if (editKeys.length === 0) return;
@@ -293,7 +289,7 @@ const PriceManagement = () => {
     }
   };
 
-  // ─── LOGIC CHECKBOX ─────────────────────────────────────────────────────────
+  // CHECKBOX 
   const handleSelectVariant = (variantId) => {
     setSelectedVariants((prev) =>
       prev.includes(variantId)
@@ -302,7 +298,7 @@ const PriceManagement = () => {
     );
   };
 
-  // ─── LỌC DỮ LIỆU ─────────────────────────────────────────────────────────────
+  // LỌC DỮ LIỆU 
   const filteredData = flattenedVariants.filter((item) => {
     const matchSearch =
       item.medicineName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -626,7 +622,7 @@ const PriceManagement = () => {
                               </div>
                             )}
 
-                            {/* BADGE GIÁ GỢI Ý (Đã cập nhật UI giống Modal Quy Cách) */}
+                            {/* BADGE GIÁ GỢI Ý */}
                             <div className="mt-1 flex items-center justify-between gap-4 bg-emerald-50 border border-emerald-100 px-2.5 py-1.5 rounded-lg text-[11px] text-emerald-700 min-w-[150px] shadow-sm hover:shadow transition-shadow">
                               <span>
                                 Gợi ý:{" "}
@@ -812,7 +808,7 @@ const PriceManagement = () => {
         </ModalOverlay>
       )}
 
-      {/* MODAL ĐỒNG BỘ ĐỒNG LOẠT (BULK UPDATE) */}
+      {/* MODAL ĐỒNG BỘ ĐỒNG LOẠT */}
       {isBulkModalOpen && (
         <ModalOverlay onClose={() => setIsBulkModalOpen(false)}>
           <div

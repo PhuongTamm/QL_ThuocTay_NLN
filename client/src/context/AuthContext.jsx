@@ -7,7 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true); // Trạng thái đang load user lúc mới vào app
 
-  // 1. Check token khi App khởi động (F5)
+  // Check token khi App khởi động (F5)
   useEffect(() => {
     const checkLogin = async () => {
       const token = localStorage.getItem("accessToken");
@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
       if (token) {
         try {
           // Gọi API /me để lấy thông tin user mới nhất & kiểm tra token hợp lệ
-          // (Dựa trên route /me bạn đã có trong auth.route.js)
+          // (Dựa trên route /me đã có trong auth.route.js)
           const res = await api.get("/auth/me");
           setUser(res.data.user);
         } catch (error) {
@@ -32,14 +32,14 @@ export const AuthProvider = ({ children }) => {
     checkLogin();
   }, []);
 
-  // 2. Hàm Login (Dùng ở trang Login)
+  // Login 
   const login = (userData, token) => {
     localStorage.setItem("accessToken", token);
     localStorage.setItem("user", JSON.stringify(userData)); // Lưu tạm để dùng ngay
     setUser(userData);
   };
 
-  // 3. Hàm Logout
+  // Logout
   const logout = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("user");

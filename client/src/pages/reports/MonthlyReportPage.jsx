@@ -61,11 +61,11 @@ const MonthlyReportPage = () => {
     );
   });
 
-  /* ─── LOGIC XUẤT PDF (CÓ THÊM CỘT CHI TIẾT LÔ) ─── */
+  /* XUẤT PDF */
   const handleExportPDF = () => {
     setIsExportingPDF(true);
 
-    // 1. XÁC ĐỊNH THÔNG TIN CƠ BẢN
+    // XÁC ĐỊNH THÔNG TIN 
     let branchName = user?.branchId
       ? branches.find((x) => x._id === user.branchId)?.name
       : "Kho của tôi";
@@ -90,7 +90,7 @@ const MonthlyReportPage = () => {
       year: "numeric",
     });
 
-    // 2. TÍNH TOÁN CÁC CHỈ SỐ THỐNG KÊ
+    //TÍNH TOÁN CÁC CHỈ SỐ THỐNG KÊ
     let totalStart = 0;
     let totalImport = 0;
     let totalExport = 0;
@@ -103,7 +103,6 @@ const MonthlyReportPage = () => {
       totalEnd += r.endQuantity || 0;
     });
 
-    // 3. TẠO HTML BÁO CÁO SẠCH ĐỂ XUẤT PDF
     const printDiv = document.createElement("div");
     printDiv.style.fontFamily = "'Times New Roman', Times, serif"; // Đổi sang Times New Roman
     printDiv.style.color = "#000000";
@@ -150,7 +149,6 @@ const MonthlyReportPage = () => {
     `;
 
     filteredReports.forEach((r, idx) => {
-      // ĐÃ SỬA: Không filter quantity > 0 nữa, lấy toàn bộ mảng batches
       const activeBatches = r.batches || [];
       let batchHtml = "";
 
@@ -161,17 +159,17 @@ const MonthlyReportPage = () => {
               ? new Date(b.expiryDate).toLocaleDateString("vi-VN")
               : "---";
 
-            // Xử lý Text Trạng Thái (Lỗi, Hết hạn...)
+            // Text Trạng Thái (Lỗi, Hết hạn...)
             const qualityText =
               b.quality !== "GOOD"
                 ? `<br/><span style="color: #ef4444; font-size: 10px; font-weight: bold;">(${b.quality})</span>`
                 : "";
 
-            // Xử lý hiển thị Số lượng (Nếu = 0 thì bôi xám, nếu > 0 thì bôi đỏ)
+            //Nếu = 0 thì bôi xám, nếu > 0 thì bôi đỏ
             const isOutOfStock = b.quantity === 0;
             const qtyColor = isOutOfStock ? "#94a3b8" : "#000";
 
-            // Hiển thị Số hiện tại / Số gốc
+            //Số hiện tại / Số gốc
             const stockDisplay = `<span style="color: ${qtyColor}; font-weight: bold;">${b.quantity}</span> <span style="color: #94a3b8; font-size: 11px;">/ ${b.initialQuantity || b.quantity}</span>`;
 
             return `
@@ -436,7 +434,7 @@ const MonthlyReportPage = () => {
                         {r.medicineId?.baseUnit}
                       </td>
 
-                      {/* Số liệu (Chỉ giữ màu chữ, bỏ màu nền) */}
+                      {/* Số liệu  */}
                       <td className="p-4 font-semibold text-center text-blue-600">
                         {r.startQuantity.toLocaleString()}
                       </td>

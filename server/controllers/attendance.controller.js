@@ -66,7 +66,7 @@ exports.checkInWithFace = async (req, res) => {
       date: dateStr,
     });
 
-    // TÌNH HUỐNG 1: CHƯA CHẤM CÔNG LẦN NÀO TRONG NGÀY
+    // CHƯA CHẤM CÔNG LẦN NÀO TRONG NGÀY
     if (!attendance) {
       attendance = await Attendance.create({
         userId: matchedUser._id,
@@ -80,7 +80,7 @@ exports.checkInWithFace = async (req, res) => {
       });
     }
 
-    // TÌNH HUỐNG 2: ĐÃ CÓ DATA HÔM NAY -> KIỂM TRA COOLDOWN
+    // ĐÃ CÓ DATA HÔM NAY -> KIỂM TRA COOLDOWN
     const lastScanTime = attendance.scanTimes[attendance.scanTimes.length - 1];
     const diffMinutes = (today - lastScanTime) / (1000 * 60);
 
@@ -96,8 +96,7 @@ exports.checkInWithFace = async (req, res) => {
     attendance.scanTimes.push(today);
     await attendance.save();
 
-    // TÌNH HUỐNG 3: XÁC ĐỊNH LÀ IN HAY OUT ĐỂ HIỂN THỊ THÔNG BÁO CHO ĐÚNG
-    // Nhờ có Cooldown, việc dùng logic Chẵn/Lẻ giờ đây đã AN TOÀN
+    // XÁC ĐỊNH LÀ IN HAY OUT ĐỂ HIỂN THỊ THÔNG BÁO CHO ĐÚNG
     const isCheckIn = attendance.scanTimes.length % 2 !== 0; // Lẻ là Check-in, Chẵn là Check-out
 
     if (isCheckIn) {
@@ -129,7 +128,7 @@ exports.registerFace = async (req, res) => {
   }
 };
 
-// Lấy lịch sử chấm công của user đang đăng nhập (Hỗ trợ lọc Từ ngày - Đến ngày)
+// Lấy lịch sử chấm công của user đang đăng nhập
 exports.getMyAttendanceHistory = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -137,7 +136,7 @@ exports.getMyAttendanceHistory = async (req, res) => {
 
     let query = { userId: userId };
 
-    // Lọc theo khoảng thời gian nếu có truyền lên
+    // Lọc theo khoảng thời gian nếu có 
     if (startDate && endDate) {
       query.date = { $gte: startDate, $lte: endDate };
     } else if (startDate) {

@@ -27,7 +27,6 @@ import api from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
 import html2pdf from "html2pdf.js";
 
-/* ─── 1. ĐƯA MODAL OVERLAY RA NGOÀI ĐỂ KHÔNG BỊ GIẬT/LOAD LẠI KHI GÕ PHÍM ─── */
 const ModalOverlay = ({ children, onClose, zIndex = "z-40" }) => (
   <div
     className={`fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center ${zIndex} p-4`}
@@ -66,14 +65,14 @@ const InventoryPage = () => {
   const [batchHistory, setBatchHistory] = useState([]);
   const [loadingHistory, setLoadingHistory] = useState(false);
 
-  // --- STATES CHO CHỨC NĂNG XUẤT HỦY ---
+  // STATES CHO CHỨC NĂNG XUẤT HỦY 
   const [isDisposeModalOpen, setIsDisposeModalOpen] = useState(false);
   const [disposeSearchTerm, setDisposeSearchTerm] = useState("");
   const [disposeCart, setDisposeCart] = useState([]);
   const [isSubmittingDispose, setIsSubmittingDispose] = useState(false);
   const [isExportingPDF, setIsExportingPDF] = useState(false);
 
-  // ĐỘC LẬP: Dữ liệu tồn kho chỉ dành riêng cho Kho Tổng (Modal Xuất Hủy)
+  // Dữ liệu tồn kho chỉ dành riêng cho Kho Tổng (Modal Xuất Hủy)
   const [warehouseInventories, setWarehouseInventories] = useState([]);
   const [loadingDispose, setLoadingDispose] = useState(false);
 
@@ -168,7 +167,7 @@ const InventoryPage = () => {
     }
   };
 
-  // === HÀM MỞ MODAL XUẤT HỦY (Chỉ kéo dữ liệu Kho Tổng) ===
+  // HÀM MỞ MODAL XUẤT HỦY (Chỉ kéo dữ liệu Kho Tổng) 
   const handleOpenDisposeModal = async () => {
     if (user?.role !== "admin" && user?.role !== "warehouse_manager") {
       alert("Bạn không có quyền thực hiện hành động này");
@@ -253,7 +252,7 @@ const InventoryPage = () => {
     };
   };
 
-  /* ─── LOGIC IN PHIẾU BÁO CÁO TỒN KHO PDF ─── */
+  /* PHIẾU BÁO CÁO TỒN KHO PDF  */
   const handleExportPDF = () => {
     setIsExportingPDF(true);
 
@@ -440,7 +439,7 @@ const InventoryPage = () => {
       });
   };
 
-  /* ─── LOGIC IN PHIẾU XUẤT HỦY ─── */
+  /* PHIẾU XUẤT HỦY */
   const generateDisposalPDF = async (transaction) => {
     let branchName = user?.branchId
       ? branches.find((x) => x._id === user.branchId)?.name
@@ -564,7 +563,7 @@ const InventoryPage = () => {
     await html2pdf().set(opt).from(printDiv).save();
   };
 
-  /* ─── LOGIC XỬ LÝ CART XUẤT HỦY THEO QUY CÁCH (Sử dụng warehouseInventories) ─── */
+  /*  XỬ LÝ CART XUẤT HỦY THEO QUY CÁCH  */
   const getMedicinesForDisposal = () => {
     let data = [...warehouseInventories];
     if (disposeSearchTerm) {
@@ -579,10 +578,10 @@ const InventoryPage = () => {
   };
 
   const handleAddToDisposeCart = (med, inv, variant) => {
-    // Tạo ID duy nhất cho dòng trong phiếu hủy (Tránh trùng nếu bấm nhiều lần)
+    // Tạo ID duy nhất cho dòng trong phiếu hủy
     const cartItemId = `${variant._id}_${Date.now()}`;
 
-    // Check xem quy cách này đã có dòng nào chưa chọn lô chưa (tránh spam)
+    // Check xem quy cách này đã có dòng nào chưa chọn lô chưa 
     const isExist = disposeCart.some(
       (item) => item.variantId === variant._id && !item.batchId,
     );
@@ -602,7 +601,7 @@ const InventoryPage = () => {
         medicine: med,
         variant: variant,
         variantId: variant._id,
-        batchId: "", // Sẽ cho người dùng chọn bên phải
+        batchId: "", 
         quantity: 1,
         reason: "EXPIRED",
       },
@@ -720,7 +719,7 @@ const InventoryPage = () => {
         }
       `}</style>
       <div className="animate-page-in space-y-6">
-        {/* ── PAGE HEADER ── */}
+        {/* PAGE HEADER */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 ">
           <div className="flex items-center gap-3">
             <div
@@ -771,7 +770,7 @@ const InventoryPage = () => {
           </div>
         </div>
 
-        {/* ── FILTER BAR ── */}
+        {/* FILTER BAR */}
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 mb-4">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
             <div className="relative md:col-span-4">
@@ -842,7 +841,7 @@ const InventoryPage = () => {
           </div>
         </div>
 
-        {/* ── INVENTORY TABLE ── */}
+        {/* INVENTORY TABLE */}
         <div
           id="inventory-table-print"
           className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
@@ -1003,9 +1002,7 @@ const InventoryPage = () => {
         </div>
       </div>
 
-      {/* ══════════════════════════════════════════
-          MODAL: TẠO PHIẾU XUẤT HỦY (STYLE NHƯ IMPORT)
-      ══════════════════════════════════════════ */}
+      {/* MODAL TẠO PHIẾU XUẤT HỦY */}
       {isDisposeModalOpen && (
         <ModalOverlay
           onClose={() => setIsDisposeModalOpen(false)}
@@ -1034,14 +1031,13 @@ const InventoryPage = () => {
               </button>
             </div>
 
-            {/* Content: Chia làm 2 cột (Trái tìm thuốc, Phải điền thông tin phiếu) */}
+            {/* Chia làm 2 cột */}
             <div className="flex-1 flex flex-col lg:flex-row overflow-hidden bg-slate-50">
-              {/* === CỘT TRÁI: TÌM & CHỌN QUY CÁCH THUỐC === */}
+              {/* CỘT TRÁI: TÌM & CHỌN QUY CÁCH THUỐC */}
               <div className="w-full lg:w-[400px] xl:w-[450px] flex flex-col border-r border-slate-200 bg-white shrink-0">
                 <div className="p-4 border-b border-slate-100 bg-slate-50/50">
                   <h3 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <Pill size={16} className="text-slate-600" /> Tìm Thuốc Để
-                    Hủy
+                    <Pill size={16} className="text-slate-600" /> Tìm Thuốc Để Hủy
                   </h3>
                   <div className="relative">
                     <Search
@@ -1148,7 +1144,7 @@ const InventoryPage = () => {
                 </div>
               </div>
 
-              {/* === CỘT PHẢI: GIỎ HÀNG XUẤT HỦY === */}
+              {/* CỘT PHẢI: GIỎ HÀNG XUẤT HỦY  */}
               <div className="flex-1 flex flex-col bg-slate-50 overflow-hidden">
                 <div className="p-4 border-b border-slate-200 bg-white shrink-0 flex flex-col gap-3">
                   <div className="flex justify-between items-center">
@@ -1402,7 +1398,7 @@ const InventoryPage = () => {
                   )}
                 </div>
 
-                {/* Footer Chốt phiếu */}
+                {/* Footer */}
                 <div className="px-6 py-4 border-t border-slate-100 bg-slate-50 flex flex-col sm:flex-row justify-between items-center gap-4 shrink-0">
                   <div className="flex items-center gap-3 bg-white px-4 py-2.5 rounded-xl border border-slate-200 shadow-sm">
                     <span className="text-sm text-slate-600 font-bold uppercase tracking-wide">
@@ -1444,9 +1440,7 @@ const InventoryPage = () => {
         </ModalOverlay>
       )}
 
-      {/* ══════════════════════════════════════════
-          MODAL 1: CHI TIẾT LÔ HÀNG
-      ══════════════════════════════════════════ */}
+      {/*  MODAL CHI TIẾT LÔ HÀNG */}
       {isModalOpen && selectedInventory && (
         <ModalOverlay onClose={() => setIsModalOpen(false)} zIndex="z-30">
           <div className="bg-white rounded-2xl shadow-2xl w-[920px] max-h-[85vh] flex flex-col overflow-hidden">
@@ -1594,9 +1588,7 @@ const InventoryPage = () => {
         </ModalOverlay>
       )}
 
-      {/* ══════════════════════════════════════════
-          MODAL 2: LỊCH SỬ NHẬP LÔ
-      ══════════════════════════════════════════ */}
+      {/* MODAL LỊCH SỬ NHẬP LÔ */}
       {isHistoryModalOpen && (
         <ModalOverlay
           onClose={() => setIsHistoryModalOpen(false)}

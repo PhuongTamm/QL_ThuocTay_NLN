@@ -20,7 +20,7 @@ import {
   updateCategory,
 } from "../../services/api";
 
-// ─── Toast Notification System ───────────────────────────────────────────────
+//Thông báo toast
 const Toast = ({ toasts, removeToast }) => (
   <div className="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none">
     {toasts.map((t) => (
@@ -64,7 +64,7 @@ const useToast = () => {
   return { toasts, addToast, removeToast };
 };
 
-// ─── Modal Overlay ────────────────────────────────────────────────────────────
+// Định dạng Modal 
 const ModalOverlay = ({ children, onClose }) => (
   <div
     className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
@@ -73,7 +73,7 @@ const ModalOverlay = ({ children, onClose }) => (
   </div>
 );
 
-// ─── Confirm Dialog ───────────────────────────────────────────────────────────
+//  Hộp thoại thông báo xác nhận
 const ConfirmDialog = ({ open, onConfirm, onCancel, categoryName }) => {
   if (!open) return null;
   return (
@@ -270,7 +270,7 @@ const CategoryList = () => {
         onCancel={() => setConfirmDelete(null)}
       />
 
-      {/* ─── Modal Thêm/Sửa Danh Mục ─── */}
+      {/* Modal Thêm/Sửa Nhóm thuốc */}
       {isModalOpen && (
         <ModalOverlay onClose={() => setIsModalOpen(false)}>
           <div
@@ -384,7 +384,7 @@ const CategoryList = () => {
       <div className="cat-root min-h-screen bg-gradient-to-br from-sky-50 via-blue-50 to-slate-50">
         <div className="animate-page-in space-y-6">
           <div className="px-6 py-6">
-            {/* Header: Đã thay thế inline form bằng Nút mở Modal */}
+            {/* Header */}
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
                 <div

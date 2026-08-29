@@ -3,10 +3,10 @@ const router = express.Router();
 const userController = require("../controllers/user.controller");
 const { verifyToken, checkRole } = require("../middleware/authMiddleware");
 
-// Lấy danh sách user (Admin only)
+// Lấy danh sách user 
 router.get("/", verifyToken, checkRole(["admin"]), userController.getAllUsers);
 
-// Xóa user (Admin only) - Endpoint này Frontend đang gọi
+// Xóa user
 router.delete(
   "/:id",
   verifyToken,

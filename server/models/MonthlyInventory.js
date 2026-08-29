@@ -2,18 +2,14 @@ const mongoose = require("mongoose");
 
 const monthlyInventorySchema = new mongoose.Schema(
   {
-    month: { type: Number, required: true }, // Tháng 1-12
-    year: { type: Number, required: true }, // Năm 2025
+    month: { type: Number, required: true }, 
+    year: { type: Number, required: true },
     warehouseId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Branch",
       required: true,
     }, // ID của kho tổng
-    // variantId: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "MedicineVariant",
-    //   required: true,
-    // },
+    
     medicineId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Medicine",

@@ -125,13 +125,11 @@ const AddMedicine = () => {
     }
   };
 
-  /* ── Định dạng Style dùng chung ── */
   const inputCls =
     "w-full px-3 py-2.5 text-sm border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-[#0ea5e9]/20 focus:border-[#0ea5e9] transition-all bg-slate-50 hover:bg-white text-slate-800 placeholder:text-slate-400";
   const labelCls =
     "block text-[11px] font-bold text-slate-600 mb-1.5 uppercase tracking-wide";
 
-  /* ── Component Tiêu đề Từng Phần (Cập nhật giống trang Nhập hàng) ── */
   const SectionHeaderBadge = ({ icon: Icon, title }) => (
     <div className="flex items-center gap-2 mb-4">
       <div className="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center shrink-0">
@@ -177,7 +175,7 @@ const AddMedicine = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
-          {/* ════ KHỐI 1: THÔNG TIN CƠ BẢN ════ */}
+          {/* THÔNG TIN THUỐC */}
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
             <SectionHeaderBadge icon={Layers} title="Thông tin thuốc gốc" />
 
@@ -256,7 +254,7 @@ const AddMedicine = () => {
             </div>
           </div>
 
-          {/* ════ KHỐI 2: ĐƠN VỊ VÀ QUY CÁCH ════ */}
+          {/* ĐƠN VỊ VÀ QUY CÁCH */}
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
             <SectionHeaderBadge
               icon={Package}
@@ -315,7 +313,7 @@ const AddMedicine = () => {
                 />
               </div>
 
-              {/* Tỷ lệ quy đổi Box */}
+              {/* Tỷ lệ quy đổi */}
               <div className="md:col-span-2 bg-[#0ea5e9]/5 border border-[#0ea5e9]/20 rounded-xl p-4">
                 <div className="flex items-start gap-2 mb-3">
                   <Info size={16} className="text-[#0ea5e9] shrink-0 mt-0.5" />
@@ -393,7 +391,7 @@ const AddMedicine = () => {
             </div>
           </div>
 
-          {/* ════ KHỐI 3: HÌNH ẢNH ════ */}
+          {/* HÌNH ẢNH */}
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
             <SectionHeaderBadge icon={ImageIcon} title="Hình ảnh sản phẩm" />
 
@@ -441,7 +439,7 @@ const AddMedicine = () => {
             )}
           </div>
 
-          {/* ── FOOTER ACTIONS ── */}
+          {/*  FOOTER ACTIONS  */}
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex flex-col md:flex-row justify-between items-center gap-4 sticky bottom-6 z-10">
             <p className="text-sm text-slate-500 font-medium">
               Kiểm tra kỹ các trường có dấu{" "}

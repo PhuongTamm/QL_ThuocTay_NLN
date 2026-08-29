@@ -5,7 +5,7 @@ const Inventory = require("../models/Inventory");
 const MedicineVariant = require("../models/MedicineVariant");
 const mongoose = require("mongoose");
 
-// --- HELPER: Phân quyền xem dữ liệu ---
+// Phân quyền xem dữ liệu 
 const getBranchFilter = (userRole, userBranchId, queryBranchId) => {
   if (userRole === "admin" || userRole === "warehouse_manager") {
     return queryBranchId ? new mongoose.Types.ObjectId(queryBranchId) : null;
@@ -14,7 +14,7 @@ const getBranchFilter = (userRole, userBranchId, queryBranchId) => {
   return new mongoose.Types.ObjectId(userBranchId);
 };
 
-// 1. API: THỐNG KÊ TỔNG QUAN CHO DASHBOARD
+// API THỐNG KÊ TỔNG QUAN CHO DASHBOARD
 exports.getDashboardStats = async (req, res) => {
   try {
     const { branchId, startDate, endDate, transactionType } = req.query;
@@ -24,7 +24,7 @@ exports.getDashboardStats = async (req, res) => {
       branchId,
     );
 
-    // --- 1. XÂY DỰNG BỘ LỌC TÌM KIẾM THEO NGÀY VÀ LOẠI ---
+    // XÂY DỰNG BỘ LỌC TÌM KIẾM THEO NGÀY VÀ LOẠI GIAO DỊCH
     const matchQuery = { status: "COMPLETED" };
     if (targetBranchId) {
       // Nếu là chi nhánh, họ có thể là người xuất (fromBranch) hoặc người nhận (toBranch)
@@ -48,7 +48,7 @@ exports.getDashboardStats = async (req, res) => {
       }
     }
 
-    // --- 2. TÍNH DOANH THU & SỐ ĐƠN BÁN LẺ ---
+    //TÍNH DOANH THU & HÓA ĐƠN BÁN LẺ 
     // Đảm bảo lấy đúng doanh thu bán hàng tại nhánh
     const salesFilter = targetBranchId ? { fromBranch: targetBranchId } : {};
     const salesQuery = {
@@ -76,7 +76,7 @@ exports.getDashboardStats = async (req, res) => {
     const totalRevenue = revenueAgg.length > 0 ? revenueAgg[0].totalRevenue : 0;
     const totalOrders = revenueAgg.length > 0 ? revenueAgg[0].totalOrders : 0;
 
-    // --- 3. ĐẾM THUỐC SẮP HẾT HÀNG & CẬN/HẾT HẠN TRONG KHO (INVENTORY) ---
+    // ĐẾM THUỐC SẮP HẾT HÀNG & CẬN/HẾT HẠN TRONG KHO 
     const invQuery = targetBranchId ? { branchId: targetBranchId } : {};
     const inventories = await Inventory.find(invQuery);
 
@@ -88,7 +88,7 @@ exports.getDashboardStats = async (req, res) => {
     nearExpiryDate.setDate(today.getDate() + 90); // Mốc Cận date là 90 ngày tới
 
     inventories.forEach((inv) => {
-      // Đếm sắp hết hàng (Lưu ý: totalQuantity tính theo Đơn vị cơ sở - ví dụ: Viên)
+      // Đếm sắp hết hàng (totalQuantity tính theo Đơn vị cơ sở - ví dụ: Viên)
       if (inv.totalQuantity < 20 && inv.totalQuantity > 0) lowStockCount++;
 
       // Đếm cận/hết hạn
@@ -99,7 +99,7 @@ exports.getDashboardStats = async (req, res) => {
       if (hasExpiredOrNear) expiredCount++;
     });
 
-    // --- 4. LẤY DANH SÁCH GIAO DỊCH GẦN ĐÂY ---
+    // LẤY DANH SÁCH GIAO DỊCH GẦN ĐÂY 
     const recentTransactions = await Transaction.find(matchQuery)
       .sort({ createdAt: -1 })
       .limit(5)
@@ -107,14 +107,14 @@ exports.getDashboardStats = async (req, res) => {
       .populate("toBranch", "name")
       .populate("createdBy", "fullName");
 
-    // 1. Ép kiểu và cấu hình lại giờ để bao trọn cả ngày
+    // Ép kiểu và cấu hình lại giờ để bao trọn cả ngày
     const start = new Date(startDate);
     start.setHours(0, 0, 0, 0); // Bắt đầu từ 00:00:00
 
     const end = new Date(endDate);
     end.setHours(23, 59, 59, 999); // Kết thúc ở 23:59:59 của ngày đó
 
-    // 2. Chạy Query với Date object chuẩn
+    //Chạy Query với Date object chuẩn
     const disposalAgg = await Transaction.aggregate([
       {
         $match: {
@@ -144,7 +144,7 @@ exports.getDashboardStats = async (req, res) => {
   }
 };
 
-// 2. API: BÁO CÁO DOANH THU CHI TIẾT (Kèm dữ liệu vẽ biểu đồ)
+// API BÁO CÁO DOANH THU CHI TIẾT 
 exports.getRevenueReport = async (req, res) => {
   try {
     const { fromDate, toDate, branchId } = req.query;
@@ -169,13 +169,11 @@ exports.getRevenueReport = async (req, res) => {
     };
     if (targetBranchId) matchQuery.fromBranch = targetBranchId;
 
-    // 1. Dữ liệu tổng quan
     const summaryAgg = await Transaction.aggregate([
       { $match: matchQuery },
       {
         $group: {
           _id: null,
-          // ĐÃ SỬA: Lấy totalAmount, nếu không có thì lấy totalValue
           totalRevenue: {
             $sum: { $ifNull: ["$totalAmount", "$totalValue", 0] },
           },
@@ -184,13 +182,11 @@ exports.getRevenueReport = async (req, res) => {
       },
     ]);
 
-    // 2. Dữ liệu gộp theo NGÀY (Dùng để vẽ biểu đồ trên Frontend)
     const chartData = await Transaction.aggregate([
       { $match: matchQuery },
       {
         $group: {
           _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }, // Nhóm theo YYYY-MM-DD
-          // ĐÃ SỬA: Lấy totalAmount, nếu không có thì lấy totalValue
           revenue: { $sum: { $ifNull: ["$totalAmount", "$totalValue", 0] } },
           orders: { $sum: 1 },
         },
@@ -212,7 +208,7 @@ exports.getRevenueReport = async (req, res) => {
   }
 };
 
-// 3. API: TOP THUỐC BÁN CHẠY NHẤT
+// API TOP THUỐC BÁN CHẠY NHẤT
 exports.getTopMedicines = async (req, res) => {
   try {
     const targetBranchId = getBranchFilter(
@@ -267,7 +263,7 @@ exports.getTopMedicines = async (req, res) => {
   }
 };
 
-// API: PHÂN TÍCH HIỆU QUẢ KINH DOANH THEO TỪNG LOẠI THUỐC
+// API PHÂN TÍCH HIỆU QUẢ KINH DOANH THEO TỪNG LOẠI THUỐC
 exports.getProfitAnalytics = async (req, res) => {
   try {
     const { fromDate, toDate, branchId } = req.query;
@@ -294,7 +290,7 @@ exports.getProfitAnalytics = async (req, res) => {
         );
     }
 
-    // 1. TÍNH DOANH THU & GIÁ VỐN (TỪ HÓA ĐƠN BÁN LẺ)
+    // TÍNH DOANH THU & GIÁ VỐN (TỪ HÓA ĐƠN BÁN LẺ)
     const salesData = await Transaction.aggregate([
       { $match: { ...matchQuery, type: "SALE_AT_BRANCH" } },
       { $unwind: "$details" },
@@ -317,7 +313,7 @@ exports.getProfitAnalytics = async (req, res) => {
       },
     ]);
 
-    // 2. TÍNH CHI PHÍ HAO HỤT (TỪ PHIẾU HỦY HÀNG)
+    // TÍNH CHI PHÍ HAO HỤT (TỪ PHIẾU HỦY HÀNG)
     const disposalData = await Transaction.aggregate([
       { $match: { ...matchQuery, type: "DISPOSAL" } },
       { $unwind: "$details" },
@@ -332,7 +328,7 @@ exports.getProfitAnalytics = async (req, res) => {
       },
     ]);
 
-    // 3. MAP VỚI THÔNG TIN THUỐC & TỔNG HỢP (KẾT HỢP CÁCH 2 & 3)
+    // MAP VỚI THÔNG TIN THUỐC & TỔNG HỢP (KẾT HỢP CÁCH 2 & 3)
     const allVariantIds = [
       ...new Set([...salesData, ...disposalData].map((d) => d._id.toString())),
     ];
@@ -371,7 +367,7 @@ exports.getProfitAnalytics = async (req, res) => {
         soldQty: sale.totalQuantitySold,
         disposalQty: disposal.totalDisposalQty,
         revenue: sale.totalRevenue,
-        cogs: sale.totalCost, // Cost of Goods Sold
+        cogs: sale.totalCost, 
         grossProfit: grossProfit,
         disposalLoss: disposal.totalDisposalLoss,
         netProfit: netProfit,

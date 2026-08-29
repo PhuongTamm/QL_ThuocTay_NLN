@@ -58,7 +58,6 @@ exports.deleteCategory = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Lưu ý: Trong thực tế, bạn nên kiểm tra xem có Thuốc nào đang dùng danh mục này không trước khi xóa
     const deletedCategory = await Category.findByIdAndDelete(id);
     if (!deletedCategory)
       return res.status(404).json({ message: "Không tìm thấy danh mục" });

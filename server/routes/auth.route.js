@@ -8,8 +8,7 @@ const uploadCloud = require("../configs/cloudinary");
 // Route công khai
 router.post("/login", authController.login);
 
-// Route đăng ký (Chỉ Admin mới tạo được User mới - Tùy nghiệp vụ của bạn)
-// Nếu muốn tạo Admin đầu tiên, bạn có thể tạm thời bỏ verifyToken, checkRole
+// Route đăng ký (Chỉ Admin mới tạo được User mới)
 router.post(
   "/register",
   verifyToken,
@@ -23,7 +22,6 @@ router.get(
   checkRole(["admin"]),
   authController.getAllUsers,
 );
-
 
 // Route lấy thông tin cá nhân (Yêu cầu phải đăng nhập)
 router.get("/me", verifyToken, authController.getMe);

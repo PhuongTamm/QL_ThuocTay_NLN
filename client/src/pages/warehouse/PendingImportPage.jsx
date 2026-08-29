@@ -53,7 +53,7 @@ const PendingImportPage = () => {
     }
   };
 
-  // Helper: Dịch lý do trả hàng
+  // lý do trả hàng
   const getReasonText = (reason) => {
     switch (reason) {
       case "OVERSTOCK":
@@ -107,7 +107,7 @@ const PendingImportPage = () => {
       `}</style>
 
       <div className="animate-page-in space-y-6">
-        {/* ── Page Header ── */}
+        {/* Page Header */}
         <div className="flex items-center gap-3 mb-6">
           <div
             className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 text-white"
@@ -129,7 +129,7 @@ const PendingImportPage = () => {
           </div>
         </div>
 
-        {/* ── Empty State ── */}
+        {/* Empty State */}
         {transactions.length === 0 ? (
           <div className="bg-white border border-dashed border-slate-300 rounded-2xl py-20 flex flex-col items-center justify-center shadow-sm">
             <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mb-4">
@@ -156,7 +156,7 @@ const PendingImportPage = () => {
                 <div
                   key={trans._id}
                   className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:border-[#1d5fa7]/30 transition-all duration-200">
-                  {/* ── Card Header ── */}
+                  {/* Page Header */}
                   <div className="p-5 flex flex-col md:flex-row md:justify-between md:items-start gap-4 bg-[#1d5fa7]/5 border-b border-[#1d5fa7]/10">
                     <div className="flex flex-col gap-3">
                       {/* Nhãn phân loại */}
@@ -166,7 +166,7 @@ const PendingImportPage = () => {
                           : "Phiếu Luân Chuyển"}
                       </span>
 
-                      {/* Meta Info */}
+                      {/*Info */}
                       <div className="flex flex-col flex-wrap gap-1 text-[13px] text-slate-600">
                         <div className="flex items-center gap-1.5">
                           <Store size={14} className="text-slate-400" />
@@ -206,7 +206,7 @@ const PendingImportPage = () => {
                     </div>
                   </div>
 
-                  {/* ── Detail Table ── */}
+                  {/* Table */}
                   <div className="overflow-x-auto scrollbar-thin">
                     <table className="w-full text-left text-sm border-collapse">
                       <thead>
@@ -300,7 +300,7 @@ const PendingImportPage = () => {
                     </table>
                   </div>
 
-                  {/* ── Card Footer ── */}
+                  {/* Card Footer  */}
                   <div className="p-4 pl-10 border-t border-slate-100 bg-slate-50 flex flex-col sm:flex-row justify-between items-center gap-4">
                     {/* Hiển thị tổng giá trị phiếu */}
                     <div className="flex items-center gap-2">

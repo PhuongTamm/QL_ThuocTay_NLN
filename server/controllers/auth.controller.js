@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 const { generateAccessToken } = require("../utils/jwt");
 
 const authController = {
-  // 1. Đăng ký (Tạo tài khoản mới)
+  // Đăng ký 
   register: async (req, res) => {
     try {
       const { username, password, fullName, role, branchId, email, phone } =
@@ -54,7 +54,7 @@ const authController = {
     }
   },
 
-  // 2. Đăng nhập
+  // Đăng nhập
   login: async (req, res) => {
     try {
       const { email, password } = req.body;
@@ -97,7 +97,7 @@ const authController = {
     }
   },
 
-  // 3. Lấy thông tin người dùng hiện tại
+  //Lấy thông tin người dùng hiện tại
   getMe: async (req, res) => {
     try {
       const user = await User.findById(req.user.id).select("-password");
@@ -125,7 +125,7 @@ const authController = {
       // Lấy tất cả user nhưng trừ trường password
       const users = await User.find()
         .select("-password")
-        .populate("branchId", "name"); // Populate tên chi nhánh
+        .populate("branchId", "name"); 
       return res.json({
         success: true,
         data: users,
@@ -139,7 +139,7 @@ const authController = {
     }
   },
 
-  // Cập nhật thông tin cá nhân (Avatar)
+  // Cập nhật thông tin cá nhân 
   updateProfile: async (req, res) => {
     try {
       const userId = req.user.id;
@@ -150,7 +150,6 @@ const authController = {
         updateData.avatar = req.file.path;
       }
 
-      // Có thể nhận thêm các trường khác nếu sau này bạn muốn cho phép đổi sđt, tên...
       if (req.body.phone) updateData.phone = req.body.phone;
 
       // Cập nhật và trả về user mới (trừ password)
@@ -158,7 +157,7 @@ const authController = {
         new: true,
       })
         .select("-password")
-        .populate("branchId", "name"); // Lấy luôn tên chi nhánh nếu có
+        .populate("branchId", "name"); 
 
       res.status(200).json({
         success: true,
