@@ -47,6 +47,16 @@ const DistributePage = () => {
 
   const todayString = new Date().toLocaleDateString("vi-VN");
 
+  const getStrictVariantQty = (batches, conversionRate) => {
+    if (!batches || batches.length === 0) return 0;
+    return batches.reduce((sum, b) => {
+      if (b.quantity > 0) {
+        return sum + Math.floor(b.quantity / (conversionRate || 1));
+      }
+      return sum;
+    }, 0);
+  };
+
   useEffect(() => {
     fetchBaseData();
   }, []);
@@ -800,8 +810,9 @@ const DistributePage = () => {
                         </p>
                       ) : (
                         medVariants.map((variant) => {
-                          const variantQty = Math.floor(
-                            totalValidBaseQty / variant.conversionRate,
+                          const variantQty = getStrictVariantQty(
+                            activeBatches,
+                            variant.conversionRate,
                           );
                           const isOutOfStock = variantQty <= 0;
 

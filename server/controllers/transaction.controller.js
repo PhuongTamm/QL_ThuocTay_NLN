@@ -283,78 +283,48 @@ exports.createDistributionRequest = async (req, res) => {
         (a, b) => new Date(a.expiryDate) - new Date(b.expiryDate),
       );
 
-      let remainQty = baseQtyToDeduct;
-
-      // THUẬT TOÁN 2-PASS: TRÁNH CHIA LẺ HỘP KHI XUẤT KHO
-      // PASS 1:  lấy "Chẵn hộp" (Bội số của tỷ lệ quy đổi) từ các lô
-      let remainFull = Math.floor(remainQty / convRate) * convRate;
+      let neededUnits = Number(item.quantity);
 
       for (let i = 0; i < validBatches.length; i++) {
-        if (remainFull <= 0) break;
+        if (neededUnits <= 0) break;
         let batch = validBatches[i];
 
-        // Tìm số lượng chẵn tối đa có thể lấy từ lô này
-        let maxMultiple = Math.floor(batch.quantity / convRate) * convRate;
+        let maxUnitsFromBatch = Math.floor(batch.quantity / convRate);
 
-        if (maxMultiple > 0) {
-          let takeFull = Math.min(maxMultiple, remainFull);
-          if (takeFull > 0) {
-            batch.quantity -= takeFull;
-            remainQty -= takeFull;
-            remainFull -= takeFull;
+        if (maxUnitsFromBatch > 0) {
+          let takeUnits = Math.min(maxUnitsFromBatch, neededUnits);
+
+          if (takeUnits > 0) {
+            let takeBaseQty = takeUnits * convRate;
+
+            batch.quantity -= takeBaseQty;
+            sourceInv.totalQuantity -= takeBaseQty;
+            neededUnits -= takeUnits;
 
             details.push({
               variantId: item.variantId,
               batchCode: batch.batchCode,
               expiryDate: batch.expiryDate,
               manufacturingDate: batch.manufacturingDate,
-              quantity: takeFull / convRate, // Kết quả chắc chắn là số nguyên (chẵn hộp)
+              quantity: takeUnits, 
               price: batch.importPrice * convRate,
             });
           }
         }
       }
 
-      // PASS 2: Nếu vẫn còn thiếu (do xuất lẻ, hoặc các lô cộng lại bị lẻ), lấy nốt phần dư
-      if (remainQty > 0) {
-        for (let i = 0; i < validBatches.length; i++) {
-          if (remainQty <= 0) break;
-          let batch = validBatches[i];
-
-          if (batch.quantity > 0) {
-            let take = Math.min(batch.quantity, remainQty);
-            batch.quantity -= take;
-            remainQty -= take;
-
-            // Nếu lô này đã được lấy ở Pass 1, ta cộng gộp vào detail cũ để tránh tách 2 dòng trùng nhau
-            const existingDetail = details.find(
-              (d) =>
-                d.batchCode === batch.batchCode &&
-                d.variantId.toString() === item.variantId.toString(),
-            );
-
-            if (existingDetail) {
-              existingDetail.quantity += take / convRate;
-            } else {
-              details.push({
-                variantId: item.variantId,
-                batchCode: batch.batchCode,
-                expiryDate: batch.expiryDate,
-                manufacturingDate: batch.manufacturingDate,
-                quantity: take / convRate, 
-                price: batch.importPrice * convRate,
-              });
-            }
-          }
-        }
+      if (neededUnits > 0) {
+        throw new Error(
+          `Kho tổng không đủ Đơn vị để xuất!`,
+        );
       }
 
-      sourceInv.totalQuantity -= baseQtyToDeduct;
       await sourceInv.save();
+
       await updateMonthlyReport(
         fromBranchId,
         medicineId,
-        baseQtyToDeduct,
+        Number(item.quantity) * convRate,
         "EXPORT",
       );
     }
@@ -556,36 +526,34 @@ exports.sellAtBranch = async (req, res) => {
           new Date(a.expiryDate).getTime() - new Date(b.expiryDate).getTime(),
       );
 
-      let remainQty = baseQtyToDeduct;
+      let neededUnits = Number(item.quantity); // Số lượng đơn vị khách mua (VD: 2 hộp)
       const convRate = variant.conversionRate;
 
-      //  THUẬT TOÁN 2-PASS: TRÁNH CHIA LẺ ĐƠN VỊ BÁN KHI BÁN LẺ 
-      // PASS 1: lấy "Chẵn đơn vị" (Bội số của tỷ lệ quy đổi) từ các lô
-      let remainFull = Math.floor(remainQty / convRate) * convRate;
-
       for (let i = 0; i < validBatches.length; i++) {
-        if (remainFull <= 0) break;
+        if (neededUnits <= 0) break;
         let batch = validBatches[i];
 
-        // Tìm số lượng chẵn tối đa có thể lấy từ lô này
-        let maxMultiple = Math.floor(batch.quantity / convRate) * convRate;
+        // Lô này có thể cung cấp tối đa bao nhiêu ĐƠN VỊ NGUYÊN VẸN đang chọn?
+        let maxUnitsFromBatch = Math.floor(batch.quantity / convRate);
 
-        if (maxMultiple > 0) {
-          let takeFull = Math.min(maxMultiple, remainFull);
-          if (takeFull > 0) {
-            batch.quantity -= takeFull;
-            remainQty -= takeFull;
-            remainFull -= takeFull;
-            inventory.totalQuantity -= takeFull; // Trừ tổng kho gốc
+        if (maxUnitsFromBatch > 0) {
+          // Lấy số lượng đơn vị cần thiết (không vượt quá khả năng của lô)
+          let takeUnits = Math.min(maxUnitsFromBatch, neededUnits);
+
+          if (takeUnits > 0) {
+            let takeBaseQty = takeUnits * convRate; // Quy ra số viên để trừ kho
+
+            batch.quantity -= takeBaseQty;
+            inventory.totalQuantity -= takeBaseQty;
+            neededUnits -= takeUnits;
 
             await updateMonthlyReport(
               branchId,
               variant.medicineId,
-              takeFull,
+              takeBaseQty,
               "EXPORT",
             );
 
-            const variantQtyDeducted = takeFull / convRate;
             const costPriceOfVariant = batch.importPrice * convRate;
 
             transactionDetails.push({
@@ -593,62 +561,18 @@ exports.sellAtBranch = async (req, res) => {
               batchCode: batch.batchCode,
               manufacturingDate: batch.manufacturingDate,
               expiryDate: batch.expiryDate,
-              quantity: variantQtyDeducted, // Ghi nhận số lượng bán (ví dụ: 1 hộp)
-              price: item.price, // Giá bán lẻ (Doanh thu)
-              costPrice: costPriceOfVariant, // Giá vốn thực tế lô đó
+              quantity: takeUnits, // Số nguyên tuyệt đối (VD: 1 hộp, 2 hộp)
+              price: item.price,
+              costPrice: costPriceOfVariant,
             });
           }
         }
       }
 
-      // PASS 2: Nếu vẫn còn thiếu (do khách mua lẻ viên, hoặc các lô cộng lại bị lẻ), lấy nốt phần dư
-      if (remainQty > 0) {
-        for (let i = 0; i < validBatches.length; i++) {
-          if (remainQty <= 0) break;
-          let batch = validBatches[i];
-
-          if (batch.quantity > 0) {
-            let take = Math.min(batch.quantity, remainQty);
-            batch.quantity -= take;
-            remainQty -= take;
-            inventory.totalQuantity -= take; // Trừ tổng kho gốc
-
-            await updateMonthlyReport(
-              branchId,
-              variant.medicineId,
-              take,
-              "EXPORT",
-            );
-
-            const variantQtyDeducted = take / convRate;
-            const costPriceOfVariant = batch.importPrice * convRate;
-
-            // Kiểm tra xem lô này đã được ghi nhận ở Pass 1 chưa, nếu có thì cộng dồn tránh tách 2 dòng trùng nhau
-            const existingDetail = transactionDetails.find(
-              (d) =>
-                d.batchCode === batch.batchCode &&
-                d.variantId.toString() === item.variantId.toString(),
-            );
-
-            if (existingDetail) {
-              existingDetail.quantity += variantQtyDeducted;
-            } else {
-              transactionDetails.push({
-                variantId: item.variantId,
-                batchCode: batch.batchCode,
-                manufacturingDate: batch.manufacturingDate,
-                expiryDate: batch.expiryDate,
-                quantity: variantQtyDeducted, 
-                price: item.price,
-                costPrice: costPriceOfVariant,
-              });
-            }
-          }
-        }
-      }
-
-      if (remainQty > 0) {
-        throw new Error(`Lỗi trừ kho: Các lô hiện tại không đủ để xuất!`);
+      if (neededUnits > 0) {
+        throw new Error(
+          `Không đủ đơn vị nguyên vẹn! Vui lòng bán lẻ bằng Đơn vị cơ sở.`,
+        );
       }
 
       // Lưu lại tồn kho sau khi đã trừ

@@ -46,6 +46,16 @@ const ImportSupplier = () => {
   const warehouseBranch = branches.find((b) => b.type === "warehouse");
   const warehouseId = warehouseBranch?._id;
 
+  const getStrictVariantQty = (batches, conversionRate) => {
+    if (!batches || batches.length === 0) return 0;
+    return batches.reduce((sum, b) => {
+      if (b.quantity > 0) {
+        return sum + Math.floor(b.quantity / (conversionRate || 1));
+      }
+      return sum;
+    }, 0);
+  };
+
   // TẢI DỮ LIỆU TỪ BACKEND KHI KHỞI CHẠY 
   useEffect(() => {
     const loadInitialData = async () => {
@@ -542,13 +552,12 @@ const ImportSupplier = () => {
                                 inv.branchId === warehouseId ||
                                 inv.branchId?._id === warehouseId),
                           );
-                          const totalBaseQty = medInv
-                            ? medInv.totalQuantity
+                          const variantQty = medInv
+                            ? getStrictVariantQty(
+                                medInv.batches,
+                                variant.conversionRate,
+                              )
                             : 0;
-                          const variantQty = Math.floor(
-                            totalBaseQty / (variant.conversionRate || 1),
-                          );
-
                           return (
                             <div
                               key={variant._id}

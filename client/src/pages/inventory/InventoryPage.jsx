@@ -65,7 +65,7 @@ const InventoryPage = () => {
   const [batchHistory, setBatchHistory] = useState([]);
   const [loadingHistory, setLoadingHistory] = useState(false);
 
-  // STATES CHO CHỨC NĂNG XUẤT HỦY 
+  // STATES CHO CHỨC NĂNG XUẤT HỦY
   const [isDisposeModalOpen, setIsDisposeModalOpen] = useState(false);
   const [disposeSearchTerm, setDisposeSearchTerm] = useState("");
   const [disposeCart, setDisposeCart] = useState([]);
@@ -75,6 +75,17 @@ const InventoryPage = () => {
   // Dữ liệu tồn kho chỉ dành riêng cho Kho Tổng (Modal Xuất Hủy)
   const [warehouseInventories, setWarehouseInventories] = useState([]);
   const [loadingDispose, setLoadingDispose] = useState(false);
+
+  //tínhsố lượng nguyên vẹn trên từng lô (không gộp lẻ)
+  const getStrictVariantQty = (batches, conversionRate) => {
+    if (!batches || batches.length === 0) return 0;
+    return batches.reduce((sum, b) => {
+      if (b.quantity > 0) {
+        return sum + Math.floor(b.quantity / (conversionRate || 1));
+      }
+      return sum;
+    }, 0);
+  };
 
   useEffect(() => {
     if (user?.role === "admin" || user?.role === "warehouse_manager") {
@@ -167,7 +178,7 @@ const InventoryPage = () => {
     }
   };
 
-  // HÀM MỞ MODAL XUẤT HỦY (Chỉ kéo dữ liệu Kho Tổng) 
+  // HÀM MỞ MODAL XUẤT HỦY (Chỉ kéo dữ liệu Kho Tổng)
   const handleOpenDisposeModal = async () => {
     if (user?.role !== "admin" && user?.role !== "warehouse_manager") {
       alert("Bạn không có quyền thực hiện hành động này");
@@ -581,7 +592,7 @@ const InventoryPage = () => {
     // Tạo ID duy nhất cho dòng trong phiếu hủy
     const cartItemId = `${variant._id}_${Date.now()}`;
 
-    // Check xem quy cách này đã có dòng nào chưa chọn lô chưa 
+    // Check xem quy cách này đã có dòng nào chưa chọn lô chưa
     const isExist = disposeCart.some(
       (item) => item.variantId === variant._id && !item.batchId,
     );
@@ -601,7 +612,7 @@ const InventoryPage = () => {
         medicine: med,
         variant: variant,
         variantId: variant._id,
-        batchId: "", 
+        batchId: "",
         quantity: 1,
         reason: "EXPIRED",
       },
@@ -1037,7 +1048,8 @@ const InventoryPage = () => {
               <div className="w-full lg:w-[400px] xl:w-[450px] flex flex-col border-r border-slate-200 bg-white shrink-0">
                 <div className="p-4 border-b border-slate-100 bg-slate-50/50">
                   <h3 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <Pill size={16} className="text-slate-600" /> Tìm Thuốc Để Hủy
+                    <Pill size={16} className="text-slate-600" /> Tìm Thuốc Để
+                    Hủy
                   </h3>
                   <div className="relative">
                     <Search
@@ -1101,27 +1113,30 @@ const InventoryPage = () => {
                               </p>
                             ) : (
                               medVariants.map((variant) => {
-                                const variantQty = Math.floor(
-                                  inv.totalQuantity /
-                                    (variant.conversionRate || 1),
+                                const variantQty = getStrictVariantQty(
+                                  inv.batches,
+                                  variant.conversionRate,
                                 );
                                 return (
                                   <div
                                     key={variant._id}
-                                    className="flex justify-between items-center bg-slate-50 p-2 rounded-lg border border-slate-100 hover:border-sky-200 transition-colors">
+                                    className={`flex justify-between items-center bg-slate-50 p-2 rounded-lg border border-slate-100 transition-colors ${variantQty <= 0 ? "opacity-70" : "hover:border-sky-200"}`}>
                                     <div>
-                                      <span className="text-xs font-semibold text-slate-700 block">
+                                      <span
+                                        className={`text-xs font-semibold block ${variantQty <= 0 ? "text-slate-400" : "text-slate-700"}`}>
                                         {variant.name}
                                       </span>
                                       <span className="text-[10px] text-slate-500">
                                         Tồn:{" "}
-                                        <span className="font-bold text-sky-600">
+                                        <span
+                                          className={`font-bold ${variantQty <= 0 ? "text-red-500" : "text-sky-600"}`}>
                                           {variantQty}
                                         </span>{" "}
                                         {variant.unit}
                                       </span>
                                     </div>
                                     <button
+                                      disabled={variantQty <= 0}
                                       onClick={() =>
                                         handleAddToDisposeCart(
                                           inv.medicineId,
@@ -1129,7 +1144,11 @@ const InventoryPage = () => {
                                           variant,
                                         )
                                       }
-                                      className="flex items-center gap-1 text-[11px] font-bold bg-sky-50 text-sky-600 px-2.5 py-1.5 rounded-md hover:bg-sky-600 hover:text-white transition-colors border border-sky-100 hover:border-sky-600">
+                                      className={`shrink-0 flex items-center gap-1 text-[11px] font-bold px-2.5 py-1.5 rounded-md transition-colors border ${
+                                        variantQty <= 0
+                                          ? "bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed"
+                                          : "bg-sky-50 text-sky-600 border-sky-100 hover:bg-sky-600 hover:text-white hover:border-sky-600"
+                                      }`}>
                                       <Plus size={12} strokeWidth={3} /> Chọn
                                     </button>
                                   </div>
