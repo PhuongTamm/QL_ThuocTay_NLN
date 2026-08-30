@@ -984,54 +984,6 @@
 },
 {
   "_id": {
-    "$oid": "6a849a2043665d99fe475ed7"
-  },
-  "month": 8,
-  "year": 2026,
-  "warehouseId": {
-    "$oid": "6978c2481467ef891161fc65"
-  },
-  "medicineId": {
-    "$oid": "6a8499c543665d99fe475a12"
-  },
-  "startQuantity": 0,
-  "importQuantity": 1830,
-  "exportQuantity": 1820,
-  "endQuantity": 10,
-  "createdAt": {
-    "$date": "2026-08-18T17:45:04.763Z"
-  },
-  "updatedAt": {
-    "$date": "2026-08-19T11:46:48.031Z"
-  },
-  "__v": 0
-},
-{
-  "_id": {
-    "$oid": "6a849bbb43665d99fe476b51"
-  },
-  "month": 8,
-  "year": 2026,
-  "warehouseId": {
-    "$oid": "6978c3481467ef891161fc67"
-  },
-  "medicineId": {
-    "$oid": "6a8499c543665d99fe475a12"
-  },
-  "startQuantity": 0,
-  "importQuantity": 1720,
-  "exportQuantity": 1435,
-  "endQuantity": 285,
-  "createdAt": {
-    "$date": "2026-08-18T17:51:55.695Z"
-  },
-  "updatedAt": {
-    "$date": "2026-08-19T11:43:20.410Z"
-  },
-  "__v": 0
-},
-{
-  "_id": {
     "$oid": "6a85a99b97b170ded32901fc"
   },
   "month": 8,
@@ -1075,54 +1027,6 @@
   },
   "updatedAt": {
     "$date": "2026-08-19T13:09:36.022Z"
-  },
-  "__v": 0
-},
-{
-  "_id": {
-    "$oid": "6a86bb72140508bdeaef3c47"
-  },
-  "month": 8,
-  "year": 2026,
-  "warehouseId": {
-    "$oid": "6978c2481467ef891161fc65"
-  },
-  "medicineId": {
-    "$oid": "6a86bafb140508bdeaef34cc"
-  },
-  "startQuantity": 0,
-  "importQuantity": 2000,
-  "exportQuantity": 1600,
-  "endQuantity": 400,
-  "createdAt": {
-    "$date": "2026-08-20T08:31:46.318Z"
-  },
-  "updatedAt": {
-    "$date": "2026-08-20T08:35:48.528Z"
-  },
-  "__v": 0
-},
-{
-  "_id": {
-    "$oid": "6a86bc92140508bdeaef4974"
-  },
-  "month": 8,
-  "year": 2026,
-  "warehouseId": {
-    "$oid": "6978c3481467ef891161fc67"
-  },
-  "medicineId": {
-    "$oid": "6a86bafb140508bdeaef34cc"
-  },
-  "startQuantity": 0,
-  "importQuantity": 1100,
-  "exportQuantity": 1000,
-  "endQuantity": 100,
-  "createdAt": {
-    "$date": "2026-08-20T08:36:34.887Z"
-  },
-  "updatedAt": {
-    "$date": "2026-08-20T08:37:42.996Z"
   },
   "__v": 0
 }]
